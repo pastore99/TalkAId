@@ -18,13 +18,13 @@ public class Registration implements RegistrationInterface {
             if(!ud.checkIfEmailExists(email)) {
                 Encryption encryption = new Encryption();
                 String hashed = encryption.encryptPassword(password);
-                int id = ud.createUser(email, hashed, la.isForTherapist(license));
+                int theNewId = ud.createUser(email, hashed, la.isForTherapist(license));
 
-                if(id >= 0) {
-                    if(ur.firstAccess(id, name, surname)) {
-                        return 0;
+                if(theNewId >= 0) {
+                    if(ur.firstAccess(theNewId, name, surname)) {
+                        return 0; //nessun errore
                     }
-                    return 4;
+                    return 4; //non è stato possibile generare l'anagrafica
                 }
                 return 3; //non è stato possibile generare l'utenza
 

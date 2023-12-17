@@ -1,15 +1,15 @@
 package model.service.user;
 
-import model.DAO.DAOUtente;
+import model.DAO.DAOUser;
 
 public class UserData implements UserDataInterface {
-    DAOUtente daoUtente = new DAOUtente();
+    DAOUser daoUser = new DAOUser();
 
     public boolean checkIfEmailExists(String email) {
-        return daoUtente.checkIfEmailExists(email);
+        return daoUser.checkIfEmailExists(email);
     }
 
     public int createUser(String email, String password, int therapistId) {
-        return daoUtente.createUser(email, password, therapistId);
+        return daoUser.createUser(email, password, therapistId);
     }
 }
