@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import model.service.login.Authenticator;
 
-@WebServlet(name = "loginServlet", urlPatterns = "/login")
+@WebServlet("/login")
 public class LoginController extends HttpServlet {
 
     /**
@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("welcome.jsp");
         } else {
             // Login failed, redirect back to the login page
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("JSP/login.jsp");
         }
     }
 }
