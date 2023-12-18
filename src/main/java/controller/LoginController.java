@@ -23,10 +23,12 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("SONO QUI!");
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        System.out.println(email);
+        System.out.println(password);
         int result = authService.authenticate(email, password);
 
         if (result > 0) {

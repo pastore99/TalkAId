@@ -29,6 +29,6 @@ public class Main {
 
         //test email recupero password
         Authenticator authenticator = new Authenticator();
-        authenticator.resetPassword("c.porzio02@gmail.com");
+        System.out.println(authenticator.authenticate("test@gmail.com", "123456"));
     }
 }

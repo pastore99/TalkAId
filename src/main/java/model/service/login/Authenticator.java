@@ -36,8 +36,8 @@ public class Authenticator implements LoginInterface {
     public int authenticate(String email, String password) {
         User toCheck = db.getUserByIdOrEmail(email);
         Encryption encryption = new Encryption();
-        if(toCheck != null) {
-            if (encryption.verifyPassword(toCheck.getPassword(), password)) {
+        if(!(toCheck == null)) {
+            if (encryption.verifyPassword(password, toCheck.getPassword())) {
                 return toCheck.getId();
             } else {
                 return -2; //le password non coincidono
