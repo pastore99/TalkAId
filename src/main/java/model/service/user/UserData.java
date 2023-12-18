@@ -2,7 +2,7 @@ package model.service.user;
 
 import model.DAO.DAOUser;
 
-public class UserData implements UserDataInterface {
+public class UserData /*implements UserDataInterface */{
     DAOUser daoUser = new DAOUser();
 
     public boolean checkIfEmailExists(String email) {
