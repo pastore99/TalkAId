@@ -15,7 +15,9 @@ bash
 git clone https://github.com/yourname/speech-therapy-remote.git
 ```
 2. Configure the database:
-3. Import the database.sql file into your MySQL database.
+    * inside resources you must provide a file config.properties with params: db.ur, db.username, db.password used for connecting to your database.
+3. Import the database.sql file into your MySQL database schema.
+4. Check that your database is working and reachable by other apps.
 4. Start the web server
 5. Launch the application
 
