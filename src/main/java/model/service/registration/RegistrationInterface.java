@@ -29,5 +29,4 @@ public interface RegistrationInterface {
      * @param email è l'email inserita dell'account
      * @return True se è stata cambiata con successo. False altrimenti
      */
-    boolean resetPassword(String email);
 }

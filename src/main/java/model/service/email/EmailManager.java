@@ -46,9 +46,6 @@ public class EmailManager {
         String host = HOST;
         String email = emailProps.getProperty("email.string");
         String password = emailProps.getProperty("email.pw");
-        System.out.println("HOST: " + host);
-        System.out.println("EMAIL: " + email);
-        System.out.println("PASSWORD: " + password);
         try {
             transport.connect(host, email, password);
         } catch(MessagingException e) {

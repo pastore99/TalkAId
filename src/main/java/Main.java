@@ -2,6 +2,7 @@ import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.DAO.DAOUser;
 import model.entity.User;
+import model.service.login.Authenticator;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,6 +25,10 @@ public class Main {
 
 
         //test email
-        message.sendEmail("c.porzio02@gmail.com", "Email Test", "questo è una email di test");
+        //message.sendEmail("c.porzio02@gmail.com", "Email Test", "questo è una email di test");
+
+        //test email recupero password
+        Authenticator authenticator = new Authenticator();
+        authenticator.resetPassword("c.porzio02@gmail.com");
     }
 }
