@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * This class provides functionality for sending email messages.
+ * It reads the configuration from a properties file named 'email.properties'.
+ */
 public class EmailManager {
 
     private static final String EMAIL_PROPERTIES = "/email.properties";
@@ -15,10 +19,20 @@ public class EmailManager {
 
     private Properties emailProps;
 
+    /**
+     * Constructor for the EmailManager class.
+     * It initializes the email properties by loading them from a properties file.
+     */
     public EmailManager() {
         this.emailProps = loadEmailProperties();
     }
 
+    /**
+     * This method sends an email to a given address, with a specified subject and body.
+     * @param toAddress the destination address of the email
+     * @param subject the subject of the email
+     * @param body the body of the email
+     */
     public void sendEmail(String toAddress, String subject, String body) {
         Session session = getSession();
         MimeMessage message = new MimeMessage(session);
@@ -32,6 +46,10 @@ public class EmailManager {
         }
     }
 
+    /**
+     * This method returns a session for email interactions, using the loaded properties and authenticating the user.
+     * @return a Session object
+     */
     private Session getSession() {
         return Session.getDefaultInstance(emailProps, new javax.mail.Authenticator() {
             @Override
@@ -41,6 +59,12 @@ public class EmailManager {
         });
     }
 
+    /**
+     * This method sends a preconfigured email message, using a specified session.
+     * @param session the Session object
+     * @param message the MimeMessage object, holding the information about the message to send
+     * @throws MessagingException if the send operation fails
+     */
     private void sendEmail(Session session, MimeMessage message) throws MessagingException {
         Transport transport = session.getTransport("smtp");
         String host = HOST;
@@ -55,6 +79,14 @@ public class EmailManager {
         transport.close();
     }
 
+    /**
+     * This method generates a MimeMessage, filling it with the necessary information.
+     * @param message the MimeMessage object to fill with information
+     * @param toAddress the destination address of the email
+     * @param subject the subject of the email
+     * @param body the body of the email
+     * @throws MessagingException if the setting operation fails
+     */
     private void generateMessage(MimeMessage message, String toAddress, String subject, String body) throws MessagingException {
         message.setFrom(new InternetAddress(emailProps.getProperty("email.string")));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
@@ -62,6 +94,10 @@ public class EmailManager {
         message.setText(body);
     }
 
+    /**
+     * This method loads the email properties from a resource file named 'email.properties'.
+     * @return a Properties object, holding the email properties
+     */
     private Properties loadEmailProperties() {
         Properties props = new Properties();
         try (InputStream input = EmailManager.class.getResourceAsStream(EMAIL_PROPERTIES)) {

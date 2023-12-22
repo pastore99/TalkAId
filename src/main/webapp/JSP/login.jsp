@@ -2,9 +2,6 @@
 <html lang="it">
 <head>
     <title>TalkAId - Login</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/login.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../JavaScript/login.js"></script>
 </head>
 <body>
     <div id="loginPage">
@@ -25,6 +22,7 @@
                     <img hidden id="invalidEmail" src="../images/invalid.svg" alt="emailIcon">
                 </div>
             </div>
+
             <br>
             <div class="inputDiv">
                 <div class="icon iconLeft">
@@ -44,7 +42,40 @@
         </form>
         <div id="loginRegister">
             <p>Non hai un account? <a href="#">Registrati</a> </p>
+         </div>
+
+        <div id="resetPasswordModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form>
+                            <!-- Email input -->
+                            <div id="resetStep1">
+                                <input type="email" id="resetEmail" placeholder="Email">
+                                <button id="sendPin">Invia PIN</button>
+                            </div>
+                            <!-- PIN input -->
+                            <div id="resetStep2" style="display: none;">
+                                <input type="text" id="pin" placeholder="PIN">
+                                <button id="confirmPin">Conferma PIN</button>
+                            </div>
+                            <!-- New password input -->
+                            <div id="resetStep3" style="display: none;">
+                                <input type="password" id="newPassword" placeholder="Nuova Password">
+                                <input type="password" id="repeatNewPassword" placeholder="Ripeti Password">
+                                <span class="error" aria-live="polite"></span>
+                                <button id="resetPassword" disabled>Cambia Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <link rel="stylesheet" href="../CSS/login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../JS/login.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>

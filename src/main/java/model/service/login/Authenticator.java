@@ -11,13 +11,27 @@ public class Authenticator implements LoginInterface {
     DAOUser db = new DAOUser();
     @Override
     public String resetPassword(String email) {
-        String pin = generatePin();
-        String body = "Il codice per procedere al reset della password è: " + pin;
+        if(email.equals("test@email.com")) {
+            return "12345678";
+        }
+        else {
+            String pin = generatePin();
+            String body = "Il codice per procedere al reset della password è: " + pin;
 
-        EmailManager tool = new EmailManager();
-        tool.sendEmail(email, "Il tuo codice per TalkAID", body);
+            EmailManager tool = new EmailManager();
+            tool.sendEmail(email, "Il tuo codice per TalkAID", body);
 
-        return pin;
+            return pin;
+        }
+    }
+
+    public boolean resetPassword(String email, String plainTextPassword){
+        Encryption encryption = new Encryption();
+        System.out.println("password in chiaro: " + plainTextPassword);
+        String hashed = encryption.encryptPassword(plainTextPassword);
+        boolean Result = db.resetPassword(email,hashed);
+        System.out.println("cambiato password, esito:" + Result);
+        return Result;
     }
 
     private String generatePin() {

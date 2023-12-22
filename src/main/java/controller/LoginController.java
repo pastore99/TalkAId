@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("welcome.jsp");
         } else {
             // Login failed, redirect back to the login page
-            response.sendRedirect("JSP/login.jsp");
+            response.sendRedirect("JSP/login.jsp?error=1");
         }
     }
 }
