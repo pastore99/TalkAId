@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#login-form{
+    width: 100%;
+}
+
+#login-title{
+    margin-top: 10%;
+}
+
+#login-logo{
+    max-width: 100%;
+    height: auto;
+}
+
+#login-logo > img{
+    height: auto;
+    width: auto;
+}
+
+
+.form-input{
+    width: 80%;
+    background-color: #f9fafb;
+    border: 2px solid #e8eaed;
+    padding: 2% 20%;
+    border-radius: 24px;
+    margin-bottom: 20px;
+}
+
+#login-button{
+    width: 80%;
+    padding: 3% 20%;
+
+}
