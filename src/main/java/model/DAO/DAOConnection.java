@@ -10,6 +10,9 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+/**
+ * The DAOConnection class provides methods for establishing and releasing database connections.
+ */
 public class DAOConnection {
     private static DataSource dataSource;
 
