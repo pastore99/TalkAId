@@ -14,8 +14,8 @@ public class DAODisease {
         Condition condition = new Condition();
 
         condition.setIdCondition(resultSet.getInt("ID"));
-        condition.setDisorderName(resultSet.getString("Name_Disorder"));
-        condition.setDisorderDescription(resultSet.getString("Disorder_Description"));
+        condition.setDisorderName(resultSet.getString("Name_Disorder")); //probabilmente nomi attrivuti sbagliati
+        condition.setDisorderDescription(resultSet.getString("Disorder_Description"));    //probabilmente nomi attrivuti sbagliati
         return condition;
     }
 
