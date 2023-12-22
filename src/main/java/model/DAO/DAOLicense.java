@@ -7,8 +7,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The DAOLicense class provides methods for retrieving and activating licenses from a database.
+ */
 public class DAOLicense {
 
+    /**
+     * This method extracts License object data from a ResultSet
+     *
+     * @param resultSet ResultSet object from license table
+     * @return License object containing data from resultSet
+     * @throws SQLException if there is any SQL related error
+     */
     private static License extractLicenseFromResultSet(ResultSet resultSet) throws SQLException {
         License license = new License();
         license.setSequence(resultSet.getString("Sequence"));
@@ -18,6 +28,12 @@ public class DAOLicense {
         return license;
     }
 
+    /**
+     * Search for a license by its code in the database.
+     *
+     * @param code the license code to search for.
+     * @return the License if it is found, else null.
+     */
     public License getLicenseByCode(String code) {
         String query = "SELECT * FROM license WHERE Sequence = ?";
         Connection connection = null;
@@ -49,6 +65,12 @@ public class DAOLicense {
         return null;
     }
 
+    /**
+     * Activate a license and link it to a user.
+     *
+     * @param license the License object to activate.
+     * @param userId the ID of the user to link to the license.
+     */
     public void activate(License license, int userId) {
         String updateQuery = "UPDATE TalkAID2.license SET active = TRUE, ID_User = ? WHERE Sequence = ?";
         Connection connection = null;
@@ -73,6 +95,4 @@ public class DAOLicense {
             }
         }
     }
-
-
 }
