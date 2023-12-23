@@ -57,7 +57,7 @@ public class LoginController extends HttpServlet {
         session.setAttribute("id", id);
         session.setAttribute("name", personalInfo.getFirstname());
 
-        if(userData.isTherapist(user)) {
+        if(!userData.isTherapist(user)) {
             session.setAttribute("type", "patient");
             session.setAttribute("therapist", user.getIdTherapist());
         }
