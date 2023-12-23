@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DAOAPersonalInfo {
+public class DAOPersonalInfo {
 
     private PersonalInfo getPersonalInfoFromResultSet(ResultSet resultSet) throws SQLException {
         PersonalInfo personalInfo = new PersonalInfo();
