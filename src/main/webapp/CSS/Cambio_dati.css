@@ -1,0 +1,148 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body
+{
+    align-items: center;
+}
+
+form
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 25px;
+    border-radius: 8px;
+}
+.up
+{
+    padding-top: 200px;
+    background-color: #199A8E;
+    height:20vh;
+    width: 100vw;
+}
+
+.up div
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width:67vw;
+}
+
+h2
+{
+    font-size: 50px;
+    color: white;
+}
+img
+{
+    width: 7vw;
+    height: 7vw;
+}
+
+#paziente
+{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top:28vh;
+    left: 49vw;
+    z-index: 2;
+    border-radius: 50%;
+    border: 4px solid white;
+}
+.down
+{
+    z-index: 1;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 25px;
+}
+
+.input-field {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 35px;
+}
+
+.input {
+    margin-top: 15px;
+    width: 75%;
+    outline: none;
+    border-radius: 8px;
+    height: 5vh;
+    border: 3px solid black;
+    background: transparent;
+    padding-left: 10px;
+    font-size: 35px;
+}
+.input:focus {
+    border: 1.5px solid #2d79f3;
+}
+.input-field .label {
+    position: absolute;
+    top: 25px;
+    left: 150px;
+    color: #ccc;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+    font-size: 50px;
+}
+.input-field .input:focus ~ .label,
+.input-field .input:valid ~ .label {
+    top: 5px;
+    left: 145px;
+    font-size: 35px;
+    color: #2d79f3;
+    background-color: #ffffff;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.save
+{
+    z-index: 2;
+    position: sticky;
+    bottom: 0;
+    padding: 10px;
+    background-color: white;
+    border-radius: 35px 35px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px -10px 10px -10px #888;
+}
+
+.submit-btn {
+    margin-top: 30px;
+    margin-left: 50px;
+    margin-right: 50px;
+    height: 55px;
+    width: 300px;
+    background: #f2f2f2;
+    border-radius: 11px;
+    border: 0;
+    outline: none;
+    color: #ffffff;
+    font-size: 35px;
+    font-weight: 700;
+    background: linear-gradient(180deg, #363636 0%, #1b1b1b 50%, #000000 100%);
+    box-shadow: 0px 0px 0px 0px #ffffff, 0px 0px 0px 0px #000000;
+    transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    box-shadow: 0px 0px 0px 2px #ffffff, 0px 0px 0px 4px #0000003a;
+}

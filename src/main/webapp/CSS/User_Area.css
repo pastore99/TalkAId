@@ -1,0 +1,288 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+body{
+    background-color:#199A8E;
+    align-items: center;
+}
+.up
+{
+    width: 100vw;
+    height: 40vh;
+    padding: 0;
+    margin: 0;
+}
+.navbar-up
+{
+    width:100vw;
+    height:20vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paziente
+{
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.paziente .title
+{
+    color: white;
+    font-size: 35px;
+}
+
+.paziente .content
+{
+    font-size: 30px;
+}
+
+img
+{
+    width: 7vw;
+    height: 7vw;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+.Immagine_profilo
+{
+    width: 20vw;
+    height: 20vw;
+    border-radius: 50%;
+    padding-bottom: 20px;
+}
+
+.down{
+    width: 100vw;
+    height: 60vh;
+}
+.card {
+    width: 100vw;
+    height: 60vh;
+    background-color: #FFFFFF;
+    border-radius: 35px 35px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info
+{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    padding-top: 35px;
+}
+
+.nome_info
+{
+    width: 50vw;
+    padding-left: 20px;
+}
+
+.nome_info h2
+{
+    font-size: 40px;
+}
+
+.content-info
+{
+    width: 50vw;
+    padding-right: 20px;
+}
+
+.content-info h2
+{
+    font-size: 40px;
+    color: grey;
+}
+
+.informazioni{
+    align-items: center;
+    width: 100vw;
+}
+
+.informazioni .title
+{
+    color: white;
+    font-size: 35px;
+}
+
+.informazioni .content
+{
+    font-size: 30px;
+}
+.info-paziente
+{
+    display: flex;
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 8px;
+}
+
+.info-paziente-logopedista
+{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.input
+{
+    padding-top: 35px;
+    padding-bottom: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.input form
+{
+    padding-right: 20px;
+}
+.input button
+{
+    padding: 20px 7vw;
+    border: 0;
+    border-radius: 100px;
+    background-color: #199A8E;
+    color: #ffffff;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    font-size: 40px;
+
+}
+
+.input button:hover
+{
+    background-color: #cafffd;
+    box-shadow: 0 0 20px #6fc5ff50;
+    transform: scale(1.1);
+}
+
+.input button:active{
+    background-color: #126c69;
+    transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    box-shadow: none;
+    transform: scale(0.98);
+}
+
+button {
+    padding: 20px 35px;
+    border: 0;
+    border-radius: 100px;
+    background-color: #199A8E;
+    color: #ffffff;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    font-size: 40px;
+}
+
+button:hover {
+    background-color: #cafffd;
+    box-shadow: 0 0 20px #6fc5ff50;
+    transform: scale(1.1);
+}
+
+button:active {
+    background-color: #126c69;
+    transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    box-shadow: none;
+    transform: scale(0.80);
+}
+
+.Logout
+{
+    width: 75vw;
+    padding: 20px 35px;
+    border: 0;
+    border-radius: 100px;
+    background-color: #960018;
+    color: #ffffff;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    font-size: 40px;
+}
+.Logout:active
+{
+    background-color: #B20000;
+    transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    box-shadow: none;
+    transform: scale(0.80);
+}
+.Logout:hover
+{
+    background-color: #FF4040;
+    box-shadow: 0 0 20px #6fc5ff50;
+    transform: scale(1.1);
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 70vw;
+    height: 50vh;
+    border-radius: 35px 35px 35px 35px;
+}
+#popup #popup-uscita
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#popup img
+{
+    width: 7vw;
+    height: 7vw;
+
+}
+#popup p
+{
+    padding-top: 90px;
+    font-size: 50px
+}
+
+#popup .input
+{
+    padding-top: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#cancella
+{
+    padding: 20px 35px;
+    border: 0;
+    border-radius: 100px;
+    color: #199A8E;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    font-size: 40px;
+    background-color: white;
+}
