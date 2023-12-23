@@ -32,14 +32,5 @@ public class Registration implements RegistrationInterface {
             return 2; //email non valida
         }
         return 1; //licenza non valida
-
-    }
-
-    public boolean resetFromOldPassword(String email, String oldpw, String newpw) {
-        return false;
-    }
-
-    public boolean resetPassword(String email) {
-        return false;
     }
 }
