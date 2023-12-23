@@ -11,7 +11,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * The DAOConnection class provides methods for establishing and releasing database connections.
+ * Initialize the data source by loading the database driver class and creating the data source object.
+ * @throws ClassNotFoundException if the database driver class is not found
  */
 public class DAOConnection {
     private static DataSource dataSource;
