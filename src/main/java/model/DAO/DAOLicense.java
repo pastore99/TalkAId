@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+
 /**
  * The DAOLicense class provides methods for retrieving and activating licenses from a database.
  */
@@ -85,6 +87,74 @@ public class DAOLicense {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Generate a new License to sell
+     * @return the sequence of the License if operation succeed, none otherwise
+     */
+    public String generateLicense(){
+        final int length = 8;
+        License l = new License(length);
+        String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, l.getSequence());
+            preparedStatement.setInt(2, -1); //TODO Rimovere questo, rimasuglio di testing
+            preparedStatement.setDate(3, null);
+            preparedStatement.executeUpdate();
+            return l.getSequence();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * Generate an invitation code for a new patient
+     * @param userId the ID of a speech therapist
+     * @return the sequence of the invitation if operation succeed, none otherwise
+     */
+    public String generateInvitation(int userId){
+        final int length = 4;
+        License l = new License(length);
+        String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, l.getSequence());
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setDate(3, l.getExpirationDate());
+            preparedStatement.executeUpdate();
+            return l.getSequence();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
