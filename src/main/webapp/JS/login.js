@@ -39,12 +39,28 @@ $(document).ready(function startUp() {
     $("#forgotPassword").click(handleForgotPassword);
 
     let sessionPin;
+    /*
     $("#sendPin").click((event) => {
         event.preventDefault();
         $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
             sessionPin = response.trim(); // Save the response, which should be your pin
             resetStep1.hide();
             resetStep2.show();
+        });
+    });
+    */
+    $("#sendPin").click((event) => {
+        event.preventDefault();
+        $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
+            response = response.trim(); // Trim the response
+            if(response == "NA") {
+                // Here, the servlet will return "NA" if it could not find the email
+                alert("Email non registrata nel nostro sistema. Verificane la correttezza");
+            } else {
+                sessionPin = response; // Save the response, which should be your pin
+                resetStep1.hide();
+                resetStep2.show();
+            }
         });
     });
 
