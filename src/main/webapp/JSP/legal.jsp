@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
+    <%@page contentType="text/html;charset=UTF-8"%>
+    <meta charset="utf-8">
     <title>Politica sulla Privacy</title>
     <style>
 
@@ -11,7 +13,7 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            font-family: Georgia, sans-serif;
         }
         form {
             display: flex;
