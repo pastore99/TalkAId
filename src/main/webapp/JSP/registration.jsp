@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../css/registration.css" />
 </head>
@@ -9,7 +10,7 @@
     <div class="element-registration">
         <div class="div">
             <p class="hai-gi-un-account">
-                <span class="text-wrapper">Hai gia' un account?</span>
+                <span class="text-wrapper">Hai già un account?</span>
                 <span class="span">&nbsp;</span>
                 <span class="text-wrapper-2">Login</span>
             </p>
@@ -54,6 +55,22 @@
             </div>
         </div>
     </div>
+    <script>// Seleziona l'elemento span tramite la classe CSS
+    var spanElement = document.querySelector('.text-wrapper-2');
+
+    // Crea un nuovo elemento a
+    var aElement = document.createElement('a');
+    aElement.href = "login.jsp"; // Inserisci l'URL desiderato
+    aElement.innerText = spanElement.innerText; // Mantiene il testo originale
+
+    // Copia tutte le classi CSS dall'elemento span all'elemento a
+    Array.from(spanElement.classList).forEach(className => {
+        aElement.classList.add(className);
+    });
+
+    // Sostituisci l'elemento span con l'elemento a
+    spanElement.parentNode.replaceChild(aElement, spanElement);
+    </script>
 </form>
 </body>
 </html>
