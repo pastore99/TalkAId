@@ -113,7 +113,7 @@ public class DAOLicense {
             connection = DAOConnection.getConnection();
             preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setString(1, l.getSequence());
-            preparedStatement.setInt(2, -1); //TODO Rimovere questo, rimasuglio di testing
+            preparedStatement.setInt(2, 0);
             preparedStatement.setDate(3, null);
             preparedStatement.executeUpdate();
             return l.getSequence();

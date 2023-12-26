@@ -1,4 +1,5 @@
 package model.service.registration;
+import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.service.license.LicenseActivation;
 import model.entity.License;
@@ -47,7 +48,24 @@ public class Registration implements RegistrationInterface {
             return 2; //email non valida
         }
         return 1; //licenza non valida
+    }
 
+    public boolean invitePatient(int therapistId, String patientEmail, String patientName, String patientSurname){
+        UserData ud = new UserData();
+
+        if(!ud.checkIfEmailExists(patientEmail)) {
+            EmailManager tool = new EmailManager();
+            LicenseActivation la = new LicenseActivation();
+
+            String pin = la.generatePin(therapistId);
+            if(pin!=null){
+                String body = "Salve "+ patientSurname + patientName + ". Ecco il tuo codice per registrarti a TalkAid: "+ pin;
+
+                tool.sendEmail(patientEmail, "Sei stato invitato a TalkAID!", body);
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean resetFromOldPassword(String email, String oldpw, String newpw) {

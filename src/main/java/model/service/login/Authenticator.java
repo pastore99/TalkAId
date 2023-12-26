@@ -11,7 +11,7 @@ public class Authenticator implements LoginInterface {
     DAOUser db = new DAOUser();
     @Override
     public String resetPassword(String email) {
-        if(email.equals("test@email.com")) {
+        if(email.equals("test@email.com")) { //TODO: Rimuovere rimasuglio di Testing
             return "12345678";
         }
         else {
@@ -27,10 +27,10 @@ public class Authenticator implements LoginInterface {
 
     public boolean resetPassword(String email, String plainTextPassword){
         Encryption encryption = new Encryption();
-        System.out.println("password in chiaro: " + plainTextPassword);
+        System.out.println("password in chiaro: " + plainTextPassword); //TODO: Rimuovere rimasuglio di Testing
         String hashed = encryption.encryptPassword(plainTextPassword);
         boolean Result = db.resetPassword(email,hashed);
-        System.out.println("cambiato password, esito:" + Result);
+        System.out.println("cambiato password, esito:" + Result); //TODO: Rimuovere rimasuglio di Testing
         return Result;
     }
 
