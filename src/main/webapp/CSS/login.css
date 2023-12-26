@@ -26,6 +26,10 @@ a:hover {
     text-decoration: none;
 }
 
+.hiddenClass{
+    display: none;
+}
+
 #loginPage{
     width: 100%;
     display: flex;
