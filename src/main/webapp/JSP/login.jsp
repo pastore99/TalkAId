@@ -36,7 +36,7 @@
             </div>
             <br>
             <div id="loginForgot">
-                <a href="#">Password Dimenticata?</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">Password Dimenticata?</a>
             </div>
             <button type="submit" value="Login" id="loginButton">Login</button>
         </form>
