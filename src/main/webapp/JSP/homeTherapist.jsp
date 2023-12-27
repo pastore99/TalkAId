@@ -2,9 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../CSS/globals.css" />
-    <link rel="stylesheet" href="../CSS/styleguide.css" />
-    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../CSS/homeTherapistGuide.css" />
+    <link rel="stylesheet" href="../CSS/homeTherapist.css" />
 </head>
 <body>
 <div class="element-home-logopedista">
@@ -100,7 +99,7 @@
             <div class="text-wrapper-2">PAZIENTI</div>
         </div>
         <div class="overlap-3">
-
+            <div class="rectangle-2"></div>
             <div class="group-2">
                 <div class="iconly-light-outline"><img class="home" src="../images/homeTherapist/home.png" /></div>
                 <img class="iconly-bold-calendar" src="../images/homeTherapist/iconly-bold-calendar.svg" />
