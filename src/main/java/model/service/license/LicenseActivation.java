@@ -18,7 +18,7 @@ public class LicenseActivation implements LicenseActivationInterface {
     }
 
     public int isForTherapist(License license) {
-        if (license != null) {
+        if (license != null && license.getSequence().length()==4) {
             return license.getIdUser();
         }
         return 0;

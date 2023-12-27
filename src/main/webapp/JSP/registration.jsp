@@ -3,13 +3,13 @@
 <head>
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../css/registration.css" />
+    <link rel="stylesheet" href="../CSS/registration.css" />
 </head>
 <body>
-<form id="registrationForm" action="../registration" method="post">
+<!--<form id="registrationForm" action="../registration" method="post"> -->
     <div class="element-registration">
         <div class="div">
-            <p class="hai-gi-un-account">
+            <p class="hai-gia-un-account">
                 <span class="text-wrapper">Hai già un account?</span>
                 <span class="span">&nbsp;</span>
                 <span class="text-wrapper-2">Login</span>
@@ -71,6 +71,8 @@
     // Sostituisci l'elemento span con l'elemento a
     spanElement.parentNode.replaceChild(aElement, spanElement);
     </script>
-</form>
+<!--</form> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../JS/registration.js"></script>
 </body>
 </html>

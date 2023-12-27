@@ -19,6 +19,6 @@ public class UserData /*implements UserDataInterface */{
     }
 
     public boolean isTherapist(User user){
-        return user.getIdTherapist() > 0;
+        return user.getIdTherapist() == 0;
     }
 }

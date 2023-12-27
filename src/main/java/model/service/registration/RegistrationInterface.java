@@ -13,5 +13,5 @@ public interface RegistrationInterface {
      * @param surname è il cognome utente per la sua anagrafica
      * @return un codice di errore in base alla casistica
      */
-    int register(String licenseCode, String email, String password, String name, String surname);
+    int registerNewUser(String licenseCode, String email, String password, String name, String surname);
 }
