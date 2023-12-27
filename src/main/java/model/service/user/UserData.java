@@ -21,4 +21,12 @@ public class UserData /*implements UserDataInterface */{
     public boolean isTherapist(User user){
         return user.getIdTherapist() == 0;
     }
+
+    public boolean updateAnalyticsPreference(String id, Boolean value) {
+        return daoUser.updateAnalyticsPreference(id, value);
+    }
+
+    public boolean updateEmailTime(String id, String value) {
+        return daoUser.updateEmailTime(id, value);
+    }
 }

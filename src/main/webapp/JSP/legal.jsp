@@ -5,9 +5,9 @@
     <%@page contentType="text/html;charset=UTF-8"%>
 
     <%
-        String userId = (String) session.getAttribute("id");
+        Integer userId = (Integer) session.getAttribute("id");
         if(userId == null) {
-        response.sendRedirect("www.google.it");
+        response.sendRedirect("../errorPage/403.html");
         }
 
     %>
@@ -265,7 +265,8 @@
         </div>
     </div>
 
-    <form id="timeForm">
+    <form id="timeForm" action="../register" method="GET">
+        <input type="hidden" name="type" value="emailTime">
         <div>
             <h3 style="text-align:center" >Seleziona una fascia oraria dove preferisci ricevere delle notifiche</h3>
         </div>
@@ -279,51 +280,7 @@
         </div>
         <button class="button" type="submit">Salva</button>
     </form>
-
-    <script>
-        // Funzione per mostrare il popup
-        function mostraPopup() {
-            document.getElementById("overlay").style.display = "block";
-        }
-
-        // Funzione chiamata quando l'utente accetta la condivisione
-        function accettaCondivisione() {
-            // Puoi aggiungere qui la logica per gestire l'accettazione
-            // Ad esempio, inviare una richiesta AJAX al server per registrare il consenso
-            // Qui potresti anche chiudere il popup o reindirizzare l'utente a una pagina successiva
-            document.getElementById("overlay").style.display = "none";
-        }
-
-        // Mostra il popup quando la pagina è completamente caricata
-        window.onload = mostraPopup;
-
-        function accetta() {
-            // Logica per gestire l'accettazione
-            window.location.href = "login.jsp";
-        }
-
-        function nonAccetto() {
-            // Logica per gestire il rifiuto
-            window.location.href = "https://www.google.it/?hl=it";
-        }
-
-        function validateTimes() {
-            var startTime = new Date();
-            var endTime = new Date();
-
-            // Converti le stringhe di tempo in oggetti Date
-            startTime.setHours(document.getElementById('startTime').value.split(':')[0]);
-            startTime.setMinutes(document.getElementById('startTime').value.split(':')[1]);
-            endTime.setHours(document.getElementById('endTime').value.split(':')[0]);
-            endTime.setMinutes(document.getElementById('endTime').value.split(':')[1]);
-
-            // Controlla se l'ora di inizio è maggiore dell'ora di fine
-            if (startTime > endTime) {
-                alert("L'ora di inizio deve essere inferiore all'ora di fine");
-                document.getElementById('startTime').value = '';
-                document.getElementById('endTime').value = '';
-            }
-        }
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../JS/legal.js"></script>
 </body>
 </html>

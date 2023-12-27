@@ -31,7 +31,24 @@ public class RegistrationServlet extends HttpServlet {
         response.getWriter().write(String.valueOf(result));
         if(result == 0) {
             setSessionAttributes(email, request);
-            response.sendRedirect("JSP/legal.jsp");
+            response.sendRedirect("/JSP/legal.jsp");
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserData ud = new UserData();
+        HttpSession session = request.getSession();
+        String parameter = request.getParameter("type");
+        if(parameter.equals("analytics")) {
+            Boolean value = Boolean.parseBoolean(request.getParameter("accept"));
+            ud.updateAnalyticsPreference(String.valueOf(session.getAttribute("id")), value);
+        }
+        if(parameter.equals("emailTime")) {
+            String start = request.getParameter("startTime");
+            String end = request.getParameter("endTime");
+            String time = start + "|" + end;
+            ud.updateEmailTime(String.valueOf(session.getAttribute("id")), time);
+            response.sendRedirect("/JSP/welcome.jsp");
         }
     }
 
