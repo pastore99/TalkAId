@@ -143,7 +143,6 @@ a {
     letter-spacing: 0;
     line-height: 16px;
     white-space: nowrap;
-    all: unset;
     box-sizing: border-box;
 }
 
