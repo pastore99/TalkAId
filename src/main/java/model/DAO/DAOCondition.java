@@ -1,21 +1,20 @@
 package model.DAO;
 
 import model.entity.Condition;
-import model.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DAODisease {
+public class DAOCondition {
 
     private Condition getConditionFromResultSet(ResultSet resultSet) throws SQLException {
         Condition condition = new Condition();
 
-        condition.setIdCondition(resultSet.getInt("ID"));
-        condition.setDisorderName(resultSet.getString("Name_Disorder")); //probabilmente nomi attrivuti sbagliati
-        condition.setDisorderDescription(resultSet.getString("Disorder_Description"));    //probabilmente nomi attrivuti sbagliati
+        condition.setIdCondition(resultSet.getInt("ID_condition"));
+        condition.setDisorderName(resultSet.getString("DisorderName "));
+        condition.setDisorderDescription(resultSet.getString("DisorderDescription "));
         return condition;
     }
 
@@ -29,7 +28,7 @@ public class DAODisease {
             connection = DAOConnection.getConnection();
             String query = null;
 
-            query = "SELECT * FROM condition WHERE ID = ?";
+            query = "SELECT * FROM condition WHERE ID_condition  = ?";
 
 
             preparedStatement = connection.prepareStatement(query);
@@ -56,5 +55,4 @@ public class DAODisease {
         }
         return null; // or you may throw an exception here
     }
-
 }
