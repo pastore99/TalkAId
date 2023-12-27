@@ -3,6 +3,14 @@
 <html lang="it">
 <head>
     <%@page contentType="text/html;charset=UTF-8"%>
+
+    <%
+        String userId = (String) session.getAttribute("id");
+        if(userId == null) {
+        response.sendRedirect("www.google.it");
+        }
+
+    %>
     <meta charset="utf-8">
     <title>Politica sulla Privacy</title>
     <style>
