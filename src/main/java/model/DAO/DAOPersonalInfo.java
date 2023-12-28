@@ -4,20 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * The DAOAPersonalInfo class provides methods for creating a user's personal info registry in the database.
- */
-public class DAOAPersonalInfo {
-
-    /**
-     * Creates a user's personal info registry in the database.
-     *
-     * @param id      the ID of the user
-     * @param name    the first name of the user
-     * @param surname the last name of the user
-     * @return {@code true} if the user's personal info registry is created successfully,
-     * {@code false} otherwise
-     */
+public class DAOPersonalInfo {
     public boolean createRegistry(int id, String name, String surname) {
         Connection connection = null;
         PreparedStatement preparedStatementPersonalInfo = null;

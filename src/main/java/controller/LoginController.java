@@ -5,7 +5,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import model.DAO.DAOUser;
+import model.entity.User;
 import model.service.login.Authenticator;
 
 @WebServlet("/login")
@@ -33,7 +37,15 @@ public class LoginController extends HttpServlet {
 
         if (result > 0) {
             // Login success, redirect to the welcome page
-            response.sendRedirect("welcome.jsp");
+            HttpSession session = request.getSession();
+            DAOUser daouser=new DAOUser();
+            User user_logged= daouser.getUserByIdOrEmail(email);
+            session.setAttribute("user_logged", user_logged);
+
+
+            //if(Therapist)
+            response.sendRedirect("homeTherapist.jsp");
+            //else response.sendRedirect("homePatient.jsp");
         } else {
             // Login failed, redirect back to the login page
             response.sendRedirect("JSP/login.jsp?error=1");
