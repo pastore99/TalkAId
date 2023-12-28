@@ -61,7 +61,7 @@ public class Conversation {
         if(check.isTherapist(user)) {
             contacts.addAll(db.retrieveUserIdsByTherapist(userId));
         }
-        else {
+        else { //se è un paziente
             contacts.add(user.getIdTherapist());
         }
         contacts.add(0); //Notifications
