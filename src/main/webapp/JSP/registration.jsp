@@ -9,11 +9,6 @@
 <!--<form id="registrationForm" action="../registration" method="post"> -->
     <div class="element-registration">
         <div class="div">
-            <p class="hai-gia-un-account">
-                <span class="text-wrapper">Hai già un account?</span>
-                <span class="span">&nbsp;</span>
-                <span class="text-wrapper-2">Login</span>
-            </p>
             <button class="button" type="submit" value="Sign Up" id="signUpButton"><div class="text-wrapper-3">Sign Up</div></button>
             <div class="input-fields">
                 <div class="input-3">
@@ -44,6 +39,11 @@
                         <span class="text-wrapper-5"> di TalkAId e policy sulla </span>
                         <span class="text-wrapper-6">Privacy</span>
                     </p>
+                    <p class="hai-gia-un-account">
+                        <span class="text-wrapper">Hai già un account?</span>
+                        <span class="span">&nbsp;</span>
+                        <span class="text-wrapper-2">Login</span>
+                    </p>
                     <input type="checkbox" class="checkbox" id="myCheckbox" style="display: none;" required />
                     <label for="myCheckbox">
                         <img class="checkbox" src="../images/registration/checkbox.svg" />
@@ -70,6 +70,19 @@
 
     // Sostituisci l'elemento span con l'elemento a
     spanElement.parentNode.replaceChild(aElement, spanElement);
+
+    document.querySelector('.icon-eye-slash').addEventListener('click', function() {
+        // Cambia il tipo di input tra 'password' e 'text'
+        let passwordInput = document.getElementById('password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            this.src = "../images/registration/eye.svg"; // Cambia l'immagine per indicare che la password è visibile
+        } else {
+            passwordInput.type = 'password';
+            this.src = "../images/registration/icon-eye-slash.svg"; // Cambia l'immagine per indicare che la password è nascosta
+        }
+    });
+
     </script>
 <!--</form> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
