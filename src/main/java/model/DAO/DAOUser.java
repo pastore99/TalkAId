@@ -1,7 +1,6 @@
 package model.DAO;
 
 import model.entity.User;
-import model.service.encryption.Encryption;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -306,6 +305,104 @@ public class DAOUser {
             try {
                 // Close resources in the reverse order of their creation
                 if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        // Default to false if an exception occurs
+        return false;
+    }
+
+    /**
+     * Updates the user's analytics choice in the User table.
+     *
+     * @param userId The id of the user.
+     * @param value  The analytics choice value to set for the user.
+     * @return true if the choice was successfully updated; false otherwise.
+     */
+    public boolean updateAnalyticsPreference(String userId, boolean value) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Get connection
+            connection = DAOConnection.getConnection();
+
+            // Query to update analytics choice for the given userId
+            String query = "UPDATE user SET Analytics = ? WHERE ID = ?";
+
+            // Prepare the statement
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set the parameters
+            preparedStatement.setBoolean(1, value);
+            preparedStatement.setString(2, userId);
+
+            // Execute the update query
+            int rowsModified = preparedStatement.executeUpdate();
+
+            // If rowsModified is greater than 0, then a row has been updated.
+            // So, return true. If not, return false.
+            return rowsModified > 0;
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close everything properly
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        // Default to false if an exception occurs
+        return false;
+    }
+
+    /**
+     * Updates the user's Email Time in the User table.
+     *
+     * @param id The id of the user.
+     * @param value The email time value to set for the user.
+     * @return true if the email time was successfully updated; false otherwise.
+     */
+    public boolean updateEmailTime(String id, String value) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Get connection
+            connection = DAOConnection.getConnection();
+
+            // Query to update Email Time for the given id
+            String query = "UPDATE user SET NotificationTime = ? WHERE ID = ?";
+
+            // Prepare the statement
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set the parameters
+            preparedStatement.setString(1, value);
+            preparedStatement.setString(2, id);
+
+            // Execute the update query
+            int rowsModified = preparedStatement.executeUpdate();
+
+            // If rowsModified is greater than 0, then a row has been updated.
+            // So, return true. If not, return false.
+            return rowsModified > 0;
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close everything properly
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
