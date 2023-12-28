@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
 
 
             //if(Therapist)
-            response.sendRedirect("homeTherapist.jsp");
+            response.sendRedirect("homeTherapistServlet");
             //else response.sendRedirect("homePatient.jsp");
         } else {
             // Login failed, redirect back to the login page
