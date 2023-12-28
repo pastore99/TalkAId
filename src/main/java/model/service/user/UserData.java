@@ -21,4 +21,14 @@ public class UserData /*implements UserDataInterface */{
     public boolean isTherapist(User user){
         return user.getIdTherapist() > 0;
     }
+
+    public void updateUser(int idUser, String Email, String address)
+    {
+        daoUser.updateUser(idUser, Email, address);
+    }
+
+    public boolean ControlPassword(int id, String Password)
+    {
+        daoUser.ControlPassword(id, Password);
+    }
 }

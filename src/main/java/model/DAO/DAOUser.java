@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.entity.User;
+import model.service.encryption.Encryption;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -222,6 +223,89 @@ public class DAOUser {
         } finally {
             try {
                 // Close everything properly
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        // Default to false if an exception occurs
+        return false;
+    }
+
+    public void updateUser(int idUser, String Email, String address)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Get connection
+            connection = DAOConnection.getConnection();
+
+            // Query to update password for the given email
+            String query = "UPDATE user SET Email = ?, Address = ? WHERE ID = ?";
+
+            // Prepare the statement
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set the parameters
+            preparedStatement.setString(1, Email);
+            preparedStatement.setString(2, address);
+            preparedStatement.setInt(3, idUser);
+
+            // Execute the update query
+            int rowsModified = preparedStatement.executeUpdate();
+
+            // If rowsModified is greater than 0, then a row has been updated.
+            // So, return true. If not, return false.
+            System.out.println("Aggioranmento riuscito");
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close everything properly
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+    public boolean ControlPassword(int id, String Password)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+
+            // Query to check if the email exists
+            String query = "SELECT Password FROM user WHERE ID = ?";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String password = resultSet.getString("Password");
+                Encryption criptaPassword = new Encryption();
+                String passwordcriptata = criptaPassword.encryptPassword(Password);
+                return password==passwordcriptata;
+            }
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close resources in the reverse order of their creation
+                if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {

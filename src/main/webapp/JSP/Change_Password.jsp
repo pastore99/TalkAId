@@ -17,8 +17,8 @@
     </div>
     <h2 class="title">Inserisci password corrente</h2>
     <p class="info">Inserisci la password corrente</p>
-    <form>
-        <input type="text" id="email" name="email" placeholder="Enter your password" required="">
+    <form action="/ControllPassword" method="post">
+        <input type="text" id="email" name="Password" placeholder="Enter your password" required="">
         <button class="form-submit-btn" type="submit">Verifica</button>
     </form>
 </body>

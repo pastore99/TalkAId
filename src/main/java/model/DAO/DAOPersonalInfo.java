@@ -96,5 +96,38 @@ public class DAOPersonalInfo {
 
         return null; // Return null if personal_info does not exist
     }
-}
+
+    public void updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+
+            String sql = "UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ? WHERE ID_user = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, FirstName);
+            preparedStatement.setString(2, LastName);
+            preparedStatement.setString(3, Phone);
+            preparedStatement.setInt(4, id);
+
+            int result = preparedStatement.executeUpdate();
+
+            if (result>0) {
+                System.out.println("aggiornati i parametri dell'utente" + id +" in personalInfo correttamente");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    }
+
 
