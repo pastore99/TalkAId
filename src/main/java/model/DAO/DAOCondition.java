@@ -55,4 +55,40 @@ public class DAOCondition {
         }
         return null; // or you may throw an exception here
     }
+
+    public Condition getAllCondition() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            connection = DAOConnection.getConnection();
+            String query = null;
+
+            query = "SELECT * FROM condition";
+
+            preparedStatement = connection.prepareStatement(query);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return getConditionFromResultSet(resultSet);
+            }
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+        return null; // or you may throw an exception here
+    }
 }

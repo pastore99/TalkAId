@@ -6,4 +6,5 @@ import model.entity.User;
 public interface ConditionDataInterface {
 
     public Condition getConditionByID(int id);
+    public Condition getAllCondition();
 }

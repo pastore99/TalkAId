@@ -7,4 +7,5 @@ public class ConditionData implements ConditionDataInterface{
 
     DAOCondition daoCondition=new DAOCondition();
     public Condition getConditionByID(int id){return daoCondition.getConditionByID(id);}
+    public Condition getAllCondition(){return daoCondition.getAllCondition();}
 }
