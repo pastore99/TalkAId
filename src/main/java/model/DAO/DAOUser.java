@@ -282,7 +282,7 @@ public class DAOUser {
         ResultSet resultSet = null;
         ArrayList<UserInfo> list_user=new ArrayList<>();
 
-        UserInfo u=new UserInfo();
+
         try {
 
             connection = DAOConnection.getConnection();
@@ -296,6 +296,7 @@ public class DAOUser {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
+                UserInfo u=new UserInfo();
                 u.setId(resultSet.getInt("ID"));
                 u.setEmail(resultSet.getString("Email"));
                 u.setActivationDate(resultSet.getTimestamp("ActivationDate"));

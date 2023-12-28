@@ -29,9 +29,7 @@ public class homeTherapistServlet extends HttpServlet {
         ArrayList<UserInfo> list_user=new ArrayList<>();
         //String tipo=request.getParameter("type");
         User logged= (User) session.getAttribute("user_logged");
-        //User u= userService.getUserByIdOrEmail((User) session.getAttribute("user_logged")); //save in session attribute the id of the therapist by email
         list_user=userService.getUsersAndPersonalInfoByIdTherapist((Integer) logged.getId()); //save all patient of X therapist
-
 
         session.setAttribute("list_user",list_user);
 
