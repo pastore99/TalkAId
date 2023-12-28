@@ -40,6 +40,7 @@
             background-color: #f2f2f2;
         }
     </style>
+    <title></title>
 </head>
 <body>
 
@@ -66,7 +67,7 @@
             <td>Elemento <%= j %> <%=u.getEmail()%></td>
             <% } %>
         </tr>
-        <% } %>
+        <% }} %>
         </tbody>
     </table>
 </div>
