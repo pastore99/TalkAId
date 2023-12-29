@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
-import model.entity.PersonalInfo;
+
 import model.entity.*;
+import model.service.personalinfo.PersonalInfo;
 
 @WebServlet("/homeTherapistServlet")
 public class homeTherapistServlet extends HttpServlet {
@@ -25,6 +26,7 @@ public class homeTherapistServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         model.service.user.UserData userService = new model.service.user.UserData();
+        model.service.personalinfo.PersonalInfo piService= new PersonalInfo();
 
         ArrayList<UserInfo> list_user=new ArrayList<>();
         //String tipo=request.getParameter("type");
@@ -33,8 +35,10 @@ public class homeTherapistServlet extends HttpServlet {
 
         session.setAttribute("list_user",list_user);
 
+        model.entity.PersonalInfo InfoLogged=piService.getPersonalInfoById(logged.getId());
+        session.setAttribute("NameSurnameLogged",InfoLogged.getFirstname()+" "+InfoLogged.getLastname());
 
-        response.sendRedirect("JSP/testTable.jsp");
+        response.sendRedirect("JSP/homeTherapist.jsp");
     }
 
 

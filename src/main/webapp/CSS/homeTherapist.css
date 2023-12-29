@@ -1,3 +1,30 @@
+.table-container {
+  max-height: 350px; /* Altezza massima della tabella */
+  overflow-y: auto; /* Rendi scorrevole solo l'asse Y quando necessario */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0 35px; /* Imposta uno spazio vuoto tra le righe */
+}
+
+tr {
+
+  text-align: center; /* Centra il testo orizzontalmente */
+  vertical-align: middle; /* Centra verticalmente */
+}
+
+td {
+
+  text-align: center; /* Centra il testo orizzontalmente */
+  vertical-align: middle; /* Centra verticalmente */
+}
+
+
+
+/*----*/
+
 html {
   margin: 0px;
   height: 100%;
@@ -93,7 +120,7 @@ a {
 
 .element-home-logopedista .overlap-group {
   position: absolute;
-  width: 499px;
+  width: 600px;
   height: 61px;
   top: 54px;
   left: 76px;
@@ -175,10 +202,8 @@ a {
 }
 
 .element-home-logopedista .element {
-  position: absolute;
-  width: 41px;
+  position: relative;
   top: 8px;
-  left: 2px;
   font-family: "Poppins", Helvetica;
   font-weight: 600;
   color: #199a8e;
@@ -431,12 +456,13 @@ a {
   position: absolute;
   width: 102px;
   top: 467px;
-  left: 14px;
+  left: 0px;
   font-family: "Poppins", Helvetica;
   font-weight: 600;
   color: #221f1f;
-  font-size: 7px;
+  font-size: 10px;
   letter-spacing: 0;
+  text-align: center; /* Allinea il testo al centro orizzontalmente */
   line-height: normal;
 }
 
