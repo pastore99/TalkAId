@@ -69,7 +69,7 @@ public class DAOMessage {
         return userIds;
     }
 
-    public Collection<Message> retrieveMessages(int userId, int contact) {
+    public List<Message> retrieveMessages(int userId, int contact) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -110,5 +110,97 @@ public class DAOMessage {
         }
 
         return messages;
+    }
+
+    public void markMessagesAsRead(int senderId, int recipientId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = DAOConnection.getConnection();
+
+            String sql = "UPDATE message SET `Read` = TRUE WHERE Sender = ? AND Recipient = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, senderId);
+            pstmt.setInt(2, recipientId);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                DAOConnection.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void sendMessage(int sender, int recipient, String text) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = DAOConnection.getConnection();
+
+            String sql = "INSERT INTO message (Sender, Recipient, Body) VALUES (?, ?, ?);";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, sender);
+            pstmt.setInt(2, recipient);
+            pstmt.setString(3, text);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                DAOConnection.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int countReceivedMessages(int recipientId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int count = 0;
+
+        try {
+            conn = DAOConnection.getConnection();
+
+            String sql = "SELECT COUNT(*) FROM message WHERE Recipient = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, recipientId);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                DAOConnection.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return count;
     }
 }

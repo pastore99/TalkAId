@@ -29,32 +29,34 @@ public class Conversation {
         return conversations;
     }
 
-    public Conversation(int userId){
-        this.userId = userId;
-        List<Integer> contacts= retrieveAllTheContacts(userId);
-        forEachContactRetrieveTheMessages(userId, contacts);
-        updateUnreadCounter();
+    public Conversation(){}
+
+    public void markMessagesAsRead(int senderId, int recipientId) {
+        db.markMessagesAsRead(senderId, recipientId);
     }
 
-    private void updateUnreadCounter() {
-        unreadMessages = 0;
-        for (List<Message> messages : conversations.values()) {
-            for (Message message : messages) {
-                if (message.getRecipient() == userId && !message.isRead()) {
-                    unreadMessages++;
-                }
+    public int countReceivedMessages(int recipientId) {
+        return db.countReceivedMessages(recipientId);
+    }
+
+    public void sendMessage(int sender, int recipientId, String text) {
+        db.sendMessage(sender, recipientId, text);
+    }
+    public List<Message> retrieveMessages(int userId, int contact) {
+        return db.retrieveMessages(userId, contact);
+    }
+    public int getUnreadMessagesForConversation(int userId, int contact){
+        int unreadCounter = 0;
+        List<Message> messages = db.retrieveMessages(userId, contact);
+        for (Message message : messages) {
+            if (message.getRecipient() == userId && !message.isRead()) {
+                unreadCounter++;
             }
         }
+        return unreadCounter;
     }
 
-    private void forEachContactRetrieveTheMessages(int userId, List<Integer> contacts) {
-        for (int contact : contacts) {
-            conversations.put(contact, new ArrayList<>());
-            conversations.get(contact).addAll(db.retrieveMessages(userId, contact));
-        }
-    }
-
-    private List<Integer> retrieveAllTheContacts(int userId){
+    public List<Integer> retrieveAllTheContacts(int userId){
         List<Integer> contacts = new ArrayList<>();
         UserData check = new UserData();
         User user = check.getUserByIdOrEmail(userId);
