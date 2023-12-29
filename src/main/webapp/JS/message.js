@@ -10,6 +10,22 @@ $(".newMessage-back").click(function() {
     });
 });
 
+setInterval(function(){
+    // Make an AJAX request to your servlet, replace the URL as required
+    $.ajax({
+        url: '../CountMessages',
+        type: 'GET',
+        data: { //get from the session the recipientId
+        },
+        success: function (response) {
+            if(count > 0 && response > count){
+                alert('Hai dei nuovi messaggi, ricarica la pagina per visualizzarli.');
+            }
+            count = response;
+        }
+    });
+}, 10000); // The interval set is 10000ms = 10 seconds
+
 var contact_id;
 $(document).ready(function() {
     $('.chat-box').on('click', function() {
