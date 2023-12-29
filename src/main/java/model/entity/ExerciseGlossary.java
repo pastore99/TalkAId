@@ -1,13 +1,14 @@
 package model.entity;
 
+
 public class ExerciseGlossary {
     private int idExercise;
     private String exerciseName;
     private String exerciseDescription;
     private String type;
     private int difficulty;
-    private byte[] initialState;
-    private byte[] solution;
+    private Object initialState;
+    private Object solution;
     private String target;
 
     // Getter and Setter methods
@@ -52,21 +53,13 @@ public class ExerciseGlossary {
         this.difficulty = difficulty;
     }
 
-    public byte[] getInitialState() {
-        return initialState;
-    }
+    public Object getInitialState() { return initialState; }
 
-    public void setInitialState(byte[] initialState) {
-        this.initialState = initialState;
-    }
+    public void setInitialState(Object initialState) { this.initialState = initialState; }
 
-    public byte[] getSolution() {
-        return solution;
-    }
+    public Object getSolution() { return solution; }
 
-    public void setSolution(byte[] solution) {
-        this.solution = solution;
-    }
+    public void setSolution(Object solution) { this.solution = solution; }
 
     public String getTarget() {
         return target;
