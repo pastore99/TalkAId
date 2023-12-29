@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,21 +9,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.entity.Message;
-import model.service.message.Conversation;
+import model.service.message.MessageManager;
+
 import java.util.List;
 import javax.json.*;
 
 @WebServlet("/GetMessages")
 public class GetMessageServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
 
         int contactId = Integer.parseInt(request.getParameter("contact_id")); // Get the contact's ID from the request
 
         // Retrieve the messages between the user and the contact
-        Conversation conversation = new Conversation();
-        List<Message> messages = conversation.retrieveMessages(userId, contactId);
+        MessageManager messageManager = new MessageManager();
+        List<Message> messages = messageManager.retrieveMessages(userId, contactId);
 
         // Now build the JSON response
         JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
@@ -43,7 +43,7 @@ public class GetMessageServlet extends HttpServlet {
             jsonObjectBuilder.add("sent", formattedDate);
             jsonArrayBuilder.add(jsonObjectBuilder.build());
         }
-        conversation.markMessagesAsRead(contactId,  userId);
+        messageManager.markMessagesAsRead(contactId,  userId);
         JsonArray jsonArray = jsonArrayBuilder.build();
 
         response.setContentType("application/json");
@@ -51,7 +51,7 @@ public class GetMessageServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         try {
             HttpSession session = request.getSession();
             int sender = (int) session.getAttribute("id");
@@ -59,8 +59,8 @@ public class GetMessageServlet extends HttpServlet {
             String body = request.getParameter("body");
 
             // send the message
-            Conversation conversation = new Conversation();
-            conversation.sendMessage(sender, recipient, body);
+            MessageManager messageManager = new MessageManager();
+            messageManager.sendMessage(sender, recipient, body);
 
             response.getWriter().write("Message successfully sent");
 

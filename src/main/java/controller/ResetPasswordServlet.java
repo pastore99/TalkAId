@@ -24,8 +24,5 @@ public class ResetPasswordServlet extends HttpServlet {
         if(authenticator.resetPassword(email, password)){
             response.getWriter().write("Password cambiata con successo!");
         }
-
-
-
     }
 }

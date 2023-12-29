@@ -1,8 +1,7 @@
 package controller;
 
-import model.service.message.Conversation;
+import model.service.message.MessageManager;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +14,11 @@ public class CountMessagesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         HttpSession session = request.getSession();
         int recipientId = (int) session.getAttribute("id");
-        Conversation conversation = new Conversation();
-        int receivedMessageCount = conversation.countReceivedMessages(recipientId);
+        MessageManager messageManager = new MessageManager();
+        int receivedMessageCount = messageManager.countReceivedMessages(recipientId);
 
         response.setContentType("text/plain");  // Output is a plain text integer
         response.getWriter().println(receivedMessageCount);

@@ -10,18 +10,35 @@ $(".newMessage-back").click(function() {
     });
 });
 
+$(document).ready(function() {
+    // When a chat-box is clicked...
+    $(".chat-box").on("click", function() {
+        // Add a class to the main container to show right container and hide left container
+        $(".main-container").addClass("show-right");
+    });
+
+    // When back button is clicked...
+    $("#back-button").on("click", function() {
+        // Remove the class from the main container to hide right container and show left container
+        $(".main-container").removeClass("show-right");
+    });
+});
+
+var count = -1;
 setInterval(function(){
     // Make an AJAX request to your servlet, replace the URL as required
     $.ajax({
         url: '../CountMessages',
         type: 'GET',
-        data: { //get from the session the recipientId
+        data: {
         },
         success: function (response) {
+            if(count < 0)
+                count = response;
             if(count > 0 && response > count){
+                count = response;
                 alert('Hai dei nuovi messaggi, ricarica la pagina per visualizzarli.');
             }
-            count = response;
         }
     });
 }, 10000); // The interval set is 10000ms = 10 seconds

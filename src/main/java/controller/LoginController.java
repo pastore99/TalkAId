@@ -1,13 +1,11 @@
 package controller;
 
-import model.DAO.DAOPersonalInfo;
 import model.entity.PersonalInfo;
 import model.entity.User;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +26,7 @@ public class LoginController extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");

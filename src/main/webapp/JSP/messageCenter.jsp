@@ -1,9 +1,10 @@
-<%@ page import="model.service.message.Conversation" %>
+<%@ page import="model.service.message.MessageManager" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.service.user.UserData" %>
 <%@ page import="model.entity.User" %>
 <%@ page import="model.service.user.UserRegistry" %>
 <%@ page import="model.entity.PersonalInfo" %>
+<%@ page import="model.service.message.MessageManager" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../JS/message.js"></script>
     <link rel="stylesheet" href="../CSS/messageCenter.css">
-    <title>Whatsapp Clone</title>
+    <title>TalkAId - Centro Messaggi</title>
 </head>
 <body>
 <div class="background-green"></div>
@@ -32,12 +33,12 @@
                 }
                 else {
                     int userId = (Integer) session.getAttribute("id");
-                    Conversation conversation = new Conversation();
-                    List<Integer> list = conversation.retrieveAllTheContacts(userId);
+                    MessageManager messageManager = new MessageManager();
+                    List<Integer> list = messageManager.retrieveAllTheContacts(userId);
                     for(int contact : list) {
                         UserRegistry ur = new UserRegistry();
                         PersonalInfo data = ur.getPersonalInfo(contact);
-                        int toRead = conversation.getUnreadMessagesForConversation(userId, contact);
+                        int toRead = messageManager.getUnreadMessagesForConversation(userId, contact);
             %>
             <div class="chat-box" data-contact-id="<%=contact%>">
                 <div class="img-box">
@@ -76,7 +77,7 @@
                 <h4 id="contactOpened"><br><span></span></h4>
             </div>
             <div class="nav-icons">
-                <li><i class="fa-solid fa-magnifying-glass"></i></li>
+                <li><i id="back-button" class="fa-solid fa-arrow-left"></i></li>
                 <li><i class="fa-solid fa-ellipsis-vertical"></i></li>
             </div>
         </div>

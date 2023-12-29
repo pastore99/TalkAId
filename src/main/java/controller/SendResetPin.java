@@ -1,6 +1,5 @@
 package controller;
 
-import model.entity.User;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 

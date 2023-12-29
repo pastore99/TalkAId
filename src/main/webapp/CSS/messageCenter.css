@@ -20,7 +20,7 @@ body {
   top: 0;
   width: 100%;
   height: 20%;
-  background-color: #009688;
+  background-color: #f0f0f0;
 }
 
 .main-container {
@@ -56,7 +56,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(https://camo.githubusercontent.com/854a93c27d64274c4f8f5a0b6ec36ee1d053cfcd934eac6c63bed9eaef9764bd/68747470733a2f2f7765622e77686174736170702e636f6d2f696d672f62672d636861742d74696c652d6461726b5f61346265353132653731393562366237333364393131306234303866303735642e706e67);
+  background: url(https://wallpapers.com/images/hd/whatsapp-chat-background-wz8v2v8xnenkb4ur.jpg);
+  /*https://camo.githubusercontent.com/854a93c27d64274c4f8f5a0b6ec36ee1d053cfcd934eac6c63bed9eaef9764bd/68747470733a2f2f7765622e77686174736170702e636f6d2f696d672f62672d636861742d74696c652d6461726b5f61346265353132653731393562366237333364393131306234303866303735642e706e67*/
   opacity: 0.5;
 }
 
@@ -420,4 +421,35 @@ img {
   font-size: 1em;
   border:none;
   outline:none;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+  .main-container .left-container,
+  .main-container .right-container {
+    width: 100%;
+    flex: auto;  /* reset the flex property */
+  }
+  .main-container .right-container {
+    display: none;  /* initially hide right container */
+  }
+  /* CSS class to be added by JS when a chat is selected */
+  .main-container.show-right .left-container {
+    display: none;
+  }
+  .main-container.show-right .right-container {
+    display: block;
+  }
+  /* CSS rules for back button */
+  #back-button {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;  /* initially hidden */
+  }
+  .main-container.show-right #back-button {
+    display: block;
+  }
 }
