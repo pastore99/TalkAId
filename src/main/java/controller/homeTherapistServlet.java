@@ -39,6 +39,7 @@ public class homeTherapistServlet extends HttpServlet {
         session.setAttribute("NameSurnameLogged",InfoLogged.getFirstname()+" "+InfoLogged.getLastname());
 
         response.sendRedirect("JSP/homeTherapist.jsp");
+        //response.sendRedirect("JSP/testTable.jsp");
     }
 
 

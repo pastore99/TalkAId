@@ -1,3 +1,15 @@
+/* Stile per la barra di ricerca */
+#searchInput {
+  padding: 8px;
+  border: 0px;
+  position: absolute;
+  width: 70%;
+  top: 10px;
+  left: 50px;
+  outline: none;
+}
+
+
 .table-container {
   max-height: 350px; /* Altezza massima della tabella */
   overflow-y: auto; /* Rendi scorrevole solo l'asse Y quando necessario */
@@ -5,8 +17,8 @@
 
 table {
   width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0 35px; /* Imposta uno spazio vuoto tra le righe */
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Imposta uno spazio vuoto tra le righe */
 }
 
 tr {

@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homeTherapistGuide.css" />
     <link rel="stylesheet" href="../CSS/homeTherapist.css" />
@@ -16,6 +17,7 @@
         <div class="overlap">
             <div class="button-only-text"><button class="button">Invita paziente</button></div>
         </div>
+
         <div class="pop-up">
             <div class="text-wrapper-2">PAZIENTI</div>
             <div class="overlap-group">
@@ -113,10 +115,12 @@
             <img class="ellipse-2" src="../images/homeTherapist/ellipse-94.svg" />
         </div>
         <div class="material-symbols-wrapper">
+            <input type="text" id="searchInput" placeholder="Cerca per nome o cognome">
             <img class="material-symbols" src="../images/homeTherapist/material-symbols-search-rounded.svg" />
         </div>
         <div class="img-wrapper"><img class="material-symbols-2" src="../images/homeTherapist/material-symbols-sort.svg" /></div>
     </div>
 </div>
+<script src="../JS/searchBar.js"></script>
 </body>
 </html>

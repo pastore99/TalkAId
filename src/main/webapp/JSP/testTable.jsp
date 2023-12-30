@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -44,6 +46,7 @@
 </head>
 <body>
 
+<input type="text" id="searchInput" placeholder="Cerca per nome o cognome">
 
 <div class="table-container" id="tableContainer">
     <table>
@@ -84,6 +87,38 @@
         var rowsToHide = Math.floor(tableContainer.scrollTop / 35); // 35px è l'altezza approssimativa di una riga
         // Imposta il margine superiore per nascondere le righe nel corpo
         tableContainer.getElementsByTagName('tbody')[0].style.marginTop = rowsToHide * 35 + 'px';
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var tableContainer = document.getElementById('tableContainer');
+
+        // Aggiungi un gestore di eventi all'input di ricerca
+        $('#searchInput').on('input', function () {
+            var searchText = $(this).val().toLowerCase();
+
+            // Nascondi tutte le righe
+            tableContainer.getElementsByTagName('tbody')[0].style.marginTop = '0';
+
+            // Filtra e mostra solo le righe che corrispondono alla ricerca
+            $('tbody tr').each(function () {
+                var name = $(this).find('td:eq(1)').text().toLowerCase();
+                var lastName = $(this).find('td:eq(2)').text().toLowerCase();
+
+                if (name.includes(searchText) || lastName.includes(searchText)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
+        tableContainer.addEventListener('scroll', function () {
+            // Calcola il numero di righe da nascondere nel corpo
+            var rowsToHide = Math.floor(tableContainer.scrollTop / 35); // 35px è l'altezza approssimativa di una riga
+            // Imposta il margine superiore per nascondere le righe nel corpo
+            tableContainer.getElementsByTagName('tbody')[0].style.marginTop = rowsToHide * 35 + 'px';
+        });
     });
 </script>
 
