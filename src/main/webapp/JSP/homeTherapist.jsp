@@ -108,7 +108,7 @@
                 <img class="iconly-light-message" src="../images/homeTherapist/iconly-light-message.svg" />
                 <img class="iconly-light-profile" src="../images/homeTherapist/iconly-light-profile.svg" />
             </div>
-            <img class="img" src="../images/homeTherapist/image.png" />
+            <img class="img" src="../images/homeTherapist/doctor.png" />
             <img class="logovettoriale" src="../images/homeTherapist/logovettoriale-1.png" />
             <img class="line" src="../images/homeTherapist/line-9.svg" />
             <div class="text-wrapper-3">Dr.</br> <%=session.getAttribute("NameSurnameLogged")%></div>
