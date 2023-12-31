@@ -1,0 +1,60 @@
+body {
+    font-family: Georgia, sans-serif;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-size:1.5em;
+}
+
+#calendar {
+    text-align: center;
+}
+
+#calendarTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#calendarTable th, #calendarTable td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#calendarTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#calendarTable td.selected {
+    background-color: #ddd; /* Change this to your preferred color */
+}
+
+
+
+#timeTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#timeTable th, #timeTable td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#timeTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#timeTable td.selected {
+    background-color: #ddd; /* Change this to your preferred color */
+}
