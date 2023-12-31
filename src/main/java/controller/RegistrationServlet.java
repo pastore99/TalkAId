@@ -58,7 +58,7 @@ public class RegistrationServlet extends HttpServlet {
         UserData userData = new UserData();
         UserRegistry userReg = new UserRegistry();
 
-        User user = userData.getUserByIdOrEmail(email);
+        User user = userData.getUser(email);
         PersonalInfo personalInfo = userReg.getPersonalInfo(user.getId());
 
         session.setAttribute("id", user.getId());

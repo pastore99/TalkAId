@@ -3,7 +3,7 @@ package model.service.user;
 import model.DAO.DAOUser;
 import model.entity.User;
 
-public class UserData /*implements UserDataInterface */{
+public class UserData implements UserDataInterface {
     DAOUser daoUser = new DAOUser();
 
     public boolean checkIfEmailExists(String email) {
@@ -14,7 +14,7 @@ public class UserData /*implements UserDataInterface */{
         return daoUser.createUser(email, password, therapistId);
     }
 
-    public User getUserByIdOrEmail(Object idOrEmail) {
+    public User getUser(Object idOrEmail) {
         return daoUser.getUserByIdOrEmail(idOrEmail);
     }
 

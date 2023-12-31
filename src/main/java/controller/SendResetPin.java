@@ -17,7 +17,7 @@ public class SendResetPin extends HttpServlet {
 
         response.setContentType("text/plain");
         if(checker.checkIfEmailExists(email)){
-            String pin = new Authenticator().resetPassword(email);
+            String pin = new Authenticator().sendPin(email);
             response.getWriter().println(pin);
         }
         else {

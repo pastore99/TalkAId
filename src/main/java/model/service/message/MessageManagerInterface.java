@@ -7,8 +7,8 @@ import java.util.List;
 public interface MessageManagerInterface {
 
     /**
-     * Marks the messages between a sender and a recipient as read in the database.
-     * This method updates the 'Read' field of the messages from the sender to the recipient to TRUE.
+     * Contrassegna i messaggi tra un mittente e un destinatario come letti nel database.
+     * Questo metodo aggiorna il campo 'Letto' dei messaggi dal mittente al destinatario su VERO.
      *
      * @param senderId    the ID of the sender
      * @param recipientId the ID of the recipient
@@ -16,7 +16,7 @@ public interface MessageManagerInterface {
     void markMessagesAsRead(int senderId, int recipientId);
 
     /**
-     * Counts the number of received messages for a given recipient.
+     * Conta il numero di messaggi ricevuti.
      *
      * @param recipientId the ID of the recipient
      * @return the number of received messages for the recipient
@@ -24,7 +24,7 @@ public interface MessageManagerInterface {
     int countReceivedMessages(int recipientId);
 
     /**
-     * Sends a message from a sender to a recipient by inserting it into the database.
+     * Invia un messaggio salvandolo su un database.
      *
      * @param sender       the ID of the sender
      * @param recipientId  the ID of the recipient
@@ -33,7 +33,7 @@ public interface MessageManagerInterface {
     void sendMessage(int sender, int recipientId, String text);
 
     /**
-     * Retrieves the messages between a user and a contact.
+     * Ottiene la lista dei messaggi in una conversazione.
      *
      * @param userId  the ID of the user
      * @param contact the ID of the contact
@@ -42,7 +42,7 @@ public interface MessageManagerInterface {
     List<Message> retrieveMessages(int userId, int contact);
 
     /**
-     * Retrieves the number of unread messages for a specific conversation between a user and a contact.
+     * Conta il numero di messaggi non letti in una conversazione.
      *
      * @param userId  the ID of the user
      * @param contact the ID of the contact
@@ -51,7 +51,7 @@ public interface MessageManagerInterface {
     int getUnreadMessagesForConversation(int userId, int contact);
 
     /**
-     * Retrieves all the contacts of a user.
+     * Restituisce tutti i contatti di un utente.
      *
      * @param userId the ID of the user
      * @return a list of integers representing the IDs of the contacts

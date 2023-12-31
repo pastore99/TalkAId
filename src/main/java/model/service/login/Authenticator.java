@@ -10,7 +10,7 @@ import java.security.SecureRandom;
 public class Authenticator implements LoginInterface {
     DAOUser db = new DAOUser();
     @Override
-    public String resetPassword(String email) {
+    public String sendPin(String email) {
         if(email.equals("test@email.com")) {
             return "12345678";
         }

@@ -49,7 +49,7 @@ public class LoginController extends HttpServlet {
         UserData userData = new UserData();
         UserRegistry userReg = new UserRegistry();
 
-        User user = userData.getUserByIdOrEmail(id);
+        User user = userData.getUser(id);
         PersonalInfo personalInfo = userReg.getPersonalInfo(id);
 
         session.setAttribute("id", id);

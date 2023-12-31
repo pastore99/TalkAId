@@ -50,7 +50,7 @@ public class MessageManager implements MessageManagerInterface {
     public List<Integer> retrieveAllTheContacts(int userId){
         List<Integer> contacts = new ArrayList<>();
         UserData check = new UserData();
-        User user = check.getUserByIdOrEmail(userId);
+        User user = check.getUser(userId);
         if(check.isTherapist(user)) {
             contacts.addAll(db.retrieveUserIdsByTherapist(userId));
         }
