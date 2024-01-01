@@ -18,8 +18,15 @@ function createCalendar() {
     let calendarBody = '';
 
     // Fill in the days of the month
-    for(let x = 1; x <= daysInMonth; x++) {
-        calendarBody += `<td>${x}</td>`;
+    for (let x = 1; x <= daysInMonth; x++) {
+        // Check if the current day is in the past
+        const currentDate = new Date(currentYear, currentMonth, x);
+        const isPastDay = currentDate < new Date();
+
+        // Add a class to disable past days
+        const dayClass = isPastDay ? 'past-day' : '';
+
+        calendarBody += `<td class="${dayClass}">${x}</td>`;
     }
 
     // Append the calendar to the DOM
@@ -28,6 +35,13 @@ function createCalendar() {
     // Add click event listeners to each date cell
     document.querySelectorAll('#calendarTable td').forEach((cell, index) => {
         cell.addEventListener('click', () => {
+            // Check if the selected day is in the past
+            if (cell.classList.contains('past-day')) {
+                // You can display a message or handle this case as needed
+                console.log('Cannot select past days.');
+                return;
+            }
+
             // Remove the 'selected' class from all cells
             document.querySelectorAll('#calendarTable td').forEach(cell => cell.classList.remove('selected'));
 
@@ -36,7 +50,8 @@ function createCalendar() {
 
             // Get the selected day from the clicked cell
             let selectedDay = Number(cell.textContent);
-             selectedDay++;
+            selectedDay++;
+
             // Calculate the selected date and time
             let selectedDate = new Date(currentYear, currentMonth, selectedDay);
 
@@ -45,6 +60,7 @@ function createCalendar() {
         });
     });
 }
+
 
 
 

@@ -28,20 +28,22 @@ public class ScheduleServlet extends HttpServlet {
             //azioni fatte dal logopedista
 
             if (action.equalsIgnoreCase("createNewSchedule")) {
-                int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));
-                scheduleManager.createNewSchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")));
+                int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));//cancellare
+                scheduleManager.createNewSchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")));//cancellare
                 //scheduleManager.createNewSchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")));
                 response.sendRedirect("JSP/schedule.jsp");
             }
             else if (action.equalsIgnoreCase("deleteSchedule")) {
-                int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));
-                scheduleManager.deleteSchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")));
+                int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));//cancellare
+                scheduleManager.deleteSchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")));//cancellare
                 //scheduleManager.deleteSchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")));
                 response.sendRedirect("JSP/schedule.jsp");
             }
             else if (action.equalsIgnoreCase("modifySchedule")) {
                 int idReserved = Integer.parseInt(request.getParameter("idReserved"));
-                scheduleManager.modifySchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("ndate")),(request.getParameter("ntimeslot")),idReserved);
+                int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));//cancellare
+                scheduleManager.modifySchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("ndate")),(request.getParameter("ntimeslot")),idReserved);//cancellare
+                //scheduleManager.modifySchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("ndate")),(request.getParameter("ntimeslot")),idReserved);
                 response.sendRedirect("JSP/schedule.jsp");
             }
 
@@ -49,7 +51,9 @@ public class ScheduleServlet extends HttpServlet {
 
             else if (action.equalsIgnoreCase("prenoteSchedule")) {
                 int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));
-                scheduleManager.modifySchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("date")),(request.getParameter("timeslot")),userId);
+                int idReserved = Integer.parseInt(request.getParameter("idReserved"));//cancellare
+                scheduleManager.modifySchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("date")),(request.getParameter("timeslot")),idReserved);//cancellare
+                //scheduleManager.modifySchedule(idTherapist,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("date")),(request.getParameter("timeslot")),userId);
                 response.sendRedirect("JSP/schedule.jsp");
             }else if (action.equalsIgnoreCase("unprenoteSchedule")) {
                 int idTherapist = Integer.parseInt(request.getParameter("idTherapist"));

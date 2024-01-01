@@ -4,7 +4,7 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    font-size:1.5em;
+    font-size:2em;
 }
 
 #calendar {
@@ -33,6 +33,10 @@ body {
 #calendarTable td.selected {
     background-color: #ddd; /* Change this to your preferred color */
 }
+#calendarTable td.past-day {
+    color: #999; /* Change this to your preferred color for past days */
+    pointer-events: none; /* Disable click events for past days */
+}
 
 
 
@@ -57,4 +61,26 @@ body {
 
 #timeTable td.selected {
     background-color: #ddd; /* Change this to your preferred color */
+}
+
+
+
+/* Aggiungi stili per la nuova tabella */
+#newTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#newTable th,
+#newTable td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#newTable tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
