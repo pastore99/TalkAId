@@ -19,9 +19,6 @@
 
 </head>
 <body>
-
-<script>console.log("sto qua")</script>
-
 <%
     UserData userDate= new UserData();
     User utente=null;
@@ -45,13 +42,10 @@
         User therapist = userDate.getUserByIdOrEmail(utente.getIdTherapist());
         PersonalInfo infotherapist = new PersonalInfoData().getPersonalInfo((therapist.getId()));
 
-
 %>
 <div class="up">
     <div class="navbar-up">
-        <a href="javascript:history.back()">
-            <img src="../Image/pngwing.com.png">
-        </a>
+            <img src="../Image/pngwing.com.png" id="back">
         <div class="paziente">
             <img src="../Image/profilo_utente.png" class="Immagine_profilo">
             <div class="info-paziente">
@@ -84,7 +78,7 @@
     </div>
     <div class="info">
         <div class="nome_info"> <h2>Email:</h2></div>
-        <div class="content-info"><h2><%= utente.getEmail()%>></h2></div>
+        <div class="content-info"><h2><%= utente.getEmail()%></h2></div>
     </div>
     <div class="info">
         <div class="nome_info"><h2>Dott.assegnato:</h2></div>
@@ -121,13 +115,30 @@
         <img src="../Image/usicta.png">
         <p>Vuoi disconnetterti?</p>
         <div class="input">
-            <button onclick="logout()">Si</button>
+            <form action="../logut" method="post">
+            <button type="submit">Si</button>
+            </form>
             <button id="cancella" onclick="chiudiPopup()">Cancella</button>
         </div>
     </div>
 </div>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var backImage = document.getElementById("back");
+
+        // Aggiungi un ascoltatore di eventi per il click sull'immagine
+        backImage.addEventListener("click", function() {
+            // Esegui la funzione per tornare alla pagina precedente
+            goBack();
+        });
+    });
+
+    // Funzione per tornare alla pagina precedente
+    function goBack() {
+        window.history.back();
+    }
+
     function mostraPopup() {
         document.getElementById('popup').style.display = 'block';
     }
@@ -135,35 +146,13 @@
     function chiudiPopup() {
         document.getElementById('popup').style.display = 'none';
     }
-
-    function logout()
-    {
-        var options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
-
-        var url = '/logout';
-
-
-        fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-            })
-            .catch(error => {
-                console.error('Errore durante la richiesta:', error);
-            });
-    }
 </script>
 
 <%
     }
     catch (Exception e)
     {
-
+        e.printStackTrace();
     }
 %>
 </body>

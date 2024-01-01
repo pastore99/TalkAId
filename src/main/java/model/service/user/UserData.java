@@ -30,13 +30,15 @@ public class UserData /*implements UserDataInterface */{
         return daoUser.updateEmailTime(id, value);
     }
 
-    public void updateUser(int idUser, String Email, String address)
+    public String updateUser(int idUser, String Email, String address)
     {
-        daoUser.updateUser(idUser, Email, address);
+        return daoUser.updateUser(idUser, Email, address);
     }
 
     public boolean ControlPassword(int id, String Password)
     {
-        daoUser.ControlPassword(id, Password);
+        return daoUser.ControlPassword(id, Password);
     }
+
+    public boolean resetPassword(String email, String newPassword){ return daoUser.resetPassword(email, newPassword);}
 }

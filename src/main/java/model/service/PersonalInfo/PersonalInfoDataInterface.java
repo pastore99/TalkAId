@@ -8,5 +8,5 @@ public  interface PersonalInfoDataInterface
 
     public PersonalInfo getPersonalInfo(int id);
 
-    public void updatePersonaInfofromId(int id, String FirstName, String LastName, String Phone);
+    public boolean updatePersonaInfofromId(int id, String FirstName, String LastName, String Phone);
 }

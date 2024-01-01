@@ -17,8 +17,8 @@ public class PersonalInfoData implements PersonalInfoDataInterface
         return  daoInfo.createRegistry(id, name, surname);
     }
 
-    public void updatePersonaInfofromId(int id, String FirstName, String LastName, String Phone)
+    public boolean updatePersonaInfofromId(int id, String FirstName, String LastName, String Phone)
     {
-        daoInfo.updatePersonalInfofromId(id, FirstName, LastName, Phone);
+        return daoInfo.updatePersonalInfofromId(id, FirstName, LastName, Phone);
     }
 }

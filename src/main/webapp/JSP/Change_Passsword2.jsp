@@ -10,51 +10,94 @@
 <head>
     <title>Title</title>
     <link href="../CSS/Change_Password.css" type="text/css" rel = "stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
+<%
+    if (session != null && session.getId() != null) {
+        // Ottieni l'utente dalla sessione
+        if(session.getAttribute("autorizzato")!=null)
+        {
+
+        }
+        else
+        {
+            response.sendRedirect("/TalkAID_war_exploded/JSP/Change_Password.jsp");
+        }
+    } else {
+        // Se la sessione non è attiva, reindirizza alla pagina di login
+        response.sendRedirect("/TalkAID_war_exploded/JSP/login.jsp");
+    }
+%>
 <div class="up">
 
 </div>
 <h2 class="title">Crea nuova Password</h2>
 <p class="info">Inserisci la nuova password<br> che vuoi assegnare al tuo account</p>
 
-<form>
-    <input type="text" id="email" name="email" placeholder="Nuova password" required="">
-    <button class="form-submit-btn" onclick="inviaForm()">Conferma password</button>
-</form>
+
+    <input type="text" id="password" name="password" placeholder="Nuova password" required="" onchange="controllaPassword()">
+    <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" required="" onchange="controllaPassword()">
+    <button class="form-submit-btn" id="Controlla" disabled>Conferma password</button>
+
 
 <div id="popup">
     <div id="popup-uscita">
         <img src="../Image/conferma.png">
         <p>Confermato <br> hai cambiato correttamente <br>la tua password</p>
+        <form action="../logut" method="post">
         <div class="input">
-            <button onclick="chiudiPopup()">Login</button>
+            <button id="Login" type="submit">Login</button>
         </div>
+        </form>
     </div>
 </div>
 
 
 <script>
-    function inviaForm() {
-        // Raccogli i dati del form
-        var formData = new FormData(document.getElementById('myForm'));
 
-        // Crea un oggetto XMLHttpRequest
-        var xhr = new XMLHttpRequest();
+    $(document).ready(function() {
+        // Ascolta l'evento di clic sul pulsante
+        $("#Controlla").click(function () {
+            var password_attuale = $("#password").val();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/ChangePassword',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    password: password_attuale
+                },
+            })
+                .done(function(result)
+                {
+                    if(result.result)
+                    {
+                        $('#popup').css('display', 'block');
+                    }else
+                    {
+                        alert("problemi nel settaggio della nuova password");
+                    }
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.error('Errore nella richiesta AJAX:', textStatus, errorThrown);    // Aggiungi dettagli dell'errore alla console o visualizzali a schermo
+                    console.error(jqXHR.responseText);    // Aggiorna l'elemento con l'ID 'messaggioErrore' con il messaggio di errore dettagliato
+                    alert('Si è verificato un errore: ' + errorThrown);
+                });
+        })
+    })
 
-        // Definisci il metodo e l'URL di destinazione
-        xhr.open('POST', 'url_del_server.php', true);
+    function controllaPassword() {
+        // Ottieni i valori dagli input
+        var password1 = document.getElementById("password").value;
+        var password2 = document.getElementById("Conferma_password").value;
+        var Controlla = document.getElementById("Controlla");
 
-        // Definisci la funzione di callback quando la richiesta è completata
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // La richiesta è stata completata con successo
-                console.log(xhr.responseText); // Puoi gestire la risposta del server qui
-            }
-        };
-
-        // Invia la richiesta al server
-        xhr.send(formData);
+        // Controlla se i valori corrispondono
+        if (password1 === password2 && password1 !== "" && password2 !== "") {
+            Controlla.disabled=false;
+        } else {
+            Controlla.disabled=true;
+        }
     }
 </script>
 </body>

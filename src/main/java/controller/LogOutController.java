@@ -21,7 +21,6 @@ public class LogOutController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            // Invalida la sessione
             session.invalidate();
         }
         response.sendRedirect("/TalkAID_war_exploded/JSP/login.jsp");

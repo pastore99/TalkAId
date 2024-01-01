@@ -97,7 +97,7 @@ public class DAOPersonalInfo {
         return null; // Return null if personal_info does not exist
     }
 
-    public void updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone)
+    public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -116,9 +116,11 @@ public class DAOPersonalInfo {
 
             if (result>0) {
                 System.out.println("aggiornati i parametri dell'utente" + id +" in personalInfo correttamente");
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         } finally {
             try {
                 DAOConnection.releaseConnection(connection);
@@ -126,7 +128,7 @@ public class DAOPersonalInfo {
                 e.printStackTrace();
             }
         }
-
+    return false;
     }
     }
 
