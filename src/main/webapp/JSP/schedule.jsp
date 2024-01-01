@@ -11,10 +11,12 @@
     <button id="prevMonth">Previous Month</button>
     <table id="calendarTable"></table>
     <table id="timeTable"></table>
-    <form id="dateForm">
-        <input type="hidden" id="selectedDate" name="selectedDate">
-        <input type="hidden" id="selectedTime" name="selectedTime">
-        <input type="submit" value="Submit">
+    <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm">
+        <input type="hidden"  name="idTherapist" value="0">
+        <input type="hidden" id="selectedDate" name="date">
+        <input type="hidden" id="selectedTime" name="timeslot">
+        <input type="submit" name="action" value="createNewSchedule">
+        <input type="submit" name="action" value="deleteSchedule">
     </form>
 </div>
 <script src="../JS/schedule.js"></script>
