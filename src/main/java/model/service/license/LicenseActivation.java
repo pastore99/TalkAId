@@ -6,6 +6,9 @@ import model.DAO.DAOLicense;
 public class LicenseActivation implements LicenseActivationInterface {
     DAOLicense daoLicense = new DAOLicense();
 
+    public void setDAOLicense(DAOLicense daoLicense) {
+        this.daoLicense = daoLicense;
+    }
     public License getLicense(String code) {
         return daoLicense.getLicenseByCode(code);
     }
