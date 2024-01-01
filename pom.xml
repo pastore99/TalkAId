@@ -122,9 +122,16 @@
                         <id>report</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>report</goal>
-                            <!--<goal>report-integration</goal> -->
+                            <goal>report-aggregate</goal>
                         </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                            <append>false</append>
+                            <formats>
+                                <format>XML</format>
+                            </formats>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>jacoco-check</id>
