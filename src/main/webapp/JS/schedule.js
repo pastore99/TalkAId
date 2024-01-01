@@ -34,8 +34,11 @@ function createCalendar() {
             // Add the 'selected' class to the clicked cell
             cell.classList.add('selected');
 
+            // Get the selected day from the clicked cell
+            let selectedDay = Number(cell.textContent);
+             selectedDay++;
             // Calculate the selected date and time
-            let selectedDate = new Date(currentYear, currentMonth, index + 1);
+            let selectedDate = new Date(currentYear, currentMonth, selectedDay);
 
             // Update the hidden input fields
             document.getElementById('selectedDate').value = selectedDate.toISOString().split('T')[0];
@@ -51,8 +54,8 @@ function createTimeTable() {
     let timeTableBody = '';
 
     // Fill in the hours of the day
-    for(let x = 0; x < 24; x++) {
-        timeTableBody += `<td>${x}:00</td>`;
+    for(let x = 8; x < 21; x++) {
+        timeTableBody += `<td>${x}:00-${x+1}:00</td>`;
     }
 
     // Append the time table to the DOM

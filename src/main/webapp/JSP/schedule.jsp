@@ -11,7 +11,7 @@
     <button id="prevMonth">Previous Month</button>
     <table id="calendarTable"></table>
     <table id="timeTable"></table>
-    <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm">
+    <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm" method="post">
         <input type="hidden"  name="idTherapist" value="0">
         <input type="hidden" id="selectedDate" name="date">
         <input type="hidden" id="selectedTime" name="timeslot">
