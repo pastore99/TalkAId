@@ -22,7 +22,7 @@
 
     <h1>paziente</h1>
     <h2>prenotazioni disponibili</h2>
-    <table id="newTable">
+    <table class="modTable">
         <thead>
         <tr>
             <th>Terapista</th>
@@ -40,7 +40,7 @@
         </tbody>
     </table>
     <h2>le mie prenotazioni</h2>
-    <table id="newTable">
+    <table class="modTable">
         <thead>
         <tr>
             <th>Terapista</th>
@@ -59,7 +59,7 @@
     </table>
     <h1>logopedista</h1>
     <h2>le mie prenotate</h2>
-    <table id="newTable">
+    <table class="modTable">
         <thead>
         <tr>
             <th>Terapista</th>
@@ -77,7 +77,7 @@
         </tbody>
     </table>
     <h2>le mie schedule</h2>
-    <table id="newTable">
+    <table class="modTable">
         <thead>
         <tr>
             <th>Terapista</th>
