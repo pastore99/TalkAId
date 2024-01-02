@@ -2,7 +2,6 @@ package model.DAO;
 
 import model.entity.ExerciseGlossary;
 
-import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +20,6 @@ public class DAOExerciseGlossary {
      * @throws SQLException if there is any SQL related error
      */
     private static ExerciseGlossary extractExerciseFromResultSet(ResultSet resultSet) throws SQLException {
-        Gson g = new Gson();
         ExerciseGlossary exercise = new ExerciseGlossary();
         exercise.setIdExercise(resultSet.getInt("ID_exercise"));
         exercise.setExerciseName(resultSet.getString("ExerciseName"));
@@ -29,8 +27,8 @@ public class DAOExerciseGlossary {
         exercise.setType(resultSet.getString("Type"));
         exercise.setDifficulty(resultSet.getInt("Difficulty"));
         exercise.setTarget(resultSet.getString("Target"));
-        exercise.setInitialState(g.fromJson(resultSet.getString("InitialState"), Object.class));
-        exercise.setSolution(g.fromJson(resultSet.getString("Solution"), Object.class));
+        exercise.setInitialState(resultSet.getString("InitialState"));
+        exercise.setSolution(resultSet.getString("Solution"));
 
         return exercise;
     }
@@ -41,7 +39,7 @@ public class DAOExerciseGlossary {
      * @param code the ExerciseID code to search for.
      * @return the Exercise if it is found, else null.
      */
-    public ExerciseGlossary getExerciseByCode(String code) {
+    public ExerciseGlossary getExerciseByCode(int code) {
         String query = "SELECT * FROM exercise_glossary WHERE ID_exercise = ?";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -50,7 +48,7 @@ public class DAOExerciseGlossary {
         try {
             connection = DAOConnection.getConnection();
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, code);
+            preparedStatement.setInt(1, code);
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {

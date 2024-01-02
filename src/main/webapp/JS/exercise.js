@@ -6,14 +6,35 @@ const CROSSWORD = "CROSSWORD"
 const COMPLETETEXT = "COMPLETETEXT"
 const RIGHTTEXT = "RIGHTTEXT"
 const IMAGESINAROW = 2
+const exercise = $("#exerciseInfo")
+
+const EXERCISETYPE = exercise.data("type");
 
 const exerciseDiv = $("#exerciseDiv");
 
-$(document).ready(()=>{
-  $("#backDiv").click(() => redirect("home"));
-  $("#notificationDiv").click(() => redirect("message.jsp")); //TODO: mettere i redirect giusti
-  loadExercise(/*TODO: mettere qui la tipologia di esercizio*/);
-})
+function startUp(exerciseIS){
+  $(document).ready(()=>{
+    const EXERCISEINITIALSTATE = parseJSON(exerciseIS);
+    $("#backDiv").click(() => redirect("home"));
+    $("#notificationDiv").click(() => redirect("message.jsp")); //TODO: mettere i redirect giusti
+    loadExercise(EXERCISETYPE, EXERCISEINITIALSTATE);
+  })
+}
+
+function parseJSON(json) {
+  try {
+    const jsonData = JSON.parse(json);
+    return jsonData;
+  } catch (jsonError) {
+    try {
+      const jsObject = eval('(' + json + ')');
+      return jsObject;
+    } catch (objectError) {
+      return json;
+    }
+  }
+}
+
 
 function redirect(where){
   if (where === "home"){
@@ -29,37 +50,55 @@ function redirect(where){
   }
 }
 
-function loadExercise(type){
-  switch (type) {
+function loadExercise(type, initialState){
+  switch (type.toUpperCase()) {
   case READTEXT:
-    loadReadText();
+    loadReadText(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   case READIMAGES:
-    loadReadImages();
+    loadReadImages(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   case IMAGESTOTEXT:
-    loadImagesToText();
+    loadImagesToText(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   case TEXTTOIMAGES:
-    loadTextToImages();
+    loadTextToImages(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   case CROSSWORD:
-    loadCrossword();
+    loadCrossword(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   case COMPLETETEXT:
-    loadCompleteText();
+    loadCompleteText(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   case RIGHTTEXT:
-    loadRightText();
+    loadRightText(initialState);
+    //loadCSS("path/al/tuo/readtext.css");
     break;
   default:
-    //TODO: Errore e torna indietro
+    setTimeout(()=> {
+      alert("Ci scusiamo del disagio! Le consigliamo di riprovare tra pochi minuti");
+      window.location.href = "homepagepatient" //TODO:mettere la homepage del paziente
+    }, 3000);
   }
 }
 
-function loadReadText(){
+function loadCSS(cssPath) {
+  let link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  link.href = cssPath;
+  document.head.appendChild(link);
+}
 
-  let text = $("<p>").text(/*TODO: inserire il testo*/);
+function loadReadText(initialState){
+
+  let text = $("<p>").text(initialState);
   let textDiv = $("<div>").attr("id", "textDiv").append(text);
 
   let button = $("<button>").click(/*TODO: inizia la registrazione*/);
@@ -70,8 +109,8 @@ function loadReadText(){
   exerciseDiv.append(div);
 }
 
-function loadReadImages(){
-  let images = []; //TODO: prendere le varie immagini
+function loadReadImages(initialState){
+  let images = initialState;
   let index = 0;
   let number = 0
   let div = $("<div>").addClass("row");
@@ -100,9 +139,8 @@ function loadReadImages(){
   exerciseDiv.append(buttonDiv);
 }
 
-function loadImagesToText(){
-  let images = []; //TODO: prendere le varie immagini
-  let textInput = $("<input>").attr("type", "text");
+function loadImagesToText(initialState){
+  let images = initialState;
   let index = 0;
   let number = 0
   let div = $("<div>").addClass("row");
@@ -119,7 +157,10 @@ function loadImagesToText(){
       id: "image "+number
     });
     div.append(i);
-    div.append(textInput.attr("id", "textInput"+number));
+    div.append($("<input>").attr({
+      type: "text",
+      id: "textInput "+number
+    }))
     if (index === IMAGESINAROW-1){
       exerciseDiv.append(div);
       //Create a new Div
@@ -129,9 +170,9 @@ function loadImagesToText(){
   });
 }
 
-function loadTextToImages(){
-  let images = []; //TODO: prendere le varie immagini
-  let texts = []; //TODO: Prendere i vari testi
+function loadTextToImages(initialState){
+  let images = initialState[0]
+  let texts = initialState[1]
   let index = 0;
   let number = 0
   let div = $("<div>").addClass("row");
@@ -163,8 +204,8 @@ function loadTextToImages(){
   });
 }
 
-function loadCrossword(){
-  let matrix = [[]]; //TODO: Prendere la matrice
+function loadCrossword(initialState){
+  let matrix = initialState;
   let vertical = [];
   let horizontal = [];
   let crosswordDiv = $("<div>");
@@ -205,9 +246,15 @@ function loadCrossword(){
 
 }
 
-function loadCompleteText(){
-  let words = [];
+function loadCompleteText(initialState){
+  let words = initialState;
   words.forEach((word, index)=>{
+    //TODO: Rimuovere, quando si inserisce nel db si tolgono le lettere
+    const randomIndex = Math.floor(Math.random() * word.length);
+    tempWordArray = word.split('');
+    tempWordArray[randomIndex] = "#";
+    word = tempWordArray.join('');
+
     let div=$("<div>")
     div.attr("id", "word"+index);
     for (let i=0; i < word.length; i++){
@@ -224,9 +271,13 @@ function loadCompleteText(){
   })
 }
 
-function loadRightText(){
+function loadRightText(initialState){
   let firstSetOfWords = [];
   let secondSetOfWords = [];
+  initialState.forEach((pair)=>{
+    firstSetOfWords.push(pair[0]);
+    secondSetOfWords.push(pair[1]);
+  });
 
   for(let i=0; i<firstSetOfWords.length; i++){
     let div = $("<div>");
@@ -240,5 +291,6 @@ function loadRightText(){
       value: secondSetOfWords[i]
     });
     div.append($("<p>").text(firstSetOfWords[i]), radio1, radio2, $("<p>").text(secondSetOfWords[i]));
+    exerciseDiv.append(div);
   }
 }

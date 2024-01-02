@@ -7,8 +7,8 @@ public class ExerciseGlossary {
     private String exerciseDescription;
     private String type;
     private int difficulty;
-    private Object initialState;
-    private Object solution;
+    private String initialState;
+    private String solution;
     private String target;
 
     // Getter and Setter methods
@@ -53,13 +53,13 @@ public class ExerciseGlossary {
         this.difficulty = difficulty;
     }
 
-    public Object getInitialState() { return initialState; }
+    public String getInitialState() { return initialState; }
 
-    public void setInitialState(Object initialState) { this.initialState = initialState; }
+    public void setInitialState(String initialState) { this.initialState = initialState; }
 
-    public Object getSolution() { return solution; }
+    public String getSolution() { return solution; }
 
-    public void setSolution(Object solution) { this.solution = solution; }
+    public void setSolution(String solution) { this.solution = solution; }
 
     public String getTarget() {
         return target;
@@ -68,5 +68,7 @@ public class ExerciseGlossary {
     public void setTarget(String target) {
         this.target = target;
     }
+
+
 }
 
