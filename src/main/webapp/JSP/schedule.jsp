@@ -1,16 +1,16 @@
 <%@ page import="java.util.*" %>
-<%@ page import="model.service.user.UserData" %>
-<%@ page import="model.entity.User" %>
 <%@ page import="model.service.user.UserRegistry" %>
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.entity.Schedule" %>
 <%@ page import="model.service.schedule.ScheduleManager" %>
 <%
-    /*if(session.getAttribute("id") == "null") {
+    Integer userIdp = (Integer) session.getAttribute("id");
+
+    if(userIdp == null) {
         response.sendRedirect("../errorPage/403.html");
     }
     else {
-        int userId = (Integer) session.getAttribute("id");*/
+        int userId = (Integer) session.getAttribute("id");
 %>
 <!DOCTYPE html>
 <html lang="it">
@@ -22,6 +22,9 @@
 </head>
 <body>
 <div id="calendar">
+    <%
+        if (session.getAttribute("type") == "therapist"){
+    %>
     <h1>aggiunta calendario prenotazione</h1>
     <h2 id="calendarTitle"></h2>
     <button id="prevMonth">Previous Month</button>
@@ -29,11 +32,10 @@
     <table id="calendarTable"></table>
     <table id="timeTable"></table>
     <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm" method="post">
-        <input type="hidden"  name="idTherapist" value="9">
+        <input type="hidden"  name="idTherapist" value="<%=userId%>">
         <input type="hidden" id="selectedDate" name="date">
         <input type="hidden" id="selectedTime" name="timeslot">
         <input type="submit" name="action" value="createNewSchedule">
-        <input type="submit" name="action" value="deleteSchedule">
     </form>
 
 
@@ -56,7 +58,7 @@
             </thead>
             <%
                     ScheduleManager scheduleManager = new ScheduleManager();
-                    List<Schedule> list = scheduleManager.retrieveAllPrenotedSchedules(9);
+                    List<Schedule> list = scheduleManager.retrieveAllPrenotedSchedules(userId);
                     if(list!=null){
                         for(Schedule schedule : list) {
                             UserRegistry ur = new UserRegistry();
@@ -79,7 +81,6 @@
                 <%
                     }
                 %>
-            <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()/*qua va messo idUser*/%>">
             <input type="hidden" name="date" value="<%=schedule.getDate()%>">
             <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
             <input type="hidden" name="idReserved" value="<%=schedule.getReserved()%>">
@@ -115,7 +116,7 @@
             </thead>
             <%
                 ScheduleManager scheduleManager2 = new ScheduleManager();
-                List<Schedule> list2 = scheduleManager2.retrieveAllTherapistSchedules(9);
+                List<Schedule> list2 = scheduleManager2.retrieveAllTherapistSchedules(userId);
                 if(list2!=null){
                     for(Schedule schedule : list2) {
                         UserRegistry ur = new UserRegistry();
@@ -138,7 +139,6 @@
                     <%
                         }
                     %>
-                    <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()/*qua va messo idUser*/%>">
                     <input type="hidden" name="date" value="<%=schedule.getDate()%>">
                     <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
                     <input type="hidden" name="idReserved" value="<%=schedule.getReserved()%>">
@@ -160,6 +160,9 @@
                 }
             %>
         </table>
+    <%
+        }else{
+    %>
 
 
 
@@ -167,7 +170,7 @@
 
 
 
-    <h1>paziente</h1>
+    <h1>paziente <%=userId%></h1>
     <h2>prenotazioni disponibili</h2>
         <table class="modTable">
             <thead>
@@ -180,7 +183,7 @@
             </thead>
             <%
                 ScheduleManager scheduleManager3 = new ScheduleManager();
-                List<Schedule> list3 = scheduleManager3.retrieveAllNotPrenotedSchedules(9);
+                List<Schedule> list3 = scheduleManager3.retrieveAllNotPrenotedSchedules((Integer) session.getAttribute("therapist"));
                 if(list3!=null){
                     for(Schedule schedule : list3) {
                         UserRegistry ur = new UserRegistry();
@@ -206,7 +209,6 @@
                     <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
                     <input type="hidden" name="date" value="<%=schedule.getDate()%>">
                     <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
-                    <input type="hidden" name="idReserved" value="15<%/*qua va messo idUser*/%>">
                     <th>
                         <input type="submit" name="action" value="prenoteSchedule">
                     </th>
@@ -239,7 +241,7 @@
             </thead>
             <%
                 ScheduleManager scheduleManager4 = new ScheduleManager();
-                List<Schedule> list4 = scheduleManager4.retrieveAllPatientSchedules(15);
+                List<Schedule> list4 = scheduleManager4.retrieveAllPatientSchedules(userId);
                 if(list4!=null){
                     for(Schedule schedule : list4) {
                         UserRegistry ur = new UserRegistry();
@@ -265,7 +267,6 @@
                     <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
                     <input type="hidden" name="date" value="<%=schedule.getDate()%>">
                     <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
-                    <input type="hidden" name="idReserved" value="15<%/*qua va messo idUser*/%>">
                     <th>
                         <input type="submit" name="action" value="unprenoteSchedule">
                     </th>
@@ -283,6 +284,9 @@
             %>
         </table>
 
+    <%
+        }
+    %>
 
 
 
@@ -292,5 +296,5 @@
 </html>
 
 <%
-    //}
+    }
 %>
