@@ -331,4 +331,47 @@ public class DAOUser {
         // Default to false if an exception occurs
         return false;
     }
+
+    /**
+     * Deletes a user from the User table based on an ID or an email.
+     *
+     * @param idOrEmail Either an Integer representing the User's ID or a String representing the User's email.
+     * @return true if the user was successfully deleted; false otherwise.
+     */
+    public boolean deleteUserByIdOrEmail(Object idOrEmail) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            String query = null;
+
+            if (idOrEmail instanceof Integer) {
+                query = "DELETE FROM user WHERE ID = ?";
+            } else if (idOrEmail instanceof String) {
+                query = "DELETE FROM user WHERE Email = ?";
+            }
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, idOrEmail);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        // Default to false if an exception occurs
+        return false;
+    }
 }
