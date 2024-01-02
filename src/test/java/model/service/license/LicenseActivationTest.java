@@ -71,24 +71,30 @@ class LicenseActivationTest {
         assertEquals(0, licenseActivation.isForTherapist(null));
     }
 
+
     @Test
-    void testActivate() {
-        // Mock the DAOLicense class
-        DAOLicense daoLicenseMock = mock(DAOLicense.class);
+    void testGeneratingLicenses(){
+        DAOLicense daoLicense = new DAOLicense();
 
-        // Set up the LicenseActivation class with the mocked DAO
         LicenseActivation licenseActivation = new LicenseActivation();
-        licenseActivation.setDAOLicense(daoLicenseMock);
+        String licenseCode = licenseActivation.generateLicense();
+        String pinCode = licenseActivation.generatePin(9);
 
-        // Create a sample license
-        License sampleLicense = new License();
-        sampleLicense.setSequence("1234");
-        sampleLicense.setIdUser(1);
+        assertEquals(8, licenseCode.length());
+        assertEquals(4, pinCode.length());
 
-        // Test the activate method
-        licenseActivation.activate(sampleLicense, 1);
+        licenseActivation.activate(daoLicense.getLicenseByCode(licenseCode), 0);
+        licenseActivation.activate(daoLicense.getLicenseByCode(pinCode), 999);
 
-        // Verify that the DAO's activate method was called with the correct parameters
-        verify(daoLicenseMock, times(1)).activate(eq(sampleLicense), eq(1));
+        License license1 = daoLicense.getLicenseByCode(licenseCode);
+        assertTrue(license1.isActive());
+        assertEquals(0, license1.getIdUser());
+
+        License license2 = daoLicense.getLicenseByCode(pinCode);
+        assertTrue(license2.isActive());
+        assertEquals(999, license2.getIdUser());
+
+        daoLicense.deleteLicense(licenseCode);
+        daoLicense.deleteLicense(pinCode);
     }
 }

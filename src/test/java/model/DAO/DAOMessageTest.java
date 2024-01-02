@@ -58,7 +58,7 @@ class DAOMessageTest {
         // Check the returned list
         assertNotNull(messages, "Returned list should not be null");
         assertFalse(messages.isEmpty(), "Returned list should not be empty");
-        assertNotEquals(0, messages.size()); // Assuming there are 2 messages between these users
+        assertNotEquals(0, messages.size()); // Assuming there are messages between these users
     }
 
     @Test
@@ -83,9 +83,8 @@ class DAOMessageTest {
 
         // Call the method to test
         daoMessage.sendMessage(senderId, recipientId, text);
-
-        // Since the method doesn't return anything, we can't really verify its correctness
-        // However, we can assume it worked correctly if no exceptions were thrown
+        //clean it
+        daoMessage.deleteLastInsertedMessage();
     }
 
     @Test

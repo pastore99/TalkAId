@@ -359,8 +359,6 @@ public class DAOUser {
 
             return rowsDeleted > 0;
         } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
