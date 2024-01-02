@@ -2,10 +2,7 @@ package model.DAO;
 
 import model.entity.Message;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class DAOMessage {
@@ -202,5 +199,38 @@ public class DAOMessage {
         }
 
         return count;
+    }
+
+    public void deleteLastInsertedMessage() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DAOConnection.getConnection();
+            stmt = conn.createStatement();
+
+            String sql = "SELECT MAX(ID_message) FROM message";
+
+            rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                int lastId = rs.getInt(1);
+                sql = "DELETE FROM message WHERE ID_message = " + lastId;
+                stmt.executeUpdate(sql);
+            }
+
+        } catch (SQLException e) {
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                DAOConnection.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -96,5 +96,45 @@ public class DAOPersonalInfo {
 
         return null; // Return null if personal_info does not exist
     }
+
+    public boolean deleteRegistry(int createdUserId) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            connection.setAutoCommit(false); // Start a transaction
+
+            String sql = "DELETE FROM personal_info WHERE ID_user = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, createdUserId);
+            int rowAffected = preparedStatement.executeUpdate();
+
+            connection.commit(); // Commit the transaction
+
+            return rowAffected > 0; // Return true if the deletion was successful
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Rollback the transaction in case of an exception
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        return false; // Default to false if an exception occurs
+    }
 }
 
