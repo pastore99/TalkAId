@@ -1,3 +1,7 @@
+.hoverable-row:hover {
+  background-color: #e6f7ff; /* Cambia il colore di sfondo quando il mouse passa sopra */
+  cursor: pointer; /* Cambia il cursore quando il mouse passa sopra */
+}
 
 #searchInput {
   padding: 8px;
@@ -11,7 +15,7 @@
 
 
 .table-container {
-  max-height: 350px;
+  max-height: 500px;
   overflow-y: auto;
 }
 

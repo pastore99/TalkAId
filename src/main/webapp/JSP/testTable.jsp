@@ -80,16 +80,6 @@
 </div>
 
 <script>
-    var tableContainer = document.getElementById('tableContainer');
-
-    tableContainer.addEventListener('scroll', function() {
-        // Calcola il numero di righe da nascondere nel corpo
-        var rowsToHide = Math.floor(tableContainer.scrollTop / 35); // 35px è l'altezza approssimativa di una riga
-        // Imposta il margine superiore per nascondere le righe nel corpo
-        tableContainer.getElementsByTagName('tbody')[0].style.marginTop = rowsToHide * 35 + 'px';
-    });
-</script>
-<script>
     $(document).ready(function () {
         var tableContainer = document.getElementById('tableContainer');
 
