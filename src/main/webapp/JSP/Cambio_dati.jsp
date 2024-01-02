@@ -46,11 +46,11 @@
         <img src="../Image/profilo_utente.png" id="paziente">
         <div class="down">
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= infoutente.getFirstname()%>" name="firstname"/>
+                <input class="input" type="text" placeholder="<%= infoutente.getFirstname()%>" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" name="firstname"/>
                 <label class="label" for="input">FirstName</label>
             </div>
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= infoutente.getLastname()%>" name = "lastname"/>
+                <input class="input" type="text" placeholder="<%= infoutente.getLastname()%>" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" name = "lastname"/>
                 <label class="label" for="input">LastName</label>
             </div>
             <div class="input-field">

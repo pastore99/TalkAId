@@ -36,8 +36,8 @@
 <p class="info">Inserisci la nuova password<br> che vuoi assegnare al tuo account</p>
 
 
-    <input type="text" id="password" name="password" placeholder="Nuova password" required="" onchange="controllaPassword()">
-    <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" required="" onchange="controllaPassword()">
+    <input type="text" id="password" name="password" placeholder="Nuova password" required="" onchange="controllaPassword()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
+    <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" required="" onchange="controllaPassword()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
     <button class="form-submit-btn" id="Controlla" disabled>Conferma password</button>
 
 
