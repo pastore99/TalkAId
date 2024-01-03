@@ -30,7 +30,7 @@ public class ScheduleServlet extends HttpServlet {
                     scheduleManager.createNewSchedule(userId, request.getParameter("date"), request.getParameter("timeslot"));
                     response.sendRedirect("JSP/schedule.jsp");
                 } else {
-                    String errorMessage = "Hai gia' immesso questa data per un altra schedule, perfavore elimina la precedente prima di continuare";
+                    String errorMessage = "La data selezionata non è valida. Seleziona una data non esistente perfavore.";
                     request.setAttribute("errorMessage", errorMessage);
                     request.getRequestDispatcher("JSP/schedule.jsp").forward(request, response);
                 }
