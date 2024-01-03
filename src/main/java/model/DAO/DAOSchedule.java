@@ -280,4 +280,39 @@ public class DAOSchedule {
         }
         return count;
     }
+
+    public int checkData(int idTherapist, Date date, String timeSlot) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int count = 0;
+
+        try {
+            conn = DAOConnection.getConnection();
+
+            String sql = "SELECT COUNT(*) FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, idTherapist);
+            pstmt.setDate(2, date);
+            pstmt.setString(3, timeSlot);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                DAOConnection.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
 }

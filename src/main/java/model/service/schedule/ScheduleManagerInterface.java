@@ -71,4 +71,9 @@ public interface ScheduleManagerInterface {
      * @return a list of schedule that the therapist has created.
      */
     int retrieveAllPrenotedSchedulesCount(int idTherapist);
+
+    /**
+     * checks if the data exists in the database.
+     */
+    boolean checkData(int idTherapist, String date, String timeSlot);
 }

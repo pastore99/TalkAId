@@ -21,6 +21,17 @@
     <link rel="stylesheet" type="text/css" href="../CSS/schedule.css">
 </head>
 <body>
+<%
+    String errorMessage = (String) request.getAttribute("errorMessage");
+    if (errorMessage != null && !errorMessage.isEmpty()) {
+%>
+<script>
+    alert('<%= errorMessage %>');
+    window.location.href = "JSP/schedule.jsp";
+</script>
+<%
+    }
+%>
 <div id="calendar">
     <div class="header">
         <img class="profile" src="../images/homepagepatient/profile.svg">
@@ -42,6 +53,7 @@
         <input type="hidden"  name="idTherapist" value="<%=userId%>">
         <input type="hidden" id="selectedDate" name="date">
         <input type="hidden" id="selectedTime" name="timeslot">
+        <input type="hidden" id="getContextPath" value="<%=request.getContextPath()%>">
         <button class="button" type="submit" name="action" value="createNewSchedule">Aggiungi data</button>
     </form>
 

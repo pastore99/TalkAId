@@ -46,4 +46,8 @@ public class ScheduleManager implements ScheduleManagerInterface {
     public int retrieveAllPrenotedSchedulesCount(int idTherapist){
         return db.retrieveAllPrenotedSchedulesCount(idTherapist);
     }
+
+    public boolean checkData(int idTherapist, String date, String timeSlot) {
+        return db.checkData(idTherapist, convStoD(date), timeSlot) == 0;
+    }
 }

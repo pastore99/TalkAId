@@ -3,6 +3,7 @@ package controller;
 import model.service.schedule.ScheduleManager;
 
 import java.io.IOException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +26,14 @@ public class ScheduleServlet extends HttpServlet {
             //azioni fatte dal logopedista
 
             if (action.equalsIgnoreCase("createNewSchedule")) {
-                scheduleManager.createNewSchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")));
-                response.sendRedirect("JSP/schedule.jsp");
+                if (scheduleManager.checkData(userId, request.getParameter("date"), request.getParameter("timeslot"))) {
+                    scheduleManager.createNewSchedule(userId, request.getParameter("date"), request.getParameter("timeslot"));
+                    response.sendRedirect("JSP/schedule.jsp");
+                } else {
+                    String errorMessage = "Hai gia' immesso questa data per un altra schedule, perfavore elimina la precedente prima di continuare";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.getRequestDispatcher("JSP/schedule.jsp").forward(request, response);
+                }
             }
             else if (action.equalsIgnoreCase("deleteSchedule")) {
                 scheduleManager.deleteSchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")));
@@ -53,6 +60,8 @@ public class ScheduleServlet extends HttpServlet {
     } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ServletException e) {
             throw new RuntimeException(e);
         }
     }
