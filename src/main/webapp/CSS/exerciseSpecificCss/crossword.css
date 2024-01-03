@@ -1,0 +1,71 @@
+#crosswordDiv{
+    width: 90%;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80%;
+}
+
+.row{
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.row > div{
+    flex: 1;
+    border: 2px solid #383636ED;
+}
+
+.blackBlock{
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blackBox{
+    background: black;
+    width: 80%;
+    height: 80%;
+}
+
+.indexDiv{
+    height: 35%;
+    width: 100%;
+    font-size: 3em;
+}
+
+.textDiv{
+    width: 100%;
+    height: 65%;
+    text-align: center;
+}
+
+input{
+    width: 90%;
+    height: 80%;
+    border: 3px solid green;
+    font-size: 3em;
+}
+
+h2{
+    font-size: 4em;
+}
+
+.verticalDiv{
+    width: 90%;
+    padding: 5%;
+}
+
+.horizontalDiv{
+    width: 90%;
+    padding: 5%;
+}
+
+.phrases{
+    font-size: 3em;
+}

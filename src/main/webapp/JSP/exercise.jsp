@@ -1,13 +1,11 @@
 <%@ page import="model.entity.ExerciseGlossary" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import="com.google.gson.Gson"%>
 
 <html>
 <head>
     <%
         ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
-        Gson g = new Gson();
-        session.removeAttribute("exercise");
+        //session.removeAttribute("exercise"); TODO: rimuovere questo commento prima di commit
     %>
 
     <title>Esercizio <%= exercise.getIdExercise()%></title>
@@ -34,6 +32,7 @@
     <div id="exerciseInfo" hidden
          data-id = "<%= exercise.getIdExercise()%>"
          data-type = "<%= exercise.getType()%>"
+         data-user = "<%= session.getAttribute("type")%>"
     ></div>
 </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
