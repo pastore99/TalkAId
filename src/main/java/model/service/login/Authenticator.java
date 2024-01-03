@@ -8,7 +8,21 @@ import model.service.encryption.Encryption;
 import java.security.SecureRandom;
 
 public class Authenticator implements LoginInterface {
-    DAOUser db = new DAOUser();
+    DAOUser db;
+    Encryption encryption;
+
+    public Authenticator() {
+        this.db = new DAOUser();
+        this.encryption = new Encryption();
+    }
+
+    public Authenticator(DAOUser db) {
+        this.db = db;
+    }
+
+    public void setEncryption(Encryption encryption) {
+        this.encryption = encryption;
+    }
     @Override
     public String sendPin(String email) {
         if(email.equals("test@email.com")) {
@@ -26,15 +40,12 @@ public class Authenticator implements LoginInterface {
     }
 
     public boolean resetPassword(String email, String plainTextPassword){
-        Encryption encryption = new Encryption();
-        System.out.println("password in chiaro: " + plainTextPassword);
         String hashed = encryption.encryptPassword(plainTextPassword);
         boolean Result = db.resetPassword(email,hashed);
-        System.out.println("cambiato password, esito:" + Result);
         return Result;
     }
 
-    private String generatePin() {
+    String generatePin() {
         SecureRandom random = new SecureRandom();
         String digits = "0123456789";
         String pin = "";
@@ -49,7 +60,6 @@ public class Authenticator implements LoginInterface {
     @Override
     public int authenticate(String email, String password) {
         User toCheck = db.getUserByIdOrEmail(email);
-        Encryption encryption = new Encryption();
         if(!(toCheck == null)) {
             if (encryption.verifyPassword(password, toCheck.getPassword())) {
                 return toCheck.getId();
