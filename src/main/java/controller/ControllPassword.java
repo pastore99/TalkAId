@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import model.entity.User;
 import model.service.encryption.Encryption;
+import model.service.login.Authenticator;
 import model.service.user.UserData;
 
 @WebServlet("/ControllPassword")
@@ -19,10 +21,11 @@ public class ControllPassword extends HttpServlet
         try {
             String password = request.getParameter("password");
             String password_control= password.replaceAll("\\s", "");
-            UserData utenteData = new UserData();
+            Authenticator authenticator = new Authenticator();
             int id = (int) request.getSession().getAttribute("id");
+            String email = new UserData().getUser(id).getEmail();
             JsonObject jsonResponse = new JsonObject();
-            if (utenteData.ControlPassword(id, password_control)) {
+            if (authenticator.authenticate(email, password) > 0) {
                 jsonResponse.addProperty("result", true);
                 request.getSession().setAttribute("autorizzato",true);
                 String jsonString = new Gson().toJson(jsonResponse);

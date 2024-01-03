@@ -239,114 +239,54 @@ public class DAOUser {
         return false;
     }
 
-    public String updateUser(int idUser, String Email, String address) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        String query;
+    public String updateUser(int idUser, String email, String address) {
+        String updateQuery = null;
+        boolean validEmail = true;
 
-        try
-        {
-            connection = DAOConnection.getConnection();
+        if (email != null && !checkIfEmailExists(email)) {
+            validEmail = false;
+        }
 
-            if (Email != null && address!=null)
-            {
-                if (checkIfEmailExists(Email))
-                {
-                    query = "UPDATE user SET Email = ?, Address=? WHERE ID = ?";
+        if (email == null && address == null) {
+            return "Both email and address are null. No update is needed.";
+        }
 
-                    // Prepare the statement
-                    preparedStatement = connection.prepareStatement(query);
+        if (validEmail && email != null && address != null) {
+            updateQuery = "UPDATE user SET Email = ?, Address=? WHERE ID = ?";
+        } else if (validEmail && email != null) {
+            updateQuery = "UPDATE user SET Email = ? WHERE ID = ?";
+        } else if (address != null) {
+            updateQuery = "UPDATE user SET Address=? WHERE ID = ?";
+        }
 
-                    // Set the parameters
-                    preparedStatement.setString(1, Email);
-                    preparedStatement.setString(2, address);
-                    preparedStatement.setInt(3, idUser);
+        if (updateQuery == null) {
+            return "Invalid email. No update performed.";
+        }
 
-                    // Execute the update query
-                    int rowsModified = preparedStatement.executeUpdate();
+        try (Connection connection = DAOConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-                    // If rowsModified is greater than 0, then a row has been updated.
-                    // So, return true. If not, return false.
-                    return "Aggioranmento Email e Address riuscito";
-                }
-                else
-                {
-                    query = "UPDATE user SET Address=? WHERE ID = ?";
-
-                    // Prepare the statement
-                    preparedStatement = connection.prepareStatement(query);
-
-                    // Set the parameters
-                    preparedStatement.setString(1, address);
-                    preparedStatement.setInt(2, idUser);
-
-                    // Execute the update query
-                    int rowsModified = preparedStatement.executeUpdate();
-
-                    // If rowsModified is greater than 0, then a row has been updated.
-                    // So, return true. If not, return false.
-                    return "Aggioranmento Address riuscito ma l'Email inserità e già usata scegliere un'altra Email";
-                }
-            }
-            else if (Email !=null)
-            {
-                if (checkIfEmailExists(Email))
-                {
-                    query = "UPDATE user SET Email = ? WHERE ID = ?";
-
-                    // Prepare the statement
-                    preparedStatement = connection.prepareStatement(query);
-
-                    // Set the parameters
-                    preparedStatement.setString(1, Email);
-                    preparedStatement.setInt(2, idUser);
-
-                    // Execute the update query
-                    int rowsModified = preparedStatement.executeUpdate();
-
-                    // If rowsModified is greater than 0, then a row has been updated.
-                    // So, return true. If not, return false.
-                    return "Aggioranmento Email riuscito";
-                }
-                else
-                {
-                    return "l'Email inserità e già usata scegliere un'altra Email";
-                }
-            }
-            else
-            {
-                query = "UPDATE user SET Address = ? WHERE ID = ?";
-
-                // Prepare the statement
-                preparedStatement = connection.prepareStatement(query);
-
-                // Set the parameters
+            if (validEmail && email != null && address != null) {
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, address);
+                preparedStatement.setInt(3, idUser);
+                preparedStatement.executeUpdate();
+                return "Both email and address have been updated successfully.";
+            } else if (validEmail && email != null) {
+                preparedStatement.setString(1, email);
+                preparedStatement.setInt(2, idUser);
+                preparedStatement.executeUpdate();
+                return "Email has been updated successfully.";
+            } else {
                 preparedStatement.setString(1, address);
                 preparedStatement.setInt(2, idUser);
-
-                // Execute the update query
-                int rowsModified = preparedStatement.executeUpdate();
-
-                // If rowsModified is greater than 0, then a row has been updated.
-                // So, return true. If not, return false.
-                return "Aggioranmento Address riuscito";
+                preparedStatement.executeUpdate();
+                return "Address has been updated successfully.";
             }
-        }
-        catch (Exception e)
-        {
+
+        } catch (SQLException e) {
             e.printStackTrace();
-            return "Aggiornamento non possibile a causa di un problema di connessione con il Server";
-        }
-        finally
-        {
-            try {
-                // Close everything properly
-                if (preparedStatement != null) preparedStatement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
-            }
+            return "Update not possible due to a server connection issue.";
         }
     }
     public boolean ControlPassword(int id, String Password)
