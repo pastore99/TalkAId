@@ -242,14 +242,17 @@ public class DAOUser {
     public String updateUser(int idUser, String Email, String address) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        if (Email != null && address!=null) {
-            if (checkIfEmailExists(Email)) {
-                try {
-                    // Get connection
-                    connection = DAOConnection.getConnection();
+        String query;
 
-                    // Query to update password for the given email
-                    String query = "UPDATE user SET Email = ?, Address=? WHERE ID = ?";
+        try
+        {
+            connection = DAOConnection.getConnection();
+
+            if (Email != null && address!=null)
+            {
+                if (checkIfEmailExists(Email))
+                {
+                    query = "UPDATE user SET Email = ?, Address=? WHERE ID = ?";
 
                     // Prepare the statement
                     preparedStatement = connection.prepareStatement(query);
@@ -265,28 +268,10 @@ public class DAOUser {
                     // If rowsModified is greater than 0, then a row has been updated.
                     // So, return true. If not, return false.
                     return "Aggioranmento Email e Address riuscito";
-                } catch (SQLException e) {
-                    // Handle the exception (e.g., log or throw)
-                    e.printStackTrace();
-                    return "Aggiornamento Email e Address non riuscito";
-                } finally {
-                    try {
-                        // Close everything properly
-                        if (preparedStatement != null) preparedStatement.close();
-                        DAOConnection.releaseConnection(connection);
-                    } catch (SQLException e) {
-                        // Handle the exception (e.g., log or throw)
-                        e.printStackTrace();
-                    }
                 }
-
-            } else {
-                try {
-                    // Get connection
-                    connection = DAOConnection.getConnection();
-
-                    // Query to update password for the given email
-                    String query = "UPDATE user SET Address=? WHERE ID = ?";
+                else
+                {
+                    query = "UPDATE user SET Address=? WHERE ID = ?";
 
                     // Prepare the statement
                     preparedStatement = connection.prepareStatement(query);
@@ -301,30 +286,13 @@ public class DAOUser {
                     // If rowsModified is greater than 0, then a row has been updated.
                     // So, return true. If not, return false.
                     return "Aggioranmento Address riuscito ma l'Email inserità e già usata scegliere un'altra Email";
-                } catch (SQLException e) {
-                    // Handle the exception (e.g., log or throw)
-                    e.printStackTrace();
-                    return "Aggiornamento Address non riuscito ma l'Email inserità e già usata scegliere un'altra Email";
-                } finally {
-                    try {
-                        // Close everything properly
-                        if (preparedStatement != null) preparedStatement.close();
-                        DAOConnection.releaseConnection(connection);
-                    } catch (SQLException e) {
-                        // Handle the exception (e.g., log or throw)
-                        e.printStackTrace();
-                    }
                 }
             }
-        }
-        else
-        if (Email != null) {
-            if (checkIfEmailExists(Email)) {
-                try {
-                    connection = DAOConnection.getConnection();
-
-                    // Query to update password for the given email
-                    String query = "UPDATE user SET Email = ? WHERE ID = ?";
+            else if (Email !=null)
+            {
+                if (checkIfEmailExists(Email))
+                {
+                    query = "UPDATE user SET Email = ? WHERE ID = ?";
 
                     // Prepare the statement
                     preparedStatement = connection.prepareStatement(query);
@@ -339,33 +307,15 @@ public class DAOUser {
                     // If rowsModified is greater than 0, then a row has been updated.
                     // So, return true. If not, return false.
                     return "Aggioranmento Email riuscito";
-                } catch (SQLException e) {
-                    // Handle the exception (e.g., log or throw)
-                    e.printStackTrace();
-                    return "Aggiornamento Email non riuscito";
-                } finally {
-                    try {
-                        // Close everything properly
-                        if (preparedStatement != null) preparedStatement.close();
-                        DAOConnection.releaseConnection(connection);
-                    } catch (SQLException e) {
-                        // Handle the exception (e.g., log or throw)
-                        e.printStackTrace();
-                    }
+                }
+                else
+                {
+                    return "l'Email inserità e già usata scegliere un'altra Email";
                 }
             }
             else
             {
-                return "l'Email inserità e già usata scegliere un'altra Email";
-            }
-        }
-        else
-        {
-            try {
-                connection = DAOConnection.getConnection();
-
-                // Query to update password for the given email
-                String query = "UPDATE user SET Address = ? WHERE ID = ?";
+                query = "UPDATE user SET Address = ? WHERE ID = ?";
 
                 // Prepare the statement
                 preparedStatement = connection.prepareStatement(query);
@@ -380,19 +330,22 @@ public class DAOUser {
                 // If rowsModified is greater than 0, then a row has been updated.
                 // So, return true. If not, return false.
                 return "Aggioranmento Address riuscito";
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "Aggiornamento non possibile a causa di un problema di connessione con il Server";
+        }
+        finally
+        {
+            try {
+                // Close everything properly
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
                 e.printStackTrace();
-                return "Aggiornamento non riuscito di Address";
-            } finally {
-                try {
-                    // Close everything properly
-                    if (preparedStatement != null) preparedStatement.close();
-                    DAOConnection.releaseConnection(connection);
-                } catch (SQLException e) {
-                    // Handle the exception (e.g., log or throw)
-                    e.printStackTrace();
-                }
             }
         }
     }

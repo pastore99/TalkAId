@@ -23,6 +23,6 @@ public class LogOutController extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("/TalkAID_war_exploded/JSP/login.jsp");
+        response.sendRedirect("../JSP/login.jsp");
     }
 }

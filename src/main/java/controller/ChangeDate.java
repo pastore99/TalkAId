@@ -64,7 +64,7 @@ public class ChangeDate extends  HttpServlet
         }
         if(!Objects.equals(request.getParameter("password"), ""))
         {
-            response.sendRedirect("/TalkAID_war_exploded/JSP/Change_Password.jsp");
+            response.sendRedirect("/TalkAID_war_exploded/JSP/Controll_Password.jsp");
         }
         else
         {
