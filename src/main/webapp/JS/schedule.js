@@ -9,7 +9,7 @@ document.getElementById('calendarTitle').textContent = `${new Date().toLocaleStr
 
 
 function createCalendar() {
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
     document.getElementById('calendarTitle').textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
     let firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();

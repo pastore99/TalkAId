@@ -32,11 +32,6 @@ public class ScheduleServlet extends HttpServlet {
                 scheduleManager.deleteSchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")));
                 response.sendRedirect("JSP/schedule.jsp");
             }
-            else if (action.equalsIgnoreCase("modifySchedule")) {
-                int idReserved = Integer.parseInt(request.getParameter("idReserved"));
-                scheduleManager.modifySchedule(userId,(request.getParameter("date")),(request.getParameter("timeslot")),(request.getParameter("ndate")),(request.getParameter("ntimeslot")),idReserved);
-                response.sendRedirect("JSP/schedule.jsp");
-            }
 
             //azioni fatte dal paziente
 

@@ -2,28 +2,40 @@ body {
     font-family: Georgia, sans-serif;
     width: 100%;
     max-width: 800px;
-    margin: 0 auto;
     padding: 20px;
     font-size:2em;
+    color: #252526;
+    margin: 0 auto;
 }
 
+
+
+
 #calendar {
+    background-color: #f9fafb;
     text-align: center;
 }
 
 #calendarTable {
+    background-color: #42e3d4;
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
+    height: 120px;
 }
 
 #calendarTable th, #calendarTable td {
-    border: 1px solid black;
-    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 50px;
 }
 
 #calendarTable tr:nth-child(even) {
@@ -40,19 +52,28 @@ body {
 
 
 
+
 #timeTable {
+    background-color: #42e3d4;
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
+    height: 120px;
 }
 
 #timeTable th, #timeTable td {
-    border: 1px solid black;
-    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 50px;
+    margin-right: 20px; /* Spazio tra i div */
 }
 
 #timeTable tr:nth-child(even) {
@@ -65,22 +86,106 @@ body {
 
 
 
-/* Aggiungi stili per la nuova tabella */
-.modTable {
+
+#seltimecaldiv{
+    background-color: #42e3d4;
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     margin-bottom: 20px;
+    border-radius: 50px;
     overflow-x: auto;
     white-space: nowrap;
 }
 
-.modTable th,
-.modTable td {
-    border: 1px solid black;
-    padding: 10px;
+
+
+
+.divbar{
+    background-color: #199a8e;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.3em;
+    margin-bottom: 1.3em;
+    border-radius: 50px;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 1.3em;
 }
 
-.modTable tr:nth-child(even) {
-    background-color: #f2f2f2;
+
+
+
+.modTable {
+    display: flex;
+    background-color: #42e3d4;
+    width: 100%;
+    border-collapse: collapse;
+    color: #252526;
+    margin-top: 1.3em;
+    margin-bottom: 1.3em;
+    border-radius: 20px;
+    border-collapse: separate;
+    border-spacing: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+
+
+
+.button {
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    position: relative;
+    background-color: #199a8e;
+    border-radius: 9999px;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+    font-size: .7em;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+.buttonimg {
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 9999px;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+    font-size: .7em;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+h2{
+    color:#199a8e;
+    font-weight: 700;
+}
+
+.header {
+    font-family: Georgia, serif;
+    text-align: center;
+    color:#199a8e;
+    font-weight: 700;
+}
+
+.notification{
+    float: right;
+    height: 1.3em;
+}
+
+.profile{
+    float: left;
+    height: 1.3em;
 }

@@ -3,7 +3,7 @@
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.entity.Schedule" %>
 <%@ page import="model.service.schedule.ScheduleManager" %>
-<%
+<%  ScheduleManager scheduleManagerc = new ScheduleManager();
     Integer userIdp = (Integer) session.getAttribute("id");
 
     if(userIdp == null) {
@@ -22,54 +22,58 @@
 </head>
 <body>
 <div id="calendar">
+    <div class="header">
+        <img class="profile" src="../images/homepagepatient/profile.svg">
+        Agenda
+        <img class="notification" src="../images/homepagepatient/icon-notification.svg">
+    </div>
     <%
         if (session.getAttribute("type") == "therapist"){
     %>
-    <h1>aggiunta calendario prenotazione</h1>
+    <div class="divbar"></div>
     <h2 id="calendarTitle"></h2>
-    <button id="prevMonth">Previous Month</button>
-    <button id="nextMonth">Next Month</button>
-    <table id="calendarTable"></table>
-    <table id="timeTable"></table>
+    <button class="button" id="prevMonth">Mese Indietro</button>
+    <button class="button" id="nextMonth">Mese Avanti</button>
+    <div id="seltimecaldiv">
+        <table id="calendarTable"></table>
+        <table id="timeTable"></table>
+    </div>
     <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm" method="post">
         <input type="hidden"  name="idTherapist" value="<%=userId%>">
         <input type="hidden" id="selectedDate" name="date">
         <input type="hidden" id="selectedTime" name="timeslot">
-        <input type="submit" name="action" value="createNewSchedule">
+        <button class="button" type="submit" name="action" value="createNewSchedule">Aggiungi data</button>
     </form>
 
+    <div class="divbar"></div>
 
 
 
 
 
 
-
-    <h1>logopedista</h1>
     <h2>le mie prenotate</h2>
-        <table class="modTable">
-            <thead>
+    <%
+        ScheduleManager scheduleManager = new ScheduleManager();
+        List<Schedule> list = scheduleManager.retrieveAllPrenotedSchedules(userId);
+        if(!list.isEmpty()){
+    %>
+    <h3>Hai <%=scheduleManagerc.retrieveAllPrenotedSchedulesCount(userId)%> prenotazioni</h3>
+    <table class="modTable">
+        <tr>
+            <th>Data</th>
+            <th>Orario</th>
+            <th>Paziente</th>
+        </tr>
+        <%
+                for(Schedule schedule : list) {
+                    UserRegistry ur = new UserRegistry();
+                    PersonalInfo data= ur.getPersonalInfo(schedule.getReserved());
+        %>
+        <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myprenotlog" method="post">
             <tr>
-                <th>Terapista</th>
-                <th>Data</th>
-                <th>Orario</th>
-                <th>Paziente</th>
-            </tr>
-            </thead>
-            <%
-                    ScheduleManager scheduleManager = new ScheduleManager();
-                    List<Schedule> list = scheduleManager.retrieveAllPrenotedSchedules(userId);
-                    if(list!=null){
-                        for(Schedule schedule : list) {
-                            UserRegistry ur = new UserRegistry();
-                            PersonalInfo data1 = ur.getPersonalInfo(schedule.getIdTherapist());
-                            PersonalInfo data2 = ur.getPersonalInfo(schedule.getReserved());
-            %>
-            <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myprenotlog" method="post">
-            <tr>
-            <th><%=data1.getFirstname()%> <%=data1.getLastname()%></th>
-            <th><%=schedule.getDate()%></th>
-            <th><%=schedule.getTimeSlot()%></th>
+                <th><%=schedule.getDate()%></th>
+                <th><%=schedule.getTimeSlot()%></th>
                 <%
                     if(schedule.getReserved()==0){
                 %>
@@ -77,91 +81,85 @@
                 <%
                 }else{
                 %>
-                <th><%=data2.getFirstname()%> <%=data2.getLastname()%></th>
+                <th><%=data.getFirstname()%> <%=data.getLastname()%></th>
                 <%
                     }
                 %>
-            <input type="hidden" name="date" value="<%=schedule.getDate()%>">
-            <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
-            <input type="hidden" name="idReserved" value="<%=schedule.getReserved()%>">
-            <th>
-                <input type="submit" name="action" value="modifySchedule">
-            </th>
+                <input type="hidden" name="date" value="<%=schedule.getDate()%>">
+                <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
+                <input type="hidden" name="idReserved" value="<%=schedule.getReserved()%>">
+                <th>
+                    <button class="buttonimg" type="submit" name="action" value="deleteSchedule"><img class="profile" src="../images/schedule/scheduledel.png" alt="Elimina prenotazione"></button>
+                </th>
             </tr>
-            </form>
-            <%
-                }
-            }else{
-            %>
-            <tr>
-                <th>ancora nessuna prenotazione ricevuta</th>
-            </tr>
-            <%
-                }
-            %>
-        </table>
-
-
-
-
-    <h2>le mie schedule</h2>
-        <table class="modTable">
-            <thead>
-            <tr>
-                <th>Terapista</th>
-                <th>Data</th>
-                <th>Orario</th>
-                <th>Paziente</th>
-            </tr>
-            </thead>
-            <%
-                ScheduleManager scheduleManager2 = new ScheduleManager();
-                List<Schedule> list2 = scheduleManager2.retrieveAllTherapistSchedules(userId);
-                if(list2!=null){
-                    for(Schedule schedule : list2) {
-                        UserRegistry ur = new UserRegistry();
-                        PersonalInfo data1 = ur.getPersonalInfo(schedule.getIdTherapist());
-                        PersonalInfo data2 = ur.getPersonalInfo(schedule.getReserved());
-            %>
-            <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myschedlog" method="post">
-                <tr>
-                    <th><%=data1.getFirstname()%> <%=data1.getLastname()%></th>
-                    <th><%=schedule.getDate()%></th>
-                    <th><%=schedule.getTimeSlot()%></th>
-                    <%
-                        if(schedule.getReserved()==0){
-                    %>
-                    <th>nessuno</th>
-                    <%
-                    }else{
-                    %>
-                    <th><%=data2.getFirstname()%> <%=data2.getLastname()%></th>
-                    <%
-                        }
-                    %>
-                    <input type="hidden" name="date" value="<%=schedule.getDate()%>">
-                    <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
-                    <input type="hidden" name="idReserved" value="<%=schedule.getReserved()%>">
-                    <th>
-                        <input type="submit" name="action" value="modifySchedule">
-                        <br>
-                        <input type="submit" name="action" value="deleteSchedule">
-                    </th>
-                </tr>
-            </form>
-            <%
-                }
-            }else{
-            %>
-            <tr>
-                <th>ancora nessuna prenotazione ricevuta</th>
-            </tr>
-            <%
-                }
-            %>
-        </table>
-    <%
+        </form>
+        <%
+            }
         }else{
+        %>
+        <h3>nessuna prenotazione ricevuta</h3>
+        <%
+            }
+        %>
+    </table>
+
+
+
+
+    <div class="divbar"></div>
+    <h2>le mie schedule</h2>
+    <%
+        ScheduleManager scheduleManager2 = new ScheduleManager();
+        List<Schedule> list2 = scheduleManager2.retrieveAllTherapistSchedules(userId);
+        if(!list2.isEmpty()){
+    %>
+    <table class="modTable">
+        <tr>
+            <th>Data</th>
+            <th>Orario</th>
+            <th>Paziente</th>
+        </tr>
+        <%
+                for(Schedule schedule : list2) {
+                    UserRegistry ur = new UserRegistry();
+                    PersonalInfo data = ur.getPersonalInfo(schedule.getReserved());
+        %>
+        <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myschedlog" method="post">
+            <tr>
+                <th><%=schedule.getDate()%></th>
+                <th><%=schedule.getTimeSlot()%></th>
+                <%
+                    if(schedule.getReserved()==0){
+                %>
+                <th>nessuno</th>
+                <%
+                }else{
+                %>
+                <th><%=data.getFirstname()%> <%=data.getLastname()%></th>
+                <%
+                    }
+                %>
+                <input type="hidden" name="date" value="<%=schedule.getDate()%>">
+                <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
+                <input type="hidden" name="idReserved" value="<%=schedule.getReserved()%>">
+                <th>
+                    <button class="buttonimg" type="submit" name="action" value="deleteSchedule"><img class="profile" src="../images/schedule/scheduledel.png" alt="Elimina data"></button>
+                </th>
+            </tr>
+        </form>
+        <%
+            }
+        }else{
+        %>
+        <tr>
+            <h3>nessuna prenotazione creata</h3>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+    <%
+    }else{
     %>
 
 
@@ -170,119 +168,95 @@
 
 
 
-    <h1>paziente <%=userId%></h1>
-    <h2>prenotazioni disponibili</h2>
-        <table class="modTable">
-            <thead>
-            <tr>
-                <th>Terapista</th>
-                <th>Data</th>
-                <th>Orario</th>
-                <th>Paziente</th>
-            </tr>
-            </thead>
-            <%
-                ScheduleManager scheduleManager3 = new ScheduleManager();
-                List<Schedule> list3 = scheduleManager3.retrieveAllNotPrenotedSchedules((Integer) session.getAttribute("therapist"));
-                if(list3!=null){
-                    for(Schedule schedule : list3) {
-                        UserRegistry ur = new UserRegistry();
-                        PersonalInfo data1 = ur.getPersonalInfo(schedule.getIdTherapist());
-                        PersonalInfo data2 = ur.getPersonalInfo(schedule.getReserved());
-            %>
-            <form action="<%=request.getContextPath()%>/ScheduleServlet" id="disprenotpaz" method="post">
-                <tr>
-                    <th><%=data1.getFirstname()%> <%=data1.getLastname()%></th>
-                    <th><%=schedule.getDate()%></th>
-                    <th><%=schedule.getTimeSlot()%></th>
-                    <%
-                        if(schedule.getReserved()==0){
-                    %>
-                    <th>nessuno</th>
-                    <%
-                    }else{
-                    %>
-                    <th><%=data2.getFirstname()%> <%=data2.getLastname()%></th>
-                    <%
-                        }
-                    %>
-                    <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
-                    <input type="hidden" name="date" value="<%=schedule.getDate()%>">
-                    <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
-                    <th>
-                        <input type="submit" name="action" value="prenoteSchedule">
-                    </th>
-                </tr>
-            </form>
-            <%
-                }
-            }else{
-            %>
-            <tr>
-                <th>ancora nessuna prenotazione ricevuta</th>
-            </tr>
-            <%
-                }
-            %>
-        </table>
-
-
-
-
+    <div class="divbar"></div>
     <h2>le mie prenotazioni</h2>
-        <table class="modTable">
-            <thead>
+    <%
+        ScheduleManager scheduleManager4 = new ScheduleManager();
+        List<Schedule> list4 = scheduleManager4.retrieveAllPatientSchedules(userId);
+        if(!list4.isEmpty()){
+    %>
+    <table class="modTable">
+        <tr>
+            <th>Terapista</th>
+            <th>Data</th>
+            <th>Orario</th>
+        </tr>
+        <%
+                for(Schedule schedule : list4) {
+                    UserRegistry ur = new UserRegistry();
+                    PersonalInfo data = ur.getPersonalInfo(schedule.getIdTherapist());
+        %>
+        <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myprenotpaz" method="post">
             <tr>
-                <th>Terapista</th>
-                <th>Data</th>
-                <th>Orario</th>
-                <th>Paziente</th>
+                <th><%=data.getFirstname()%> <%=data.getLastname()%></th>
+                <th><%=schedule.getDate()%></th>
+                <th><%=schedule.getTimeSlot()%></th>
+                <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
+                <input type="hidden" name="date" value="<%=schedule.getDate()%>">
+                <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
+                <th>
+                    <button class="buttonimg" type="submit" name="action" value="unprenoteSchedule"><img class="profile" src="../images/schedule/scheduledel.png" alt="Elimina prenotazione"></button>
+                </th>
             </tr>
-            </thead>
-            <%
-                ScheduleManager scheduleManager4 = new ScheduleManager();
-                List<Schedule> list4 = scheduleManager4.retrieveAllPatientSchedules(userId);
-                if(list4!=null){
-                    for(Schedule schedule : list4) {
-                        UserRegistry ur = new UserRegistry();
-                        PersonalInfo data1 = ur.getPersonalInfo(schedule.getIdTherapist());
-                        PersonalInfo data2 = ur.getPersonalInfo(schedule.getReserved());
-            %>
-            <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myprenotpaz" method="post">
-                <tr>
-                    <th><%=data1.getFirstname()%> <%=data1.getLastname()%></th>
-                    <th><%=schedule.getDate()%></th>
-                    <th><%=schedule.getTimeSlot()%></th>
-                    <%
-                        if(schedule.getReserved()==0){
-                    %>
-                    <th>nessuno</th>
-                    <%
-                    }else{
-                    %>
-                    <th><%=data2.getFirstname()%> <%=data2.getLastname()%></th>
-                    <%
-                        }
-                    %>
-                    <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
-                    <input type="hidden" name="date" value="<%=schedule.getDate()%>">
-                    <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
-                    <th>
-                        <input type="submit" name="action" value="unprenoteSchedule">
-                    </th>
-                </tr>
-            </form>
-            <%
-                }
-            }else{
-            %>
+        </form>
+        <%
+            }
+        }else{
+        %>
+        <tr>
+            <h3>nessuna prenotazione effettuata</h3>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+
+
+
+
+    <div class="divbar"></div>
+    <h2>prenotazioni disponibili</h2>
+    <%
+        ScheduleManager scheduleManager3 = new ScheduleManager();
+        List<Schedule> list3 = scheduleManager3.retrieveAllNotPrenotedSchedules((Integer) session.getAttribute("therapist"));
+        if(!list3.isEmpty()){
+    %>
+    <table class="modTable">
+        <tr>
+            <th>Terapista</th>
+            <th>Data</th>
+            <th>Orario</th>
+        </tr>
+        <%
+                for(Schedule schedule : list3) {
+                    UserRegistry ur = new UserRegistry();
+                    PersonalInfo data = ur.getPersonalInfo(schedule.getIdTherapist());
+        %>
+        <form action="<%=request.getContextPath()%>/ScheduleServlet" id="disprenotpaz" method="post">
             <tr>
-                <th>ancora nessuna prenotazione ricevuta</th>
+                <th><%=data.getFirstname()%> <%=data.getLastname()%></th>
+                <th><%=schedule.getDate()%></th>
+                <th><%=schedule.getTimeSlot()%></th>
+                <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
+                <input type="hidden" name="date" value="<%=schedule.getDate()%>">
+                <input type="hidden" name="timeslot" value="<%=schedule.getTimeSlot()%>">
+                <th>
+                    <button class="buttonimg" type="submit" name="action" value="prenoteSchedule"><img class="profile" src="../images/schedule/scheduleadd.svg" alt="Prenotati"></button>
+                </th>
             </tr>
-            <%
-                }
-            %>
-        </table>
+        </form>
+        <%
+            }
+        }else{
+        %>
+        <h3>nessuna prenotazione disponibile</h3>
+        <%
+            }
+        %>
+    </table>
+
+
+
 
     <%
         }
