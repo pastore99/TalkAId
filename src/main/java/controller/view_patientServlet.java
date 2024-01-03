@@ -1,17 +1,20 @@
 package controller;
 
-import model.entity.User;
-import model.entity.UserInfo;
-import model.service.personalinfo.PersonalInfo;
-
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
 
-public class view_patientServlet {
+import model.entity.*;
+import model.service.personalinfo.PersonalInfo;
+
+@WebServlet("/view_patientServlet")
+public class view_patientServlet extends HttpServlet {
 
 
 
@@ -21,12 +24,18 @@ public class view_patientServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         HttpSession session = request.getSession();
-
         model.service.user.UserData userService = new model.service.user.UserData();
         model.service.personalinfo.PersonalInfo piService= new PersonalInfo();
 
+        int userId = Integer.parseInt(request.getParameter("userId"));
+
+        User u = userService.getUserByIdOrEmail(userId);
+        model.entity.PersonalInfo pi = piService.getPersonalInfoById(userId);
+
+        UserInfo user_inf= new UserInfo(u.getId(),u.getEmail(),u.getActivationDate(),pi.getFirstname(),pi.getLastname(),pi.getDateOfBirth(),pi.getGender(),pi.getAddress(),pi.getSsn(),pi.getPhone());
+
+        session.setAttribute("user_selected",user_inf);
 
         response.sendRedirect("JSP/view_patient.jsp");
 

@@ -231,13 +231,11 @@ public class DAOUser {
                 e.printStackTrace();
             }
         }
-
         // Default to false if an exception occurs
         return false;
     }
 
     public ArrayList<User> getUsersByIdTherapist(int id) {
-
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -271,9 +269,7 @@ public class DAOUser {
                 e.printStackTrace();
             }
         }
-
         return null; // or you may throw an exception here
-
     }
 
     public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int idTherapist) {
@@ -282,9 +278,7 @@ public class DAOUser {
         ResultSet resultSet = null;
         ArrayList<UserInfo> list_user=new ArrayList<>();
 
-
         try {
-
             connection = DAOConnection.getConnection();
             String query = null;
 

@@ -15,6 +15,22 @@ public class UserInfo {
     private String ssn;
     private String phone;
 
+    public UserInfo() {
+    }
+
+    public UserInfo(int id, String email, Timestamp activationDate, String firstname, String lastname, Date dateOfBirth, String gender, String address, String ssn, String phone) {
+        this.id = id;
+        this.email = email;
+        this.activationDate = activationDate;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.ssn = ssn;
+        this.phone = phone;
+    }
+
     public int getId() {
         return id;
     }

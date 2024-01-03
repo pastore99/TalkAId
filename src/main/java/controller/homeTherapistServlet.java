@@ -29,7 +29,6 @@ public class homeTherapistServlet extends HttpServlet {
         model.service.personalinfo.PersonalInfo piService= new PersonalInfo();
 
         ArrayList<UserInfo> list_user=new ArrayList<>();
-        //String tipo=request.getParameter("type");
         User logged= (User) session.getAttribute("user_logged");
         list_user=userService.getUsersAndPersonalInfoByIdTherapist((Integer) logged.getId()); //save all patient of X therapist
 
