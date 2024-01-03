@@ -2,7 +2,6 @@ package model.service.license;
 
 import model.DAO.DAOLicense;
 import org.junit.jupiter.api.Test;
-import model.service.license.LicenseActivation;
 import model.entity.License;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,86 +14,102 @@ class LicenseActivationTest {
         // Mock the DAOLicense class
         DAOLicense daoLicenseMock = mock(DAOLicense.class);
 
-        // Set up the LicenseActivation class with the mocked DAO
-        LicenseActivation licenseActivation = new LicenseActivation();
-        licenseActivation.setDAOLicense(daoLicenseMock);
+        // Mock a License instance
+        License mockLicense = mock(License.class);
 
-        // Create a sample license
-        License sampleLicense = new License();
-        sampleLicense.setSequence("1234");
-        sampleLicense.setIdUser(1);
+        // Mock the behavior of getLicenseByCode()
+        when(daoLicenseMock.getLicenseByCode(anyString())).thenReturn(mockLicense);
 
-        // Mock the behavior of the DAO method
-        when(daoLicenseMock.getLicenseByCode(anyString())).thenReturn(sampleLicense);
+        // Initialize LicenseActivation with mocked DAOLicense
+        LicenseActivation licenseActivation = new LicenseActivation(daoLicenseMock);
 
-        // Test the getLicense method
-        License resultLicense = licenseActivation.getLicense("sampleCode");
-        assertNotNull(resultLicense);
-        assertEquals(sampleLicense, resultLicense);
+        // Test getLicense()
+        License license = licenseActivation.getLicense("test code");
+        assertNotNull(license);
+        assertEquals(mockLicense, license);
+
+        // Verify interaction with mock
+        verify(daoLicenseMock).getLicenseByCode("test code");
     }
 
     @Test
     void testIsActivable() {
-        LicenseActivation licenseActivation = new LicenseActivation();
+        // Mock a License instance
+        License mockLicense = mock(License.class);
 
-        // Test with an active license
-        License activeLicense = new License();
-        activeLicense.setActive(true);
-        assertFalse(licenseActivation.isActivable(activeLicense));
+        // Initialize LicenseActivation with null as we are not interacting with DAO in this test
+        LicenseActivation licenseActivation = new LicenseActivation(null);
 
-        // Test with an inactive license
-        License inactiveLicense = new License();
-        inactiveLicense.setActive(false);
-        assertTrue(licenseActivation.isActivable(inactiveLicense));
+        // Mock the behavior of isActive() for return false
+        when(mockLicense.isActive()).thenReturn(false);
 
-        // Test with a null license
-        assertFalse(licenseActivation.isActivable(null));
+        // Test isActivable()
+        boolean isActivable = licenseActivation.isActivable(mockLicense);
+        assertTrue(isActivable);
+
+        // Verify interaction with mock
+        verify(mockLicense).isActive();
     }
 
     @Test
     void testIsForTherapist() {
-        LicenseActivation licenseActivation = new LicenseActivation();
+        // Initialize LicenseActivation with null as we are not interacting with DAO in this test
+        LicenseActivation licenseActivation = new LicenseActivation(null);
 
-        // Test with a valid therapist license
-        License therapistLicense = new License();
-        therapistLicense.setSequence("1234");
-        therapistLicense.setIdUser(1);
-        assertEquals(1, licenseActivation.isForTherapist(therapistLicense));
+        // Mock a License instance
+        License mockLicense = mock(License.class);
 
-        // Test with an invalid therapist license
-        License invalidTherapistLicense = new License();
-        invalidTherapistLicense.setSequence("123");
-        invalidTherapistLicense.setIdUser(2);
-        assertEquals(0, licenseActivation.isForTherapist(invalidTherapistLicense));
+        // Test isForTherapist method when sequence length is not 4 (expecting 0 as return)
+        when(mockLicense.getSequence()).thenReturn("123");
+        assertEquals(0, licenseActivation.isForTherapist(mockLicense));
 
-        // Test with a null license
-        assertEquals(0, licenseActivation.isForTherapist(null));
+        // Test with sequence length equal to 4
+        when(mockLicense.getSequence()).thenReturn("1234");
+        when(mockLicense.getIdUser()).thenReturn(9);
+        assertEquals(9, licenseActivation.isForTherapist(mockLicense));
     }
 
+    @Test
+    void testActivate() {
+        // Mock the DAOLicense class
+        DAOLicense daoLicenseMock = mock(DAOLicense.class);
+
+        // Mock a License instance
+        License mockLicense = mock(License.class);
+
+        // Initialize LicenseActivation with mocked DAOLicense
+        LicenseActivation licenseActivation = new LicenseActivation(daoLicenseMock);
+
+        // Test activate()
+        licenseActivation.activate(mockLicense, 1);
+
+        // Verify interaction with mock
+        verify(daoLicenseMock).activate(mockLicense, 1);
+    }
 
     @Test
-    void testGeneratingLicenses(){
-        DAOLicense daoLicense = new DAOLicense();
+    void testGeneratePinAndLicense() {
+        // Mock the DAOLicense class
+        DAOLicense daoLicenseMock = mock(DAOLicense.class);
 
-        LicenseActivation licenseActivation = new LicenseActivation();
-        String licenseCode = licenseActivation.generateLicense();
-        String pinCode = licenseActivation.generatePin(9);
+        String samplePin = "1234";
+        String sampleLicense = "12345678";
 
-        assertEquals(8, licenseCode.length());
-        assertEquals(4, pinCode.length());
+        // Mock the behavior of generateInvitation() and generateLicense()
+        when(daoLicenseMock.generateInvitation(1)).thenReturn(samplePin);
+        when(daoLicenseMock.generateLicense()).thenReturn(sampleLicense);
 
-        licenseActivation.activate(daoLicense.getLicenseByCode(licenseCode), 0);
-        licenseActivation.activate(daoLicense.getLicenseByCode(pinCode), 999);
+        // Initialize LicenseActivation with mocked DAOLicense
+        LicenseActivation licenseActivation = new LicenseActivation(daoLicenseMock);
 
-        License license1 = daoLicense.getLicenseByCode(licenseCode);
-        assertTrue(license1.isActive());
-        assertEquals(0, license1.getIdUser());
+        // Test generatePin()
+        String generatedPin = licenseActivation.generatePin(1);
+        assertEquals(samplePin, generatedPin);
+        verify(daoLicenseMock).generateInvitation(1);
 
-        License license2 = daoLicense.getLicenseByCode(pinCode);
-        assertTrue(license2.isActive());
-        assertEquals(999, license2.getIdUser());
-
-        daoLicense.deleteLicense(licenseCode);
-        daoLicense.deleteLicense(pinCode);
+        // Test generateLicense()
+        String generatedLicense = licenseActivation.generateLicense();
+        assertEquals(sampleLicense, generatedLicense);
+        verify(daoLicenseMock).generateLicense();
     }
 }

@@ -4,8 +4,15 @@ import model.entity.License;
 import model.DAO.DAOLicense;
 
 public class LicenseActivation implements LicenseActivationInterface {
-    DAOLicense daoLicense = new DAOLicense();
+    DAOLicense daoLicense;
 
+    public LicenseActivation() {
+        this.daoLicense = new DAOLicense();
+    }
+
+    public LicenseActivation(DAOLicense daoLicense) {
+        this.daoLicense = daoLicense;
+    }
     public void setDAOLicense(DAOLicense daoLicense) {
         this.daoLicense = daoLicense;
     }
