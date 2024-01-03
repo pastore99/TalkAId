@@ -36,4 +36,11 @@ public class UserData implements UserDataInterface {
     public boolean updateEmailTime(String id, String value) {
         return daoUser.updateEmailTime(id, value);
     }
+
+    public String updateUser(int idUser, String Email, String address)
+    {
+        return daoUser.updateUser(idUser, Email, address);
+    }
+
+    public boolean resetPassword(String email, String newPassword){ return daoUser.resetPassword(email, newPassword);}
 }

@@ -234,6 +234,57 @@ public class DAOUser {
         return false;
     }
 
+    public String updateUser(int idUser, String email, String address) {
+        String updateQuery = null;
+        boolean validEmail = true;
+
+        if (email != null && !checkIfEmailExists(email)) {
+            validEmail = false;
+        }
+
+        if (email == null && address == null) {
+            return "Both email and address are null. No update is needed.";
+        }
+
+        if (validEmail && email != null && address != null) {
+            updateQuery = "UPDATE user SET Email = ?, Address=? WHERE ID = ?";
+        } else if (validEmail && email != null) {
+            updateQuery = "UPDATE user SET Email = ? WHERE ID = ?";
+        } else if (address != null) {
+            updateQuery = "UPDATE user SET Address=? WHERE ID = ?";
+        }
+
+        if (updateQuery == null) {
+            return "Invalid email. No update performed.";
+        }
+
+        try (Connection connection = DAOConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            if (validEmail && email != null && address != null) {
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, address);
+                preparedStatement.setInt(3, idUser);
+                preparedStatement.executeUpdate();
+                return "Both email and address have been updated successfully.";
+            } else if (validEmail && email != null) {
+                preparedStatement.setString(1, email);
+                preparedStatement.setInt(2, idUser);
+                preparedStatement.executeUpdate();
+                return "Email has been updated successfully.";
+            } else {
+                preparedStatement.setString(1, address);
+                preparedStatement.setInt(2, idUser);
+                preparedStatement.executeUpdate();
+                return "Address has been updated successfully.";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Update not possible due to a server connection issue.";
+        }
+    }
+
     /**
      * Updates the user's analytics choice in the User table.
      *
