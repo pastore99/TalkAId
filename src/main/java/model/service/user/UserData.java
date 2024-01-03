@@ -4,7 +4,14 @@ import model.DAO.DAOUser;
 import model.entity.User;
 
 public class UserData implements UserDataInterface {
-    DAOUser daoUser = new DAOUser();
+    DAOUser daoUser;
+    public UserData() {
+        this.daoUser = new DAOUser();}
+
+
+    public UserData(DAOUser daoUser) {
+        this.daoUser = daoUser;
+    }
 
     public boolean checkIfEmailExists(String email) {
         return daoUser.checkIfEmailExists(email);
