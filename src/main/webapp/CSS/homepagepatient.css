@@ -1,0 +1,229 @@
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.margin20 {
+    margin-bottom: 4em;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-direction;
+    gap: 16px;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 32px;
+    margin-right: 20px; /* Spazio tra i div */
+}
+
+.cards {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.card2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 32px;
+    margin-right: 20px; /* Spazio tra i div */
+}
+
+.challenges .cards {
+    display: flex;
+    overflow-x: scroll;
+}
+.card .img {
+    position: absolute;
+    width: 105px;
+    height: 115px;
+    top: 4px;
+    left: 600px;
+}
+
+
+
+
+
+
+
+
+
+.frame-3 {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.frame-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    flex: 1;
+    flex-grow: 1;
+}
+
+.frame-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.frame-7 {
+    display: flex;
+    width: 208px;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.illustration-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    position: relative;
+    flex: 0 0 auto;
+    border-radius: 900px;
+}
+
+.illustration {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.img {
+    position: absolute;
+    width: 105px;
+    height: 115px;
+    top: 4px;
+    left: 260px;
+}
+
+.chapter {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: Georgia, serif;
+    font-size: 2em;
+    white-space: nowrap;
+}
+
+.discovering-english {
+    position: relative;
+    align-self: stretch;
+    font-family: Georgia, serif;
+    color: #252526;
+    font-weight: 700;
+    font-size: 2em;
+}
+
+.button-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    position: relative;
+    background-color: #199a8e;
+    border-radius: 9999px;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+    font-size: 2em;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+.navigation-title {
+    display: flex;
+    height: 32px;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 4px 0px;
+    position: relative;
+}
+
+.current-lesson {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: #252526;
+    font-size: 2.5em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #199a8e;
+    border-radius: 9999px;
+    border-width: 1px;
+    padding: 10px;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+    font-size: 2em;
+    white-space: nowrap;
+}
+
+
+
+
+
+.header {
+    font-family: Georgia, serif;
+    text-align: center;
+    color:#199a8e;
+    font-weight: 700;
+    font-size: 2.5em;
+}
+
+.notification{
+    float: right;
+    height: 1.3em;
+}
+
+.profile{
+    float: left;
+    height: 1.3em;
+}
+

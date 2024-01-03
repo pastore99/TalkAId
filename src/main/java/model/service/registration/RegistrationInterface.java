@@ -12,6 +12,11 @@ public interface RegistrationInterface {
      * @param name è il nome utente per la sua anagrafica
      * @param surname è il cognome utente per la sua anagrafica
      * @return un codice di errore in base alla casistica
+     *      *         0 - No error.
+     *      *         1 - Invalid license.
+     *      *         2 - Invalid email.
+     *      *         3 - Unable to create user.
+     *      *         4 - Unable to generate personal info.
      */
     int registerNewUser(String licenseCode, String email, String password, String name, String surname);
 }

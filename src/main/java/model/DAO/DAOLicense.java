@@ -95,4 +95,108 @@ public class DAOLicense {
             }
         }
     }
+
+    /**
+     * Generate a new License to sell
+     * @return the sequence of the License if operation succeed, none otherwise
+     */
+    public String generateLicense(){
+        final int length = 8;
+        License l = new License(length);
+        String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, l.getSequence());
+            preparedStatement.setInt(2, 0);
+            preparedStatement.setDate(3, null);
+            preparedStatement.executeUpdate();
+            return l.getSequence();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * Generate an invitation code for a new patient
+     * @param userId the ID of a speech therapist
+     * @return the sequence of the invitation if operation succeed, none otherwise
+     */
+    public String generateInvitation(int userId){
+        final int length = 4;
+        License l = new License(length);
+        String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, l.getSequence());
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setDate(3, l.getExpirationDate());
+            preparedStatement.executeUpdate();
+            return l.getSequence();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean deleteLicense(String code) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Get database connection
+            connection = DAOConnection.getConnection();
+
+            // Prepare the SQL query
+            String query = "DELETE FROM TalkAID2.license WHERE Sequence = ?";
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set parameter for the prepared statement
+            preparedStatement.setString(1, code);
+
+            // Execute update and return boolean based on the affected rows
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the statement and release the connection
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // If exception occurs, return false
+        return false;
+    }
+
 }

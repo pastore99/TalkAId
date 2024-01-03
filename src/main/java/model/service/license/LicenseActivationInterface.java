@@ -39,11 +39,11 @@ public interface LicenseActivationInterface {
      *
      * @param therapistId è l'identificativo del terapeuta
      */
-    void generatePin(int therapistId);
+    String generatePin(int therapistId);
 
     /**
      * genera una nuova licenza da 8 caratteri e con ID terapeuta 0
      */
-    void generateLicense();
+    String generateLicense();
 
 }
