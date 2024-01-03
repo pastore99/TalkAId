@@ -6,11 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-
-import model.service.encryption.Encryption;
-
-import javax.mail.Address;
 
 /**
  * DAOUser is a class that provides methods for accessing the User table in the database.
@@ -288,47 +283,6 @@ public class DAOUser {
             e.printStackTrace();
             return "Update not possible due to a server connection issue.";
         }
-    }
-    public boolean ControlPassword(int id, String Password)
-    {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = DAOConnection.getConnection();
-
-            // Query to check if the email exists
-            String query = "SELECT Password FROM user WHERE ID = ?";
-
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, id);
-
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String password = resultSet.getString("Password");
-                Encryption encryption = new Encryption();
-                return encryption.verifyPassword(Password, password);
-            }
-
-        } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
-        } finally {
-            try {
-                // Close resources in the reverse order of their creation
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
-            }
-        }
-
-        // Default to false if an exception occurs
-        return false;
     }
 
     /**

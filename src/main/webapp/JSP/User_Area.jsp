@@ -5,10 +5,7 @@
   Time: 11:11
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.time.LocalDate" %>
 <%@ page import="model.service.user.UserData" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="model.entity.User" %>
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.service.PersonalInfo.PersonalInfoData" %>
@@ -24,7 +21,7 @@
     User utente=null;
     if (session != null && session.getId() != null) {
         // Ottieni l'utente dalla sessione
-        utente = userDate.getUserByIdOrEmail(session.getAttribute("id"));
+        utente = userDate.getUser(session.getAttribute("id"));
 
         // Se l'utente non è valido o non esiste, reindirizza alla pagina di login
         if (utente == null) {
@@ -39,7 +36,7 @@
         String[] data_di_inizio = String.valueOf(utente.getActivationDate()).split(" ");
         String[] giorno = data_di_inizio[0].split("-");
         PersonalInfo infoutente = new PersonalInfoData().getPersonalInfo(utente.getId());
-        User therapist = userDate.getUserByIdOrEmail(utente.getIdTherapist());
+        User therapist = userDate.getUser(utente.getIdTherapist());
         PersonalInfo infotherapist = new PersonalInfoData().getPersonalInfo((therapist.getId()));
 
 %>

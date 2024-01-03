@@ -21,7 +21,7 @@
     User utente=null;
     if (session != null && session.getId() != null) {
         // Ottieni l'utente dalla sessione
-        utente = userDate.getUserByIdOrEmail(session.getAttribute("id"));
+        utente = userDate.getUser(session.getAttribute("id"));
 
         // Se l'utente non è valido o non esiste, reindirizza alla pagina di login
         if (utente == null) {
@@ -47,28 +47,28 @@
         <div class="down">
             <div class="input-field">
                 <input class="input" type="text" placeholder="<%= infoutente.getFirstname()%>" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" name="firstname"/>
-                <label class="label" for="input">FirstName</label>
+                <label class="label">FirstName</label>
             </div>
             <div class="input-field">
                 <input class="input" type="text" placeholder="<%= infoutente.getLastname()%>" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" name = "lastname"/>
-                <label class="label" for="input">LastName</label>
+                <label class="label">LastName</label>
             </div>
             <div class="input-field">
                 <input class="input" type="text" placeholder="<%= utente.getEmail()%> " name ="email"/>
-                <label class="label" for="input">Email</label>
+                <label class="label">Email</label>
             </div>
             <div class="input-field">
                 <input class="input" type="text" placeholder="<%= infoutente.getAddress()%>" name="address"/>
-                <label class="label" for="input">Address</label>
+                <label class="label">Address</label>
             </div>
             <div class="input-field">
                 <input class="input" type="text" placeholder="<%= infoutente.getPhone()%>" name="phonenumber"/>
-                <label class="label" for="input">Phone Number</label>
+                <label class="label">Phone Number</label>
             </div>
 
             <div class="input-field">
                 <input class="input" type="text" name ="password"/>
-                <label class="label" for="input">Password</label>
+                <label class="label">Password</label>
             </div>
         </div>
 
