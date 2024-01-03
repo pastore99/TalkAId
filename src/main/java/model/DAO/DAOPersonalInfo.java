@@ -136,7 +136,7 @@ public class DAOPersonalInfo {
 
         return false; // Default to false if an exception occurs
     }
-}
+
 
     public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone)
     {

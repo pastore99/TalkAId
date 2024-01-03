@@ -26,7 +26,7 @@ public class ChangePassword extends HttpServlet
             String password_control= password.replaceAll("\\s", "");
             String password_criptata= new Encryption().encryptPassword(password_control);
             int id= (int) request.getSession().getAttribute("id");
-            User utente= new UserData().getUserByIdOrEmail(id);
+            User utente= new UserData().getUser(id);
             JsonObject jsonResponse = new JsonObject();
             if(new UserData().resetPassword(utente.getEmail(), password_criptata))
             {
