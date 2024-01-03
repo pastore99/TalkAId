@@ -7,6 +7,15 @@ import java.util.*;
 
 public class DAOMessage {
 
+    private Connection connection;
+
+    public DAOMessage(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOMessage() {
+        this.connection = null;
+    }
     private Message getMessageFromResultSet(ResultSet resultSet) throws SQLException {
         Message message = new Message();
 
@@ -27,14 +36,13 @@ public class DAOMessage {
      * @return A list of user IDs associated with the specified therapist.
      */
     public List<Integer> retrieveUserIdsByTherapist(int therapistId) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Integer> userIds = new ArrayList<>();
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             // Query to retrieve user IDs associated with the specified therapist
             String query = "SELECT ID FROM user WHERE ID_Therapist = ?";
@@ -67,14 +75,13 @@ public class DAOMessage {
     }
 
     public List<Message> retrieveMessages(int userId, int contact) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Message> messages = new ArrayList<>();
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             // Query to retrieve messages between the two users
             String query = "SELECT * FROM message WHERE (Sender = ? AND Recipient = ?) OR (Sender = ? AND Recipient = ?) ORDER BY sent";
@@ -110,15 +117,14 @@ public class DAOMessage {
     }
 
     public void markMessagesAsRead(int senderId, int recipientId) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "UPDATE message SET `Read` = TRUE WHERE Sender = ? AND Recipient = ?;";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, senderId);
             pstmt.setInt(2, recipientId);
 
@@ -130,7 +136,7 @@ public class DAOMessage {
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -138,15 +144,14 @@ public class DAOMessage {
     }
 
     public void sendMessage(int sender, int recipient, String text) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "INSERT INTO message (Sender, Recipient, Body) VALUES (?, ?, ?);";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, sender);
             pstmt.setInt(2, recipient);
             pstmt.setString(3, text);
@@ -159,7 +164,7 @@ public class DAOMessage {
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -167,17 +172,16 @@ public class DAOMessage {
     }
 
     public int countReceivedMessages(int recipientId) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         int count = 0;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM message WHERE Recipient = ?;";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, recipientId);
 
             rs = pstmt.executeQuery();
@@ -192,7 +196,7 @@ public class DAOMessage {
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -202,13 +206,12 @@ public class DAOMessage {
     }
 
     public void deleteLastInsertedMessage() {
-        Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
 
         try {
-            conn = DAOConnection.getConnection();
-            stmt = conn.createStatement();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
+            stmt = connection.createStatement();
 
             String sql = "SELECT MAX(ID_message) FROM message";
 
@@ -227,7 +230,7 @@ public class DAOMessage {
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

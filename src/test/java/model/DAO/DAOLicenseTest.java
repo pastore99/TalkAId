@@ -1,98 +1,105 @@
 package model.DAO;
 
 import model.entity.License;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
+import org.mockito.MockitoAnnotations;
 
-import java.sql.SQLException;
+import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DAOLicenseTest {
 
-    private DAOLicense daoLicense;
-    private String generatedLicense;
-    private String generatedInvitation;
+    @Mock
+    Connection connection;
+
+    @Mock
+    PreparedStatement preparedStatement;
+
+    @Mock
+    ResultSet resultSet;
+
+    DAOLicense daoLicense;
 
     @BeforeEach
-    void setup() {
-        daoLicense = new DAOLicense();
+    void setUp() throws SQLException {
+        MockitoAnnotations.openMocks(this);
+        // Instruct Mockito to mock SQL Statement and ResultSet behaviour
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false); // return true the first time, then false
+
+        daoLicense = new DAOLicense(connection);
     }
 
     @Test
-    void testGetLicenseByCode() {
-        // Mock the license code
-        String code = "0D47AB8F";
+    void testGetLicenseByCode() throws SQLException {
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
 
-        // Call the method to test
-        License license = daoLicense.getLicenseByCode(code);
+        // Simulate a License in result set
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getString("Sequence")).thenReturn("abc123");
+        when(resultSet.getInt("ID_User")).thenReturn(12345);
+        when(resultSet.getDate("ExpirationDate")).thenReturn(new Date(System.currentTimeMillis()));
+        when(resultSet.getBoolean("Active")).thenReturn(true);
 
-        // Check the returned license
-        assertNotNull(license, "License should not be null");
-        assertEquals(code, license.getSequence(), "Sequence should match");
-        // Add more assertions based on your specific requirements
+        License license = daoLicense.getLicenseByCode("abc123");
+
+        assertEquals("abc123", license.getSequence());
+        assertEquals(12345, license.getIdUser());
+        assertTrue(license.isActive());
     }
 
     @Test
-    void testGenerateLicense() {
-        // Call the method to generate a license
-        generatedLicense = daoLicense.generateLicense();
+    void testDeleteLicense() throws SQLException {
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        // Check if the generated license sequence is not null
-        assertNotNull(generatedLicense, "Generated license sequence should not be null");
-        assertEquals(8, generatedLicense.length(), "Generated license sequence should have the specified length");
+        boolean result = daoLicense.deleteLicense("abc123");
 
-        boolean result1 = daoLicense.deleteLicense(generatedLicense);
-        assertTrue(result1, "The license should be deleted");
-
-        boolean result3 = daoLicense.deleteLicense(generatedLicense);
-        assertFalse(result3, "The license can't be deleted");
+        assertTrue(result);
     }
 
     @Test
-    void testGenerateInvitation() {
-        // Mock therapist ID
-        int therapistId = 123;
-
-        // Call the method to generate an invitation
-        generatedInvitation = daoLicense.generateInvitation(therapistId);
-
-        // Check if the generated invitation sequence is not null
-        assertNotNull(generatedInvitation, "Generated invitation sequence should not be null");
-        assertEquals(4, generatedInvitation.length(), "Generated invitation sequence should have the specified length");
-        // Additional assertions if needed
-
-        boolean result2 = daoLicense.deleteLicense(generatedInvitation);
-        assertTrue(result2, "The invitation should be deleted");
-
-
-        boolean result4 = daoLicense.deleteLicense(generatedInvitation);
-        assertFalse(result4, "The invitation can't be deleted");
-    }
-
-
-    @Test
-    void testActivateLicense() {
-        // Mock the license and user ID
+    void testActivate() throws SQLException {
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        // assuming one row will be updated, therefore 1 will be returned.
+        when(preparedStatement.executeUpdate()).thenReturn(1);
         License license = new License();
-        license.setSequence("BDC3");
-        license.setIdUser(4);
-        license.setExpirationDate(java.sql.Date.valueOf("2024-06-27"));
-        license.setActive(true);
+        license.setSequence("abc123");
 
-        int userId = 4;
+        daoLicense.activate(license, 12345);
 
-        // Call the method to test
-        daoLicense.activate(license, userId);
+        verify(connection, times(1)).prepareStatement(any(String.class));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
 
-        // After activation, let's retrieve the updated license
-        License updatedLicense = daoLicense.getLicenseByCode(license.getSequence());
+    @Test
+    void testGenerateLicense() throws SQLException {
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        // assuming one row will be updated, therefore 1 will be returned.
+        when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        // Check the updated license
-        assertNotNull(updatedLicense, "Updated license should not be null");
-        assertEquals(userId, updatedLicense.getIdUser(), "User ID should be updated");
-        assertTrue(updatedLicense.isActive(), "License should be activated");
-        // Add more assertions based on your specific requirements
+        String generatedLicense = daoLicense.generateLicense();
+
+        assertNotNull(generatedLicense);
+        verify(connection, times(1)).prepareStatement(any(String.class));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    void testGenerateInvitation() throws SQLException {
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        // assuming one row will be updated, therefore 1 will be returned.
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+
+        String generatedInvitation = daoLicense.generateInvitation(12345);
+
+        assertNotNull(generatedInvitation);
+        verify(connection, times(1)).prepareStatement(any(String.class));
+        verify(preparedStatement, times(1)).executeUpdate();
     }
 }
-

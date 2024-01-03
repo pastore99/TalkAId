@@ -3,99 +3,86 @@ package model.DAO;
 import model.entity.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
-class DAOMessageTest {
+public class DAOMessageTest {
+
+    @Mock
+    private Connection connection;
+
+    @Mock
+    private PreparedStatement preparedStatement;
+
+    @Mock
+    private ResultSet resultSet;
 
     private DAOMessage daoMessage;
 
     @BeforeEach
-    void setup() {
-        daoMessage = new DAOMessage();
+    public void setup() throws SQLException {
+        MockitoAnnotations.initMocks(this);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        daoMessage = new DAOMessage(connection);
     }
 
     @Test
-    void retrieveUsersFromNoPatientsAssigned() {
-        // Mock the therapist ID
-        int therapistId = 8; //this therapist have NO patients.
-
-        // Call the method to test
-        List<Integer> userIds = daoMessage.retrieveUserIdsByTherapist(therapistId);
-
-        // Check the returned list
-        assertNotNull(userIds, "Returned list should not be null");
-        assertTrue(userIds.isEmpty(), "Returned list should be empty");
-        assertEquals(0, userIds.size());
+    public void testRetrieveUserIdsByTherapist() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt("ID")).thenReturn(1);
+        List<Integer> userIds = daoMessage.retrieveUserIdsByTherapist(1);
+        assertEquals(1, userIds.size());
+        verify(connection, times(1)).prepareStatement(any(String.class));
     }
 
     @Test
-    void retrieveUsersFromPatientsAssigned() {
-        // Mock the therapist ID
-        int therapistId = 11; //this therapist have 2 patients.
-
-        // Call the method to test
-        List<Integer> userIds = daoMessage.retrieveUserIdsByTherapist(therapistId);
-
-        // Check the returned list
-        assertNotNull(userIds, "Returned list should not be null");
-        assertFalse(userIds.isEmpty(), "Returned list should not be empty");
-        assertEquals(2, userIds.size());
+    void testRetrieveMessages() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        Message mockedMessage = new Message();
+        mockedMessage.setIdMessage(1);
+        when(resultSet.getInt("ID_message")).thenReturn(mockedMessage.getIdMessage());
+        List<Message> messages = daoMessage.retrieveMessages(1, 2);
+        assertEquals(1, messages.size());
+        verify(preparedStatement, times(1)).executeQuery();
     }
 
     @Test
-    void testRetrieveMessages() {
-        // Mock the user ID and contact
-        int userId = 9;
-        int contact = 12;
-
-        // Call the method to test
-        List<Message> messages = daoMessage.retrieveMessages(userId, contact);
-
-        // Check the returned list
-        assertNotNull(messages, "Returned list should not be null");
-        assertFalse(messages.isEmpty(), "Returned list should not be empty");
-        assertNotEquals(0, messages.size()); // Assuming there are messages between these users
+    void testMarkMessagesAsRead() throws SQLException {
+        daoMessage.markMessagesAsRead(1, 2);
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+    @Test
+    public void testSendMessage() throws SQLException {
+        daoMessage.sendMessage(1, 2, "Hello World");
+        verify(preparedStatement, times(1)).executeUpdate();
     }
 
     @Test
-    void testMarkMessagesAsRead() {
-        // Mock the sender ID and recipient ID
-        int senderId = 9;
-        int recipientId = 12;
-
-        // Call the method to test
-        daoMessage.markMessagesAsRead(senderId, recipientId);
-
-        // Since the method doesn't return anything, we can't really verify its correctness
-        // However, we can assume it worked correctly if no exceptions were thrown
+    void testCountReceivedMessages() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(5);
+        int count = daoMessage.countReceivedMessages(1);
+        assertEquals(5, count);
+        verify(preparedStatement, times(1)).executeQuery();
     }
 
     @Test
-    void testSendMessage() {
-        // Mock the sender ID, recipient ID and message text
-        int senderId = 9;
-        int recipientId = 12;
-        String text = "Test message";
-
-        // Call the method to test
-        daoMessage.sendMessage(senderId, recipientId, text);
-        //clean it
+    public void testDeleteLastInsertedMessage() throws SQLException {
+        Statement statement = mock(Statement.class);
+        when(connection.createStatement()).thenReturn(statement);
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(true);
+        when(resultSet.getInt(1)).thenReturn(1);
         daoMessage.deleteLastInsertedMessage();
+        verify(connection, times(1)).createStatement();
     }
 
-    @Test
-    void testCountReceivedMessages() {
-        // Mock the recipient ID
-        int recipientId = 9;
-
-        // Call the method to test
-        int count = daoMessage.countReceivedMessages(recipientId);
-
-        // Check the returned count
-        assertNotEquals(0, count); // Assuming the recipient has received
-    }
 }

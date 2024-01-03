@@ -9,6 +9,15 @@ import java.sql.SQLException;
 
 public class DAOPersonalInfo {
 
+    private Connection connection;
+
+    public DAOPersonalInfo(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOPersonalInfo() {
+        this.connection = null;
+    }
     private PersonalInfo getPersonalInfoFromResultSet(ResultSet resultSet) throws SQLException {
         PersonalInfo personalInfo = new PersonalInfo();
 
@@ -24,11 +33,10 @@ public class DAOPersonalInfo {
         return personalInfo;
     }
     public boolean createRegistry(int id, String name, String surname) {
-        Connection connection = null;
         PreparedStatement preparedStatementPersonalInfo = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
             connection.setAutoCommit(false);  // Start a transaction
 
             // Insert user data into personal_info table
@@ -66,12 +74,11 @@ public class DAOPersonalInfo {
     }
 
     public PersonalInfo getPersonalInfo(int id) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT * FROM personal_info WHERE ID_user = ?";
             preparedStatement = connection.prepareStatement(sql);
@@ -98,11 +105,10 @@ public class DAOPersonalInfo {
     }
 
     public boolean deleteRegistry(int createdUserId) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
             connection.setAutoCommit(false); // Start a transaction
 
             String sql = "DELETE FROM personal_info WHERE ID_user = ?";
@@ -138,13 +144,11 @@ public class DAOPersonalInfo {
     }
 
 
-    public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone)
-    {
-        Connection connection = null;
+    public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone) {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ? WHERE ID_user = ?";
             preparedStatement = connection.prepareStatement(sql);
@@ -156,7 +160,6 @@ public class DAOPersonalInfo {
             int result = preparedStatement.executeUpdate();
 
             if (result>0) {
-                System.out.println("aggiornati i parametri dell'utente" + id +" in personalInfo correttamente");
                 return true;
             }
         } catch (SQLException e) {
@@ -169,8 +172,9 @@ public class DAOPersonalInfo {
                 e.printStackTrace();
             }
         }
-    return false;
+
+        return false;
     }
-    }
+}
 
 

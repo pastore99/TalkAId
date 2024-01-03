@@ -11,6 +11,15 @@ import java.sql.Date;
 
 public class DAOSchedule {
 
+    private Connection connection;
+
+    public DAOSchedule(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOSchedule() {
+        this.connection = null;
+    }
     private Schedule getScheduleFromResultSet(ResultSet resultSet) throws SQLException {
         Schedule schedule = new Schedule();
 
@@ -22,15 +31,14 @@ public class DAOSchedule {
         return schedule;
     }
     public void createNewSchedule(int idTherapist, Date date, String timeSlot) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "INSERT INTO schedule (ID_therapist, Date, TimeSlot) VALUES (?, ?, ?);";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, idTherapist);
             pstmt.setDate(2, date);
             pstmt.setString(3, timeSlot);
@@ -42,22 +50,21 @@ public class DAOSchedule {
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
     public void modifySchedule(int idTherapist, Date date, String timeSlot, int reserved, Date ndate, String ntimeSlot) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "UPDATE schedule SET Date = ?, TimeSlot = ?, Reserved = ? WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setDate(1, ndate);
             pstmt.setString(2, ntimeSlot);
             pstmt.setInt(3, reserved);
@@ -72,22 +79,21 @@ public class DAOSchedule {
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
     public void deleteSchedule(int idTherapist, Date date, String timeSlot) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "DELETE FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, idTherapist);
             pstmt.setDate(2, date);
             pstmt.setString(3, timeSlot);
@@ -99,21 +105,20 @@ public class DAOSchedule {
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
     public List<Schedule> retrieveAllPatientSchedules(int reserved) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE Reserved = ?;";
 
@@ -142,14 +147,13 @@ public class DAOSchedule {
         return schedules;
     }
     public List<Schedule> retrieveAllTherapistSchedules(int idTherapist) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE ID_therapist = ?;";
 
@@ -178,14 +182,13 @@ public class DAOSchedule {
         return schedules;
     }
     public List<Schedule> retrieveAllPrenotedSchedules(int idTherapist) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE Reserved != 0 AND ID_therapist =?;";
 
@@ -214,14 +217,13 @@ public class DAOSchedule {
         return schedules;
     }
     public List<Schedule> retrieveAllNotPrenotedSchedules(int idTherapist) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE Reserved = 0 AND ID_therapist =?;";
 
@@ -250,17 +252,16 @@ public class DAOSchedule {
         return schedules;
     }
     public int retrieveAllPrenotedSchedulesCount(int idTherapist) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         int count = 0;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM schedule WHERE Reserved != 0 AND ID_therapist =?;";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, idTherapist);
 
             rs = pstmt.executeQuery();
@@ -273,7 +274,7 @@ public class DAOSchedule {
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -282,17 +283,16 @@ public class DAOSchedule {
     }
 
     public int checkData(int idTherapist, Date date, String timeSlot) {
-        Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         int count = 0;
 
         try {
-            conn = DAOConnection.getConnection();
+            connection = connection == null ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
 
-            pstmt = conn.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, idTherapist);
             pstmt.setDate(2, date);
             pstmt.setString(3, timeSlot);
@@ -307,7 +307,7 @@ public class DAOSchedule {
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
-                DAOConnection.releaseConnection(conn);
+                DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

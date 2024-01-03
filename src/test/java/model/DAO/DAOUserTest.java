@@ -1,136 +1,143 @@
 package model.DAO;
 
-import model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-class DAOUserTest {
+public class DAOUserTest {
+
+    @Mock
+    private Connection connection;
+
+    @Mock
+    private PreparedStatement preparedStatement;
+
+    @Mock
+    private ResultSet resultSet;
 
     private DAOUser daoUser;
 
     @BeforeEach
-    void setup() {
-        daoUser = new DAOUser();
+    public void setup() throws SQLException {
+        MockitoAnnotations.initMocks(this);
+        when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        daoUser = new DAOUser(connection);
     }
 
     @Test
-    void testCheckIfEmailExists() {
-        // Existing email in the table
-        String existingEmail = "johndoa@example.com";
-
-        // Call the method to test
-        boolean emailExists = daoUser.checkIfEmailExists(existingEmail);
-
-        // Check the result
-        assertTrue(emailExists, "Existing email should be found in the table");
-
-        // Non-existing email in the table
-        String nonExistingEmail = "nonexistent@example.com";
-
-        // Call the method to test
-        boolean nonExistingEmailExists = daoUser.checkIfEmailExists(nonExistingEmail);
-
-        // Check the result
-        assertFalse(nonExistingEmailExists, "Non-existing email should not be found in the table");
+    public void testCheckIfEmailExists() throws SQLException {
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getInt("count")).thenReturn(1);
+        assertTrue(daoUser.checkIfEmailExists("email@test.com"));
+        verify(preparedStatement, times(1)).executeQuery();
     }
 
     @Test
-    void testCreateUser() {
-        // Mock user data
-        String email = "newuser@example.com";
-        String password = "password123";
-        int therapistId = 8;
-
-        // Call the method to test
-        int createdUserId = daoUser.createUser(email, password, therapistId);
-
-        // Check the result
-        assertTrue(createdUserId > 0, "New user should be created with a positive ID");
-
-        // Clean up: Delete the created user
-        assertTrue(daoUser.deleteUserByIdOrEmail(createdUserId));
-        assertFalse(daoUser.deleteUserByIdOrEmail("newuser@example.com"));
-
+    public void testCreateUser() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getInt(1)).thenReturn(123);
+        assertEquals(123, daoUser.createUser("email@test.com", "password", 456));
+        verify(preparedStatement, times(1)).executeUpdate();
     }
 
     @Test
-    void testGetUserByIdOrEmail() {
-        // Existing user ID in the table
-        int existingUserId = 8;
-
-        // Call the method to test
-        User existingUserById = daoUser.getUserByIdOrEmail(existingUserId);
-
-        // Check the result
-        assertNotNull(existingUserById, "Existing user by ID should be found in the table");
-        assertEquals(existingUserId, existingUserById.getId(), "User ID should match");
-
-        // Existing email in the table
-        String existingEmail = "johndoa@example.com";
-
-        // Call the method to test
-        User existingUserByEmail = daoUser.getUserByIdOrEmail(existingEmail);
-
-        // Check the result
-        assertNotNull(existingUserByEmail, "Existing user by email should be found in the table");
-        assertEquals(existingEmail, existingUserByEmail.getEmail(), "User email should match");
-
-        // Non-existing ID or email
-        Object nonExistingIdOrEmail = "nonexistent";
-
-        // Call the method to test
-        User nonExistingUser = daoUser.getUserByIdOrEmail(nonExistingIdOrEmail);
-
-        // Check the result
-        assertNull(nonExistingUser, "Non-existing user should not be found in the table");
+    public void testGetUserByIdOrEmail() throws SQLException {
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt("ID")).thenReturn(1);
+        assertNotNull(daoUser.getUserByIdOrEmail("email@test.com"));
+        verify(preparedStatement, times(1)).executeQuery();
     }
 
     @Test
-    void testResetPassword() {
-        // Mock user email and new password
-        String userEmail = "johndoa@example.com";
-        String newPassword = "newpassword123";
-
-        // Call the method to test
-        boolean passwordReset = daoUser.resetPassword(userEmail, newPassword);
-
-        // Check the result
-        assertTrue(passwordReset, "Password should be successfully reset");
-
-        daoUser.resetPassword(userEmail, "$2a$12$WE/ZQ5SqrkMPjNT57Mje.ePEVdUEm8tTeIlldM35DEuLEVQYuUxmm");
+    public void testResetPassword() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoUser.resetPassword("email@test.com", "newpassword"));
+        verify(preparedStatement, times(1)).executeUpdate();
     }
 
     @Test
-    void testUpdateAnalyticsPreference() {
-        // Mock user ID and analytics value
-        String userId = "8";
-        boolean newAnalyticsValue = true;
+    public void testUpdateUserEmailAndAddress() throws SQLException {
+        daoUser = spy(new DAOUser(connection));
+        doReturn(false).when(daoUser).checkIfEmailExists(anyString());
+        when(preparedStatement.executeUpdate()).thenReturn(1); // Mock PreparedStatement.executeUpdate()
+        doCallRealMethod().when(daoUser).updateUser(anyInt(), anyString(), anyString()); // Trigger actual method call
 
-        // Call the method to test
-        boolean analyticsUpdated = daoUser.updateAnalyticsPreference(userId, newAnalyticsValue);
+        String result = daoUser.updateUser(1, "test@example.com", "Test Address");
 
-        // Check the result
-        assertTrue(analyticsUpdated, "Analytics preference should be successfully updated");
-
-        daoUser.updateAnalyticsPreference(userId, false);
+        assertEquals("Both email and address have been updated successfully.", result);
+        verify(preparedStatement, times(1)).executeUpdate();
     }
 
     @Test
-    void testUpdateEmailTime() {
-        // Mock user ID and new email time
-        String userId = "8";
-        String newEmailTime = "18:30|19:00";
+    public void testUpdateUserEmailOnly() throws SQLException {
+        daoUser = spy(new DAOUser(connection));
+        doReturn(false).when(daoUser).checkIfEmailExists(anyString());
+        when(preparedStatement.executeUpdate()).thenReturn(1); // Mock PreparedStatement.executeUpdate()
+        doCallRealMethod().when(daoUser).updateUser(anyInt(), anyString(), anyString()); // Trigger actual method call
 
-        // Call the method to test
-        boolean emailTimeUpdated = daoUser.updateEmailTime(userId, newEmailTime);
+        String result = daoUser.updateUser(1, "test@example.com", null);
 
-        // Check the result
-        assertTrue(emailTimeUpdated, "Email time should be successfully updated");
+        assertEquals("Email have been updated successfully.", result);
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
 
-        // Clean up: Reset the email time back to the original
-        daoUser.updateEmailTime(userId, "17:16|17:19");
+    @Test
+    public void testUpdateUserAddressOnly() throws SQLException {
+        daoUser = spy(new DAOUser(connection));
+        doReturn(true).when(daoUser).checkIfEmailExists(anyString());
+        when(preparedStatement.executeUpdate()).thenReturn(1); // Mock PreparedStatement.executeUpdate()
+        doCallRealMethod().when(daoUser).updateUser(anyInt(), anyString(), anyString()); // Trigger actual method call
+
+        String result = daoUser.updateUser(1, null, "Test Address");
+
+        assertEquals("Address have been updated successfully.", result);
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    public void testUpdateUserEmailExists() throws SQLException {
+        daoUser = spy(new DAOUser(connection));
+        doReturn(true).when(daoUser).checkIfEmailExists(anyString());
+        when(preparedStatement.executeUpdate()).thenReturn(1); // Mock PreparedStatement.executeUpdate()
+        doCallRealMethod().when(daoUser).updateUser(anyInt(), anyString(), anyString()); // Trigger actual method call
+        when(daoUser.checkIfEmailExists(anyString())).thenReturn(true);
+
+        String result = daoUser.updateUser(1, null, null);
+
+        assertEquals("Invalid. No update performed.", result);
+        Mockito.verify(preparedStatement, Mockito.never()).executeUpdate();
+    }
+
+    @Test
+    public void testUpdateAnalyticsPreference() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoUser.updateAnalyticsPreference("1", true));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    public void testUpdateEmailTime() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoUser.updateEmailTime("1", "10:00"));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    public void testDeleteUserByIdOrEmail() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoUser.deleteUserByIdOrEmail("1"));
+        verify(preparedStatement, times(1)).executeUpdate();
     }
 }
 
