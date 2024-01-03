@@ -38,7 +38,7 @@
         <table id="calendarTable"></table>
         <table id="timeTable"></table>
     </div>
-    <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm" method="post">
+    <form action="<%=request.getContextPath()%>/ScheduleServlet" id="dateForm" method="post" onsubmit="return validateForm()">
         <input type="hidden"  name="idTherapist" value="<%=userId%>">
         <input type="hidden" id="selectedDate" name="date">
         <input type="hidden" id="selectedTime" name="timeslot">

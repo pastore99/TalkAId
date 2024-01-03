@@ -96,6 +96,24 @@ function createTimeTable() {
 
 }
 
+function validateForm() {
+    // Verifica se una data è stata selezionata
+    let selectedDate = document.getElementById('selectedDate').value;
+    if (!selectedDate) {
+        alert('Seleziona una data prima di continuare.');
+        return false;
+    }
+
+    // Verifica se un orario è stato selezionato
+    let selectedTime = document.getElementById('selectedTime').value;
+    if (!selectedTime) {
+        alert('Seleziona un orario prima di continuare.');
+        return false;
+    }
+
+    // Se entrambe le verifiche passano, il form può essere inviato
+    return true;
+}
 
 
 
