@@ -14,7 +14,11 @@ public class DAOMessage {
     }
 
     public DAOMessage() {
-        this.connection = null;
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     private Message getMessageFromResultSet(ResultSet resultSet) throws SQLException {
         Message message = new Message();

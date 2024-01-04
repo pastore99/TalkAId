@@ -16,7 +16,11 @@ public class DAOPersonalInfo {
     }
 
     public DAOPersonalInfo() {
-        this.connection = null;
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     private PersonalInfo getPersonalInfoFromResultSet(ResultSet resultSet) throws SQLException {
         PersonalInfo personalInfo = new PersonalInfo();

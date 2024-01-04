@@ -14,7 +14,11 @@ public class DAOSchedule {
     private Connection connection;
 
     public DAOSchedule(Connection connection) {
-        this.connection = connection;
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public DAOSchedule() {

@@ -19,7 +19,11 @@ public class DAOLicense {
     }
 
     public DAOLicense() {
-        this.connection = null;
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
