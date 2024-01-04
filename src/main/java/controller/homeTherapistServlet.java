@@ -34,12 +34,6 @@ public class homeTherapistServlet extends HttpServlet {
 
         session.setAttribute("list_user",list_user);
 
-        for(UserInfo u: list_user) {
-            System.out.println(u.getId());
-        }
-
-        System.out.println("logged: "+logged.getId());
-
         model.entity.PersonalInfo InfoLogged=piService.getPersonalInfoById(logged.getId());
         if(InfoLogged!=null)
         session.setAttribute("NameSurnameLogged", InfoLogged.getFirstname() + " " + InfoLogged.getLastname());
