@@ -42,5 +42,4 @@ public class UserData implements UserDataInterface {
         return daoUser.updateUser(idUser, Email, address);
     }
 
-    public boolean resetPassword(String email, String newPassword){ return daoUser.resetPassword(email, newPassword);}
 }

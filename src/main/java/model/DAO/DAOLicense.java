@@ -58,7 +58,6 @@ public class DAOLicense {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, code);
             resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 return extractLicenseFromResultSet(resultSet);
             }

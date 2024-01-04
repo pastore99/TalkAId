@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import model.entity.User;
 import model.service.PersonalInfo.PersonalInfoData;
 import model.service.encryption.Encryption;
+import model.service.login.Authenticator;
 import model.service.user.UserData;
 
 import java.io.IOException;
@@ -21,17 +22,11 @@ public class ChangePassword extends HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        try {
             String password = request.getParameter("password");
-            String password_control= password.replaceAll("\\s", "");
-            String password_criptata= new Encryption().encryptPassword(password_control);
-            int id= (int) request.getSession().getAttribute("id");
-            User utente= new UserData().getUser(id);
-            new UserData().resetPassword(utente.getEmail(), password_criptata);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+            String password_control = password.replaceAll("\\s", "");
+            int id = (int) request.getSession().getAttribute("id");
+            new Authenticator().resetPassword( new UserData().getUser(id).getEmail(), password_control);
+            response.getWriter().write("Password cambiata con successo!");
     }
-    }
+}
 
