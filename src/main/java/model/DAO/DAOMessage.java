@@ -42,7 +42,7 @@ public class DAOMessage {
         List<Integer> userIds = new ArrayList<>();
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to retrieve user IDs associated with the specified therapist
             String query = "SELECT ID FROM user WHERE ID_Therapist = ?";
@@ -81,7 +81,7 @@ public class DAOMessage {
         List<Message> messages = new ArrayList<>();
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to retrieve messages between the two users
             String query = "SELECT * FROM message WHERE (Sender = ? AND Recipient = ?) OR (Sender = ? AND Recipient = ?) ORDER BY sent";
@@ -120,7 +120,7 @@ public class DAOMessage {
         PreparedStatement pstmt = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "UPDATE message SET `Read` = TRUE WHERE Sender = ? AND Recipient = ?;";
 
@@ -147,7 +147,7 @@ public class DAOMessage {
         PreparedStatement pstmt = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "INSERT INTO message (Sender, Recipient, Body) VALUES (?, ?, ?);";
 
@@ -177,7 +177,7 @@ public class DAOMessage {
         int count = 0;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM message WHERE Recipient = ?;";
 
@@ -210,7 +210,7 @@ public class DAOMessage {
         ResultSet rs = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             stmt = connection.createStatement();
 
             String sql = "SELECT MAX(ID_message) FROM message";

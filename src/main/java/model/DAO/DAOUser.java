@@ -19,7 +19,11 @@ public class DAOUser {
     }
 
     public DAOUser() {
-        this.connection = null;
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     /**
      * Private helper method that takes a ResultSet object and constructs a User object from it.
@@ -55,7 +59,7 @@ public class DAOUser {
         ResultSet resultSet = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to check if the email exists
             String query = "SELECT COUNT(*) AS count FROM user WHERE Email = ?";
@@ -103,7 +107,7 @@ public class DAOUser {
         ResultSet resultSet = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to insert a new user and retrieve the generated ID
             String query = "INSERT INTO user (Email, Password, ID_Therapist) VALUES (?, ?, ?)";
@@ -155,7 +159,7 @@ public class DAOUser {
         ResultSet resultSet = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = null;
 
             if (idOrEmail instanceof Integer) {
@@ -202,7 +206,7 @@ public class DAOUser {
 
         try {
             // Get connection
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to update password for the given email
             String query = "UPDATE user SET Password = ? WHERE Email = ?";
@@ -259,7 +263,7 @@ public class DAOUser {
         queryBuilder.append(" WHERE ID = ?");
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
 
@@ -304,7 +308,7 @@ public class DAOUser {
 
         try {
             // Get connection
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to update analytics choice for the given userId
             String query = "UPDATE user SET Analytics = ? WHERE ID = ?";
@@ -352,7 +356,7 @@ public class DAOUser {
 
         try {
             // Get connection
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to update Email Time for the given id
             String query = "UPDATE user SET NotificationTime = ? WHERE ID = ?";
@@ -398,7 +402,7 @@ public class DAOUser {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = null;
 
             if (idOrEmail instanceof Integer) {

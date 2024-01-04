@@ -50,7 +50,7 @@ public class DAOLicense {
         ResultSet resultSet = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, code);
             resultSet = preparedStatement.executeQuery();
@@ -85,7 +85,7 @@ public class DAOLicense {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(updateQuery);
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, license.getSequence());
@@ -115,7 +115,7 @@ public class DAOLicense {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setString(1, l.getSequence());
             preparedStatement.setInt(2, 0);
@@ -149,7 +149,7 @@ public class DAOLicense {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setString(1, l.getSequence());
             preparedStatement.setInt(2, userId);
@@ -175,7 +175,7 @@ public class DAOLicense {
 
         try {
             // Get database connection
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Prepare the SQL query
             String query = "DELETE FROM TalkAID2.license WHERE Sequence = ?";

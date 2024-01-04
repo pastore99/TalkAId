@@ -90,7 +90,7 @@
         <div class="content-info"><h2>3.5/5</h2></div>
     </div>
     <div class="input">
-        <form action="/TalkAID_war_exploded/JSP/Cambio_dati.jsp" method="post">
+        <form action="../JSP/Cambio_dati.jsp" method="post">
             <input type="hidden" value="<%= infoutente.getLastname()%>" name="lastname">
             <input type="hidden" value="<%= infoutente.getFirstname()%>" name="firstname">
             <input type="hidden" value="<%= infoutente.getAddress()%>" name="address">

@@ -34,7 +34,7 @@ public class DAOSchedule {
         PreparedStatement pstmt = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "INSERT INTO schedule (ID_therapist, Date, TimeSlot) VALUES (?, ?, ?);";
 
@@ -60,7 +60,7 @@ public class DAOSchedule {
         PreparedStatement pstmt = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "UPDATE schedule SET Date = ?, TimeSlot = ?, Reserved = ? WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
 
@@ -89,7 +89,7 @@ public class DAOSchedule {
         PreparedStatement pstmt = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "DELETE FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
 
@@ -118,7 +118,7 @@ public class DAOSchedule {
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE Reserved = ?;";
 
@@ -153,7 +153,7 @@ public class DAOSchedule {
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE ID_therapist = ?;";
 
@@ -188,7 +188,7 @@ public class DAOSchedule {
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE Reserved != 0 AND ID_therapist =?;";
 
@@ -223,7 +223,7 @@ public class DAOSchedule {
         List<Schedule> schedules = new ArrayList<>();
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String query = "SELECT * FROM schedule WHERE Reserved = 0 AND ID_therapist =?;";
 
@@ -257,7 +257,7 @@ public class DAOSchedule {
         int count = 0;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM schedule WHERE Reserved != 0 AND ID_therapist =?;";
 
@@ -288,7 +288,7 @@ public class DAOSchedule {
         int count = 0;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
 

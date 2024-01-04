@@ -36,7 +36,7 @@ public class DAOPersonalInfo {
         PreparedStatement preparedStatementPersonalInfo = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             connection.setAutoCommit(false);  // Start a transaction
 
             // Insert user data into personal_info table
@@ -78,7 +78,7 @@ public class DAOPersonalInfo {
         ResultSet resultSet = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT * FROM personal_info WHERE ID_user = ?";
             preparedStatement = connection.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class DAOPersonalInfo {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             connection.setAutoCommit(false); // Start a transaction
 
             String sql = "DELETE FROM personal_info WHERE ID_user = ?";
@@ -148,7 +148,7 @@ public class DAOPersonalInfo {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection == null ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ? WHERE ID_user = ?";
             preparedStatement = connection.prepareStatement(sql);

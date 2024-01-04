@@ -8,10 +8,9 @@ import model.service.registration.Registration;
 
 public class Main {
     public static void main(String[] args) {
-
-        //Conversation conv = new Conversation(9);
-        //System.out.println(conv.getUnreadMessagesCounter());
-        //System.out.println(conv.getConversations());
+        Authenticator auth = new Authenticator();
+        System.out.println(auth.authenticate("patient1@example.com", "pwd"));
+        System.out.println(auth.authenticate("patient1@example.com", "pwd"));
 
     }
 }
