@@ -46,7 +46,7 @@ $(document).ready(function() {
                     console.log('User registered error code: ', response);
                 }
                 else {
-                    window.location.href = 'JSP/legal.jsp';
+                    window.location.href = 'legal.jsp';
                 }
             },
             error: function(error) {
