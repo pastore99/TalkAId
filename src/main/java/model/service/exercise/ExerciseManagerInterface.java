@@ -3,6 +3,7 @@ package model.service.exercise;
 import model.entity.ExerciseGlossary;
 
 import java.sql.Blob;
+import java.sql.Date;
 
 public interface ExerciseManagerInterface {
 
@@ -23,7 +24,12 @@ public interface ExerciseManagerInterface {
 
     /**
      * Salva l'esecuzione di un esercizio
+     *
      * @param userID l'id dell'utente che ha eseguito l'esercizio
+     * @param exerciseId l'id dell'esercizio eseguito
+     * @param insertDate la data in cui l'esercizio è stato assegnato all'utente
+     * @param execution l'esecuzione dell'esercizio
+     * @return True se riesce a salvarla, false altrimenti
      */
-    void saveExecution(int userID);
+    boolean saveExecution(int userID, int exerciseId, Date insertDate, Blob execution);
 }

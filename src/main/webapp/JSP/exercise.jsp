@@ -1,11 +1,11 @@
 <%@ page import="model.entity.ExerciseGlossary" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
-
+<!DOCTYPE html>
 <html>
 <head>
     <%
         ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
-        //session.removeAttribute("exercise"); TODO: rimuovere questo commento prima di commit
+        session.removeAttribute("exercise");
     %>
 
     <title>Esercizio <%= exercise.getIdExercise()%></title>
@@ -17,7 +17,7 @@
             <div id="backDiv">
                 <img src="../images/backIcon.svg" alt="backIcon">
             </div>
-            <div>
+            <div id="exerciseTitleDiv">
                 <p><%= exercise.getExerciseName() %></p>
             </div>
             <div id="notificationDiv">

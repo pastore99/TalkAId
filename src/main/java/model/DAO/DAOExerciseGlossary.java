@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 
 /**
- * The DAOExerciseGlossary class provides methods for retrieving Exercise information from a database.
+ * The DAOExerciseGlossary class provides methods for retrieving ExerciseGlossary information from a database.
  */
 public class DAOExerciseGlossary {
     /**

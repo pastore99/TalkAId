@@ -9,13 +9,14 @@ body{
 
 #header{
     background: white;
-    margin-top: 1%;
+    padding-top: 2%;
+    padding-bottom: 2%;
     margin-bottom: 2%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    height: 5%;
+    height: 5vh;
 }
 
 #header div{
@@ -24,23 +25,46 @@ body{
     align-items: center;
     text-align: center;
     height: 100%;
+}
+
+#exerciseTitleDiv{
     width: 60%;
 }
 
-#header > :nth-child(odd){
+#backDiv, #notificationDiv{
     width: 20%;
 }
 
-#header > div > p{
+#exerciseTitleDiv > p{
     max-height: 100%;
     font-size: 5vw;
 }
 
-#header div img{
-    height: 60%;
+#backDiv img, #notificationDiv img{
+    height: 70%;
 }
 
 #exerciseDiv{
     width: 100%;
     height: auto;
+    padding-bottom: 10%;
+}
+
+#buttonDiv{
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.submitButton {
+    width: 50%;
+    height: 100%;
+    background-color: #88cbc6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 3em;
+    font-weight: bold;
 }

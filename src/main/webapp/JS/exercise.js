@@ -1,9 +1,9 @@
+//Costanti ed elementi
 const READTEXT = "READTEXT"
 const READIMAGES = "READIMAGES"
 const IMAGESTOTEXT = "IMAGESTOTEXT"
 const TEXTTOIMAGES = "TEXTTOIMAGES"
 const CROSSWORD = "CROSSWORD"
-const COMPLETETEXT = "COMPLETETEXT"
 const RIGHTTEXT = "RIGHTTEXT"
 const IMAGESINAROW = 2
 
@@ -12,22 +12,24 @@ const USERTYPE = $("#exerciseInfo").data("user");
 
 const exerciseDiv = $("#exerciseDiv");
 
+//Funzione di Startup, gestisce redirect dell'header e carica l'esercizio corretto
 function startUp(exerciseIS){
   $(document).ready(()=>{
     const EXERCISEINITIALSTATE = parseJSON(exerciseIS);
     $("#backDiv").click(() => redirect("home"));
-    $("#notificationDiv").click(() => redirect("messageCenter.jsp")); //TODO: mettere i redirect giusti
+    $("#notificationDiv").click(() => redirect("messageCenter.jsp"));
     loadExercise(EXERCISETYPE, EXERCISEINITIALSTATE);
   })
 }
 
+//Gestione JSON dal DB
 function parseJSON(json) {
   try {
     const jsonData = JSON.parse(json);
     return jsonData;
   } catch (jsonError) {
     try {
-      const jsObject = eval('(' + json + ')');
+      const jsObject = eval("(" + json + ")");
       return jsObject;
     } catch (objectError) {
       return json;
@@ -35,9 +37,9 @@ function parseJSON(json) {
   }
 }
 
+//Gestione redirect
 function redirect(where){
   if (where === "home"){
-    //TODO: se logopedista -> dashboard, se paziente -> homepage
     if (USERTYPE === "patient"){
       window.location.href = "homepagepatient.jsp";
     }else if (USERTYPE === "therapist"){
@@ -49,6 +51,7 @@ function redirect(where){
   }
 }
 
+//Caricamento dinamico dell'esercizio e relativo css
 function loadExercise(type, initialState){
   switch (type.toUpperCase()) {
     case READTEXT:
@@ -71,10 +74,6 @@ function loadExercise(type, initialState){
       loadCSS("../CSS/exerciseSpecificCss/"+CROSSWORD.toLowerCase()+".css");
       loadCrossword(initialState);
       break;
-    case COMPLETETEXT:
-      loadCSS("../CSS/exerciseSpecificCss/"+COMPLETETEXT.toLowerCase()+".css");
-      loadCompleteText(initialState);
-      break;
     case RIGHTTEXT:
       loadCSS("../CSS/exerciseSpecificCss/"+RIGHTTEXT.toLowerCase()+".css");
       loadRightText(initialState);
@@ -87,6 +86,7 @@ function loadExercise(type, initialState){
   }
 }
 
+//Caricamento dinamico del CSS relativo all'esercizio
 function loadCSS(cssPath) {
   let link = document.createElement("link");
   link.rel = "stylesheet";
@@ -95,28 +95,35 @@ function loadCSS(cssPath) {
   document.head.appendChild(link);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+//                                            Creazione degli esercizi
+//----------------------------------------------------------------------------------------------------------------------
+
+//Leggi testo
 function loadReadText(initialState){
 
   let text = $("<p>").text(initialState).addClass("textToRead");
   let textDiv = $("<div>").attr("id", "textDiv").append(text);
 
   let mic = $("<img>").attr({
-    id: 'mic',
-    src: '../images/exercise/microphone.svg',
-    alt: 'microphoneIcon',
-    class: 'micIcons'
+    id: "mic",
+    src: "../images/exercise/microphone.svg",
+    alt: "microphoneIcon",
+    class: "micIcons"
   });
 
   let micActive = $("<img>").attr({
-    id: 'micActive',
-    src: '../images/exercise/microphoneActive.svg',
-    alt: 'microphoneActiveIcon',
-    class: 'micIcons'
+    id: "micActive",
+    src: "../images/exercise/microphoneActive.svg",
+    alt: "microphoneActiveIcon",
+    class: "micIcons"
   });
-  micActive.hide();
-  let button = $("<button>").click(/*TODO: inizia la registrazione e cambia icone*/).addClass("recordButton");
-  button.append(mic, micActive);
-  let buttonDiv = $("<div>").attr("id", "buttonDiv").append(button);
+  let startButton = $("<button>").click(/*TODO: inizia la registrazione, toggle bottoni*/).addClass("recordButton").attr("id", "startRecord");
+  let stopButton = $("<button>").click(/*TODO: termina la registrazione e la salva, toggle bottoni*/).addClass("recordButton").attr("id", "stopRecord");
+  startButton.append(mic);
+  stopButton.append(micActive);
+  stopButton.hide();
+  let buttonDiv = $("<div>").attr("id", "buttonDiv").append(startButton, stopButton);
 
 
   let mainDiv = $("<div>").attr("id", "readTextDiv").append(textDiv, buttonDiv);
@@ -124,6 +131,7 @@ function loadReadText(initialState){
   exerciseDiv.append(mainDiv);
 }
 
+//Leggi immagini
 function loadReadImages(initialState){
   let images = initialState;
   let index = 0;
@@ -152,27 +160,30 @@ function loadReadImages(initialState){
   });
 
   let mic = $("<img>").attr({
-    id: 'mic',
-    src: '../images/exercise/microphone.svg',
-    alt: 'microphoneIcon',
-    class: 'micIcons'
+    id: "mic",
+    src: "../images/exercise/microphone.svg",
+    alt: "microphoneIcon",
+    class: "micIcons"
   });
 
   let micActive = $("<img>").attr({
-    id: 'micActive',
-    src: '../images/exercise/microphoneActive.svg',
-    alt: 'microphoneActiveIcon',
-    class: 'micIcons'
+    id: "micActive",
+    src: "../images/exercise/microphoneActive.svg",
+    alt: "microphoneActiveIcon",
+    class: "micIcons"
   });
-  micActive.hide();
-  let button = $("<button>").click(/*TODO: inizia la registrazione e cambia icone*/).addClass("recordButton");
-  button.append(mic, micActive);
+  let startButton = $("<button>").click(/*TODO: inizia la registrazione, toggle bottoni*/).addClass("recordButton").attr("id", "startRecord");
+  let stopButton = $("<button>").click(/*TODO: termina la registrazione e la salva, toggle bottoni*/).addClass("recordButton").attr("id", "stopRecord");
+  startButton.append(mic);
+  stopButton.append(micActive);
+  stopButton.hide();
 
-  let buttonDiv = $("<div>").attr("id", "buttonDiv").append(button);
+  let buttonDiv = $("<div>").attr("id", "buttonDiv").append(startButton, stopButton);
   let mainDiv = $("<div>").attr("id", "readImagesDiv").append(imagesDiv, buttonDiv);
   exerciseDiv.append(mainDiv);
 }
 
+//Descrivi Immagini
 function loadImagesToText(initialState){
   let images = initialState;
   let number = 0;
@@ -185,22 +196,25 @@ function loadImagesToText(initialState){
       src: imagePath,
       alt: "image "+number,
       class: "imageClass",
-      id: "image "+number
+      id: "image"+number
     });
     div.append(i);
     div.append($("<input>").attr({
       type: "text",
-      id: "textInput "+number,
+      id: "input"+number,
       class: "textInput",
       placeholder: "Cos'è?"
     }))
     mainDiv.append(div);
     div = $("<div>").addClass("row");
   });
-
-  exerciseDiv.append(mainDiv);
+  let buttonDiv = $("<div>").attr("id", "buttonDiv");
+  let submitButton = $("<button>").click(()=>{saveITT(number)}).addClass("submitButton").html("Completa Esercizio");
+  buttonDiv.append(submitButton);
+  exerciseDiv.append(mainDiv, buttonDiv);
 }
 
+//Associa testo ad immagini
 function loadTextToImages(initialState){
   let images = initialState[0];
   let texts = initialState[1];
@@ -224,7 +238,7 @@ function loadTextToImages(initialState){
     inputDiv.append($("<p>").attr("id", "text"+number).text(texts[number-1]).addClass("text"));
     inputDiv.append($("<input>").attr({
       type: "number",
-      id: "input" + number,
+      id: "input"+ number,
       max: images.length,
       class: "numberInput"
     }));
@@ -236,9 +250,13 @@ function loadTextToImages(initialState){
     inputDiv = $("<div>").addClass("inputDiv");
     imageDiv = $("<div>").addClass("imageDiv");
   });
-  exerciseDiv.append(mainDiv);
+  let buttonDiv = $("<div>").attr("id", "buttonDiv");
+  let submitButton = $("<button>").click(() => {saveTTI(number)}).addClass("submitButton").html("Completa Esercizio");
+  buttonDiv.append(submitButton);
+  exerciseDiv.append(mainDiv, buttonDiv);
 }
 
+//Cuciverba
 function loadCrossword(initialState){
   let matrix = initialState[0];
   let vertical = initialState[1];
@@ -247,12 +265,24 @@ function loadCrossword(initialState){
   let horizontalTextDiv = $("<div>").attr("id", "horizontalDiv");
   let mainDiv =  $("<div>").attr("id", "crosswordDiv");
 
+  let buttonDiv = $("<div>").attr("id", "buttonDiv");
+  let submitButton = $("<button>").click(()=> {saveCW(matrix.length, matrix[1].length)}).addClass("submitButton").html("Completa Esercizio");
+  buttonDiv.append(submitButton);
+  exerciseDiv.append(buttonDiv);
+
+
+
   let index = 0;
 
   for (let i = 0; i < matrix.length; i++){
     let row = $("<div>").addClass("row");
     for (let j= 0; j < matrix[i].length; j++){
-      let element = $("<div>")
+      let element = $("<div>");
+      let inputText = $("<input>").attr("type", "text");
+      inputText.blur(() => {
+        inputText.val(inputText.val().slice(0,1));
+      });
+
       element.attr("id", i+"_"+j);
       if (matrix[i][j]==="#"){
         let blackBox = $("<div>").addClass("blackBox");
@@ -264,10 +294,6 @@ function loadCrossword(initialState){
         element.addClass("indexBlock");
         let indexDiv = $("<div>").addClass("indexDiv").text(index);
         let textDiv = $("<div>").addClass("textDiv");
-        let inputText = $("<input>").attr("type", "text");
-        inputText.blur(() => {
-          oneChar(inputText);
-        });
         textDiv.append(inputText);
         element.append(indexDiv, textDiv)
       }
@@ -275,10 +301,6 @@ function loadCrossword(initialState){
         element.addClass("textBlock");
         let spaceDiv = $("<div>").addClass("indexDiv");
         let textDiv = $("<div>").addClass("textDiv");
-        let inputText = $("<input>").attr("type", "text");
-        inputText.blur(() => {
-          oneChar(inputText);
-        });
         textDiv.append(inputText);
         element.append(spaceDiv, textDiv);
       }
@@ -303,40 +325,7 @@ function loadCrossword(initialState){
   exerciseDiv.append(horizontalTextDiv);
 }
 
-function oneChar(input){
-  input.val(input.val().slice(0,1));
-}
-
-function loadCompleteText(initialState){
-  let words = initialState;
-  let div=$("<div>").addClass("row");
-  let mainDiv = $("<div>").attr("id", "completeText");
-  words.forEach((word, index)=>{
-    //-----------------------------------
-    //TODO: Rimuovere, quando si inserisce nel db si tolgono le lettere
-    const randomIndex = Math.floor(Math.random() * word.length);
-    tempWordArray = word.split('');
-    tempWordArray[randomIndex] = "#";
-    word = tempWordArray.join('');
-  //-------------------------------------
-    div.attr("id", "word"+index);
-    for (let i=0; i < word.length; i++){
-      if(word[i]==="#"){
-        div.append($("<div>").append($("<input>").attr({
-          type: "text",
-          maxLength: 1,
-          class: "textInput"
-        })));
-      }else{
-        div.append($("<div>").append($("<p>").text(word[i])));
-      }
-    }
-    mainDiv.append(div);
-    div=$("<div>").addClass("row");
-  })
-  exerciseDiv.append(mainDiv);
-}
-
+//Parola corretta
 function loadRightText(initialState){
   let firstSetOfWords = [];
   let secondSetOfWords = [];
@@ -361,7 +350,7 @@ function loadRightText(initialState){
       id: "radio"+i,
       name: "word"+i
     });
-    if(i % 2 === 0){
+    if(Math.random() < 0.5){
       div.append($("<p>").text(firstSetOfWords[i]), radio1, radio2, $("<p>").text(secondSetOfWords[i]));
     }else{
       div.append($("<p>").text(secondSetOfWords[i]), radio2, radio1, $("<p>").text(firstSetOfWords[i]));
@@ -370,5 +359,80 @@ function loadRightText(initialState){
     mainDiv.append(div);
     div = $("<div>").addClass("row");
   }
-  exerciseDiv.append(mainDiv);
+  let buttonDiv = $("<div>").attr("id", "buttonDiv");
+  let submitButton = $("<button>").click(()=>{saveCT(secondSetOfWords.length)}).addClass("submitButton").html("Completa Esercizio");
+  buttonDiv.append(submitButton);
+  exerciseDiv.append(mainDiv, buttonDiv);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                            Salvataggio dell'esecuzione
+//----------------------------------------------------------------------------------------------------------------------
+
+//Read Text -> Prendi l'audio
+//Read Images -> Prendi l'audio
+function saveReadExercise(){
+
+}
+
+//Images to text -> Prendi path immagine e testo
+function saveITT(n) {
+  let execution = {};
+  for (let i = 1; i < n + 1; i++) {
+    execution[$("#image" + i).attr("src")] = $("#textInput" + i).val();
+  }
+  //Lo salva bene > va messo nel db e fare redirect
+}
+
+//Text to Images -> Prendi path immagine e testo
+function saveTTI(n) {
+  let execution = {};
+  for (let i = 1; i < n + 1; i++) {
+    execution[$("#image" + $("#input"+i).val()).attr("src")] = $("#text" + i).text();
+  }
+  //Lo salva bene > va messo nel db e fare redirect
+}
+
+//Crossword -> Crea la matrice
+function saveCW(r, c){
+  let execution = createMatrix(r, c);
+
+  for(let i = 0; i < r; i++){
+    for(let k = 0; k < c; k++){
+      let element = $("#"+i+"_"+k);
+      if (element.find("input[type='text']").length > 0){
+        execution[i][k] = element.find("input[type='text']").val().toLowerCase();
+      }else if(element.find(".blackBox").length > 0){
+        execution[i][k] = "#";
+      }
+    }
+  }
+  saveExecution(execution)
+}
+function createMatrix(r, c) {
+  //Crea una riga, in una riga crea una colonna tutta vuota, ripeti per tutte le righe
+  return Array.from({ length: r }, () => Array.from({ length: c }, () => null));
+}
+
+//Complete text -> prendi le parole scelte
+function saveCT(n){
+  let execution = [];
+  for(let i= 0; i < n; i++){
+    execution.push($("input[name='word" + i + "']:checked").val());
+  }
+  saveExecution(execution)
+}
+
+function saveExecution(execution){
+  $("#buttonDiv > button").prop("disabled", true).text("Esercizio Inviato!");
+  $.post({
+    url: "../exerciseLogger",
+    contentType: "application/json",
+    data: JSON.stringify(execution)
+  }).done(() => {
+    redirect("home");
+  }).fail((error) => {
+    console.log("Errore durante la chiamata Post:"+error);
+    redirect("500.html")
+  })
 }

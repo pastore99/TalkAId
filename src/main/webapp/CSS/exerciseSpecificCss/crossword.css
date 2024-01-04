@@ -33,15 +33,21 @@
     height: 80%;
 }
 
+.indexBlock, .textBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
 .indexDiv{
-    height: 35%;
+    height: 40%;
     width: 100%;
     font-size: 3em;
 }
 
 .textDiv{
     width: 100%;
-    height: 65%;
+    height: 59%;
     text-align: center;
 }
 
