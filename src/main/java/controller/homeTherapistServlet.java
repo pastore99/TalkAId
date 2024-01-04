@@ -34,11 +34,18 @@ public class homeTherapistServlet extends HttpServlet {
 
         session.setAttribute("list_user",list_user);
 
+        for(UserInfo u: list_user) {
+            System.out.println(u.getId());
+        }
+
+        System.out.println("logged: "+logged.getId());
+
         model.entity.PersonalInfo InfoLogged=piService.getPersonalInfoById(logged.getId());
-        session.setAttribute("NameSurnameLogged",InfoLogged.getFirstname()+" "+InfoLogged.getLastname());
+        if(InfoLogged!=null)
+        session.setAttribute("NameSurnameLogged", InfoLogged.getFirstname() + " " + InfoLogged.getLastname());
+        else  session.setAttribute("NameSurnameLogged",null);
 
         response.sendRedirect("JSP/homeTherapist.jsp");
-        //response.sendRedirect("JSP/testTable.jsp");
     }
 
 

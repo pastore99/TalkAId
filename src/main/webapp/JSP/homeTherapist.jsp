@@ -13,10 +13,6 @@
 <body>
 <div class="element-home-logopedista">
     <div class="div">
-        <div class="overlap">
-            <div class="button-only-text"><button class="button">Invita paziente</button></div>
-        </div>
-
         <div class="pop-up">
             <div class="text-wrapper-2">PAZIENTI</div>
             <div class="overlap-group">
@@ -82,7 +78,9 @@
             <input type="text" id="searchInput" placeholder="Cerca per nome o cognome">
             <img class="material-symbols" src="../images/homeTherapist/material-symbols-search-rounded.svg" />
         </div>
-        <div class="img-wrapper"><img class="material-symbols-2" src="../images/homeTherapist/material-symbols-sort.svg" /></div>
+        <div class="overlap">
+            <div class="button-only-text"><button class="button">Invita paziente</button></div>
+        </div>
     </div>
 </div>
 <script src="../JS/searchBar.js"></script>
