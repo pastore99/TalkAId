@@ -27,23 +27,7 @@ public class ChangePassword extends HttpServlet
             String password_criptata= new Encryption().encryptPassword(password_control);
             int id= (int) request.getSession().getAttribute("id");
             User utente= new UserData().getUser(id);
-            JsonObject jsonResponse = new JsonObject();
-            if(new UserData().resetPassword(utente.getEmail(), password_criptata))
-            {
-                jsonResponse.addProperty("result", true);
-                String jsonString = new Gson().toJson(jsonResponse);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(jsonString);
-            }
-            else
-            {
-                jsonResponse.addProperty("result", false);
-                String jsonString = new Gson().toJson(jsonResponse);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(jsonString);
-            }
+            new UserData().resetPassword(utente.getEmail(), password_criptata);
         }
         catch (Exception e) {
             e.printStackTrace();

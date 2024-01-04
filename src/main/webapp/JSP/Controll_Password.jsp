@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: petri
-  Date: 23/12/2023
-  Time: 15:45
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -27,9 +20,9 @@
                 })
                     .done(function(result)
                     {
-                        if(result.contains("true"))
+                        if(result.toString()==="true")
                         {
-                           showPopup();
+                            document.querySelector(".popup").style.display = "block";
                         }
                         else
                         {
@@ -58,10 +51,10 @@
 
 <!-- e finisce qui. Se tutto funziona correttamente, devi mostrare questo altro popup-->
 
-    <div class= "popup" style="hidden">
-        <input type="text" id="password2" name="password" placeholder="Nuova password" required="" onchange="controllaPassword()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
-        <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" required="" onchange="controllaPassword()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
-        <button class="form-submit-btn" id="Controlla2" disabled>Conferma password</button>
+    <div class= "popup" style="display: none;">
+        <input type="text" id="password2" name="password" placeholder="Nuova password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
+        <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
+        <button class="form-submit-btn" id="Controlla2">Conferma password</button>
     </div>
 
     <script>
@@ -81,7 +74,7 @@
                     {
                         if(result.result)
                         {
-                            $('#popup').css('display', 'block');
+                            document.querySelector(".popup").style.display = "none";
                         }else
                         {
                             alert("problemi nel settaggio della nuova password");
