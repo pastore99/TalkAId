@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 @WebServlet("/changeDate")
-public class ChangeDate extends  HttpServlet
+public class ChangeUserInfo extends  HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PersonalInfo utente = new PersonalInfoData().getPersonalInfo((int) request.getSession().getAttribute("id"));

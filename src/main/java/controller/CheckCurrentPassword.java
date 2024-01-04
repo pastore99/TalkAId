@@ -11,19 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/ControllPassword")
-public class ControllPassword extends HttpServlet
+public class CheckCurrentPassword extends HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        try {
             String password = request.getParameter("password");
             Authenticator authenticator = new Authenticator();
             int id = (int) request.getSession().getAttribute("id");
             String email = new UserData().getUser(id).getEmail();
             response.getWriter().write(String.valueOf(authenticator.authenticate(email, password) > 0)); //true se deve abilitare, false altrimenti
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

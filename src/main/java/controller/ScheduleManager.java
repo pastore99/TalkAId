@@ -1,7 +1,5 @@
 package controller;
 
-import model.service.schedule.ScheduleManager;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/ScheduleServlet")
-public class ScheduleServlet extends HttpServlet {
+public class ScheduleManager extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         doPost(request, response);
     }
@@ -19,7 +17,7 @@ public class ScheduleServlet extends HttpServlet {
         int userId = (Integer) request.getSession().getAttribute("id");
         response.getWriter().append("Served at: ").append(request.getContextPath());
         String action = request.getParameter("action");
-        ScheduleManager scheduleManager = new ScheduleManager();
+        model.service.schedule.ScheduleManager scheduleManager = new model.service.schedule.ScheduleManager();
 
         try {
 

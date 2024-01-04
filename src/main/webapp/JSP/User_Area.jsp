@@ -112,7 +112,7 @@
         <img src="../Image/usicta.png">
         <p>Vuoi disconnetterti?</p>
         <div class="input">
-            <form action="../logut" method="post">
+            <form action="../logout" method="post">
             <button type="submit">Si</button>
             </form>
             <button id="cancella" onclick="chiudiPopup()">Cancella</button>

@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @WebServlet("/GetMessages")
-public class GetMessageServlet extends HttpServlet {
+public class GetSendMessages extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");

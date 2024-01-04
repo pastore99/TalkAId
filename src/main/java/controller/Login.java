@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class LoginController extends HttpServlet {
+public class Login extends HttpServlet {
 
     /**
      Your AuthenticationService instance should go here
