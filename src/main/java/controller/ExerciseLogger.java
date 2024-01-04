@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,9 +27,10 @@ public class ExerciseLogger extends HttpServlet {
         String execution = stringBuilder.toString();
 
         ExerciseManager em = new ExerciseManager();
-        int userId = (int) request.getAttribute("userId");
-        int exerciseId = (int) request.getAttribute("exerciseId");
-        Date insertDate = (Date) request.getAttribute("insertDate");
+        HttpSession session = request.getSession();
+        int userId = (int) session.getAttribute("userId");
+        int exerciseId = (int) session.getAttribute("exerciseId");
+        Date insertDate = (Date) session.getAttribute("insertDate");
 
         try {
             byte[] bytes = execution.getBytes(StandardCharsets.UTF_8);
