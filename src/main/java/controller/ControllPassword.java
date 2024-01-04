@@ -20,25 +20,10 @@ public class ControllPassword extends HttpServlet
     {
         try {
             String password = request.getParameter("password");
-            String password_control= password.replaceAll("\\s", "");
             Authenticator authenticator = new Authenticator();
             int id = (int) request.getSession().getAttribute("id");
             String email = new UserData().getUser(id).getEmail();
-            JsonObject jsonResponse = new JsonObject();
-            if (authenticator.authenticate(email, password) > 0) {
-                jsonResponse.addProperty("result", true);
-                request.getSession().setAttribute("autorizzato",true);
-                String jsonString = new Gson().toJson(jsonResponse);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(jsonString);
-            } else {
-                jsonResponse.addProperty("result", false);
-                String jsonString = new Gson().toJson(jsonResponse);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(jsonString);
-            }
+            response.getWriter().write(String.valueOf(authenticator.authenticate(email, password) > 0)); //true se deve abilitare, false altrimenti
         }
         catch (Exception e) {
             e.printStackTrace();

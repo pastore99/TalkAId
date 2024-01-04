@@ -59,7 +59,7 @@
     $(document).ready(function() {
         // Ascolta l'evento di clic sul pulsante
         $("#Controlla").click(function () {
-            var password_attuale = $("#password").val();
+            var password_attuale = $("#password2").val();
             $.ajax({
                 url: '${pageContext.request.contextPath}/ChangePassword',
                 type: 'POST',
