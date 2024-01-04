@@ -31,7 +31,6 @@ public class RegistrationServlet extends HttpServlet {
         response.getWriter().write(String.valueOf(result));
         if(result == 0) {
             setSessionAttributes(email, request);
-            response.sendRedirect("/JSP/legal.jsp");
         }
     }
 
@@ -48,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
             String end = request.getParameter("endTime");
             String time = start + "|" + end;
             ud.updateEmailTime(String.valueOf(session.getAttribute("id")), time);
-            response.sendRedirect("/JSP/welcome.jsp");
+            response.sendRedirect("JSP/welcome.jsp");
         }
     }
 
