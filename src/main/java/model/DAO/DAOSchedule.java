@@ -14,15 +14,15 @@ public class DAOSchedule {
     private Connection connection;
 
     public DAOSchedule(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOSchedule() {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public DAOSchedule() {
-        this.connection = null;
     }
     private Schedule getScheduleFromResultSet(ResultSet resultSet) throws SQLException {
         Schedule schedule = new Schedule();
