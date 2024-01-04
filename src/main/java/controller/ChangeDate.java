@@ -1,18 +1,15 @@
 package controller;
 
-import javax.servlet.RequestDispatcher;
+import model.entity.PersonalInfo;
+import model.service.PersonalInfo.PersonalInfoData;
+import model.service.user.UserData;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import model.entity.PersonalInfo;
-import model.entity.User;
-import model.service.PersonalInfo.PersonalInfoData;
-import model.service.user.UserData;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -52,26 +49,12 @@ public class ChangeDate extends  HttpServlet
             if (Objects.equals(risult, "l'Email inserità e già usata scegliere un'altra Email") || Objects.equals(risultato, "Aggioranmento Address riuscito ma l'Email inserità e già usata scegliere un'altra Email")) {
                 risultato=risultato + risult+ "rinserire anche la password se la si vuole modificare";
                 response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato="+risultato);
-                /*request.setAttribute("risultato", risultato );
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/TalkAID_war_exploded/JSP/Cambio_dati.jsp");
-                dispatcher.forward(request, response);*/
             }
             else
             {
                 risultato = risultato + risult;
             }
         }
-        if(!Objects.equals(request.getParameter("password"), ""))
-        {
-            response.sendRedirect("/TalkAID_war_exploded/JSP/Controll_Password.jsp");
-        }
-        else
-        {
-            response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato="+risultato);
-            /*request.setAttribute("risultato", risultato );
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/JSP/Cambio_dati.jsp");
-            dispatcher.forward(request, response);*/
-        }
+        response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato="+risultato);
     }
 }

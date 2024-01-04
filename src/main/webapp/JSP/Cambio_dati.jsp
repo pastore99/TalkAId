@@ -65,17 +65,16 @@
                 <input class="input" type="text" placeholder="<%= infoutente.getPhone()%>" name="phonenumber"/>
                 <label class="label">Phone Number</label>
             </div>
-
-            <div class="input-field">
-                <input class="input" type="text" name ="password"/>
-                <label class="label">Password</label>
-            </div>
         </div>
 
         <div class="save">
             <button class="submit-btn" type="submit">Salva</button>
         </div>
     </form>
+
+<div class="input-field">
+    <button class="submit-btn" onclick="redirectToHref()">Cambia Password</button>
+</div>
     <div id="popup" >
         <div id="popup-uscita">
             <img src="../Image/conferma.png">
@@ -86,6 +85,10 @@
         </div>
     </div>
     <script>
+
+        function redirectToHref() {
+        window.location.href = "../JSP/changepassw.jsp";
+    }
         function chiudiPopup() {
             document.getElementById('popup').style.display = 'none';
         }
