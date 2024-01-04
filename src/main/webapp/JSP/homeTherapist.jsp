@@ -63,6 +63,7 @@
 
             </div>
         </div>
+        <!--NAVBAR-->
         <div class="overlap-3">
             <div class="rectangle-2"></div>
             <div class="group-2">

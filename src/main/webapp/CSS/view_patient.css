@@ -1,4 +1,302 @@
+/*---ONE PATIENT----*/
+.singolo-paziente {
+    background-color: #52d1c6bd;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
 
+.singolo-paziente .group-5 {
+    position: absolute;
+    width: 145px;
+    height: 38px;
+    top: 185px;
+    left: 68px;
+}
+
+.singolo-paziente .overlap-3 {
+    position: relative;
+    width: 175px;
+    height: 38px;
+    top: 10vh;
+    left: 37vw;
+    background-image: url(../images/homeTherapist/rectangle-351.svg);
+    background-size: 100% 100%;
+}
+
+.singolo-paziente .text-wrapper-2 {
+    position: absolute;
+    width: 107px;
+    top: 11px;
+    left: 36px;
+    font-family: "Poppins", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 11px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.singolo-paziente .group-6 {
+    position: absolute;
+    width: 174px;
+    height: 39px;
+    top: 183px;
+    left: 415px;
+}
+
+.singolo-paziente .overlap-4 {
+    position: relative;
+    width: 172px;
+    height: 39px;
+    top: 10vh;
+    left: 39vw;
+    background-image: url(../images/homeTherapist/rectangle-351.svg);
+    background-size: 100% 100%;
+}
+
+.singolo-paziente .text-wrapper-3 {
+    position: absolute;
+    width: 144px;
+    top: 12px;
+    left: 14px;
+    font-family: "Poppins", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.singolo-paziente .button-chat {
+    position: absolute;
+    width: 46px;
+    height: 44px;
+    top: 35vh;
+    left: 58vw;
+    background-color: #e8f3f1;
+    border-radius: 15px;
+}
+
+.singolo-paziente .iconly-light-chat {
+    position: absolute;
+    width: 22px;
+    height: 21px;
+    top: 11px;
+    left: 12px;
+}
+
+.singolo-paziente .line {
+    position: absolute;
+    width: 592px;
+    height: 1px;
+    top: 244px;
+    left: 31px;
+    object-fit: cover;
+}
+
+.singolo-paziente .overlap-5 {
+    position: absolute;
+    width: 310px;
+    height: 200px;
+    top: 51vh;
+    left: 49vw;
+    background-color: #f7f5f5;
+    border-radius: 29px;
+}
+
+.singolo-paziente .img {
+    position: absolute;
+    width: 239px;
+    height: 144px;
+    top: 20px;
+    left: 43px;
+}
+
+.singolo-paziente .vector {
+    position: absolute;
+    width: 216px;
+    height: 37px;
+    top: 67px;
+    left: 49px;
+}
+
+.singolo-paziente .text-wrapper-4 {
+    position: absolute;
+    top: 157px;
+    left: 275px;
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+.singolo-paziente .text-wrapper-5 {
+    position: absolute;
+    width: 38px;
+    top: 25px;
+    left: 19px;
+    transform: rotate(-90deg);
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 10px;
+    white-space: nowrap;
+}
+
+.singolo-paziente .line-2 {
+    position: absolute;
+    width: 1px;
+    height: 70px;
+    top: 88px;
+    left: 92px;
+}
+
+.singolo-paziente .line-3 {
+    position: absolute;
+    width: 1px;
+    height: 84px;
+    top: 75px;
+    left: 205px;
+}
+
+.singolo-paziente .line-4 {
+    position: absolute;
+    width: 1px;
+    height: 89px;
+    top: 69px;
+    left: 265px;
+}
+
+.singolo-paziente .line-5 {
+    position: absolute;
+    width: 1px;
+    height: 70px;
+    top: 89px;
+    left: 148px;
+}
+
+.singolo-paziente .ellipse-2 {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 65px;
+    left: 263px;
+    background-color: #199a8e;
+    border-radius: 2px;
+}
+
+.singolo-paziente .ellipse-3 {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 72px;
+    left: 203px;
+    background-color: #199a8e;
+    border-radius: 2px;
+}
+
+.singolo-paziente .ellipse-4 {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 86px;
+    left: 146px;
+    background-color: #199a8e;
+    border-radius: 2px;
+}
+
+.singolo-paziente .ellipse-5 {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 87px;
+    left: 90px;
+    background-color: #199a8e;
+    border-radius: 2px;
+}
+
+.singolo-paziente .text-wrapper-6 {
+    top: 161px;
+    left: 80px;
+    position: absolute;
+    width: 25px;
+    transform: rotate(-29.62deg);
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 6px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.singolo-paziente .text-wrapper-7 {
+    top: 161px;
+    left: 136px;
+    position: absolute;
+    width: 25px;
+    transform: rotate(-29.62deg);
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 6px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.singolo-paziente .text-wrapper-8 {
+    top: 161px;
+    left: 193px;
+    position: absolute;
+    width: 25px;
+    transform: rotate(-29.62deg);
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 6px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.singolo-paziente .text-wrapper-9 {
+    top: 162px;
+    left: 253px;
+    position: absolute;
+    width: 25px;
+    transform: rotate(-29.62deg);
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 6px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.singolo-paziente .text-wrapper-10 {
+    position: absolute;
+    top: 44vh;
+    left: 55vw;
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #101522;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: 32.4px;
+    white-space: nowrap;
+}
+
+/*---INFO TABLE---*/
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -13,9 +311,8 @@ td {
 img {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
 }
-/*----*/
+/*--HOME LAYOUT--*/
 
 html {
     margin: 0px;
@@ -209,16 +506,6 @@ a {
     line-height: 24px;
 }
 
-.element-home-logopedista .image {
-    position: absolute;
-    width: 47px;
-    height: 48px;
-    top: 6px;
-    left: 20px;
-    background-image: url(../images/homeTherapist/ellipse-28.png);
-    background-size: cover;
-    background-position: 50% 50%;
-}
 
 .element-home-logopedista .overlap-2 {
     position: absolute;
@@ -345,16 +632,6 @@ a {
     left: 0;
 }
 
-.element-home-logopedista .image-5 {
-    position: absolute;
-    width: 47px;
-    height: 48px;
-    top: 77px;
-    left: 0;
-    background-image: url(../images/homeTherapist/ellipse-28.png);
-    background-size: cover;
-    background-position: 50% 50%;
-}
 
 .element-home-logopedista .overlap-3 {
     position: absolute;
