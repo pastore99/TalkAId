@@ -16,13 +16,14 @@ import java.io.IOException;
 @WebServlet("/login")
 public class Login extends HttpServlet {
 
-    /**
-     Your AuthenticationService instance should go here
-     **/
     private Authenticator authService;
+    private UserData userData;
+    private UserRegistry userReg;
 
     public void init() {
         this.authService = new Authenticator();
+        this.userData = new UserData();
+        this.userReg = new UserRegistry();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -46,8 +47,8 @@ public class Login extends HttpServlet {
     private void setSessionAttributes(int id, HttpServletRequest request){
         HttpSession session = request.getSession();
 
-        UserData userData = new UserData();
-        UserRegistry userReg = new UserRegistry();
+        userData = new UserData();
+        userReg = new UserRegistry();
 
         User user = userData.getUser(id);
         PersonalInfo personalInfo = userReg.getPersonalInfo(id);

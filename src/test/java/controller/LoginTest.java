@@ -1,79 +1,105 @@
 package controller;
 
-import com.mockrunner.mock.web.MockHttpServletRequest;
-import com.mockrunner.mock.web.MockHttpServletResponse;
-import com.mockrunner.mock.web.MockHttpSession;
-import com.mockrunner.mock.web.WebMockObjectFactory;
-import com.mockrunner.servlet.ServletTestModule;
-import com.mockrunner.struts.BasicActionTestCaseAdapter;
-import model.service.login.Authenticator;
+import model.entity.PersonalInfo;
+import model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import static org.mockito.Mockito.*;
 
-public class LoginControllerTest extends BasicActionTestCaseAdapter {
+class LoginTest {
 
-
-    private ServletTestModule tester;
-    private Login loginController;
+    private Login loginServlet;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        tester = createServletTestModule();
-        loginController = new Login();
-        loginController.init();
-        tester.setServlet(loginController, "/login");
+    void setUp() {
+        loginServlet = new Login();
+        loginServlet.init();
+
+        request = mock(HttpServletRequest.class);
+        response = mock(HttpServletResponse.class);
     }
 
-    private ServletTestModule createServletTestModule() {
-        // Assuming you are initializing your ServletTestModule here.
-        ServletTestModule tester = new ServletTestModule(getActionServlet());
-        return tester;
-    }
-
-
+    //ACCESSO PAZIENTE CORRETTO
     @Test
-    public void testLoginSuccess() throws Exception {
-        MockHttpServletRequest request = tester.createMockRequest();
-        MockHttpServletResponse response = tester.createMockResponse();
-        MockHttpSession session = tester.createMockSession();
+    void testDoPostWithValidCredentials() throws Exception {
+        // Setup test data
+        String email = "patient2@example.com";
+        String password = "pwd";
+        int userId = 13;
 
-        request.setRequestURI("/login");
-        request.setMethod("POST");
-        request.setupAddParameter("email", "test@example.com");
-        request.setupAddParameter("password", "testing123");
-        request.setSession(session);
+        // Set request parameters
+        when(request.getParameter("email")).thenReturn(email);
+        when(request.getParameter("password")).thenReturn(password);
 
-        Authenticator mockAuthService = mock(Authenticator.class);
-        when(mockAuthService.authenticate(anyString(), anyString())).thenReturn(1);
-        loginController.authService = mockAuthService;
+        // Mock HttpSession
+        HttpSession mockSession = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(mockSession);
 
-        // Add additional mocks if needed.
-        // For example, you might want to mock the userData.getUser() and userReg.getPersonalInfo() calls within setSessionAttributes() method.
+        // Execute doPost method
+        loginServlet.doPost(request, response);
 
-        tester.doPost(request, response);
-        assertEquals("JSP/welcome.jsp", response.getRedirectURL());
+        // Verify session attributes
+        verify(mockSession).setAttribute("id", userId);
+        verify(mockSession).setAttribute("type", "patient");
+
+        // Verify redirection
+        verify(response).sendRedirect("JSP/welcome.jsp");
     }
 
     @Test
-    public void testLoginFailure() throws Exception {
-        MockHttpServletRequest request = tester.createMockRequest();
-        MockHttpServletResponse response = tester.createMockResponse();
-        MockHttpSession session = tester.createMockSession();
+    void testDoPostWithValidCredentials2() throws Exception {
+        // Setup test data
+        String email = "doc1@example.com";
+        String password = "pwd";
+        int userId = 9;
 
-        request.setRequestURI("/login");
-        request.setMethod("POST");
-        request.setupAddParameter("email", "fail@example.com");
-        request.setupAddParameter("password", "testing123");
-        request.setSession(session);
+        // Set request parameters
+        when(request.getParameter("email")).thenReturn(email);
+        when(request.getParameter("password")).thenReturn(password);
 
-        Authenticator mockAuthService = mock(Authenticator.class);
-        when(mockAuthService.authenticate(anyString(), anyString())).thenReturn(0);
-        loginController.authService = mockAuthService;
 
-        tester.doPost(request, response);
-        assertEquals("JSP/login.jsp?error=1", response.getRedirectURL());
+        // Mock HttpSession
+        HttpSession mockSession = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(mockSession);
+
+        // Execute doPost method
+        loginServlet.doPost(request, response);
+
+        // Verify session attributes
+        verify(mockSession).setAttribute("id", userId);
+        verify(mockSession).setAttribute("type", "therapist");
+
+        // Verify redirection
+        verify(response).sendRedirect("JSP/welcome.jsp");
     }
+
+    @Test
+    void testDoPostWithInvalidCredentials() throws Exception {
+        // Setup test data
+        String email = "patient55@example.com";
+        String password = "pwd";
+        int userId = 13;
+
+        // Set request parameters
+        when(request.getParameter("email")).thenReturn(email);
+        when(request.getParameter("password")).thenReturn(password);
+
+        // Mock HttpSession
+        HttpSession mockSession = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(mockSession);
+
+        // Execute doPost method
+        loginServlet.doPost(request, response);
+
+        // Verify redirection
+        verify(response).sendRedirect("JSP/login.jsp?error=1");
+    }
+
 }

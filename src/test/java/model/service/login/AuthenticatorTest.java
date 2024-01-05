@@ -8,10 +8,10 @@ import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Method;
 import java.security.SecureRandom;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -104,5 +104,24 @@ public class AuthenticatorTest {
         // Ensure that our mocked methods were called once.
         verify(encryption, times(1)).encryptPassword("password");
         verify(daoUser, times(1)).resetPassword("test@email.com", "hashed_password");
+    }
+
+    @Test
+    void testGeneratePin() throws Exception {
+        Authenticator authenticator = new Authenticator();
+
+        // Use reflection to access the method
+        Method method = Authenticator.class.getDeclaredMethod("generatePin");
+        method.setAccessible(true);
+
+        String result = (String) method.invoke(authenticator);
+
+        // Assert that result is not null or empty and its length equals 8
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(8, result.length());
+
+        // Assert that result only contains numbers
+        assertTrue(result.matches("[0-9]+"));
     }
 }

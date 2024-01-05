@@ -1,15 +1,23 @@
 package model.service.schedule;
 
 import model.DAO.DAOSchedule;
+import model.DAO.DAOUser;
 import model.entity.Schedule;
+
+import java.sql.Connection;
 import java.sql.Date;
 
 import java.util.List;
 
 public class ScheduleManager implements ScheduleManagerInterface {
-    DAOSchedule db = new DAOSchedule();
+    DAOSchedule db;
 
-    public ScheduleManager(){}
+    public ScheduleManager() {
+        this.db = new DAOSchedule();}
+    public ScheduleManager(DAOSchedule db) {
+        this.db = db;
+    }
+
 
     public Date convStoD(String Date){
         return java.sql.Date.valueOf(Date);
