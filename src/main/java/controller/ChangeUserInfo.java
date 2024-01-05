@@ -35,7 +35,7 @@ public class ChangeUserInfo extends  HttpServlet
         String risultato="";
         int id = (int)session.getAttribute("id");
         if(FirstName!=null || LastName!=null || phonenumber!=null)
-            if(personalInfo.updatePersonaInfofromId(id, FirstName, LastName, phonenumber))
+            if(personalInfo.updatePersonaInfo(id, FirstName, LastName, phonenumber))
             {
                 risultato="Dati personali aggiornati con successo;";
             }
