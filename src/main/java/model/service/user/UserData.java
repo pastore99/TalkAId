@@ -9,9 +9,7 @@ public class UserData implements UserDataInterface {
     DAOUser db;
     public UserData() {
         this.db = new DAOUser();}
-    public UserData(Connection connection) {
-        this.db = new DAOUser(connection);
-    }
+
     public UserData(DAOUser db) {
         this.db = db;
     }

@@ -14,9 +14,6 @@ public class ScheduleManager implements ScheduleManagerInterface {
 
     public ScheduleManager() {
         this.db = new DAOSchedule();}
-    public ScheduleManager(DAOSchedule db) {
-        this.db = db;
-    }
 
 
     public Date convStoD(String Date){

@@ -19,11 +19,6 @@ public class MessageManager implements MessageManagerInterface {
         this.db = new DAOMessage();
         this.db2 = new UserData();
     }
-    public MessageManager(DAOMessage db, UserData db2) {
-        this.db = db;
-        this.db2 = db2;
-    }
-    private final Map<Integer, List<Message>> conversations = new HashMap<>(); //Integer è l'ID dell'Utente con cui chatta. La lista dei messaggi è la lista dei messaggi con quell'utente
     DAOMessage db;
     UserData db2;
 

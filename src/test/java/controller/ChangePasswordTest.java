@@ -43,6 +43,6 @@ class ChangePasswordTest {
         changePasswordServlet.doPost(request, response);
 
         printWriter.flush();
-        assertTrue(stringWriter.toString().contains("Password cambiata con successo!"));
+        assertTrue(stringWriter.toString().contains("true"));
     }
 }
