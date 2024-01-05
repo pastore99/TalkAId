@@ -11,7 +11,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAOCondition {
+    private Connection connection;
+    public DAOCondition(Connection connection) {this.connection=connection;}
 
+    public DAOCondition() {
+        try{
+            this.connection=DAOConnection.getConnection();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Condition getConditionFromResultSet(ResultSet resultSet) throws SQLException {
         Condition c = new Condition();
@@ -52,7 +61,7 @@ public class DAOCondition {
         ArrayList<Condition> list_PersonalCondition=new ArrayList<>();
         try {
 
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             String query = null;
 
             query = "SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity\n" +
@@ -93,7 +102,7 @@ public class DAOCondition {
         ArrayList<Condition> list_PersonalCondition=new ArrayList<>();
         try {
 
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             String query = null;
 
             query = "SELECT c.*\n" +
