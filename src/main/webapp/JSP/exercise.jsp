@@ -30,9 +30,10 @@
         </div>
     </div>
     <div id="exerciseInfo" hidden
-         data-id = "<%= exercise.getIdExercise()%>"
+         data-exerciseId = "<%= exercise.getIdExercise()%>"
+
          data-type = "<%= exercise.getType()%>"
-         data-user = "<%= session.getAttribute("type")%>"
+         data-userType = "<%= session.getAttribute("type")%>"
     ></div>
 </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>

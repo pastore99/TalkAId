@@ -7,8 +7,12 @@ const CROSSWORD = "CROSSWORD"
 const RIGHTTEXT = "RIGHTTEXT"
 const IMAGESINAROW = 2
 
-const EXERCISETYPE = $("#exerciseInfo").data("type");
-const USERTYPE = $("#exerciseInfo").data("user");
+const exerciseInfo = $("#exerciseInfo");
+
+const EXERCISETYPE = exerciseInfo.data("type");
+const EXERCISEID = exerciseInfo.data("exerciseId");
+const USERTYPE = exerciseInfo.data("userType");
+const USERID = exerciseInfo.data("userId");
 
 const exerciseDiv = $("#exerciseDiv");
 
@@ -20,6 +24,77 @@ function startUp(exerciseIS){
     $("#notificationDiv").click(() => redirect("messageCenter.jsp"));
     loadExercise(EXERCISETYPE, EXERCISEINITIALSTATE);
   })
+}
+
+
+let mediaRecorder;
+let audioChunks = [];
+function micPreparation(){
+
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = function(e) {
+            if (e.data.size > 0) {
+              audioChunks.push(e.data);
+            }
+          };
+
+          mediaRecorder.onstop = function() {
+            let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            let audioUrl = URL.createObjectURL(audioBlob);
+            $("#audioPlayer").attr("src", audioUrl);
+
+            $("#sendAudio").click(() => {
+              // Invia l'audioBlob alla servlet
+              let validIcon = $("<img src='' alt=''>").attr({
+                id: "validIcon",
+                src: "../images/exercise/sentIcon.svg",
+                alt: "validIcon",
+                class: "micIcons"
+              });
+              let validButton = $("<button>").addClass("recordButton").append(validIcon).prop("disabled", true);
+              $("#audioDiv").hide();
+              $("#buttonDiv").hide();
+              $("#exerciseDiv").append($("<div style='display: flex; justify-content: center; align-items: center'>").append(validButton));
+              saveReadExercise(audioBlob);
+            })
+
+            $("#cancelAudio").click(() => {
+              // Pulisci l'array per la prossima registrazione
+              audioUrl = null;
+              audioBlob = null;
+              audioChunks = [];
+              $("#audioPlayer").attr("src", "");
+              $("#startRecord").show();
+              $("#audioDiv").hide();
+            })
+          };
+
+          $("#startRecord").click(function() {
+            mediaRecorder.start();
+            $("#startRecord").hide();
+            $("#stopRecord").show();
+          });
+
+          $("#stopRecord").click(function() {
+            mediaRecorder.stop();
+            $("#stopRecord").hide();
+            $("#audioDiv").show();
+          });
+        })
+        .catch(function(error) {
+          console.error("Errore durante l'accesso al microfono:", error);
+        });
+  }else{
+    console.log("mediaDevices not Supported!");
+    setTimeout(()=> {
+      alert("Ci scusiamo del disagio! A quanto pare non è possibile accedere al microfono!");
+      redirect("home");
+    }, 3000);
+  }
 }
 
 //Gestione JSON dal DB
@@ -57,10 +132,12 @@ function loadExercise(type, initialState){
     case READTEXT:
       loadCSS("../CSS/exerciseSpecificCss/"+READTEXT.toLowerCase()+".css");
       loadReadText(initialState);
+      micPreparation();
       break;
     case READIMAGES:
       loadCSS("../CSS/exerciseSpecificCss/"+READIMAGES.toLowerCase()+".css");
       loadReadImages(initialState);
+      micPreparation();
       break;
     case IMAGESTOTEXT:
       loadCSS("../CSS/exerciseSpecificCss/"+IMAGESTOTEXT.toLowerCase()+".css");
@@ -99,35 +176,63 @@ function loadCSS(cssPath) {
 //                                            Creazione degli esercizi
 //----------------------------------------------------------------------------------------------------------------------
 
-//Leggi testo
-function loadReadText(initialState){
-
-  let text = $("<p>").text(initialState).addClass("textToRead");
-  let textDiv = $("<div>").attr("id", "textDiv").append(text);
-
-  let mic = $("<img>").attr({
+function generateMicsButtonDiv(){
+  let mic = $("<img src='' alt=''>").attr({
     id: "mic",
     src: "../images/exercise/microphone.svg",
     alt: "microphoneIcon",
     class: "micIcons"
   });
 
-  let micActive = $("<img>").attr({
+  let micActive = $("<img src='' alt=''>").attr({
     id: "micActive",
     src: "../images/exercise/microphoneActive.svg",
     alt: "microphoneActiveIcon",
     class: "micIcons"
   });
-  let startButton = $("<button>").click(/*TODO: inizia la registrazione, toggle bottoni*/).addClass("recordButton").attr("id", "startRecord");
-  let stopButton = $("<button>").click(/*TODO: termina la registrazione e la salva, toggle bottoni*/).addClass("recordButton").attr("id", "stopRecord");
-  startButton.append(mic);
+  let startButton = $("<button>").addClass("recordButton").attr("id", "startRecord");
+  let stopButton = $("<button>").addClass("recordButton").attr("id", "stopRecord");
   stopButton.append(micActive);
   stopButton.hide();
-  let buttonDiv = $("<div>").attr("id", "buttonDiv").append(startButton, stopButton);
+  startButton.append(mic);
+
+  return $("<div>").attr("id", "buttonDiv").append(startButton, stopButton);
+}
+
+function generateAudioDiv(){
+  let sendAudio = $("<button>").addClass("audioButtons").attr("id", "sendAudio");
+  let sendIcon = $("<img src='' alt=''>").attr({
+    id: "sendAudio",
+    src: "../images/exercise/validAudio.svg",
+    alt: "sendAudioIcon",
+    class: "audioIcons"
+  });
+  sendAudio.append(sendIcon);
+
+  let cancelAudio = $("<button>").addClass("audioButtons").attr("id", "cancelAudio");
+  let cancelIcon = $("<img src='' alt=''>").attr({
+    id: "cancelAudio",
+    src: "../images/exercise/deleteAudio.svg",
+    alt: "cancelAudioIcon",
+    class: "audioIcons"
+  });
+  cancelAudio.append(cancelIcon);
+
+  let audioDiv = $("<div>").attr("id", "audioDiv");
+  return audioDiv.append(cancelAudio, $("<audio id='audioPlayer' controls></audio>"), sendAudio);
+}
 
 
-  let mainDiv = $("<div>").attr("id", "readTextDiv").append(textDiv, buttonDiv);
+//Leggi testo
+function loadReadText(initialState){
 
+  let text = $("<p>").text(initialState).addClass("textToRead");
+  let textDiv = $("<div>").attr("id", "textDiv").append(text);
+
+  let buttonDiv = generateMicsButtonDiv();
+  let audioDiv = generateAudioDiv();
+  audioDiv.hide()
+  let mainDiv = $("<div>").attr("id", "readTextDiv").append(textDiv, audioDiv, buttonDiv);
   exerciseDiv.append(mainDiv);
 }
 
@@ -144,7 +249,7 @@ function loadReadImages(initialState){
     if (index === IMAGESINAROW){
       index = 0;
     }
-    let i = $("<img>").attr({
+    let i = $("<img src='' alt=''>").attr({
       src: imagePath,
       alt: "image "+number,
       class: "imageClass",
@@ -159,27 +264,11 @@ function loadReadImages(initialState){
     index = index + 1;
   });
 
-  let mic = $("<img>").attr({
-    id: "mic",
-    src: "../images/exercise/microphone.svg",
-    alt: "microphoneIcon",
-    class: "micIcons"
-  });
+  let buttonDiv = generateMicsButtonDiv();
+  let audioDiv = generateAudioDiv();
+  audioDiv.hide()
 
-  let micActive = $("<img>").attr({
-    id: "micActive",
-    src: "../images/exercise/microphoneActive.svg",
-    alt: "microphoneActiveIcon",
-    class: "micIcons"
-  });
-  let startButton = $("<button>").click(/*TODO: inizia la registrazione, toggle bottoni*/).addClass("recordButton").attr("id", "startRecord");
-  let stopButton = $("<button>").click(/*TODO: termina la registrazione e la salva, toggle bottoni*/).addClass("recordButton").attr("id", "stopRecord");
-  startButton.append(mic);
-  stopButton.append(micActive);
-  stopButton.hide();
-
-  let buttonDiv = $("<div>").attr("id", "buttonDiv").append(startButton, stopButton);
-  let mainDiv = $("<div>").attr("id", "readImagesDiv").append(imagesDiv, buttonDiv);
+  let mainDiv = $("<div>").attr("id", "readImagesDiv").append(imagesDiv, audioDiv, buttonDiv);
   exerciseDiv.append(mainDiv);
 }
 
@@ -192,7 +281,7 @@ function loadImagesToText(initialState){
 
   images.forEach((imagePath) => {
     number = number + 1;
-    let i = $("<img>").attr({
+    let i = $("<img src='' alt=''>").attr({
       src: imagePath,
       alt: "image "+number,
       class: "imageClass",
@@ -227,7 +316,7 @@ function loadTextToImages(initialState){
   images.forEach((imagePath) => {
     number = number + 1;
 
-    imageDiv.append($("<img>").attr({
+    imageDiv.append($("<img src='' alt=''>").attr({
       src: imagePath,
       alt: "image "+number,
       class: "imageClass",
@@ -369,31 +458,34 @@ function loadRightText(initialState){
 //                                            Salvataggio dell'esecuzione
 //----------------------------------------------------------------------------------------------------------------------
 
-//Read Text -> Prendi l'audio
-//Read Images -> Prendi l'audio
-function saveReadExercise(){
-
+//Read Text e Read Images
+function saveReadExercise(execution){
+  saveAudioExecution(execution);
 }
 
-//Images to text -> Prendi path immagine e testo
+//Images to text
 function saveITT(n) {
   let execution = {};
   for (let i = 1; i < n + 1; i++) {
-    execution[$("#image" + i).attr("src")] = $("#textInput" + i).val();
+    execution[$("#image" + i).attr("src")] = $("#input" + i).val().toUpperCase();
   }
-  //Lo salva bene > va messo nel db e fare redirect
+  saveExecution(execution);
 }
 
-//Text to Images -> Prendi path immagine e testo
+//Text to Images
 function saveTTI(n) {
   let execution = {};
   for (let i = 1; i < n + 1; i++) {
-    execution[$("#image" + $("#input"+i).val()).attr("src")] = $("#text" + i).text();
+    execution[$("#image" + $("#input"+i).val()).attr("src")] = $("#text" + i).text().toUpperCase();
   }
-  //Lo salva bene > va messo nel db e fare redirect
+  saveExecution(execution);
 }
 
-//Crossword -> Crea la matrice
+//Crossword
+function createMatrix(r, c) {
+  //Crea una riga, in una riga crea una colonna tutta vuota, ripeti per tutte le righe
+  return Array.from({ length: r }, () => Array.from({ length: c }, () => null));
+}
 function saveCW(r, c){
   let execution = createMatrix(r, c);
 
@@ -401,30 +493,27 @@ function saveCW(r, c){
     for(let k = 0; k < c; k++){
       let element = $("#"+i+"_"+k);
       if (element.find("input[type='text']").length > 0){
-        execution[i][k] = element.find("input[type='text']").val().toLowerCase();
+        execution[i][k] = element.find("input[type='text']").val().toUpperCase();
       }else if(element.find(".blackBox").length > 0){
         execution[i][k] = "#";
       }
     }
   }
-  saveExecution(execution)
-}
-function createMatrix(r, c) {
-  //Crea una riga, in una riga crea una colonna tutta vuota, ripeti per tutte le righe
-  return Array.from({ length: r }, () => Array.from({ length: c }, () => null));
+  saveExecution(execution);
 }
 
-//Complete text -> prendi le parole scelte
+//Complete text
 function saveCT(n){
   let execution = [];
   for(let i= 0; i < n; i++){
-    execution.push($("input[name='word" + i + "']:checked").val());
+    execution.push($("input[name='word" + i + "']:checked").val().toUpperCase());
   }
-  saveExecution(execution)
+  saveExecution(execution);
 }
 
 function saveExecution(execution){
   $("#buttonDiv > button").prop("disabled", true).text("Esercizio Inviato!");
+
   $.post({
     url: "../exerciseLogger",
     contentType: "application/json",
@@ -435,4 +524,30 @@ function saveExecution(execution){
     console.log("Errore durante la chiamata Post:"+error);
     redirect("500.html")
   })
+
+}
+
+function saveAudioExecution(execution){
+  if(execution != null){
+
+    let formData = new FormData();
+    formData.append("audioFile", execution, "User"+USERID+"exercise"+EXERCISEID+".wav");
+
+
+    $.ajax({
+      type: "POST",
+      url: "../exerciseLogger",
+      data: formData,
+      processData: false,
+      contentType: false,
+      cache: false,
+      success: function (){
+        redirect("home");
+      },
+      error: function (error) {
+        console.error("Errore durante l'invio dell'audio alla servlet:", error);
+        redirect("500.html")
+      }
+    });
+  }
 }
