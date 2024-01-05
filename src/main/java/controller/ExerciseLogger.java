@@ -38,8 +38,6 @@ public class ExerciseLogger extends HttpServlet {
         }
         String execution = stringBuilder.toString();
 
-
-
         try {
             byte[] bytes = execution.getBytes(StandardCharsets.UTF_8);
             Blob executionBlob = new SerialBlob(bytes);
@@ -52,6 +50,7 @@ public class ExerciseLogger extends HttpServlet {
 
     private void handleAudioExercise(HttpServletRequest request) throws ServletException, IOException {
         InputStream audioInputStream;
+
         try {
             Part audioPart = request.getPart("audioFile");
             audioInputStream = audioPart.getInputStream();
@@ -60,15 +59,14 @@ public class ExerciseLogger extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private boolean saveInDB(HttpServletRequest request, Blob execution){
         ExerciseManager em = new ExerciseManager();
         HttpSession session = request.getSession();
-        int userId = (int) session.getAttribute("userId");
-        int exerciseId = (int) session.getAttribute("exerciseId");
-        Date insertDate = (Date) session.getAttribute("insertDate");
+        int userId = Integer.parseInt((String) session.getAttribute("userId"));
+        int exerciseId = Integer.parseInt((String) session.getAttribute("exerciseId"));
+        Date insertDate = Date.valueOf((String) session.getAttribute("insertDate"));
         return em.saveExecution(userId, exerciseId, insertDate, execution);
     }
 }

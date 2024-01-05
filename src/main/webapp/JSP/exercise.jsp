@@ -31,7 +31,7 @@
     </div>
     <div id="exerciseInfo" hidden
          data-exerciseId = "<%= exercise.getIdExercise()%>"
-
+         data-userId = "<%= session.getAttribute("id") %>"
          data-type = "<%= exercise.getType()%>"
          data-userType = "<%= session.getAttribute("type")%>"
     ></div>
