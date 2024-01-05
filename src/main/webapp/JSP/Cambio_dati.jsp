@@ -1,7 +1,7 @@
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.entity.User" %>
 <%@ page import="model.service.user.UserData" %>
-<%@ page import="model.service.PersonalInfo.PersonalInfoData" %><%--
+<%@ page import="model.service.user.UserRegistry" %><%--
   Created by IntelliJ IDEA.
   User: petri
   Date: 23/12/2023
@@ -33,7 +33,7 @@
     }
     try
     {
-        PersonalInfo infoutente = new PersonalInfoData().getPersonalInfo(utente.getId());
+        PersonalInfo infoutente = new UserRegistry().getPersonalInfo(utente.getId());
 
 %>
     <form  action="../changeDate" method="post">

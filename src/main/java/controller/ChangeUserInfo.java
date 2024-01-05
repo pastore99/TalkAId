@@ -1,7 +1,7 @@
 package controller;
 
 import model.entity.PersonalInfo;
-import model.service.PersonalInfo.PersonalInfoData;
+import model.service.user.UserRegistry;
 import model.service.user.UserData;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.util.Objects;
 public class ChangeUserInfo extends  HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PersonalInfo utente = new PersonalInfoData().getPersonalInfo((int) request.getSession().getAttribute("id"));
+        PersonalInfo utente = new UserRegistry().getPersonalInfo((int) request.getSession().getAttribute("id"));
         String Email = request.getParameter("email");
         String FirstName = null;
         String LastName = null;
@@ -30,7 +30,7 @@ public class ChangeUserInfo extends  HttpServlet
             phonenumber = !Objects.equals(request.getParameter("phonenumber"), "") ? request.getParameter("phonenumber") : utente.getPhone();
         }
         HttpSession session= request.getSession();
-        PersonalInfoData personalInfo = new PersonalInfoData();
+        UserRegistry personalInfo = new UserRegistry();
         UserData user= new UserData();
         String risultato="";
         int id = (int)session.getAttribute("id");

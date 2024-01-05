@@ -14,4 +14,8 @@ public class UserRegistry implements UserRegistryInterface {
         return db.getPersonalInfo(id);
     }
 
+    public boolean updatePersonaInfofromId(int id, String FirstName, String LastName, String Phone)
+    {
+        return db.updatePersonalInfofromId(id, FirstName, LastName, Phone);
+    }
 }

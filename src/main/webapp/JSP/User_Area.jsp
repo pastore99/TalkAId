@@ -8,7 +8,7 @@
 <%@ page import="model.service.user.UserData" %>
 <%@ page import="model.entity.User" %>
 <%@ page import="model.entity.PersonalInfo" %>
-<%@ page import="model.service.PersonalInfo.PersonalInfoData" %>
+<%@ page import="model.service.user.UserRegistry" %>
 <html>
 <head>
     <title>Title</title>
@@ -35,9 +35,9 @@
     {
         String[] data_di_inizio = String.valueOf(utente.getActivationDate()).split(" ");
         String[] giorno = data_di_inizio[0].split("-");
-        PersonalInfo infoutente = new PersonalInfoData().getPersonalInfo(utente.getId());
+        PersonalInfo infoutente = new UserRegistry().getPersonalInfo(utente.getId());
         User therapist = userDate.getUser(utente.getIdTherapist());
-        PersonalInfo infotherapist = new PersonalInfoData().getPersonalInfo((therapist.getId()));
+        PersonalInfo infotherapist = new UserRegistry().getPersonalInfo((therapist.getId()));
 
 %>
 <div class="up">
