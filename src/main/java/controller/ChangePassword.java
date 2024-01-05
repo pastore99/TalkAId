@@ -19,7 +19,6 @@ public class ChangePassword extends HttpServlet
             String password_control = password.replaceAll("\\s", "");
             int id = (int) request.getSession().getAttribute("id");
             new Authenticator().resetPassword( new UserData().getUser(id).getEmail(), password_control);
-            response.getWriter().write("Password cambiata con successo!");
+            response.getWriter().write("true");
     }
 }
-
