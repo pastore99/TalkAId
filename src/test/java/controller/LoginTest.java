@@ -1,7 +1,5 @@
 package controller;
 
-import model.entity.PersonalInfo;
-import model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
