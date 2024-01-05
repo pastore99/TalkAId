@@ -10,6 +10,10 @@ import static org.mockito.Mockito.*;
 class LicenseActivationTest {
 
     @Test
+    void testConstructor() {
+        assertNotNull(new LicenseActivation());
+    }
+    @Test
     void testGetLicense() {
         // Mock the DAOLicense class
         DAOLicense daoLicenseMock = mock(DAOLicense.class);
@@ -49,6 +53,35 @@ class LicenseActivationTest {
 
         // Verify interaction with mock
         verify(mockLicense).isActive();
+    }
+
+    @Test
+    void testIsNotActivable() {
+        // Mock a License instance
+        License mockLicense = mock(License.class);
+
+        // Initialize LicenseActivation with null as we are not interacting with DAO in this test
+        LicenseActivation licenseActivation = new LicenseActivation(null);
+
+        // Mock the behavior of isActive() for return true
+        when(mockLicense.isActive()).thenReturn(true);
+
+        // Test isActivable()
+        boolean isActivable = licenseActivation.isActivable(mockLicense);
+        assertFalse(isActivable);
+
+        // Verify interaction with mock
+        verify(mockLicense).isActive();
+    }
+
+    @Test
+    void testIsNotActivableWhenLicenseIsNull() {
+        // Initialize LicenseActivation with null as we are not interacting with DAO in this test
+        LicenseActivation licenseActivation = new LicenseActivation(null);
+
+        // Test isActivable with null license
+        boolean isActivable = licenseActivation.isActivable(null);
+        assertFalse(isActivable);
     }
 
     @Test

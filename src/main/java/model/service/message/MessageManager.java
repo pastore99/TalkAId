@@ -1,10 +1,13 @@
 package model.service.message;
 
 import model.DAO.DAOMessage;
+import model.DAO.DAOSchedule;
+import model.DAO.DAOUser;
 import model.entity.Message;
 import model.entity.User;
 import model.service.user.UserData;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +15,21 @@ import java.util.Map;
 
 public class MessageManager implements MessageManagerInterface {
     private int userId;
-    private int unreadMessages;
+    MessageManager() {
+        this.db = new DAOMessage();
+        this.db2 = new UserData();
+    }
+    public MessageManager(DAOMessage db, UserData db2) {
+        this.db = db
+        this.db2 = db2;
+    }
     private final Map<Integer, List<Message>> conversations = new HashMap<>(); //Integer è l'ID dell'Utente con cui chatta. La lista dei messaggi è la lista dei messaggi con quell'utente
-    DAOMessage db = new DAOMessage();
+    DAOMessage db;
+    UserData db2;
 
     public int getUserId() {
         return userId;
     }
-
-    public MessageManager(){}
 
     public void markMessagesAsRead(int senderId, int recipientId) {
         db.markMessagesAsRead(senderId, recipientId);
@@ -49,9 +58,8 @@ public class MessageManager implements MessageManagerInterface {
 
     public List<Integer> retrieveAllTheContacts(int userId){
         List<Integer> contacts = new ArrayList<>();
-        UserData check = new UserData();
-        User user = check.getUser(userId);
-        if(check.isTherapist(user)) {
+        User user = db2.getUser(userId);
+        if(db2.isTherapist(user)) {
             contacts.addAll(db.retrieveUserIdsByTherapist(userId));
         }
         else { //se è un paziente
