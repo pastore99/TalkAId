@@ -13,9 +13,7 @@ public class LicenseActivation implements LicenseActivationInterface {
     public LicenseActivation(DAOLicense daoLicense) {
         this.daoLicense = daoLicense;
     }
-    public void setDAOLicense(DAOLicense daoLicense) {
-        this.daoLicense = daoLicense;
-    }
+
     public License getLicense(String code) {
         return daoLicense.getLicenseByCode(code);
     }
