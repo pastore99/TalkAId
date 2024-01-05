@@ -50,7 +50,7 @@
 </div>
 <!--EXAMPLE PROGRESS-->
 <div class="singolo-paziente">
-    <div class="group-5">
+    <div class="group-5" onclick="redirectToGestioneMalattie()">
         <div class="overlap-3"><div class="text-wrapper-2">Modifica patologie</div></div>
     </div>
     <div class="group-6">
@@ -77,5 +77,13 @@
     </div>
     <div class="text-wrapper-10">Andamento</div>
 </div>
+
+
+<script>
+    function redirectToGestioneMalattie() {
+        window.location.href = 'test_GestioneMalattie.jsp';
+    }
+</script>
+
 </body>
 </html>

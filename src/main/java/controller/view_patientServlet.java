@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 
 import model.entity.*;
+import model.service.condition.Condition;
 import model.service.personalinfo.PersonalInfo;
 
 @WebServlet("/view_patientServlet")
@@ -36,6 +37,19 @@ public class view_patientServlet extends HttpServlet {
         UserInfo user_inf= new UserInfo(u.getId(),u.getEmail(),u.getActivationDate(),pi.getFirstname(),pi.getLastname(),pi.getDateOfBirth(),pi.getGender(),pi.getAddress(),pi.getSsn(),pi.getPhone());
 
         session.setAttribute("user_selected",user_inf);
+
+        /*CONDITION MENU*/
+        model.service.condition.Condition ConditionService= new Condition();
+
+        ArrayList<model.entity.Condition> list_PatientCondition=new ArrayList<>();
+        ArrayList<model.entity.Condition> list_NOTPatientCondition=new ArrayList<>();
+        list_PatientCondition=ConditionService.getConditionsOfPatient(userId);
+        list_NOTPatientCondition=ConditionService.getConditionsNOTOfPatient(userId);
+
+
+
+        session.setAttribute("list_PatientCondition",list_PatientCondition);
+        session.setAttribute("list_NOTPatientCondition",list_NOTPatientCondition);
 
         response.sendRedirect("JSP/view_patient.jsp");
 

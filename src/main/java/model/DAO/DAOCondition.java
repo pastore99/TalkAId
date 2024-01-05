@@ -55,7 +55,7 @@ public class DAOCondition {
             connection = DAOConnection.getConnection();
             String query = null;
 
-            query = "SELECT c.DisorderName, c.DisorderDescription, pc.Severity\n" +
+            query = "SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity\n" +
                     "FROM `condition` c\n" +
                     "JOIN PatientCondition pc ON c.ID_condition = pc.ID_condition\n" +
                     "WHERE pc.ID_patient = ?;";
@@ -68,6 +68,7 @@ public class DAOCondition {
             while (resultSet.next()) {
                 list_PersonalCondition.add(getPeronalConditionFromResultSet(resultSet));
             }
+
             return list_PersonalCondition;
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
