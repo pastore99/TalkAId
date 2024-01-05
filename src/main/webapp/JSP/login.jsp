@@ -41,7 +41,7 @@
             <button type="submit" value="Login" id="loginButton">Login</button>
         </form>
         <div id="loginRegister">
-            <p>Non hai un account? <a href="#">Registrati</a> </p>
+            <p>Non hai un account? <a href="/TalkAID_war_exploded/JSP/registration.jsp">Registrati</a> </p>
          </div>
 
         <div id="resetPasswordModal" class="modal fade" role="dialog">

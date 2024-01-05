@@ -1,21 +1,23 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.Timestamp;
+import model.entity.Message;
+import model.service.message.MessageManager;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import model.entity.Message;
-import model.service.message.MessageManager;
-
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
-import javax.json.*;
 
 @WebServlet("/GetMessages")
-public class GetMessageServlet extends HttpServlet {
+public class GetSendMessages extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");

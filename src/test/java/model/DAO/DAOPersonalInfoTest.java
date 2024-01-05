@@ -1,54 +1,87 @@
 package model.DAO;
 
-import model.DAO.DAOPersonalInfo;
-import model.entity.PersonalInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.*;
+import java.sql.*;
+import static org.mockito.Mockito.*;
 
 class DAOPersonalInfoTest {
 
+    @Mock
+    private Connection connection;
+
+    @Mock
+    private PreparedStatement preparedStatement;
+
+    @Mock
+    private ResultSet resultSet;
+
     private DAOPersonalInfo daoPersonalInfo;
-    private int createdUserId = 0;
 
     @BeforeEach
-    void setUp() {
-        daoPersonalInfo = new DAOPersonalInfo();
-        String email = "newuser@example.com";
-        String password = "password123";
-        int therapistId = 8;
-        // Call the method to test
-        createdUserId =  new DAOUser().createUser(email, password, therapistId);
+    public void setup() throws SQLException {
+        MockitoAnnotations.initMocks(this);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        daoPersonalInfo = new DAOPersonalInfo(connection);
     }
 
     @Test
-    void testCreateRegistryAndRetrievePersonalInfo() {
-        // Mock user data
-        String firstName = "Tester";
-        String lastName = "Tester";
+    public void testCreateRegistry() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoPersonalInfo.createRegistry(1, "Test", "Mockito"));
+    }
 
-        // Call the method to create a registry
-        boolean registryCreated = daoPersonalInfo.createRegistry(createdUserId, firstName, lastName);
+    @Test
+    public void testGetPersonalInfo() throws SQLException {
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getInt("ID_user")).thenReturn(1);
+        when(resultSet.getString("Firstname")).thenReturn("Test Name");
+        assertNotNull(daoPersonalInfo.getPersonalInfo(1));
+    }
 
-        // Check if the registry creation was successful
-        assertTrue(registryCreated, "User registry should be created successfully");
+    @Test
+    public void testDeleteRegistry() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoPersonalInfo.deleteRegistry(1));
+    }
 
-        // Call the method to retrieve personal information
-        PersonalInfo retrievedPersonalInfo = daoPersonalInfo.getPersonalInfo(createdUserId);
+    @Test
+    public void testUpdatePersonalInfoFromId() throws SQLException {
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        assertTrue(daoPersonalInfo.updatePersonalInfofromId(1, "Test First", "Test Last", "1234567890"));
+    }
 
-        // Check if personal information is retrieved successfully
-        assertNotNull(retrievedPersonalInfo, "Retrieved personal information should not be null");
-        assertEquals(createdUserId, retrievedPersonalInfo.getIdUser(), "User IDs should match");
-        assertEquals(firstName, retrievedPersonalInfo.getFirstname(), "First names should match");
-        assertEquals(lastName, retrievedPersonalInfo.getLastname(), "Last names should match");
+    @Test
+    public void testUpdatePersonalInfoAndUserFromId() throws SQLException {
+        // Provide test parameters
+        int id = 10; // This should be a valid ID from your test database
+        String firstname = "NewFirstName";
+        String lastname = "NewLastName";
+        String phone = "NewPhone";
+        String email = "newemail@example.com";
+        String address = "New Address";
 
-        // Clean up:
-        assertTrue(daoPersonalInfo.deleteRegistry(createdUserId));
-        new DAOUser().deleteUserByIdOrEmail(createdUserId);
-        assertFalse(daoPersonalInfo.deleteRegistry(createdUserId));
+        // All execution of executeUpdate() returns 1 in this test
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+
+        boolean result = daoPersonalInfo.updatePersonalInfoAndUserFromId(id, firstname, lastname, phone, email, address);
+
+        // Assert that both updates were successful
+        assertTrue(result);
+
+        // Verify the first prepared statement was set up correctly
+        verify(preparedStatement, times(1)).setString(1, firstname);
+        verify(preparedStatement, times(1)).setString(2, lastname);
+        verify(preparedStatement, times(1)).setString(3, phone);
+        verify(preparedStatement, times(1)).setString(4, address);
+        verify(preparedStatement, times(1)).setInt(5, id);
+
+        // Verify the second prepared statement was set up correctly
+        verify(preparedStatement, times(1)).setString(1, email);
+        verify(preparedStatement, times(1)).setInt(2, id);
     }
 }
 

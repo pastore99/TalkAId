@@ -1,0 +1,20 @@
+.row{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10%;
+}
+
+.row img{
+    width: 50%;
+}
+
+.textInput{
+    width: 50%;
+    border: none;
+    border-bottom: solid 1px #295e5a;;
+    padding: 5%;
+    font-size: 3em;
+}

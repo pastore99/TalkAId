@@ -9,6 +9,19 @@ import java.sql.SQLException;
 
 public class DAOPersonalInfo {
 
+    private Connection connection;
+
+    public DAOPersonalInfo(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOPersonalInfo() {
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private PersonalInfo getPersonalInfoFromResultSet(ResultSet resultSet) throws SQLException {
         PersonalInfo personalInfo = new PersonalInfo();
 
@@ -24,11 +37,10 @@ public class DAOPersonalInfo {
         return personalInfo;
     }
     public boolean createRegistry(int id, String name, String surname) {
-        Connection connection = null;
         PreparedStatement preparedStatementPersonalInfo = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             connection.setAutoCommit(false);  // Start a transaction
 
             // Insert user data into personal_info table
@@ -66,12 +78,11 @@ public class DAOPersonalInfo {
     }
 
     public PersonalInfo getPersonalInfo(int id) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT * FROM personal_info WHERE ID_user = ?";
             preparedStatement = connection.prepareStatement(sql);
@@ -98,11 +109,10 @@ public class DAOPersonalInfo {
     }
 
     public boolean deleteRegistry(int createdUserId) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             connection.setAutoCommit(false); // Start a transaction
 
             String sql = "DELETE FROM personal_info WHERE ID_user = ?";
@@ -136,5 +146,85 @@ public class DAOPersonalInfo {
 
         return false; // Default to false if an exception occurs
     }
+
+
+    public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+
+            String sql = "UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ? WHERE ID_user = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, FirstName);
+            preparedStatement.setString(2, LastName);
+            preparedStatement.setString(3, Phone);
+            preparedStatement.setInt(4, id);
+
+            int result = preparedStatement.executeUpdate();
+
+            if (result>0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+    public boolean updatePersonalInfoAndUserFromId(int id, String FirstName, String LastName, String Phone, String Email, String Address) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+
+            // Primo aggiornamento su personal_info
+            String personalInfoUpdateSql = "UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ?, Address = ? WHERE ID_user = ?";
+            preparedStatement = connection.prepareStatement(personalInfoUpdateSql);
+            preparedStatement.setString(1, FirstName);
+            preparedStatement.setString(2, LastName);
+            preparedStatement.setString(3, Phone);
+            preparedStatement.setString(4, Address);
+            preparedStatement.setInt(5, id);
+
+            int personalInfoUpdateResult = preparedStatement.executeUpdate();
+
+            // Secondo aggiornamento su user
+            String userUpdateSql = "UPDATE user SET Email = ? WHERE ID = ?";
+            preparedStatement = connection.prepareStatement(userUpdateSql);
+            preparedStatement.setString(1, Email);
+            preparedStatement.setInt(2, id);
+
+            int userUpdateResult = preparedStatement.executeUpdate();
+
+            if (personalInfoUpdateResult > 0 && userUpdateResult > 0) {
+                return true; // Entrambi gli aggiornamenti hanno avuto successo
+            }
+        } catch (SQLException e) {
+            // Gestione dell'eccezione di duplicazione
+            if (e.getSQLState().equals("23000") && e.getErrorCode() == 1062) {
+            } else {
+                // Gestione di altre eccezioni
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
 }
+
 

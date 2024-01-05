@@ -12,6 +12,20 @@ import java.sql.SQLException;
  */
 public class DAOLicense {
 
+    private Connection connection;
+
+    public DAOLicense(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOLicense() {
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method extracts License object data from a ResultSet
      *
@@ -36,16 +50,14 @@ public class DAOLicense {
      */
     public License getLicenseByCode(String code) {
         String query = "SELECT * FROM license WHERE Sequence = ?";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, code);
             resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 return extractLicenseFromResultSet(resultSet);
             }
@@ -73,11 +85,10 @@ public class DAOLicense {
      */
     public void activate(License license, int userId) {
         String updateQuery = "UPDATE TalkAID2.license SET active = TRUE, ID_User = ? WHERE Sequence = ?";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(updateQuery);
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, license.getSequence());
@@ -104,11 +115,10 @@ public class DAOLicense {
         final int length = 8;
         License l = new License(length);
         String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setString(1, l.getSequence());
             preparedStatement.setInt(2, 0);
@@ -139,11 +149,10 @@ public class DAOLicense {
         final int length = 4;
         License l = new License(length);
         String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setString(1, l.getSequence());
             preparedStatement.setInt(2, userId);
@@ -165,12 +174,11 @@ public class DAOLicense {
     }
 
     public boolean deleteLicense(String code) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             // Get database connection
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Prepare the SQL query
             String query = "DELETE FROM TalkAID2.license WHERE Sequence = ?";

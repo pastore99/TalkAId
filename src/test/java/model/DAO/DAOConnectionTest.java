@@ -1,43 +1,42 @@
 package model.DAO;
 
-import model.service.encryption.Encryption;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import org.junit.jupiter.api.*;
+import javax.sql.DataSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 public class DAOConnectionTest {
+    private DataSource dataSource;
+    private Connection connection;
 
-    private static Connection connection;
-
-    @BeforeAll
-    static void setUp() {
-        try {
-            // Set up any necessary configurations or preparations before the tests
-            connection = DAOConnection.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @BeforeEach
+    void setUp() {
+        // Create a mock DataSource and Connection
+        dataSource = mock(DataSource.class);
+        connection = mock(Connection.class);
+        DAOConnection.setDataSource(dataSource); // Setting mock DataSource through setter
     }
 
     @Test
-    void testGetConnection() {
-        assertNotNull(connection, "Connection should not be null");
+    void testGetConnection() throws SQLException {
+        // Define the behavior of your Mock: when getConnection is called on dataSource, return Mocked connection.
+        when(dataSource.getConnection()).thenReturn(connection);
+
+        Connection receivedConnection = DAOConnection.getConnection();
+
+        assertNotNull(receivedConnection);
+        verify(dataSource, times(1)).getConnection();
     }
 
-    // Add more tests as needed for your specific use cases
-
-    @AfterAll
-    static void tearDown() {
-        try {
-            // Release any resources or perform cleanup after the tests
-            DAOConnection.releaseConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Test
+    void testReleaseConnection() throws SQLException {
+        // Here, we are not specifying behavior of mock, rather testing if the close method is being called
+        DAOConnection.releaseConnection(connection);
+        verify(connection, times(1)).close();
     }
 }
