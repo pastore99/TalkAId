@@ -46,14 +46,14 @@
     <h2 class="title">Inserisci password corrente</h2>
     <p class="info">Inserisci la password corrente</p>
 
-        <input type="text" id="password" name="Password" placeholder="Inserisci Password" required="">
+        <input type="text" id="password" name="Password" placeholder="Inserisci Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}" title="La password deve contenere almeno un numero, una lettera maiuscola e una minuscola, e deve avere almeno 12 caratteri." required>
         <button class="form-submit-btn" id="Controlla" >Verifica</button>
 
 <!-- e finisce qui. Se tutto funziona correttamente, devi mostrare questo altro popup-->
 
     <div class= "popup" style="display: none;">
-        <input type="text" id="password2" name="password" placeholder="Nuova password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
-        <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}">
+        <input type="text" id="password2" name="password" placeholder="Nuova password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}" title="La password deve contenere almeno un numero, una lettera maiuscola e una minuscola, e deve avere almeno 12 caratteri." required>
+        <input type="text" id="Conferma_password" name="Conferm_password" placeholder="Conferma nuova password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}" title="La password deve contenere almeno un numero, una lettera maiuscola e una minuscola, e deve avere almeno 12 caratteri." required>
         <button class="form-submit-btn" id="Controlla2">Conferma password</button>
     </div>
 

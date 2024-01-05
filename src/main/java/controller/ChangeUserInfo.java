@@ -1,9 +1,6 @@
 package controller;
 
-import model.entity.PersonalInfo;
 import model.service.user.UserRegistry;
-import model.service.user.UserData;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,50 +8,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 @WebServlet("/changeDate")
 public class ChangeUserInfo extends  HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PersonalInfo utente = new UserRegistry().getPersonalInfo((int) request.getSession().getAttribute("id"));
-        String Email = request.getParameter("email");
-        String FirstName = null;
-        String LastName = null;
-        String Address = request.getParameter("address");
-        String phonenumber = null;
-        if(!Objects.equals(request.getParameter("firstname"), "")||!Objects.equals(request.getParameter("lastname"), "")||!Objects.equals(request.getParameter("phonenumber"), ""))
-        {
-            FirstName = !Objects.equals(request.getParameter("firstname"), "") ? request.getParameter("firstname") : utente.getFirstname();
-            LastName = !Objects.equals(request.getParameter("lastname"), "") ? request.getParameter("lastname") : utente.getLastname();
-            phonenumber = !Objects.equals(request.getParameter("phonenumber"), "") ? request.getParameter("phonenumber") : utente.getPhone();
+        HttpSession session = request.getSession();
+        int userId = (int) session.getAttribute("id");
+        UserRegistry userRegistry = new UserRegistry();
+        String risultato = "";
+        if (updatePersonalInfo(request, userId, userRegistry)) {
+            risultato = "Dati personali aggiornati con successo;";
+        } else {
+            risultato = "Dati personali non aggiornati, email gia' utilizzata";
         }
-        HttpSession session= request.getSession();
-        UserRegistry personalInfo = new UserRegistry();
-        UserData user= new UserData();
-        String risultato="";
-        int id = (int)session.getAttribute("id");
-        if(FirstName!=null || LastName!=null || phonenumber!=null)
-            if(personalInfo.updatePersonaInfofromId(id, FirstName, LastName, phonenumber))
-            {
-                risultato="Dati personali aggiornati con successo;";
-            }
-        else
-            {
-                risultato="Dati personali non aggiornati rinserire";
-            }
+        response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato=" + risultato);
+    }
 
-        if(!Objects.equals(Email, "") || !Objects.equals(Address, "")) {
-            String risult = user.updateUser(id, Email, Address);
-            if (Objects.equals(risult, "l'Email inserità e già usata scegliere un'altra Email") || Objects.equals(risultato, "Aggioranmento Address riuscito ma l'Email inserità e già usata scegliere un'altra Email")) {
-                risultato=risultato + risult+ "rinserire anche la password se la si vuole modificare";
-                response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato="+risultato);
-            }
-            else
-            {
-                risultato = risultato + risult;
-            }
+    private boolean updatePersonalInfo(HttpServletRequest request, int userId, UserRegistry userRegistry) {
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        String phoneNumber = request.getParameter("phonenumber");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        if (!firstName.isEmpty() || !lastName.isEmpty() || !phoneNumber.isEmpty()) {
+            return userRegistry.updatePersonaInfofromId(userId, firstName, lastName, phoneNumber,email,address);
         }
-        response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato="+risultato);
+        return false;
     }
 }

@@ -179,6 +179,52 @@ public class DAOPersonalInfo {
 
         return false;
     }
+
+    public boolean updatePersonalInfoAndUserFromId(int id, String FirstName, String LastName, String Phone, String Email, String Address) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+
+            // Primo aggiornamento su personal_info
+            String personalInfoUpdateSql = "UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ?, Address = ? WHERE ID_user = ?";
+            preparedStatement = connection.prepareStatement(personalInfoUpdateSql);
+            preparedStatement.setString(1, FirstName);
+            preparedStatement.setString(2, LastName);
+            preparedStatement.setString(3, Phone);
+            preparedStatement.setString(4, Address);
+            preparedStatement.setInt(5, id);
+
+            int personalInfoUpdateResult = preparedStatement.executeUpdate();
+
+            // Secondo aggiornamento su user
+            String userUpdateSql = "UPDATE user SET Email = ? WHERE ID = ?";
+            preparedStatement = connection.prepareStatement(userUpdateSql);
+            preparedStatement.setString(1, Email);
+            preparedStatement.setInt(2, id);
+
+            int userUpdateResult = preparedStatement.executeUpdate();
+
+            if (personalInfoUpdateResult > 0 && userUpdateResult > 0) {
+                return true; // Entrambi gli aggiornamenti hanno avuto successo
+            }
+        } catch (SQLException e) {
+            // Gestione dell'eccezione di duplicazione
+            if (e.getSQLState().equals("23000") && e.getErrorCode() == 1062) {
+            } else {
+                // Gestione di altre eccezioni
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
 }
 
 

@@ -46,23 +46,23 @@
         <img src="../Image/profilo_utente.png" id="paziente">
         <div class="down">
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= infoutente.getFirstname()%>" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" name="firstname"/>
+                <input class="input" type="text" placeholder="<%= infoutente.getFirstname()%>" value="<%= infoutente.getFirstname()%>" required pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" title="Il nome deve contenere solo lettere, spazi, trattini, apostrofi e accenti." name="firstname"/>
                 <label class="label">FirstName</label>
             </div>
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= infoutente.getLastname()%>" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" name = "lastname"/>
+                <input class="input" type="text" placeholder="<%= infoutente.getLastname()%>" value="<%= infoutente.getLastname()%>" required pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" title="Il cognome deve contenere solo lettere, spazi, trattini, apostrofi e accenti." name = "lastname"/>
                 <label class="label">LastName</label>
             </div>
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= utente.getEmail()%> " name ="email"/>
+                <input class="input" type="text" placeholder="<%= utente.getEmail()%>" value="<%= utente.getEmail()%>" required name ="email"/>
                 <label class="label">Email</label>
             </div>
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= infoutente.getAddress()%>" name="address"/>
+                <input class="input" type="text" placeholder="<%= infoutente.getAddress()%>" value="<%= infoutente.getAddress()%>" required name="address"/>
                 <label class="label">Address</label>
             </div>
             <div class="input-field">
-                <input class="input" type="text" placeholder="<%= infoutente.getPhone()%>" name="phonenumber"/>
+                <input class="input" type="number" placeholder="<%= infoutente.getPhone()%>" value="<%= infoutente.getPhone()%>" required pattern="^((\+|00)39)?\s?3[0-9]{2}[-.\s]?[0-9]{6,7}$" name="phonenumber"/>
                 <label class="label">Phone Number</label>
             </div>
         </div>
