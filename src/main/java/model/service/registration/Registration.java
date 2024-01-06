@@ -9,6 +9,7 @@ import model.service.user.UserRegistry;
 
 public class Registration implements RegistrationInterface {
 
+
     @Override
     public int registerNewUser(String licenseCode, String email, String password, String name, String surname) {
         License license = validateLicense(licenseCode);

@@ -42,10 +42,5 @@ public class UserData implements UserDataInterface {
         return db.updateEmailTime(id, value);
     }
 
-    public String updateUser(int idUser, String Email, String address)
-    {
-        return db.updateUser(idUser, Email, address);
-    }
-    public ArrayList<User> getUsersByIdTherapist(int ID_Therapist ){return db.getUsersByIdTherapist(ID_Therapist);}
     public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int ID_Therapist) {return db.getUsersAndPersonalInfoByIdTherapist(ID_Therapist);}
 }

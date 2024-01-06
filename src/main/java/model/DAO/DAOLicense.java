@@ -84,7 +84,7 @@ public class DAOLicense {
      * @param userId the ID of the user to link to the license.
      */
     public void activate(License license, int userId) {
-        String updateQuery = "UPDATE TalkAID2.license SET active = TRUE, ID_User = ? WHERE Sequence = ?";
+        String updateQuery = "UPDATE license SET active = TRUE, ID_User = ? WHERE Sequence = ?";
         PreparedStatement preparedStatement = null;
 
         try {
@@ -114,7 +114,7 @@ public class DAOLicense {
     public String generateLicense(){
         final int length = 8;
         License l = new License(length);
-        String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);";
+        String insertQuery =  "INSERT INTO license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);";
         PreparedStatement preparedStatement = null;
 
         try {
@@ -148,7 +148,7 @@ public class DAOLicense {
     public String generateInvitation(int userId){
         final int length = 4;
         License l = new License(length);
-        String insertQuery =  "INSERT INTO TalkAID2.license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);";
+        String insertQuery =  "INSERT INTO license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);";
         PreparedStatement preparedStatement = null;
 
         try {
@@ -181,7 +181,7 @@ public class DAOLicense {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Prepare the SQL query
-            String query = "DELETE FROM TalkAID2.license WHERE Sequence = ?";
+            String query = "DELETE FROM license WHERE Sequence = ?";
             preparedStatement = connection.prepareStatement(query);
 
             // Set parameter for the prepared statement
