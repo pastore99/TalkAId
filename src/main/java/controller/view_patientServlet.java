@@ -29,22 +29,25 @@ public class view_patientServlet extends HttpServlet {
         model.service.user.UserData userService = new model.service.user.UserData();
         model.service.personalinfo.PersonalInfo piService= new PersonalInfo();
 
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        if(request.getParameter("userId")!=null) {
+            int userId = Integer.parseInt(request.getParameter("userId"));
 
-        User u = userService.getUserByIdOrEmail(userId);
-        model.entity.PersonalInfo pi = piService.getPersonalInfoById(userId);
+            User u = userService.getUserByIdOrEmail(userId);
+            model.entity.PersonalInfo pi = piService.getPersonalInfoById(userId);
 
-        UserInfo user_inf= new UserInfo(u.getId(),u.getEmail(),u.getActivationDate(),pi.getFirstname(),pi.getLastname(),pi.getDateOfBirth(),pi.getGender(),pi.getAddress(),pi.getSsn(),pi.getPhone());
+            UserInfo user_inf = new UserInfo(u.getId(), u.getEmail(), u.getActivationDate(), pi.getFirstname(), pi.getLastname(), pi.getDateOfBirth(), pi.getGender(), pi.getAddress(), pi.getSsn(), pi.getPhone());
 
-        session.setAttribute("user_selected",user_inf);
+            session.setAttribute("user_selected", user_inf);
 
+        }
+        UserInfo ui= (UserInfo) session.getAttribute("user_selected");
         /*CONDITION MENU*/
         model.service.condition.Condition ConditionService= new Condition();
 
         ArrayList<model.entity.Condition> list_PatientCondition=new ArrayList<>();
         ArrayList<model.entity.Condition> list_NOTPatientCondition=new ArrayList<>();
-        list_PatientCondition=ConditionService.getConditionsOfPatient(userId);
-        list_NOTPatientCondition=ConditionService.getConditionsNOTOfPatient(userId);
+        list_PatientCondition=ConditionService.getConditionsOfPatient(ui.getId());
+        list_NOTPatientCondition=ConditionService.getConditionsNOTOfPatient(ui.getId());
 
 
 

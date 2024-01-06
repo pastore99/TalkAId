@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAOCondition {
-    private Connection connection;
+/*    private Connection connection;
     public DAOCondition(Connection connection) {this.connection=connection;}
 
     public DAOCondition() {
@@ -21,7 +21,7 @@ public class DAOCondition {
             e.printStackTrace();
         }
     }
-
+*/
     private Condition getConditionFromResultSet(ResultSet resultSet) throws SQLException {
         Condition c = new Condition();
 
@@ -60,8 +60,8 @@ public class DAOCondition {
         ResultSet resultSet = null;
         ArrayList<Condition> list_PersonalCondition=new ArrayList<>();
         try {
-
-            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
+            connection = DAOConnection.getConnection();
+            //connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             String query = null;
 
             query = "SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity\n" +
@@ -101,8 +101,8 @@ public class DAOCondition {
         ResultSet resultSet = null;
         ArrayList<Condition> list_PersonalCondition=new ArrayList<>();
         try {
-
-            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
+            connection = DAOConnection.getConnection();
+            //connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             String query = null;
 
             query = "SELECT c.*\n" +
@@ -136,4 +136,89 @@ public class DAOCondition {
         return null; // or you may throw an exception here
     }
 
+
+    public boolean AddConditionPatient(int ID_condition, int ID_patient, int Severity) {
+        Connection connection = null;
+        PreparedStatement preparedStatementPersonalInfo = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            connection.setAutoCommit(false);  // Start a transaction
+
+            // Insert user data into personal_info table
+            String queryAnagrafica = "INSERT INTO PatientCondition (ID_condition, ID_patient, Severity)\n" +
+                    "VALUES (?, ?, ?)";
+            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);
+            preparedStatementPersonalInfo.setInt(1, ID_condition);
+            preparedStatementPersonalInfo.setInt(2, ID_patient);
+            preparedStatementPersonalInfo.setInt(3, Severity);
+            preparedStatementPersonalInfo.executeUpdate();
+
+            connection.commit();  // Commit the transaction
+            return true;  // User created successfully
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();  // Rollback the transaction in case of an exception
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        return false;  // Default to false if an exception occurs
+    }
+
+    public boolean RemoveConditionPatient(int ID_condition, int ID_patient) {
+        Connection connection = null;
+        PreparedStatement preparedStatementPersonalInfo = null;
+
+        try {
+            connection = DAOConnection.getConnection();
+            connection.setAutoCommit(false);  // Start a transaction
+
+            // Insert user data into personal_info table
+            String queryAnagrafica = "DELETE FROM PatientCondition\n" +
+                    "WHERE ID_condition = ? AND ID_patient = ?;";
+            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);
+            preparedStatementPersonalInfo.setInt(1, ID_condition);
+            preparedStatementPersonalInfo.setInt(2, ID_patient);
+            preparedStatementPersonalInfo.executeUpdate();
+
+            connection.commit();  // Commit the transaction
+            return true;  // User created successfully
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();  // Rollback the transaction in case of an exception
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        return false;  // Default to false if an exception occurs
+    }
 }
