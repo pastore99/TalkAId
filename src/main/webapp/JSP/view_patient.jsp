@@ -81,7 +81,7 @@
 
 <script>
     function redirectToGestioneMalattie() {
-        window.location.href = 'test_GestioneMalattie.jsp';
+        window.location.href = 'PatientConditionManager.jsp';
     }
 </script>
 
