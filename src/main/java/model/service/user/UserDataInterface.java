@@ -43,13 +43,6 @@ public interface UserDataInterface {
     boolean updateAnalyticsPreference(String id, Boolean value);
 
     /**
-     * si occupa di modificare il consenso alle notifiche mail
-     * @param value contiene True o False
-     * @return True se termina con successo. False altrimenti
-     */
-    //boolean modifyEmailNotification(boolean value); //TODO
-
-    /**
      * si occupa di modificare la fascia oraria per le notifiche
      * @param id contiene
      * @param value contiene l'orario delle notifiche espresso come 12:34-13:00

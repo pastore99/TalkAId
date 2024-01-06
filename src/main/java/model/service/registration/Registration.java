@@ -1,4 +1,6 @@
 package model.service.registration;
+import model.service.email.EmailManager;
+import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.service.license.LicenseActivation;
 import model.entity.License;
@@ -10,14 +12,14 @@ public class Registration implements RegistrationInterface {
     @Override
     public int registerNewUser(String licenseCode, String email, String password, String name, String surname) {
         License license = validateLicense(licenseCode);
-        if(license != null) {
-            if(isEmailExists(email)) {
+        if (license != null) {
+            if (isEmailExists(email)) {
                 return 2; //email non valida
             }
             String hashed = encryptPassword(password);
             int theNewId = createNewUser(email, hashed, license);
-            if(theNewId >= 0) {
-                if(createUserPersonalInformation(theNewId, name, surname)) {
+            if (theNewId >= 0) {
+                if (createUserPersonalInformation(theNewId, name, surname)) {
                     LicenseActivation la = new LicenseActivation();
                     la.activate(license, theNewId);
                     return 0; // no error
@@ -71,4 +73,23 @@ public class Registration implements RegistrationInterface {
         UserRegistry ur = new UserRegistry();
         return ur.firstAccess(theNewId, name, surname);
     }
+
+    public boolean invitePatient(int therapistId, String patientEmail, String patientName, String patientSurname){
+        UserData ud = new UserData();
+
+        if(!ud.checkIfEmailExists(patientEmail)) {
+            EmailManager tool = new EmailManager();
+            LicenseActivation la = new LicenseActivation();
+
+            String pin = la.generatePin(therapistId);
+            if(pin!=null){
+                String body = "Salve "+ patientSurname+ " " + patientName + ". Il tuo logopedista ti ha invitato a TalkAid! Ecco il tuo codice per registrarti a TalkAid: "+ pin;
+
+                tool.sendEmail(patientEmail, "Sei stato invitato a TalkAID!", body);
+                return true;
+            }
+        }
+        return false;
+    }
 }
+

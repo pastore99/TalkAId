@@ -9,8 +9,10 @@ import model.service.registration.Registration;
 public class Main {
     public static void main(String[] args) {
         Authenticator auth = new Authenticator();
-        System.out.println(auth.authenticate("patient1@example.com", "pwd"));
-        System.out.println(auth.authenticate("patient1@example.com", "pwd"));
+        Registration r = new Registration();
 
+        System.out.println(auth.authenticate("patient1@example.com", "pwd"));
+        System.out.println(auth.authenticate("patient1@example.com", "pwd"));
+        r.invitePatient(9, "thenicrodeath@gmail.com", "Raffaele", "Monti");
     }
 }
