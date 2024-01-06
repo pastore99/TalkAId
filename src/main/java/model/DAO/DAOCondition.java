@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAOCondition {
-/*    private Connection connection;
+    private Connection connection;
     public DAOCondition(Connection connection) {this.connection=connection;}
 
     public DAOCondition() {
@@ -21,7 +21,7 @@ public class DAOCondition {
             e.printStackTrace();
         }
     }
-*/
+
     private Condition getConditionFromResultSet(ResultSet resultSet) throws SQLException {
         Condition c = new Condition();
 
@@ -55,13 +55,13 @@ public class DAOCondition {
     }
 
     public ArrayList<Condition> getConditionsOfPatient(int id_patient) {
-        Connection connection = null;
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ArrayList<Condition> list_PersonalCondition=new ArrayList<>();
         try {
-            connection = DAOConnection.getConnection();
-            //connection = connection.isClosed() ? DAOConnection.getConnection():connection;
+
+            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             String query = null;
 
             query = "SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity\n" +
@@ -96,13 +96,13 @@ public class DAOCondition {
     }
 
     public ArrayList<Condition> getConditionsNOTOfPatient(int id_patient) {
-        Connection connection = null;
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ArrayList<Condition> list_PersonalCondition=new ArrayList<>();
         try {
-            connection = DAOConnection.getConnection();
-            //connection = connection.isClosed() ? DAOConnection.getConnection():connection;
+
+            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             String query = null;
 
             query = "SELECT c.*\n" +
@@ -138,11 +138,11 @@ public class DAOCondition {
 
 
     public boolean AddConditionPatient(int ID_condition, int ID_patient, int Severity) {
-        Connection connection = null;
+
         PreparedStatement preparedStatementPersonalInfo = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             connection.setAutoCommit(false);  // Start a transaction
 
             // Insert user data into personal_info table
@@ -181,11 +181,11 @@ public class DAOCondition {
     }
 
     public boolean RemoveConditionPatient(int ID_condition, int ID_patient) {
-        Connection connection = null;
+
         PreparedStatement preparedStatementPersonalInfo = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             connection.setAutoCommit(false);  // Start a transaction
 
             // Insert user data into personal_info table
