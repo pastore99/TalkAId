@@ -1,6 +1,7 @@
 package controller;
 
 import model.service.login.Authenticator;
+import model.service.user.UserData;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,10 +13,15 @@ import java.io.IOException;
 public class SendResetPin extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
-        String pin = new Authenticator().resetPassword(email);
-        // Store the pin and email in the session for future comparison
-        // Send back a result
+        UserData checker = new UserData();
+
         response.setContentType("text/plain");
-        response.getWriter().println(pin);
+        if(checker.checkIfEmailExists(email)){
+            String pin = new Authenticator().sendPin(email);
+            response.getWriter().println(pin);
+        }
+        else {
+            response.getWriter().println("NA");
+        }
     }
 }

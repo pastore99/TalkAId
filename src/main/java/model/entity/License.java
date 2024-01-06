@@ -10,11 +10,7 @@ public class License {
     private Date expirationDate;
     private boolean active;
 
-    //Default constructor
-    public License(){
-
-    }
-
+    public License() {}
     //Constructor for creating a pin or a license based on n
     public License(int n){
         this.sequence = generatePin(n);
@@ -24,7 +20,6 @@ public class License {
             this.expirationDate = java.sql.Date.valueOf(d);
         }
     }
-
     // Getter and Setter methods
 
     public String getSequence() {

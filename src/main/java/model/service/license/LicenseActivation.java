@@ -4,7 +4,15 @@ import model.entity.License;
 import model.DAO.DAOLicense;
 
 public class LicenseActivation implements LicenseActivationInterface {
-    DAOLicense daoLicense = new DAOLicense();
+    DAOLicense daoLicense;
+
+    public LicenseActivation() {
+        this.daoLicense = new DAOLicense();
+    }
+
+    public LicenseActivation(DAOLicense daoLicense) {
+        this.daoLicense = daoLicense;
+    }
 
     public License getLicense(String code) {
         return daoLicense.getLicenseByCode(code);
@@ -18,7 +26,7 @@ public class LicenseActivation implements LicenseActivationInterface {
     }
 
     public int isForTherapist(License license) {
-        if (license != null) {
+        if (license != null && license.getSequence().length()==4) {
             return license.getIdUser();
         }
         return 0;
@@ -28,7 +36,11 @@ public class LicenseActivation implements LicenseActivationInterface {
         daoLicense.activate(license, userId);
     }
 
-    public String generatePin(int therapistId) {return daoLicense.generateInvitation(therapistId); }
+    public String generatePin(int therapistId) {
+        return daoLicense.generateInvitation(therapistId);
+    }
 
-    public String generateLicense() {return daoLicense.generateLicense(); }
+    public String generateLicense() {
+        return daoLicense.generateLicense();
+    }
 }

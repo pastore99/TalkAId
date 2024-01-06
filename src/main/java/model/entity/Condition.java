@@ -5,7 +5,17 @@ public class Condition {
     private String disorderDescription;
     private String disorderName;
 
+    private int severity;
+
     // Getter and Setter methods
+
+    public int getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(int severity) {
+        this.severity = severity;
+    }
 
     public int getIdCondition() {
         return idCondition;

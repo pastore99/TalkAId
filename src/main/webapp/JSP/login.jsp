@@ -18,30 +18,30 @@
                 </div>
                 <input class="formInput" type="email" id="email" name="email" placeholder="example@email.com" required>
                 <div class="icon iconRight">
-                    <img hidden id="validEmail" src="../images/valid.svg" alt="emailIcon">
-                    <img hidden id="invalidEmail" src="../images/invalid.svg" alt="emailIcon">
+                    <img id="validEmail" src="../images/valid.svg" alt="validEmail" class="hiddenClass">
+                    <img id="invalidEmail" src="../images/invalid.svg" alt="invalidEmail" class="hiddenClass">
                 </div>
             </div>
 
             <br>
             <div class="inputDiv">
                 <div class="icon iconLeft">
-                    <img src="../images/passwordIcon.svg" alt="emailIcon">
+                    <img src="../images/passwordIcon.svg" alt="passwordIcon">
                 </div>
                 <input class="formInput" type="password" id="password" name="password" placeholder="Password" required>
                 <div class="icon iconRight">
-                    <button hidden class="togglePassword" id="hidePassword"><img src="../images/hidePassword.svg" alt="ShowPasswordIcon"></button>
-                    <button class="togglePassword" id="showPassword"><img src="../images/showPassword.svg" alt="ShowPasswordIcon"></button>
+                    <button class="togglePassword hiddenClass" id="hidePassword"><img src="../images/hidePassword.svg" alt="hidePasswordIcon"></button>
+                    <button class="togglePassword hiddenClass" id="showPassword"><img src="../images/showPassword.svg" alt="showPasswordIcon"></button>
                 </div>
             </div>
             <br>
             <div id="loginForgot">
-                <a href="#">Password Dimenticata?</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">Password Dimenticata?</a>
             </div>
             <button type="submit" value="Login" id="loginButton">Login</button>
         </form>
         <div id="loginRegister">
-            <p>Non hai un account? <a href="#">Registrati</a> </p>
+            <p>Non hai un account? <a href="registration.jsp">Registrati</a> </p>
          </div>
 
         <div id="resetPasswordModal" class="modal fade" role="dialog">
@@ -73,9 +73,10 @@
             </div>
         </div>
     </div>
-    <link rel="stylesheet" href="../CSS/login.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO+Mizj6ZYZZfecO8RR+pL4eZzZ5gA2a5Ha0wjM6un6NIS8YCkK6ZL8SkkD6" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="../JS/login.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../CSS/login.css">
 </body>
 </html>

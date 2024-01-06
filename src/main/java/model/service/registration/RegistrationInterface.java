@@ -12,31 +12,11 @@ public interface RegistrationInterface {
      * @param name è il nome utente per la sua anagrafica
      * @param surname è il cognome utente per la sua anagrafica
      * @return un codice di errore in base alla casistica
+     *      *         0 - No error.
+     *      *         1 - Invalid license.
+     *      *         2 - Invalid email.
+     *      *         3 - Unable to create user.
+     *      *         4 - Unable to generate personal info.
      */
-    int register(String licenseCode, String email, String password, String name, String surname);
-
-    /**
-     * invita un nuovo paziente, inviandogli una mail con il pin per la registrazione
-     * @param therapistId è l'id del terapista che vuole invitare un nuovo paziente
-     * @param patientEmail è l'email del paziente che il terapista vuole inviare
-     * @param patientName è il nome del paziente
-     * @param patientSurname è il cognome del paziente
-     * @return True se è stato invitato, False altrimenti
-     */
-    boolean invitePatient(int therapistId, String patientEmail, String patientName, String patientSurname);
-
-    /**
-     * cambia la password da una vecchia a quella nuova
-     * @param email è l'email inserita dell'account
-     * @param oldpw è la password inserita da controllare la validità e sostituire
-     * @param newpw è la nuova password
-     * @return True se è stata cambiata con successo. False altrimenti
-     */
-    boolean resetFromOldPassword(String email, String oldpw, String newpw);
-
-    /**
-     * avvia il recupero password tramite email
-     * @param email è l'email inserita dell'account
-     * @return True se è stata cambiata con successo. False altrimenti
-     */
+    int registerNewUser(String licenseCode, String email, String password, String name, String surname);
 }

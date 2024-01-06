@@ -9,10 +9,10 @@ public interface UserDataInterface {
 
     /**
      * Permette di ricercare un utente dato il suo id
-     * @param userId è il codice univoco per ricercare un utente
+     * @param idOrEmail è l'ID od Email per ricercare un utente, univoci
      * @return una classe Utente con i suoi dati correlati
      */
-    User getUser(int userId);
+    User getUser(Object idOrEmail);
     /**
      * Genera il nuovo utente
      * @param email è l'email inserita durante la registrazione
@@ -33,26 +33,27 @@ public interface UserDataInterface {
      * @param value contiene la nuova email
      * @return True se termina con successo. False altrimenti
      */
-    boolean modifyEmail(String value);
+    //boolean modifyEmail(String value);
 
     /**
      * si occupa di modificare il consenso al tracciamento
      * @param value contiene True o False
      * @return True se termina con successo. False altrimenti
      */
-    boolean modifyAnalytics(boolean value);
+    boolean updateAnalyticsPreference(String id, Boolean value);
 
     /**
      * si occupa di modificare il consenso alle notifiche mail
      * @param value contiene True o False
      * @return True se termina con successo. False altrimenti
      */
-    boolean modifyEmailNotification(boolean value);
+    //boolean modifyEmailNotification(boolean value); //TODO
 
     /**
      * si occupa di modificare la fascia oraria per le notifiche
-     * @param time contiene l'orario delle notifiche espresso come 12:34
+     * @param id contiene
+     * @param value contiene l'orario delle notifiche espresso come 12:34-13:00
      * @return True se termina con successo. False altrimenti
      */
-    boolean modifyTime(String time);
+    boolean updateEmailTime(String id, String value);
 }

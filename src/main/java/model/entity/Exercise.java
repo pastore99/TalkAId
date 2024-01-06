@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.sql.Blob;
 import java.sql.Date;
 
 public class Exercise {
@@ -7,7 +8,7 @@ public class Exercise {
     private int idExercise;
     private Date insertionDate;
     private Date completionDate;
-    private byte[] execution;
+    private Blob execution;
     private int evaluation;
     private int recommended;
     private int feedback;
@@ -46,11 +47,11 @@ public class Exercise {
         this.completionDate = completionDate;
     }
 
-    public byte[] getExecution() {
+    public Blob getExecution() {
         return execution;
     }
 
-    public void setExecution(byte[] execution) {
+    public void setExecution(Blob execution) {
         this.execution = execution;
     }
 

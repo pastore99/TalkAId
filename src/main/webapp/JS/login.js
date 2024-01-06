@@ -1,26 +1,46 @@
-// Extract the element identifiers as variables
-let resetEmail = $("#resetEmail");
-let resetStep1 = $("#resetStep1");
-let resetStep2 = $("#resetStep2");
-let resetStep3 = $("#resetStep3");
-let resetPasswordModal = $('#resetPasswordModal');
-let newPassword = $("#newPassword");
-let repeatNewPassword = $("#repeatNewPassword");
-let resetButton = $("#resetPassword");
-let newPasswordError = $(".error");
-let contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+const resetEmail = $("#resetEmail");
+const resetStep1 = $("#resetStep1");
+const resetStep2 = $("#resetStep2");
+const resetStep3 = $("#resetStep3");
+const resetPasswordModal = $('#resetPasswordModal');
+const newPassword = $("#newPassword");
+const repeatNewPassword = $("#repeatNewPassword");
+const resetButton = $("#resetPassword");
+const newPasswordError = $(".error");
+const showPasswordIcon = $("#showPassword");
+const hidePasswordIcon = $("#hidePassword");
+const validEmailIcon = $("#validEmail");
+const invalidEmailIcon = $("#invalidEmail");
+const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
 let THEPASSWORD;
 
 newPassword.on("input", validatePassword);
 repeatNewPassword.on("input", validatePassword);
 
-$(document).ready(function () {
+$(document).ready(function startUp() {
+
+    showPasswordIcon.toggleClass("hiddenClass");
+
+    $("#showPassword").click((event) => {
+        event.preventDefault();
+        togglePassword(event);
+    });
+
+    $("#hidePassword").click((event) => {
+        event.preventDefault();
+        togglePassword(event);
+    });
+
+    $("#email").blur(() => {
+        checkRegexEmail();
+    });
 
     $("#forgotPassword").click(handleForgotPassword);
 
-    var sessionPin;
-    $("#sendPin").click(() => {
+    let sessionPin;
+    /*
+    $("#sendPin").click((event) => {
         event.preventDefault();
         $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
             sessionPin = response.trim(); // Save the response, which should be your pin
@@ -28,8 +48,23 @@ $(document).ready(function () {
             resetStep2.show();
         });
     });
+    */
+    $("#sendPin").click((event) => {
+        event.preventDefault();
+        $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
+            response = response.trim(); // Trim the response
+            if(response == "NA") {
+                // Here, the servlet will return "NA" if it could not find the email
+                alert("Email non registrata nel nostro sistema. Verificane la correttezza");
+            } else {
+                sessionPin = response; // Save the response, which should be your pin
+                resetStep1.hide();
+                resetStep2.show();
+            }
+        });
+    });
 
-    $("#confirmPin").click(() => {
+    $("#confirmPin").click((event) => {
         event.preventDefault();
         if ($("#pin").val() === sessionPin) {
             // if the PIN entered matches the saved PIN, proceed to step 3
@@ -40,7 +75,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#resetPassword").click(function() {
+    $("#resetPassword").click(function(event) {
         event.preventDefault();
         $.post(`${contextPath}/login/resetpassword`, {
             email: $("#resetEmail").val(),
@@ -69,6 +104,44 @@ $(document).ready(function () {
         checkRegexEmail();
     });
 });
+
+function togglePassword(event) {
+    event.preventDefault();
+
+    const passwordField = $("#password");
+    let passwordType = passwordField.attr('type');
+    console.log(passwordType);
+
+    if (passwordType === 'password') {
+        passwordField.attr("type", "text")
+    } else {
+        passwordField.attr("type", "password");
+    }
+
+    showPasswordIcon.toggleClass("hiddenClass")
+    hidePasswordIcon.toggleClass("hiddenClass")
+}
+
+function checkRegexEmail(){
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailField = $("#email");
+
+    if(regex.test(emailField.val())){
+        if(validEmailIcon.hasClass("hiddenClass")){
+            validEmailIcon.toggleClass("hiddenClass");
+        }
+        if(!invalidEmailIcon.hasClass("hiddenClass")) {
+            invalidEmailIcon.toggleClass("hiddenClass");
+        }
+    } else{
+        if(!validEmailIcon.hasClass("hiddenClass")){
+            validEmailIcon.toggleClass("hiddenClass");
+        }
+        if(invalidEmailIcon.hasClass("hiddenClass")){
+            invalidEmailIcon.toggleClass("hiddenClass");
+        }
+    }
+}
 
 function handleForgotPassword(event) {
     event.preventDefault();
@@ -101,7 +174,7 @@ function validatePassword() {
         showError("Le password non coincidono.");
         check2 = false;
     }
-    if (THEPASSWORD == confirmPassword) {
+    if (THEPASSWORD === confirmPassword) {
         showError("");
         check2 = true;
     }

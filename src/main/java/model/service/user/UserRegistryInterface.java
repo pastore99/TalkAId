@@ -1,5 +1,7 @@
 package model.service.user;
 
+import model.entity.PersonalInfo;
+
 public interface UserRegistryInterface {
 
     /**
@@ -10,4 +12,6 @@ public interface UserRegistryInterface {
      * @return True se è andato a buon fine. False altrimenti
      */
     boolean firstAccess(int id, String name, String surname);
+
+    PersonalInfo getPersonalInfo(int id);
 }
