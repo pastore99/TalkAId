@@ -61,7 +61,7 @@
             <img class="img" src="../images/homeTherapist/doctor.png" />
             <img class="logovettoriale" src="../images/homeTherapist/logovettoriale-1.png" />
             <img class="line" src="../images/homeTherapist/line-9.svg" />
-            <div class="text-wrapper-3">Dr.</br> <%=session.getAttribute("NameSurnameLogged")%></div>
+            <div class="text-wrapper-3">Dr.</br> <%=(String) session.getAttribute("name") + " " + (String)session.getAttribute("surname")%> </div>
             <img class="ellipse-2" src="../images/homeTherapist/ellipse-94.svg" />
         </div>
     </div>
