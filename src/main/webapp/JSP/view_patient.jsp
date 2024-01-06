@@ -1,5 +1,7 @@
 <%@ page import="model.entity.*"%>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="model.service.user.UserRegistry" %>
+<%@ page import="model.service.user.UserData" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,10 +9,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/view_patient.css" />
     <title>Paziente Selezionato</title>
-    <%
-        int index = Integer.parseInt(request.getParameter("patientIndex"));
-        ArrayList<UserInfo> allPatients = (ArrayList<UserInfo>) session.getAttribute("list_user");
-    %>
+
 </head>
 <body>
 <div class="element-home-logopedista">
@@ -18,14 +17,28 @@
         <!--INFO PATIENT-->
         <div class="pop-up">
             <div class="overlap-group">
-            <% UserInfo user_selected= allPatients.get(index); %>
+            <%
+
+                if(session.getAttribute("type")==null || !session.getAttribute("type").equals("therapist") ||  request.getParameter("patientID") == null) {
+                    response.sendRedirect("../errorPage/403.html");
+                }else {
+                    int patientId = Integer.parseInt(request.getParameter("patientID"));
+
+                    PersonalInfo user_selected = new UserRegistry().getPersonalInfo(patientId);
+                    User user = new UserData().getUser(patientId);
+                    if (user.getIdTherapist() != (Integer) session.getAttribute("id")) {
+                        response.sendRedirect("../errorPage/403.html");
+                    }
+                    String email = user.getEmail();
+
+            %>
                 <table>
                     <tr>
                         <td><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 496 512"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8 .4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"/></svg></td>
                         <td>
                             <p><b>Nome:</b> <%=user_selected.getFirstname()%></p>
                             <p><b>Indirizzo:</b> <%=user_selected.getAddress()%> </p>
-                            <p><b>Email:</b> <%=user_selected.getEmail()%> </p>
+                            <p><b>Email:</b> <%=email%> </p>
                         </td>
                         <td>
                             <p><b>Cognome:</b> <%=user_selected.getLastname()%></p>
@@ -86,9 +99,9 @@
 
 <script>
     function redirectToGestioneMalattie() {
-        window.location.href = 'PatientConditionManager.jsp?userId='+<%=user_selected.getId()%>;
+        window.location.href = 'PatientConditionManager.jsp?userId='+<%=user_selected.getIdUser() %>;
     }
 </script>
-
+ <%} %>
 </body>
 </html>

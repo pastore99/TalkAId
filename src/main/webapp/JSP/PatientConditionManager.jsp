@@ -1,6 +1,10 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.entity.Condition" %>
 <%@ page import="model.service.condition.ConditionManager" %>
+<%@ page import="model.entity.Schedule" %>
+<%@ page import="model.entity.UserInfo" %>
+<%@ page import="model.entity.User" %>
+<%@ page import="model.service.user.UserData" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,8 +12,20 @@
 </head>
 <body>
 <%
+    int userId = 0;
+    if(session.getAttribute("type")!=null && !session.getAttribute("type").equals("therapist") || request.getParameter("userId")==null) {
+        response.sendRedirect("../errorPage/403.html");
+    }else {
+        userId = Integer.parseInt((request.getParameter("userId")));
+
+        int  userTherapist = new UserData().getUser(userId).getIdTherapist();
+        if (userTherapist != (Integer) session.getAttribute("id")) {
+            response.sendRedirect("../errorPage/403.html");
+        }
+    }
+
+
     ConditionManager ConditionService= new ConditionManager();
-    int userId = Integer.parseInt(request.getParameter("userId"));
 
     ArrayList<Condition> list_PatientCondition = ConditionService.getConditionsOfPatient(userId);
     ArrayList<Condition> list_NOTPatientCondition = ConditionService.getConditionsNOTOfPatient(userId);

@@ -13,19 +13,12 @@ import java.io.IOException;
 @WebServlet("/AddRemovePatientCondition")
 public class AddRemovePatientCondition extends HttpServlet {
 
-
-
-    public AddRemovePatientCondition() {
-        super();
-
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
         ConditionManager conditionService= new ConditionManager();
 
-        int idPatient= Integer.parseInt(request.getParameter("idPatient"));
-        int idCondition= Integer.parseInt(request.getParameter("idCondition"));
+        int idPatient = Integer.parseInt(request.getParameter("idPatient"));
+        int idCondition = Integer.parseInt(request.getParameter("idCondition"));
 
         String operation= request.getParameter("operation");
         if (operation.equals("Rimuovi"))  //REMOVE
@@ -41,12 +34,5 @@ public class AddRemovePatientCondition extends HttpServlet {
         response.sendRedirect(referer);
 
     }
-
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        doGet(request, response);
-    }
-
 
 }

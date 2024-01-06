@@ -1,4 +1,5 @@
 <%@ page import="model.entity.*"%>
+<%@ page import="model.service.user.UserData"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
@@ -29,11 +30,11 @@
                     </thead>
                     <tbody>
                     <%
-                        if(session.getAttribute("list_user")!=null) {
+                        if(session.getAttribute("type")!=null && session.getAttribute("type").equals("therapist")){
                             @SuppressWarnings("unchecked")
-                            ArrayList<UserInfo> list_user=(ArrayList<UserInfo>) session.getAttribute("list_user");
+                            ArrayList<UserInfo> list_user= new UserData().getUsersAndPersonalInfoByIdTherapist((Integer) session.getAttribute("id"));
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                            int i=0;
+
                             for(UserInfo u: list_user){
                     %>
                     <!-- <form action="../view_patientServlet" method="post" -->
@@ -46,14 +47,15 @@
                             </td>
                             <td>
                                 <input type="hidden" name="userId" value="<%= u.getId() %>">
-                                <input type="hidden" name="arrayIndex" value="<%=i%>">
                                 <!-- <button type="submit" class="button">Visualizza</button> -->
-                                <buttom onclick="viewPatient(<%=i++%>)" class="button">Visualizza</buttom>
+                                <buttom onclick="viewPatient(<%=u.getId()%>)" class="button">Visualizza</buttom>
                             </td>
                         </tr>
                     <!-- </form> -->
                     <%
                             }
+                        } else {
+                            response.sendRedirect("../errorPage/403.html");
                         }
                     %>
                     </tbody>
@@ -89,7 +91,7 @@
 <script src="../JS/searchBar.js"></script>
 <script>
     function viewPatient(i){
-        window.location.href = "view_patient.jsp?patientIndex="+i;
+        window.location.href = "view_patient.jsp?patientID="+i;
     }
 </script>
 </body>
