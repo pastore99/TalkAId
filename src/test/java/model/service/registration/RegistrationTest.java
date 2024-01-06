@@ -97,7 +97,6 @@ class RegistrationTest {
 
         // Assert expected result (Success scenario -> result should be 0)
         assertEquals(0, result, "New user should be registered successfully.");
-
         new DAOLicense().deleteLicense(licenseCode);
         new DAOPersonalInfo().deleteRegistry(new DAOUser().getUserByIdOrEmail(email).getId());
         new DAOUser().deleteUserByIdOrEmail(email);

@@ -142,5 +142,58 @@ public class DAOUserTest {
         assertTrue(daoUser.deleteUserByIdOrEmail("1"));
         verify(preparedStatement, times(1)).executeUpdate();
     }
+
+    @Test
+    public void testCheckIfEmailExists_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeQuery();
+        assertFalse(daoUser.checkIfEmailExists("email@test.com"));
+        verify(preparedStatement, times(1)).executeQuery();
+    }
+    @Test
+    public void testCreateUser_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeUpdate();
+        assertEquals(-1, daoUser.createUser("email@test.com", "password", 456));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+    @Test
+    public void testGetUserByIdOrEmail_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeQuery();
+        assertNull(daoUser.getUserByIdOrEmail("email@test.com"));
+        verify(preparedStatement, times(1)).executeQuery();
+    }
+    @Test
+    public void testResetPassword_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeUpdate();
+        assertFalse(daoUser.resetPassword("email@test.com", "newpassword"));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    public void testUpdateUser_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeUpdate();
+        assertEquals("Update not possible due to a server connection issue.", daoUser.updateUser(1, "test@example.com", "Test Address"));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    public void testUpdateAnalyticsPreference_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeUpdate();
+        assertFalse(daoUser.updateAnalyticsPreference("1", true));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    public void testUpdateEmailTime_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeUpdate();
+        assertFalse(daoUser.updateEmailTime("1", "10:00"));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+    @Test
+    public void testDeleteUserByIdOrEmail_SQLException() throws SQLException {
+        doThrow(SQLException.class).when(preparedStatement).executeUpdate();
+        assertFalse(daoUser.deleteUserByIdOrEmail("1"));
+        verify(preparedStatement, times(1)).executeUpdate();
+    }
+
 }
 
