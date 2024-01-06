@@ -8,6 +8,20 @@ import java.sql.*;
  * The DAOExercise class provides methods for retrieving Exercise information from a database.
  */
 public class DAOExercise {
+
+    private Connection connection;
+
+    public DAOExercise(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOExercise() {
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * This method extracts Exercise object data from a ResultSet
      *
@@ -39,12 +53,11 @@ public class DAOExercise {
      */
     public Exercise getExerciseByPk(int userID, int exerciseID, Date insertDate) {
         String query = "SELECT * FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userID);
             preparedStatement.setInt(2, exerciseID);
@@ -73,11 +86,10 @@ public class DAOExercise {
 
     public boolean setExerciseExecution(int userID, int exerciseID, Date insertDate, Blob execution) {
         String query = "UPDATE exercise SET Execution = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setBlob(1, execution);
             preparedStatement.setInt(2, userID);
@@ -101,11 +113,10 @@ public class DAOExercise {
 
     public boolean setExerciseEvaluation(int userID, int exerciseID, Date insertDate, int evaluation) {
         String query = "UPDATE exercise SET Evaluation = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, evaluation);
             preparedStatement.setInt(2, userID);
@@ -129,11 +140,10 @@ public class DAOExercise {
 
     public boolean setExerciseCompletionDate(int userID, int exerciseID, Date insertDate, Date completion) {
         String query = "UPDATE exercise SET CompletionDate = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setDate(1, completion);
             preparedStatement.setInt(2, userID);

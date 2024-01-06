@@ -2,6 +2,7 @@ package controller;
 
 import model.entity.PersonalInfo;
 import model.entity.User;
+import model.entity.UserInfo;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
@@ -35,16 +37,15 @@ public class Login extends HttpServlet {
         int result = authService.authenticate(email, password);
 
         if (result > 0) {
-            // Login success, defining its Session attributes
-            setSessionAttributes(result,request);
-            response.sendRedirect("JSP/welcome.jsp");
+            // Login success, defining its Session attributes and the redirect page
+            response.sendRedirect(setSessionAttributes(result, request));
         } else {
             // Login failed, redirect back to the login page
             response.sendRedirect("JSP/login.jsp?error=1");
         }
     }
 
-    private void setSessionAttributes(int id, HttpServletRequest request){
+    private String setSessionAttributes(int id, HttpServletRequest request){
         HttpSession session = request.getSession();
 
         userData = new UserData();
@@ -57,12 +58,25 @@ public class Login extends HttpServlet {
         session.setAttribute("name", personalInfo.getFirstname());
 
         if(!userData.isTherapist(user)) {
+
             session.setAttribute("type", "patient");
             session.setAttribute("therapist", user.getIdTherapist());
+            return "JSP/homePatient.jsp";
         }
         else {
+            setPatientsInfo(session);
             session.setAttribute("type", "therapist");
+            return "JSP/homeTherapist.jsp";
         }
     }
+    private void setPatientsInfo(HttpSession session){
 
+        UserRegistry registry = new UserRegistry();
+
+        PersonalInfo infoLogged = registry.getPersonalInfo(((Integer) session.getAttribute("id")));
+
+        session.setAttribute("NameSurnameLogged", infoLogged != null ? infoLogged.getFirstname() + " " + infoLogged.getLastname() : null);
+
+    }
 }
+

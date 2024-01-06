@@ -2,6 +2,10 @@ package model.service.user;
 
 import model.DAO.DAOUser;
 import model.entity.User;
+import model.entity.UserInfo;
+
+import java.util.ArrayList;
+import model.entity.User;
 
 import java.sql.Connection;
 
@@ -42,5 +46,6 @@ public class UserData implements UserDataInterface {
     {
         return db.updateUser(idUser, Email, address);
     }
-
+    public ArrayList<User> getUsersByIdTherapist(int ID_Therapist ){return db.getUsersByIdTherapist(ID_Therapist);}
+    public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int ID_Therapist) {return db.getUsersAndPersonalInfoByIdTherapist(ID_Therapist);}
 }

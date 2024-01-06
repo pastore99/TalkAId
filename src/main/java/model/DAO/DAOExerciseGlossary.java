@@ -12,6 +12,20 @@ import java.sql.SQLException;
  * The DAOExerciseGlossary class provides methods for retrieving ExerciseGlossary information from a database.
  */
 public class DAOExerciseGlossary {
+
+    private Connection connection;
+
+    public DAOExerciseGlossary(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOExerciseGlossary() {
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * This method extracts Exercise object data from a ResultSet
      *
@@ -41,12 +55,11 @@ public class DAOExerciseGlossary {
      */
     public ExerciseGlossary getExerciseByCode(int code) {
         String query = "SELECT * FROM exercise_glossary WHERE ID_exercise = ?";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, code);
             resultSet = preparedStatement.executeQuery();
