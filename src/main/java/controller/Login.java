@@ -61,22 +61,13 @@ public class Login extends HttpServlet {
 
             session.setAttribute("type", "patient");
             session.setAttribute("therapist", user.getIdTherapist());
-            return "JSP/homePatient.jsp";
+            return "JSP/homepagepatient.jsp";
         }
         else {
-            setPatientsInfo(session);
             session.setAttribute("type", "therapist");
+            session.setAttribute("surname", personalInfo.getLastname());
             return "JSP/homeTherapist.jsp";
         }
-    }
-    private void setPatientsInfo(HttpSession session){
-
-        UserRegistry registry = new UserRegistry();
-
-        PersonalInfo infoLogged = registry.getPersonalInfo(((Integer) session.getAttribute("id")));
-
-        session.setAttribute("NameSurnameLogged", infoLogged != null ? infoLogged.getFirstname() + " " + infoLogged.getLastname() : null);
-
     }
 }
 
