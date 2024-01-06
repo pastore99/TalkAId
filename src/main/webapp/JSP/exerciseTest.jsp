@@ -29,6 +29,7 @@
 <body>
 <form action="${pageContext.request.contextPath}/exerciseController" method="post">
     <input type="number" name="exerciseID" value="">
+    <!-- <input type="hidden" name="insertionDate" value=""> @michele -->
     <input type="submit">
 </form>
 </body>
