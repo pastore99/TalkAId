@@ -1,5 +1,17 @@
+<%@ page import="model.service.exercise.ExerciseManager" %>
+<%@ page import="model.entity.Exercise" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.entity.ExerciseGlossary" %>
 <!DOCTYPE html>
 <html lang="it" style="background-color: #f7fcff; ">
+<%
+    Integer userIdp = (Integer) session.getAttribute("id");
+    if(userIdp == null) {
+        response.sendRedirect("../errorPage/403.html");
+    }
+    else {
+        int userId = (Integer) session.getAttribute("id");
+%>
 <head>
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
@@ -18,7 +30,16 @@
             <div class="current-lesson">Resoconto esercizi:</div>
         </div>
     </div>
-    <!-- for va da qua -->
+
+    <%
+        ExerciseManager exerciseManager = new ExerciseManager();
+        List<Exercise> list = exerciseManager.retrieveAllPatientExerciseDone(userId);
+        ExerciseGlossary exerciseGlossary = new ExerciseGlossary();
+        if(!list.isEmpty()){
+            int Counter = 0;
+            for(Exercise exercise : list) {
+                exerciseGlossary = exerciseManager.getExercise(exercise.getIdExercise());
+    %>
     <div class="margin20">
         <div class="card">
             <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
@@ -28,14 +49,13 @@
                     <svg class="eimg" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
                         <g>
                             <title>Layer 1</title>
-                            <circle id="circle_animation1" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#6fdb6f" fill="none"></circle>
-                            <text x="81" y="81" font-size="30" text-anchor="middle" dominant-baseline="middle" fill="green">23%</text>
+                            <circle id="circle_animation<%=Counter%>" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#6fdb6f" fill="none"></circle>
+                            <text x="81" y="81" font-size="30" text-anchor="middle" dominant-baseline="middle" fill="green"><%=exercise.getEvaluation()%>%</text>
                         </g>
                     </svg>
 
                 </div></div>
-                <div class="chapter">Tipo Esercizio</div>
-                <div class="discovering-english">Nome Esercizio</div>
+                <div class="discovering-english"><%=exerciseGlossary.getExerciseName()%></div>
             </div></div></div>
             <button class="button-2">Guarda errori</button>
         </div>
@@ -50,47 +70,21 @@
             </div></div></div>
         </div>
         <script>
-            varcalc= (440 / 100 * 23)+440;
-            document.querySelector('#circle_animation1').style.strokeDashoffset = varcalc; // 50%
+            varcalc= (440 / 100 * <%=exercise.getEvaluation()%>)+440;
+            document.querySelector('#circle_animation<%=Counter%>').style.strokeDashoffset = varcalc; // 50%
         </script>
     </div>
-    <!-- a qua-->
-
-    <div class="margin20">
-        <div class="card">
-            <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
-                <div class="eillustration-wrapper">
-                    <img class="illustration" src="../images/homepagepatient/attentionimg">
-
-                    <svg class="eimg" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <title>Layer 1</title>
-                            <circle id="circle_animation2" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#6fdb6f" fill="none"></circle>
-                            <text x="81" y="81" font-size="30" text-anchor="middle" dominant-baseline="middle" fill="green">50%</text>
-                        </g>
-                    </svg>
-
-                </div></div>
-                <div class="chapter">Tipo Esercizio</div>
-                <div class="discovering-english">Nome Esercizio</div>
-            </div></div></div>
-            <button class="button-2">Guarda errori</button>
-        </div>
-
-        <div class="errorcard" style="display: none;">
-            <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
-                <div class="illustration-wrapper">
-                    <img class="illustration" src="../images/homepagepatient/errorimg">
-                </div></div>
-                <div class="discovering-english">Errori</div>
-                <div class="chapter">Errori</div>
-            </div></div></div>
-        </div>
-        <script>
-            varcalc= (440 / 100 * 50)+440;
-            document.querySelector('#circle_animation2').style.strokeDashoffset = varcalc; // 50%
-        </script>
-    </div>
+    <%
+            Counter++;
+            }
+        }
+        else {
+    %>
+    %>
+    <div class="discovering-english">Esercizi non disponibili</div>
+    <%
+        }
+    %>
 
 
     <script>
@@ -108,3 +102,6 @@
 </div>
 </body>
 </html>
+<%
+    }
+%>
