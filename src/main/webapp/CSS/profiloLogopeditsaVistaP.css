@@ -1,0 +1,520 @@
+.element-profilo {
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.element-profilo .div {
+    background-color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+    background: linear-gradient(180deg, rgb(82, 209, 198) 0%, rgb(48.35, 173.19, 162.37) 100%);
+    width: 375px;
+    height: 812px;
+    position: relative;
+}
+
+.element-profilo .overlap {
+    position: absolute;
+    width: 428px;
+    height: 442px;
+    top: 382px;
+    left: 0;
+}
+
+.element-profilo .bg {
+    position: absolute;
+    width: 375px;
+    height: 442px;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    border-radius: 30px 30px 0px 0px;
+}
+
+.element-profilo .text-wrapper {
+    position: absolute;
+    width: 111px;
+    top: 94px;
+    left: 19px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .text-wrapper-2 {
+    position: absolute;
+    width: 251px;
+    top: 90px;
+    left: 177px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #636363;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+    text-decoration: underline;
+}
+
+.element-profilo .text-wrapper-3 {
+    position: absolute;
+    width: 111px;
+    top: 41px;
+    left: 19px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .text-wrapper-4 {
+    position: absolute;
+    width: 251px;
+    top: 37px;
+    left: 177px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #636363;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .text-wrapper-5 {
+    position: absolute;
+    width: 251px;
+    top: 149px;
+    left: 160px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #636363;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .button-book {
+    position: absolute;
+    width: 336px;
+    height: 50px;
+    top: 214px;
+    left: 21px;
+}
+
+.element-profilo .overlap-group {
+    position: relative;
+    width: 334px;
+    height: 50px;
+    background-color: #199a8e;
+    border-radius: 32px;
+}
+
+.element-profilo .text-wrapper-6 {
+    position: absolute;
+    width: 115px;
+    top: 16px;
+    left: 109px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .text-wrapper-7 {
+    position: absolute;
+    width: 115px;
+    top: 229px;
+    left: 130px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .overlap-wrapper {
+    position: absolute;
+    width: 336px;
+    height: 50px;
+    top: 280px;
+    left: 21px;
+}
+
+.element-profilo .div-wrapper {
+    position: relative;
+    width: 334px;
+    height: 50px;
+    background-color: #e65151;
+    border-radius: 32px;
+}
+
+.element-profilo .text-wrapper-8 {
+    position: absolute;
+    width: 62px;
+    top: 16px;
+    left: 136px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .rectangle {
+    position: absolute;
+    width: 375px;
+    height: 138px;
+    top: 292px;
+    left: 0;
+}
+
+.element-profilo .group {
+    position: absolute;
+    width: 276px;
+    height: 24px;
+    top: 380px;
+    left: 50px;
+}
+
+.element-profilo .iconly-light-outline {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    left: 0;
+}
+
+.element-profilo .home-wrapper {
+    position: relative;
+    height: 24px;
+}
+
+.element-profilo .home {
+    position: absolute;
+    width: 20px;
+    height: 22px;
+    top: 1px;
+    left: 2px;
+}
+
+.element-profilo .iconly-bold-calendar {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    left: 168px;
+}
+
+.element-profilo .iconly-light-message {
+    left: 84px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+}
+
+.element-profilo .iconly-light-profile {
+    left: 252px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+}
+
+.element-profilo .profile {
+    position: relative;
+    width: 16px;
+    height: 20px;
+    top: 2px;
+    left: 4px;
+    background-image: url(./img/profile.svg);
+    background-size: 100% 100%;
+}
+
+.element-profilo .text-wrapper-9 {
+    position: absolute;
+    width: 111px;
+    top: 149px;
+    left: 19px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .rectangle-2 {
+    position: absolute;
+    width: 335px;
+    height: 1px;
+    top: 123px;
+    left: 20px;
+    background-color: #e8f3f1;
+}
+
+.element-profilo .rectangle-3 {
+    position: absolute;
+    width: 335px;
+    height: 1px;
+    top: 77px;
+    left: 20px;
+    background-color: #e8f3f1;
+}
+
+.element-profilo .overlap-2 {
+    position: absolute;
+    width: 261px;
+    height: 169px;
+    top: 48px;
+    left: 13px;
+}
+
+.element-profilo .profile-2 {
+    position: absolute;
+    width: 171px;
+    height: 22px;
+    top: 131px;
+    left: 90px;
+}
+
+.element-profilo .text-wrapper-10 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 18px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .text-wrapper-11 {
+    position: absolute;
+    width: 124px;
+    top: 152px;
+    left: 116px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #787878;
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .button {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    left: 0;
+}
+
+.element-profilo .icon-chevron-left {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 8px;
+    left: 8px;
+}
+
+.element-profilo .image {
+    position: absolute;
+    width: 115px;
+    height: 115px;
+    top: 26px;
+    left: 32px;
+}
+
+.element-profilo .pexels-cedric {
+    position: absolute;
+    width: 103px;
+    height: 101px;
+    top: 0;
+    left: 126px;
+    object-fit: cover;
+}
+
+.element-profilo .div-2 {
+    position: absolute;
+    width: 375px;
+    height: 44px;
+    top: 0;
+    left: 0;
+}
+
+.element-profilo .battery {
+    position: absolute;
+    width: 24px;
+    height: 11px;
+    top: 17px;
+    left: 336px;
+}
+
+.element-profilo .capacity-wrapper {
+    position: absolute;
+    width: 22px;
+    height: 11px;
+    top: 0;
+    left: 0;
+    border-radius: 2.67px;
+    border: 1px solid;
+    border-color: #10152259;
+}
+
+.element-profilo .capacity {
+    position: relative;
+    width: 18px;
+    height: 7px;
+    top: 1px;
+    left: 1px;
+    background-color: #101522;
+    border-radius: 1.33px;
+}
+
+.element-profilo .cap {
+    position: absolute;
+    width: 1px;
+    height: 4px;
+    top: 4px;
+    left: 23px;
+}
+
+.element-profilo .wifi {
+    position: absolute;
+    width: 15px;
+    height: 11px;
+    top: 17px;
+    left: 316px;
+}
+
+.element-profilo .cellular-connection {
+    position: absolute;
+    width: 17px;
+    height: 11px;
+    top: 18px;
+    left: 294px;
+}
+
+.element-profilo .time-style {
+    position: absolute;
+    width: 54px;
+    height: 21px;
+    top: 13px;
+    left: 21px;
+}
+
+.element-profilo .time {
+    position: absolute;
+    width: 54px;
+    top: 2px;
+    left: 0;
+    font-family: "SF Pro Text-Regular", Helvetica;
+    font-weight: 400;
+    color: #101522;
+    font-size: 14px;
+    text-align: center;
+    line-height: normal;
+}
+
+.element-profilo .span {
+    letter-spacing: -0.28px;
+}
+
+.element-profilo .text-wrapper-12 {
+    letter-spacing: 0;
+}
+
+.element-profilo .component {
+    position: absolute;
+    width: 4px;
+    height: 16px;
+    top: 58px;
+    left: 347px;
+}
+
+.element-profilo .ellipse {
+    top: 0;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    left: 0;
+    background-color: #ffffff;
+    border-radius: 2px;
+}
+
+.element-profilo .ellipse-2 {
+    top: 6px;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    left: 0;
+    background-color: #ffffff;
+    border-radius: 2px;
+}
+
+.element-profilo .ellipse-3 {
+    top: 12px;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    left: 0;
+    background-color: #ffffff;
+    border-radius: 2px;
+}
+
+.element-profilo .pazienti {
+    position: absolute;
+    width: 143px;
+    top: 261px;
+    left: 20px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: transparent;
+    font-size: 15px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .text-wrapper-13 {
+    color: #ffffff;
+}
+
+.element-profilo .text-wrapper-14 {
+    color: #555555;
+}
+
+.element-profilo .abbonamento-standard {
+    position: absolute;
+    width: 143px;
+    top: 261px;
+    left: 212px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    color: transparent;
+    font-size: 15px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.element-profilo .img {
+    position: absolute;
+    width: 335px;
+    height: 1px;
+    top: -11387px;
+    left: -4510px;
+    object-fit: cover;
+}
