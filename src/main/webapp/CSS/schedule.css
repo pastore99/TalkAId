@@ -168,6 +168,12 @@ body {
     box-sizing: border-box;
 }
 
+#popup{
+    color:red;
+    font-weight: 500;
+    font-size: .7em;
+}
+
 h2{
     color:#199a8e;
     font-weight: 700;
@@ -178,4 +184,14 @@ h2{
     text-align: center;
     color:#199a8e;
     font-weight: 700;
+}
+
+.notification{
+    float: right;
+    height: 1.3em;
+}
+
+.profile{
+    float: left;
+    height: 1.3em;
 }

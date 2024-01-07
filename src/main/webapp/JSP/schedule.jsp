@@ -20,18 +20,7 @@
     <title>TalkAId - Schedule Prenotazioni</title>
     <link rel="stylesheet" type="text/css" href="../CSS/schedule.css">
 </head>
-<body>
-<%
-    String errorMessage = (String) request.getAttribute("errorMessage");
-    if (errorMessage != null && !errorMessage.isEmpty()) {
-%>
-<script>
-    alert('<%= errorMessage %>');
-    window.location.href = "JSP/schedule.jsp";
-</script>
-<%
-    }
-%>
+<body onload="controllaPopup();">
 <div id="calendar">
     <div class="header">
         Agenda
@@ -54,6 +43,15 @@
         <input type="hidden" id="getContextPath" value="<%=request.getContextPath()%>">
         <button class="button" type="submit" name="action" value="createNewSchedule">Aggiungi data</button>
     </form>
+
+    <div id="popup" >
+        <div id="popup-uscita">
+            <p id="Contenuto"></p>
+            <div class="input">
+                <button id="cancella" class="button" onclick="chiudiPopup()">Chiudi</button>
+            </div>
+        </div>
+    </div>
 
     <div class="divbar"></div>
 
@@ -276,6 +274,26 @@
 
 </div>
 <script src="../JS/schedule.js"></script>
+
+<script>
+    function controllaPopup() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var errorMessage = urlParams.get('errorMessage');
+        var contenuto = document.getElementById("Contenuto");
+
+
+        if (errorMessage && errorMessage.trim() !== "") {
+            contenuto.innerHTML=errorMessage;
+            document.getElementById("popup").style.display = "block";
+        } else {
+            document.getElementById("popup").style.display = "none";
+        }
+    }
+    function chiudiPopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
 

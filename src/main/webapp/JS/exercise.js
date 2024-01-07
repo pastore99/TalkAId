@@ -116,7 +116,7 @@ function parseJSON(json) {
 function redirect(where){
   if (where === "home"){
     if (USERTYPE === "patient"){
-      window.location.href = "homepagepatient.jsp";
+      window.location.href = "homePagePatient.jsp";
     }else if (USERTYPE === "therapist"){
       window.location.href = "homepagelogopedist.jsp";
     }

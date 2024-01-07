@@ -91,7 +91,7 @@
 <script src="../JS/searchBar.js"></script>
 <script>
     function viewPatient(i){
-        window.location.href = "view_patient.jsp?patientID="+i;
+        window.location.href = "viewPatient.jsp?patientID="+i;
     }
 </script>
 </body>

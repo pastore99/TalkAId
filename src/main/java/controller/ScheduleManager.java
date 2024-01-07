@@ -23,10 +23,8 @@ public class ScheduleManager extends HttpServlet {
                     scheduleManager.createNewSchedule(userId, request.getParameter("date"), request.getParameter("timeslot"));
                     response.sendRedirect("JSP/schedule.jsp");
                 } else {
-                    String errorMessage = "La data selezionata non è valida. Seleziona una data non esistente perfavore.";
-                    request.setAttribute("errorMessage", errorMessage);
-                    //request.getRequestDispatcher("JSP/schedule.jsp").forward(request, response);
-                    response.sendRedirect("JSP/schedule.jsp");
+                    String errorMessage = "Seleziona una data non esistente perfavore.";
+                    response.sendRedirect("JSP/schedule.jsp?errorMessage=" + errorMessage);
                 }
             }
             else if (action.equalsIgnoreCase("deleteSchedule")) {

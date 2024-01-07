@@ -99,7 +99,7 @@
 
 <script>
     function redirectToGestioneMalattie() {
-        window.location.href = 'PatientConditionManager.jsp?userId='+<%=user_selected.getIdUser() %>;
+        window.location.href = 'patientConditionManager.jsp?userId='+<%=user_selected.getIdUser() %>;
     }
 </script>
  <%} %>
