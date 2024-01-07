@@ -324,7 +324,7 @@ public class DAOSchedule {
         }
         // Here we change the condition. It will return true if count > 0, meaning the data is available.
         // It returns false otherwise.
-        return count > 0;
+        return count == 0;
     }
 
 }
