@@ -1,7 +1,6 @@
 package model.service.user;
 
 import model.DAO.DAOPersonalInfo;
-import model.DAO.DAOUser;
 import model.entity.PersonalInfo;
 
 import java.sql.Connection;
