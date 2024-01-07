@@ -17,6 +17,10 @@ import java.util.logging.Logger;
 public class DAOConnection {
     private static DataSource dataSource;
 
+    static void setDataSource(DataSource ds) {
+        dataSource = ds;
+    }
+
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -43,6 +47,7 @@ public class DAOConnection {
                         props.getProperty("db.password")
                 );
             }
+
 
             @Override
             public Connection getConnection(String username, String password) throws SQLException {

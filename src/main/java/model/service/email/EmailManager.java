@@ -11,7 +11,7 @@ import java.util.Properties;
  * This class provides functionality for sending email messages.
  * It reads the configuration from a properties file named 'email.properties'.
  */
-public class EmailManager {
+public class EmailManager implements EmailManagerInterface{
 
     private static final String EMAIL_PROPERTIES = "/email.properties";
     private static final String ERROR_MESSAGE = "Error loading configuration file: ";

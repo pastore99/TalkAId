@@ -1,34 +1,26 @@
+import model.service.schedule.ScheduleManager;
 import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.DAO.DAOUser;
 import model.entity.User;
 import model.service.login.Authenticator;
+//import model.service.message.Conversation;
+import model.service.registration.Registration;
 
 public class Main {
     public static void main(String[] args) {
-        Encryption encryption = new Encryption();
-        DAOUser db = new DAOUser();
-        String plainTextPassword = "123456";
-        EmailManager message = new EmailManager();
+        //Authenticator auth = new Authenticator();
+        //Registration r = new Registration();
 
-        /*
-        String hashedPassword = encryption.encryptPassword(plainTextPassword);
+        //System.out.println(auth.authenticate("patient1@example.com", "pwd"));
+        //System.out.println(auth.authenticate("patient1@example.com", "pwd"));
+        //r.invitePatient(9, "thenicrodeath@gmail.com", "Raffaele", "Monti");
 
-        // Use hashed password to create new user
-        db.createUser("test@gmail.com", hashedPassword, 0);
-        */
-
-        /*
-        User user = db.getUserByIdOrEmail("test@gmail.com");
-        System.out.println(encryption.verifyPassword(plainTextPassword, user.getPassword()));
-         */
-
-
-        //test email
-        //message.sendEmail("c.porzio02@gmail.com", "Email Test", "questo è una email di test");
-
-        //test email recupero password
-        Authenticator authenticator = new Authenticator();
-        System.out.println(authenticator.authenticate("test@gmail.com", "123456"));
+        ScheduleManager manager = new ScheduleManager();
+        String date = "2024-01-11";
+        String time = "10:00-11:00";
+        if(manager.checkData(9, date, time)) {
+            manager.createNewSchedule(9, date, time); //funziona
+        }
     }
 }

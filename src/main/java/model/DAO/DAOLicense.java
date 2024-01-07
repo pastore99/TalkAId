@@ -12,6 +12,20 @@ import java.sql.SQLException;
  */
 public class DAOLicense {
 
+    private Connection connection;
+
+    public DAOLicense(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOLicense() {
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method extracts License object data from a ResultSet
      *
@@ -36,16 +50,14 @@ public class DAOLicense {
      */
     public License getLicenseByCode(String code) {
         String query = "SELECT * FROM license WHERE Sequence = ?";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, code);
             resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 return extractLicenseFromResultSet(resultSet);
             }
@@ -72,12 +84,11 @@ public class DAOLicense {
      * @param userId the ID of the user to link to the license.
      */
     public void activate(License license, int userId) {
-        String updateQuery = "UPDATE TalkAID2.license SET active = TRUE, ID_User = ? WHERE Sequence = ?";
-        Connection connection = null;
+        String updateQuery = "UPDATE license SET active = TRUE, ID_User = ? WHERE Sequence = ?";
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(updateQuery);
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, license.getSequence());
@@ -95,4 +106,105 @@ public class DAOLicense {
             }
         }
     }
+
+    /**
+     * Generate a new License to sell
+     * @return the sequence of the License if operation succeed, none otherwise
+     */
+    public String generateLicense(){
+        final int length = 8;
+        License l = new License(length);
+        String insertQuery =  "INSERT INTO license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);";
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, l.getSequence());
+            preparedStatement.setInt(2, 0);
+            preparedStatement.setDate(3, null);
+            preparedStatement.executeUpdate();
+            return l.getSequence();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * Generate an invitation code for a new patient
+     * @param userId the ID of a speech therapist
+     * @return the sequence of the invitation if operation succeed, none otherwise
+     */
+    public String generateInvitation(int userId){
+        final int length = 4;
+        License l = new License(length);
+        String insertQuery =  "INSERT INTO license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);";
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1, l.getSequence());
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setDate(3, l.getExpirationDate());
+            preparedStatement.executeUpdate();
+            return l.getSequence();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean deleteLicense(String code) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Get database connection
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+
+            // Prepare the SQL query
+            String query = "DELETE FROM license WHERE Sequence = ?";
+            preparedStatement = connection.prepareStatement(query);
+
+            // Set parameter for the prepared statement
+            preparedStatement.setString(1, code);
+
+            // Execute update and return boolean based on the affected rows
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the statement and release the connection
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // If exception occurs, return false
+        return false;
+    }
+
 }

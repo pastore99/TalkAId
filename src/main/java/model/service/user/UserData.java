@@ -2,20 +2,29 @@ package model.service.user;
 
 import model.DAO.DAOUser;
 import model.entity.User;
+import model.entity.UserInfo;
 
-public class UserData /*implements UserDataInterface */{
-    DAOUser daoUser = new DAOUser();
+import java.util.ArrayList;
+
+public class UserData implements UserDataInterface {
+    DAOUser db;
+    public UserData() {
+        this.db = new DAOUser();}
+
+    public UserData(DAOUser db) {
+        this.db = db;
+    }
 
     public boolean checkIfEmailExists(String email) {
-        return daoUser.checkIfEmailExists(email);
+        return db.checkIfEmailExists(email);
     }
 
     public int createUser(String email, String password, int therapistId) {
-        return daoUser.createUser(email, password, therapistId);
+        return db.createUser(email, password, therapistId);
     }
 
-    public User getUserByIdOrEmail(Object idOrEmail) {
-        return daoUser.getUserByIdOrEmail(idOrEmail);
+    public User getUser(Object idOrEmail) {
+        return db.getUserByIdOrEmail(idOrEmail);
     }
 
     public boolean isTherapist(User user){
@@ -23,10 +32,12 @@ public class UserData /*implements UserDataInterface */{
     }
 
     public boolean updateAnalyticsPreference(String id, Boolean value) {
-        return daoUser.updateAnalyticsPreference(id, value);
+        return db.updateAnalyticsPreference(id, value);
     }
 
     public boolean updateEmailTime(String id, String value) {
-        return daoUser.updateEmailTime(id, value);
+        return db.updateEmailTime(id, value);
     }
+
+    public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int ID_Therapist) {return db.getUsersAndPersonalInfoByIdTherapist(ID_Therapist);}
 }

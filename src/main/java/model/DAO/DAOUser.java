@@ -1,17 +1,32 @@
 package model.DAO;
 
 import model.entity.User;
+import model.entity.UserInfo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * DAOUser is a class that provides methods for accessing the User table in the database.
  */
 public class DAOUser {
 
+    private Connection connection;
+
+    public DAOUser(Connection connection) {
+        this.connection = connection;
+    }
+
+    public DAOUser() {
+        try {
+            this.connection = DAOConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Private helper method that takes a ResultSet object and constructs a User object from it.
      *
@@ -42,12 +57,11 @@ public class DAOUser {
      * @return true if the email exists in the User table; false otherwise.
      */
     public boolean checkIfEmailExists(String email) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to check if the email exists
             String query = "SELECT COUNT(*) AS count FROM user WHERE Email = ?";
@@ -91,12 +105,11 @@ public class DAOUser {
      * @return The ID of the newly created user, or -1 if an error occurs.
      */
     public int createUser(String email, String password, int therapistId) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to insert a new user and retrieve the generated ID
             String query = "INSERT INTO user (Email, Password, ID_Therapist) VALUES (?, ?, ?)";
@@ -144,13 +157,11 @@ public class DAOUser {
      * @return The User object if found, or null if not found.
      */
     public User getUserByIdOrEmail(Object idOrEmail) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
-
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = null;
 
             if (idOrEmail instanceof Integer) {
@@ -193,12 +204,11 @@ public class DAOUser {
      * @return true if the password was successfully updated; false otherwise.
      */
     public boolean resetPassword(String email, String newPassword) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             // Get connection
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to update password for the given email
             String query = "UPDATE user SET Password = ? WHERE Email = ?";
@@ -234,6 +244,60 @@ public class DAOUser {
         return false;
     }
 
+    public String updateUser(int idUser, String email, String address) {
+        boolean isEmailToUpdate = email != null && !checkIfEmailExists(email);
+        boolean isAddressToUpdate = address != null;
+
+        if (!isEmailToUpdate && !isAddressToUpdate) {
+            return "Invalid. No update performed.";
+        }
+
+        StringBuilder queryBuilder = new StringBuilder("UPDATE user SET ");
+        if (isEmailToUpdate) {
+            queryBuilder.append("Email = ?");
+        }
+        if (isAddressToUpdate) {
+            if (isEmailToUpdate) {
+                queryBuilder.append(", ");
+            }
+            queryBuilder.append("Address = ?");
+        }
+        queryBuilder.append(" WHERE ID = ?");
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+
+            PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
+
+            int parameterIndex = 1;
+            if (isEmailToUpdate) {
+                preparedStatement.setString(parameterIndex++, email);
+            }
+            if (isAddressToUpdate) {
+                preparedStatement.setString(parameterIndex++, address);
+            }
+            preparedStatement.setInt(parameterIndex, idUser);
+
+            preparedStatement.executeUpdate();
+
+            StringBuilder successUpdateMessage = new StringBuilder();
+            if (isEmailToUpdate && isAddressToUpdate) {
+                successUpdateMessage.append("Both email and address");
+            } else if (isEmailToUpdate) {
+                successUpdateMessage.append("Email");
+            } else {
+                successUpdateMessage.append("Address");
+            }
+            successUpdateMessage.append(" have been updated successfully.");
+
+            return successUpdateMessage.toString();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Update not possible due to a server connection issue.";
+        }
+    }
+
     /**
      * Updates the user's analytics choice in the User table.
      *
@@ -242,12 +306,11 @@ public class DAOUser {
      * @return true if the choice was successfully updated; false otherwise.
      */
     public boolean updateAnalyticsPreference(String userId, boolean value) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             // Get connection
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to update analytics choice for the given userId
             String query = "UPDATE user SET Analytics = ? WHERE ID = ?";
@@ -291,12 +354,11 @@ public class DAOUser {
      * @return true if the email time was successfully updated; false otherwise.
      */
     public boolean updateEmailTime(String id, String value) {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             // Get connection
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             // Query to update Email Time for the given id
             String query = "UPDATE user SET NotificationTime = ? WHERE ID = ?";
@@ -330,5 +392,97 @@ public class DAOUser {
 
         // Default to false if an exception occurs
         return false;
+    }
+
+    /**
+     * Deletes a user from the User table based on an ID or an email.
+     *
+     * @param idOrEmail Either an Integer representing the User's ID or a String representing the User's email.
+     * @return true if the user was successfully deleted; false otherwise.
+     */
+    public boolean deleteUserByIdOrEmail(Object idOrEmail) {
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            String query = null;
+
+            if (idOrEmail instanceof Integer) {
+                query = "DELETE FROM user WHERE ID = ?";
+            } else if (idOrEmail instanceof String) {
+                query = "DELETE FROM user WHERE Email = ?";
+            }
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, idOrEmail);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        // Default to false if an exception occurs
+        return false;
+    }
+
+
+    public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int idTherapist) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<UserInfo> list_user=new ArrayList<>();
+
+        try {
+            connection = DAOConnection.getConnection();
+            String query = null;
+
+            query = "SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, idTherapist);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                UserInfo u=new UserInfo();
+                u.setId(resultSet.getInt("ID"));
+                u.setEmail(resultSet.getString("Email"));
+                u.setActivationDate(resultSet.getTimestamp("ActivationDate"));
+                u.setFirstname(resultSet.getString("Firstname"));
+                u.setLastname(resultSet.getString("Lastname"));
+                u.setDateOfBirth(resultSet.getDate("DateOfBirth"));
+                u.setGender(resultSet.getString("Gender"));
+                u.setAddress(resultSet.getString("Address"));
+                u.setSsn(resultSet.getString("SSN"));
+                u.setPhone(resultSet.getString("Phone"));
+
+                list_user.add(u);
+            }
+            return list_user;
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        return null; // or you may throw an exception here
     }
 }

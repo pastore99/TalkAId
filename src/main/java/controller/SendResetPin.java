@@ -1,6 +1,5 @@
 package controller;
 
-import model.entity.User;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 
@@ -18,7 +17,7 @@ public class SendResetPin extends HttpServlet {
 
         response.setContentType("text/plain");
         if(checker.checkIfEmailExists(email)){
-            String pin = new Authenticator().resetPassword(email);
+            String pin = new Authenticator().sendPin(email);
             response.getWriter().println(pin);
         }
         else {

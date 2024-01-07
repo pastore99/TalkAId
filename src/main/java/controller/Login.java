@@ -1,13 +1,11 @@
 package controller;
 
-import model.DAO.DAOPersonalInfo;
 import model.entity.PersonalInfo;
 import model.entity.User;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,19 +14,20 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class LoginController extends HttpServlet {
+public class Login extends HttpServlet {
 
-    /**
-     Your AuthenticationService instance should go here
-     **/
     private Authenticator authService;
+    private UserData userData;
+    private UserRegistry userReg;
 
     public void init() {
         this.authService = new Authenticator();
+        this.userData = new UserData();
+        this.userReg = new UserRegistry();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -36,34 +35,37 @@ public class LoginController extends HttpServlet {
         int result = authService.authenticate(email, password);
 
         if (result > 0) {
-            // Login success, defining its Session attributes
-            setSessionAttributes(result,request);
-            response.sendRedirect("JSP/welcome.jsp");
+            // Login success, defining its Session attributes and the redirect page
+            response.sendRedirect(setSessionAttributes(result, request));
         } else {
             // Login failed, redirect back to the login page
             response.sendRedirect("JSP/login.jsp?error=1");
         }
     }
 
-    private void setSessionAttributes(int id, HttpServletRequest request){
+    private String setSessionAttributes(int id, HttpServletRequest request){
         HttpSession session = request.getSession();
 
-        UserData userData = new UserData();
-        UserRegistry userReg = new UserRegistry();
+        userData = new UserData();
+        userReg = new UserRegistry();
 
-        User user = userData.getUserByIdOrEmail(id);
+        User user = userData.getUser(id);
         PersonalInfo personalInfo = userReg.getPersonalInfo(id);
 
         session.setAttribute("id", id);
         session.setAttribute("name", personalInfo.getFirstname());
 
         if(!userData.isTherapist(user)) {
+
             session.setAttribute("type", "patient");
             session.setAttribute("therapist", user.getIdTherapist());
+            return "JSP/homepagepatient.jsp";
         }
         else {
             session.setAttribute("type", "therapist");
+            session.setAttribute("surname", personalInfo.getLastname());
+            return "JSP/homeTherapist.jsp";
         }
     }
-
 }
+

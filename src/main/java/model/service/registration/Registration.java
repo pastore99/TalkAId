@@ -1,38 +1,26 @@
 package model.service.registration;
+
+import model.entity.License;
+import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.service.license.LicenseActivation;
-import model.entity.License;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
 
 public class Registration implements RegistrationInterface {
 
-    /**
-     * Registers a user with the provided information.
-     *
-     * @param licenseCode The license code to validate the license.
-     * @param email The email address of the user.
-     * @param password The password for the user.
-     * @param name The name of the user.
-     * @param surname The surname of the user.
-     * @return An integer representing the error code based on the following cases:
-     *         0 - No error.
-     *         1 - Invalid license.
-     *         2 - Invalid email.
-     *         3 - Unable to create user.
-     *         4 - Unable to generate personal info.
-     */
+
     @Override
     public int registerNewUser(String licenseCode, String email, String password, String name, String surname) {
         License license = validateLicense(licenseCode);
-        if(license != null) {
-            if(isEmailExists(email)) {
+        if (license != null) {
+            if (isEmailExists(email)) {
                 return 2; //email non valida
             }
             String hashed = encryptPassword(password);
             int theNewId = createNewUser(email, hashed, license);
-            if(theNewId >= 0) {
-                if(createUserPersonalInformation(theNewId, name, surname)) {
+            if (theNewId >= 0) {
+                if (createUserPersonalInformation(theNewId, name, surname)) {
                     LicenseActivation la = new LicenseActivation();
                     la.activate(license, theNewId);
                     return 0; // no error
@@ -86,4 +74,23 @@ public class Registration implements RegistrationInterface {
         UserRegistry ur = new UserRegistry();
         return ur.firstAccess(theNewId, name, surname);
     }
+
+    public boolean invitePatient(int therapistId, String patientEmail, String patientName, String patientSurname){
+        UserData ud = new UserData();
+
+        if(!ud.checkIfEmailExists(patientEmail)) {
+            EmailManager tool = new EmailManager();
+            LicenseActivation la = new LicenseActivation();
+
+            String pin = la.generatePin(therapistId);
+            if(pin!=null){
+                String body = "Salve "+ patientSurname+ " " + patientName + ". Il tuo logopedista ti ha invitato a TalkAid! Ecco il tuo codice per registrarti a TalkAid: "+ pin;
+
+                tool.sendEmail(patientEmail, "Sei stato invitato a TalkAID!", body);
+                return true;
+            }
+        }
+        return false;
+    }
 }
+

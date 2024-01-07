@@ -43,8 +43,11 @@ $(document).ready(function() {
                 }
                 if(resultCode !== 0) {
                     alert(message);
+                    console.log('User registered error code: ', response);
                 }
-                console.log('User registered error code: ', response);
+                else {
+                    window.location.href = 'legal.jsp';
+                }
             },
             error: function(error) {
                 console.log('Error while registering user: ', error);

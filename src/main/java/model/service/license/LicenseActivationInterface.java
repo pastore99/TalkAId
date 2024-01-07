@@ -38,12 +38,14 @@ public interface LicenseActivationInterface {
      * genera una nuova licenza da 4 caratteri e con l'ID del terapeuta
      *
      * @param therapistId è l'identificativo del terapeuta
+     * @return il pin generato ed inserito nel database, null altrimenti
      */
-    void generatePin(int therapistId);
+    String generatePin(int therapistId);
 
     /**
      * genera una nuova licenza da 8 caratteri e con ID terapeuta 0
+     * @return la licenza generata ed inserita nel database, null altrimenti
      */
-    void generateLicense();
+    String generateLicense();
 
 }

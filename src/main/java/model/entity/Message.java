@@ -59,5 +59,17 @@ public class Message {
     public void setSent(Timestamp sent) {
         this.sent = sent;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                //"idMessage=" + idMessage +
+                ", sender=" + sender +
+                ", recipient=" + recipient +
+                ", read=" + read +
+                //", body='" + body + '\'' +
+                //", sent=" + sent +
+                '}';
+    }
 }
 

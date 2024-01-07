@@ -2,7 +2,6 @@ package controller;
 
 import model.entity.PersonalInfo;
 import model.entity.User;
-import model.service.registration.Registration;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
 
@@ -15,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/register")
 
-public class RegistrationServlet extends HttpServlet {
+public class Registration extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String licenseCode = request.getParameter("licenseCode");
@@ -24,14 +23,13 @@ public class RegistrationServlet extends HttpServlet {
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
 
-        Registration registration = new Registration();
+        model.service.registration.Registration registration = new model.service.registration.Registration();
         int result = registration.registerNewUser(licenseCode, email, password, name, surname);
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(String.valueOf(result));
         if(result == 0) {
             setSessionAttributes(email, request);
-            response.sendRedirect("/JSP/legal.jsp");
         }
     }
 
@@ -48,7 +46,7 @@ public class RegistrationServlet extends HttpServlet {
             String end = request.getParameter("endTime");
             String time = start + "|" + end;
             ud.updateEmailTime(String.valueOf(session.getAttribute("id")), time);
-            response.sendRedirect("/JSP/welcome.jsp");
+            response.sendRedirect("JSP/welcome.jsp");
         }
     }
 
@@ -58,7 +56,7 @@ public class RegistrationServlet extends HttpServlet {
         UserData userData = new UserData();
         UserRegistry userReg = new UserRegistry();
 
-        User user = userData.getUserByIdOrEmail(email);
+        User user = userData.getUser(email);
         PersonalInfo personalInfo = userReg.getPersonalInfo(user.getId());
 
         session.setAttribute("id", user.getId());
