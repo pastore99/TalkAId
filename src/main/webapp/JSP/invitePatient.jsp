@@ -9,8 +9,9 @@
 %>
 <div id="InvitePage">
     <div id="InviteTitle">
-        <h4>Invita Paziente</h4>
+        <p>Invita Paziente</p>
     </div>
+    <br>
     <form id="InviteForm" action="../invitePatient" method="post">
         <div class="inputDiv">
             <div class="icon iconLeft">

@@ -84,18 +84,14 @@
             <img class="material-symbols" src="../images/homeTherapist/material-symbols-search-rounded.svg" />
         </div>
         <div class="overlap">
-            <div class="button-only-text"><button class="button" onclick="InvitePatient();">Invita paziente</button></div>
+            <div class="button-only-text"><button class="button" onclick="openInvitePopup()">Invita Paziente</button></div>
         </div>
     </div>
 </div>
-<script src="../JS/searchBar.js"></script>
-<script>
-    function viewPatient(i){
-        window.location.href = "view_patient.jsp?patientID="+i;
-    }
-    function InvitePatient(){
-        window.location.href = "invitePatient.jsp";
-    }
-</script>
+<!--POPUP INVITE PATIENT-->
+<div id="invitePopup" style="display: none;">
+    <%@include file="invitePatient.jsp" %>
+</div>
+<script src="../JS/homeTherapist.js"></script>
 </body>
 </html>

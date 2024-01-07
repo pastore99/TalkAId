@@ -22,3 +22,14 @@ $(document).ready(function () {
         });
     });
 });
+/*POPUP INVITE PATIENT*/
+function openInvitePopup() {
+    document.getElementById("invitePopup").style.display = "block";
+}
+function InvitePatient(){
+    window.location.href = "invitePatient.jsp";
+}
+/*VIEW PATIENT*/
+function viewPatient(i){
+    window.location.href = "view_patient.jsp?patientID="+i;
+}
