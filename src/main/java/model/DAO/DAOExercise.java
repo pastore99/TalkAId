@@ -84,6 +84,39 @@ public class DAOExercise {
         return null;
     }
 
+    public Blob getExerciseExecution(int userID, int exerciseID, Date insertDate) {
+        String query = "SELECT Execution FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, exerciseID);
+            preparedStatement.setDate(3, insertDate);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getBlob("Execution");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
     public boolean setExerciseExecution(int userID, int exerciseID, Date insertDate, Blob execution) {
         String query = "UPDATE exercise SET Execution = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
         PreparedStatement preparedStatement = null;

@@ -18,5 +18,7 @@ public class ExerciseController extends HttpServlet {
         ExerciseGlossary ex = em.getExercise(Integer.parseInt(id));
         request.getSession().setAttribute("exercise", ex);
         response.sendRedirect(request.getContextPath() + "/JSP/exercise.jsp");
+
+        request.getSession().setAttribute("exerciseID", id); //TODO: RIMUOVI
     }
 }

@@ -3,6 +3,7 @@ package controller;
 import model.service.exercise.ExerciseManager;
 import org.apache.commons.io.IOUtils;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +28,8 @@ public class ExerciseLogger extends HttpServlet {
         } else {
             handleAudioExercise(request);
         }
+        RequestDispatcher d = request.getRequestDispatcher("/exerciseEvaluator");
+        d.forward(request, response);
     }
 
     private void handleNoAudioExercise(HttpServletRequest request) throws IOException {
@@ -64,9 +67,12 @@ public class ExerciseLogger extends HttpServlet {
     private boolean saveInDB(HttpServletRequest request, Blob execution){
         ExerciseManager em = new ExerciseManager();
         HttpSession session = request.getSession();
-        int userId = Integer.parseInt((String) session.getAttribute("userId"));
-        int exerciseId = Integer.parseInt((String) session.getAttribute("exerciseId"));
-        Date insertDate = Date.valueOf((String) session.getAttribute("insertDate"));
+//        int userId = Integer.parseInt((String) session.getAttribute("userId"));
+        int exerciseId = Integer.parseInt((String) session.getAttribute("exerciseID"));
+//        Date insertDate = Date.valueOf((String) session.getAttribute("insertDate"));
+//TODO: RIMUOVI I COMMENTI
+        int userId = 8;
+        Date insertDate = Date.valueOf("2024-01-07");
         return em.saveExecution(userId, exerciseId, insertDate, execution);
     }
 }

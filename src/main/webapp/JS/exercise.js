@@ -514,17 +514,19 @@ function saveCT(n){
 function saveExecution(execution){
   $("#buttonDiv > button").prop("disabled", true).text("Esercizio Inviato!");
 
-  $.post({
-    url: "../exerciseLogger",
-    contentType: "application/json",
-    data: JSON.stringify(execution)
-  }).done(() => {
-    redirect("home");
-  }).fail((error) => {
-    console.log("Errore durante la chiamata Post:"+error);
-    redirect("500.html")
-  })
 
+  $.ajax({
+    type: "POST",
+    url: "../exerciseLogger",
+    data: JSON.stringify(execution),
+    contentType: "application/json",
+    error: function (error) {
+      console.error("Errore durante l'invio dell'esecuzione alla servlet:", error);
+      redirect("500.html")
+    }
+  });
+
+  redirect("home");
 }
 
 function saveAudioExecution(execution){
@@ -533,7 +535,6 @@ function saveAudioExecution(execution){
     let formData = new FormData();
     formData.append("audioFile", execution, "User"+USERID+"exercise"+EXERCISEID+".wav");
 
-
     $.ajax({
       type: "POST",
       url: "../exerciseLogger",
@@ -541,13 +542,12 @@ function saveAudioExecution(execution){
       processData: false,
       contentType: false,
       cache: false,
-      success: function (){
-        redirect("home");
-      },
       error: function (error) {
         console.error("Errore durante l'invio dell'audio alla servlet:", error);
         redirect("500.html")
       }
     });
+
+    redirect("home");
   }
 }
