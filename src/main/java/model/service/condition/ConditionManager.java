@@ -3,7 +3,6 @@ package model.service.condition;
 import model.DAO.DAOCondition;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Condition;
 
 public class ConditionManager implements ConditionInterface {
 

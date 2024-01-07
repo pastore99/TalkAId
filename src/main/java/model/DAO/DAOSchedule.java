@@ -2,12 +2,10 @@ package model.DAO;
 
 import model.entity.Schedule;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-import java.sql.Date;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAOSchedule {
 
@@ -286,12 +284,20 @@ public class DAOSchedule {
         return count;
     }
 
-    public int checkData(int idTherapist, Date date, String timeSlot) {
+    //Restituisce TRUE se la data è disponibile. Restituisce FALSE se la data NON è disponibile O non è valida.
+    public boolean checkData(int idTherapist, Date date, String timeSlot) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         int count = 0;
 
         try {
+            // Comparing the provided date with the current date
+            LocalDate localDate = LocalDate.now();
+            Date currentDate = java.sql.Date.valueOf(localDate);
+            if(currentDate.after(date)){
+                return false;
+            }
+
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
             String sql = "SELECT COUNT(*) FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;";
@@ -316,7 +322,9 @@ public class DAOSchedule {
                 e.printStackTrace();
             }
         }
-        return count;
+        // Here we change the condition. It will return true if count > 0, meaning the data is available.
+        // It returns false otherwise.
+        return count > 0;
     }
 
 }

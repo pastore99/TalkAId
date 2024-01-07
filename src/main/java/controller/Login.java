@@ -2,7 +2,6 @@ package controller;
 
 import model.entity.PersonalInfo;
 import model.entity.User;
-import model.entity.UserInfo;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {

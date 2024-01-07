@@ -1,17 +1,12 @@
 package model.service.message;
 
 import model.DAO.DAOMessage;
-import model.DAO.DAOSchedule;
-import model.DAO.DAOUser;
 import model.entity.Message;
 import model.entity.User;
 import model.service.user.UserData;
 
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MessageManager implements MessageManagerInterface {
     private int userId;
