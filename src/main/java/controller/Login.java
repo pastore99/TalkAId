@@ -59,7 +59,7 @@ public class Login extends HttpServlet {
 
             session.setAttribute("type", "patient");
             session.setAttribute("therapist", user.getIdTherapist());
-            return "JSP/homepagepatient.jsp";
+            return "JSP/homePagePatient.jsp";
         }
         else {
             session.setAttribute("type", "therapist");

@@ -203,7 +203,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function goReport() {
-        window.location.href = "../JSP/patientreport.jsp";
+        window.location.href = "patientReport.jsp";
     }
 
     $(document).ready(function() {
