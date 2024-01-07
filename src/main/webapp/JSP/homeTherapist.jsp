@@ -84,7 +84,7 @@
             <img class="material-symbols" src="../images/homeTherapist/material-symbols-search-rounded.svg" />
         </div>
         <div class="overlap">
-            <div class="button-only-text"><button class="button">Invita paziente</button></div>
+            <div class="button-only-text"><button class="button" onclick="InvitePatient();">Invita paziente</button></div>
         </div>
     </div>
 </div>
@@ -92,6 +92,9 @@
 <script>
     function viewPatient(i){
         window.location.href = "view_patient.jsp?patientID="+i;
+    }
+    function InvitePatient(){
+        window.location.href = "invitePatient.jsp";
     }
 </script>
 </body>
