@@ -1,8 +1,11 @@
 package model.DAO;
 
 import model.entity.Exercise;
+import model.entity.Schedule;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The DAOExercise class provides methods for retrieving Exercise information from a database.
@@ -52,7 +55,7 @@ public class DAOExercise {
      * @return the Exercise if it is found, else null.
      */
     public Exercise getExerciseByPk(int userID, int exerciseID, Date insertDate) {
-        String query = "SELECT * FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?";
+        String query = "SELECT * FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
@@ -82,6 +85,105 @@ public class DAOExercise {
         }
 
         return null;
+    }
+
+    public List<Exercise> retrieveAllNewPatientExercise(int userID) {
+        String query = "SELECT * FROM exercise WHERE ID_user = ? ORDER BY InsertionDate DESC;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Exercise> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Exercise exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
+    }
+
+    public List<Exercise> retrieveAllNewPatientExerciseNotDone(int userID) {
+        String query = "SELECT * FROM exercise WHERE ID_user = ? AND CompletionDate IS NULL ORDER BY InsertionDate DESC;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Exercise> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Exercise exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
+    }
+
+    public List<Exercise> retrieveAllPatientExerciseDone(int userID) {
+        String query = "SELECT * FROM exercise WHERE ID_user = ? AND CompletionDate IS NOT NULL ORDER BY InsertionDate DESC;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Exercise> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Exercise exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
     }
 
     public boolean setExerciseExecution(int userID, int exerciseID, Date insertDate, Blob execution) {

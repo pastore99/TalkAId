@@ -34,9 +34,7 @@
 %>
 <div id="calendar">
     <div class="header">
-        <img class="profile" src="../images/homepagepatient/profile.svg">
         Agenda
-        <img class="notification" src="../images/homepagepatient/icon-notification.svg">
     </div>
     <%
         if (session.getAttribute("type") == "therapist"){

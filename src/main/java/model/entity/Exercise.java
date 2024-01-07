@@ -78,5 +78,17 @@ public class Exercise {
     public void setFeedback(int feedback) {
         this.feedback = feedback;
     }
+    @Override
+    public String toString() {
+        return "Exercise{" +
+                "idUser=" + idUser +
+                ", idExercise=" + idExercise +
+                ", insertionDate=" + insertionDate +
+                ", completionDate=" + completionDate +
+                ", evaluation=" + evaluation +
+                ", recommended=" + recommended +
+                ", feedback=" + feedback +
+                '}';
+    }
 }
 

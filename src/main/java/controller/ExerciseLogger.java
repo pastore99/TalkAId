@@ -67,7 +67,8 @@ public class ExerciseLogger extends HttpServlet {
         int userId = Integer.parseInt((String) session.getAttribute("userId"));
         int exerciseId = Integer.parseInt((String) session.getAttribute("exerciseId"));
         Date insertDate = Date.valueOf((String) session.getAttribute("insertDate"));
-        //TODO: pulisci la sessione @michele
+        session.removeAttribute("exerciseId");
+        session.removeAttribute("insertDate");
         return em.saveExecution(userId, exerciseId, insertDate, execution);
     }
 }
