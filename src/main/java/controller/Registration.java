@@ -29,7 +29,7 @@ public class Registration extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(String.valueOf(result));
         if(result == 0) {
-            git s(email, request);
+            setSessionAttributes(email, request);
         }
     }
 
