@@ -1,8 +1,6 @@
 package model.DAO;
 
 import model.entity.Condition;
-import model.entity.PatientCondition;
-import model.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,5 @@
 package controller;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,10 +8,6 @@ import java.io.IOException;
 
 @WebServlet("/ScheduleServlet")
 public class ScheduleManager extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        doPost(request, response);
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = (Integer) request.getSession().getAttribute("id");
         response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -30,7 +25,8 @@ public class ScheduleManager extends HttpServlet {
                 } else {
                     String errorMessage = "La data selezionata non è valida. Seleziona una data non esistente perfavore.";
                     request.setAttribute("errorMessage", errorMessage);
-                    request.getRequestDispatcher("JSP/schedule.jsp").forward(request, response);
+                    //request.getRequestDispatcher("JSP/schedule.jsp").forward(request, response);
+                    response.sendRedirect("JSP/schedule.jsp");
                 }
             }
             else if (action.equalsIgnoreCase("deleteSchedule")) {
@@ -58,8 +54,6 @@ public class ScheduleManager extends HttpServlet {
     } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ServletException e) {
             throw new RuntimeException(e);
         }
     }

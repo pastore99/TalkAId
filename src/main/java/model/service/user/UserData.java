@@ -5,9 +5,6 @@ import model.entity.User;
 import model.entity.UserInfo;
 
 import java.util.ArrayList;
-import model.entity.User;
-
-import java.sql.Connection;
 
 public class UserData implements UserDataInterface {
     DAOUser db;
