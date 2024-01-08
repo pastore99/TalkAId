@@ -18,9 +18,10 @@ public interface ExerciseManagerInterface {
      * Preleva un'esecuzione di un esercizio
      * @param exerciseID l'id dell'esercizio
      * @param userID l'id dell'utente che ha svolto l'esercizio
+     * @param insertionDate la data in cui l'esercizio è stata assegnata all'utente
      * @return un BLOB contenente l'esecuzione dell'esercizio
      */
-    Blob getExecution(int exerciseID, int userID);
+    Blob getExecution(int exerciseID, int userID, Date insertionDate);
 
     /**
      * Salva l'esecuzione di un esercizio

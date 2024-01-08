@@ -5,7 +5,6 @@
 <head>
     <%
         ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
-        //session.removeAttribute("exercise"); TODO: @michele fallo nella homepage questa cosa, ovviamente controlla se prima esiste poi nel caso elimini
     %>
 
     <title>Esercizio <%= exercise.getIdExercise()%></title>
@@ -30,8 +29,6 @@
         </div>
     </div>
     <div id="exerciseInfo" hidden
-         data-exerciseId = "<%= exercise.getIdExercise()%>"
-         data-userId = "<%= session.getAttribute("id") %>"
          data-type = "<%= exercise.getType()%>"
          data-userType = "<%= session.getAttribute("type")%>"
     ></div>

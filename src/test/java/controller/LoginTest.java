@@ -48,7 +48,7 @@ class LoginTest {
         verify(mockSession).setAttribute("type", "patient");
 
         // Verify redirection
-        verify(response).sendRedirect("JSP/homepagepatient.jsp");
+        verify(response).sendRedirect("JSP/homePagePatient.jsp");
     }
 
     //ACCESSO LOGOPEDISTA CORRETTO

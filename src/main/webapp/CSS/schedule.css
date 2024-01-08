@@ -168,6 +168,12 @@ body {
     box-sizing: border-box;
 }
 
+#popup{
+    color:red;
+    font-weight: 500;
+    font-size: .7em;
+}
+
 h2{
     color:#199a8e;
     font-weight: 700;

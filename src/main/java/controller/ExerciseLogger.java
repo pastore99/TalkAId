@@ -3,6 +3,7 @@ package controller;
 import model.service.exercise.ExerciseManager;
 import org.apache.commons.io.IOUtils;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -21,12 +22,13 @@ import java.sql.SQLException;
 public class ExerciseLogger extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String contentType = request.getContentType();
-
         if ("application/json".equals(contentType)) {
             handleNoAudioExercise(request);
         } else {
             handleAudioExercise(request);
         }
+        RequestDispatcher d = request.getRequestDispatcher("/exerciseEvaluator");
+        d.forward(request, response);
     }
 
     private void handleNoAudioExercise(HttpServletRequest request) throws IOException {
@@ -49,13 +51,13 @@ public class ExerciseLogger extends HttpServlet {
     }
 
     private void handleAudioExercise(HttpServletRequest request) throws ServletException, IOException {
-        InputStream audioInputStream;
 
         try {
             Part audioPart = request.getPart("audioFile");
-            audioInputStream = audioPart.getInputStream();
-            Blob audioBlob = new SerialBlob(IOUtils.toByteArray(audioInputStream));
-            saveInDB(request, audioBlob);
+            try (InputStream audioInputStream = audioPart.getInputStream()) {
+                Blob audioBlob = new SerialBlob(IOUtils.toByteArray(audioInputStream));
+                saveInDB(request, audioBlob);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,10 +66,10 @@ public class ExerciseLogger extends HttpServlet {
     private boolean saveInDB(HttpServletRequest request, Blob execution){
         ExerciseManager em = new ExerciseManager();
         HttpSession session = request.getSession();
-        int userId = Integer.parseInt((String) session.getAttribute("userId"));
-        int exerciseId = Integer.parseInt((String) session.getAttribute("exerciseId"));
-        Date insertDate = Date.valueOf((String) session.getAttribute("insertDate"));
-        //TODO: pulisci la sessione @michele
+        int userId = (int) session.getAttribute("id");
+        int exerciseId = (int) session.getAttribute("exerciseID");
+        Date insertDate = (Date) session.getAttribute("insertionDate");
+
         return em.saveExecution(userId, exerciseId, insertDate, execution);
     }
 }

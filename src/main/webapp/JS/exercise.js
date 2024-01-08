@@ -10,9 +10,7 @@ const IMAGESINAROW = 2
 const exerciseInfo = $("#exerciseInfo");
 
 const EXERCISETYPE = exerciseInfo.data("type");
-const EXERCISEID = exerciseInfo.data("exerciseId");
-const USERTYPE = exerciseInfo.data("userType");
-const USERID = exerciseInfo.data("userId");
+const USERTYPE = exerciseInfo.data("usertype");
 
 const exerciseDiv = $("#exerciseDiv");
 
@@ -29,10 +27,11 @@ function startUp(exerciseIS){
 
 let mediaRecorder;
 let audioChunks = [];
+let timeoutID;
 function micPreparation(){
 
   if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia({ audio: true  })
         .then(function(stream) {
           mediaRecorder = new MediaRecorder(stream);
 
@@ -43,7 +42,7 @@ function micPreparation(){
           };
 
           mediaRecorder.onstop = function() {
-            let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            let audioBlob = new Blob(audioChunks, { type: 'audio/opus' });
             let audioUrl = URL.createObjectURL(audioBlob);
             $("#audioPlayer").attr("src", audioUrl);
 
@@ -77,9 +76,15 @@ function micPreparation(){
             mediaRecorder.start();
             $("#startRecord").hide();
             $("#stopRecord").show();
+
+            // Set a timeout to stop recording after 33 seconds
+            timeoutID = setTimeout(() => {
+              $("#stopRecord").click();
+            }, 33000);
           });
 
           $("#stopRecord").click(function() {
+            clearTimeout(timeoutID);
             mediaRecorder.stop();
             $("#stopRecord").hide();
             $("#audioDiv").show();
@@ -116,9 +121,9 @@ function parseJSON(json) {
 function redirect(where){
   if (where === "home"){
     if (USERTYPE === "patient"){
-      window.location.href = "homepagepatient.jsp";
+      window.location.href = "homePagePatient.jsp";
     }else if (USERTYPE === "therapist"){
-      window.location.href = "homepagelogopedist.jsp";
+      window.location.href = "homeTherapist.jsp";
     }
   }
   else{
@@ -514,25 +519,26 @@ function saveCT(n){
 function saveExecution(execution){
   $("#buttonDiv > button").prop("disabled", true).text("Esercizio Inviato!");
 
-  $.post({
-    url: "../exerciseLogger",
-    contentType: "application/json",
-    data: JSON.stringify(execution)
-  }).done(() => {
-    redirect("home");
-  }).fail((error) => {
-    console.log("Errore durante la chiamata Post:"+error);
-    redirect("500.html")
-  })
 
+  $.ajax({
+    type: "POST",
+    url: "../exerciseLogger",
+    data: JSON.stringify(execution),
+    contentType: "application/json",
+    error: function (error) {
+      console.error("Errore durante l'invio dell'esecuzione alla servlet:", error);
+      redirect("500.html")
+    }
+  });
+
+  redirect("home");
 }
 
 function saveAudioExecution(execution){
   if(execution != null){
 
     let formData = new FormData();
-    formData.append("audioFile", execution, "User"+USERID+"exercise"+EXERCISEID+".wav");
-
+    formData.append("audioFile", execution);
 
     $.ajax({
       type: "POST",
@@ -541,13 +547,13 @@ function saveAudioExecution(execution){
       processData: false,
       contentType: false,
       cache: false,
-      success: function (){
-        redirect("home");
-      },
-      error: function (error) {
+      error: function(xhr, status, error) {
         console.error("Errore durante l'invio dell'audio alla servlet:", error);
-        redirect("500.html")
+        console.log(xhr.responseText);
+        redirect("500.html");
       }
     });
+
+    redirect("home");
   }
 }

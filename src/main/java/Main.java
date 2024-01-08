@@ -17,9 +17,10 @@ public class Main {
         //r.invitePatient(9, "thenicrodeath@gmail.com", "Raffaele", "Monti");
 
         ScheduleManager manager = new ScheduleManager();
-        String date = "2024-01-11";
+        String date = "2024-02-10";
         String time = "10:00-11:00";
         if(manager.checkData(9, date, time)) {
+            System.out.println("inif");
             manager.createNewSchedule(9, date, time); //funziona
         }
     }
