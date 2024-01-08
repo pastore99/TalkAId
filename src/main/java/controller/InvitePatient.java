@@ -17,9 +17,8 @@ public class InvitePatient extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         model.service.registration.Registration registration=new Registration();
-        registration.invitePatient((Integer) session.getAttribute("id"),(String) request.getParameter("email"),(String) request.getParameter("nome"),(String) request.getParameter("cognome"));
+        registration.invitePatient((Integer) session.getAttribute("id"), request.getParameter("email"), request.getParameter("nome"), request.getParameter("cognome"));
         response.sendRedirect("JSP/homeTherapist.jsp");
-
     }
 
 }
