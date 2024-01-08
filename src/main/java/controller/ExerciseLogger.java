@@ -22,7 +22,6 @@ import java.sql.SQLException;
 public class ExerciseLogger extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String contentType = request.getContentType();
-
         if ("application/json".equals(contentType)) {
             handleNoAudioExercise(request);
         } else {

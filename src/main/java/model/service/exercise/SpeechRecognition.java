@@ -24,7 +24,6 @@ public class SpeechRecognition {
 
 
     public String azureSTT(InputStream audio) throws InterruptedException, ExecutionException, IOException {
-        System.out.println("r: "+speechRegion + " k: "+speechKey);
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
         speechConfig.setSpeechRecognitionLanguage("it-It");
 

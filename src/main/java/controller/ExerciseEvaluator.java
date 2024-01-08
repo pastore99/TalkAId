@@ -16,6 +16,8 @@ import java.lang.reflect.Type;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -151,24 +153,47 @@ public class ExerciseEvaluator extends HttpServlet {
     }
 
     private int evaluateAudio(int exerciseId, int userId, Date d) throws IOException, ExecutionException, InterruptedException {
-        SpeechRecognition s = new SpeechRecognition();
-        Levenshtein l = new Levenshtein();
-        Gson g = new Gson();
-        ExerciseGlossary baseExercise = new ExerciseManager().getExercise(exerciseId);
-        String solution = g.fromJson(baseExercise.getInitialState(), String.class);
-
         InputStream audioExecution = getAudiofromBlob(exerciseId, userId, d);
         String audioText = null;
         if (audioExecution!=null){
+            SpeechRecognition s = new SpeechRecognition();
             audioText = s.azureSTT(audioExecution);
         }
-        System.out.println(audioText);
-        System.out.println("\n"+solution);
 
-        if(audioText != null){
-            double distance = l.distance(solution, audioText);
-            double result = ((solution.length()-distance)/solution.length())*100;
-            return (int) Math.round(result);
+        if(audioText != null) {
+            ExerciseGlossary baseExercise = new ExerciseManager().getExercise(exerciseId);
+            String exerciseType = baseExercise.getType();
+            Gson g = new Gson();
+
+            if (baseExercise.getType().equals("READTEXT")){
+                Levenshtein l = new Levenshtein();
+                String solution = g.fromJson(baseExercise.getInitialState(), String.class);
+                double distance = l.distance(solution, audioText);
+                double result = ((solution.length()-distance)/solution.length())*100;
+
+                return (int) Math.round(result);
+
+            }else if(exerciseType.equals("READIMAGES")){
+                Type solutionType = new TypeToken<Set<String>>(){}.getType();
+                Set<String> solution = g.fromJson(baseExercise.getSolution(), solutionType);
+                String execution = audioText.toLowerCase().replaceAll("[^a-zA-Z0-9\\s]", "");
+
+                double right = 0;
+                double total = solution.size();
+
+                String[] wordsArray = execution.split("\\s+");
+                Set<String> wordSet = new HashSet<>(Arrays.asList(wordsArray));
+
+                for(String w: wordSet){
+                    if(solution.contains(w)){
+                        right++;
+                    }
+                }
+
+                double result = ((right/total)*100);
+
+                return (int) Math.round(result);
+            }
         }
 
         return 0;

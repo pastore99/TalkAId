@@ -10,9 +10,7 @@ const IMAGESINAROW = 2
 const exerciseInfo = $("#exerciseInfo");
 
 const EXERCISETYPE = exerciseInfo.data("type");
-const EXERCISEID = exerciseInfo.data("exerciseid");
 const USERTYPE = exerciseInfo.data("usertype");
-const USERID = exerciseInfo.data("userid");
 
 const exerciseDiv = $("#exerciseDiv");
 
@@ -122,12 +120,9 @@ function parseJSON(json) {
 //Gestione redirect
 function redirect(where){
   if (where === "home"){
-    console.log("sono a home"); //TODO rimuovi!!
     if (USERTYPE === "patient"){
-      console.log("sono a patient"); //TODO rimuovi!!
       window.location.href = "homePagePatient.jsp";
     }else if (USERTYPE === "therapist"){
-      console.log("sono a therapist"); //TODO rimuovi!!
       window.location.href = "homeTherapist.jsp";
     }
   }
@@ -543,7 +538,7 @@ function saveAudioExecution(execution){
   if(execution != null){
 
     let formData = new FormData();
-    formData.append("audioFile", execution, "User"+USERID+"exercise"+EXERCISEID+".wav");
+    formData.append("audioFile", execution);
 
     $.ajax({
       type: "POST",
@@ -552,9 +547,10 @@ function saveAudioExecution(execution){
       processData: false,
       contentType: false,
       cache: false,
-      error: function (error) {
+      error: function(xhr, status, error) {
         console.error("Errore durante l'invio dell'audio alla servlet:", error);
-        redirect("500.html")
+        console.log(xhr.responseText);
+        redirect("500.html");
       }
     });
 
