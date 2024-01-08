@@ -5,7 +5,9 @@
 </head>
 <body>
 <%
-    if(session.getAttribute("type")!=null && session.getAttribute("type").equals("therapist")){
+    if(session.getAttribute("type")==null || !session.getAttribute("type").equals("therapist")) {
+        response.sendRedirect("../errorPage/403.html");
+    }
 %>
 <div id="InvitePage">
     <div id="InviteTitle">
@@ -40,10 +42,5 @@
     </form>
 </div>
 <link rel="stylesheet" href="../CSS/invitePatient.css">
-<%
-    }else {
-        response.sendRedirect("../errorPage/403.html");
-    }
-%>
 </body>
 </html>

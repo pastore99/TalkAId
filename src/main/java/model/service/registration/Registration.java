@@ -84,7 +84,7 @@ public class Registration implements RegistrationInterface {
 
             String pin = la.generatePin(therapistId);
             if(pin!=null){
-                String body = "Salve "+ patientSurname+ " " + patientName + ". Il tuo logopedista ti ha invitato a TalkAid! Ecco il tuo codice per registrarti a TalkAid: "+ pin;
+                String body = "Salve "+ patientSurname+ " " + patientName + "\n. il tuo logopedista ti ha invitato a TalkAID! Ecco il tuo codice per registrarti al sito: "+ pin;
 
                 tool.sendEmail(patientEmail, "Sei stato invitato a TalkAID!", body);
                 return true;

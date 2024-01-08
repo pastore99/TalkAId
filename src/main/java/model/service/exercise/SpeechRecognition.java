@@ -55,8 +55,8 @@ public class SpeechRecognition {
             }
         }
         //Ottieni il path dell'output basandoti sul file creato
-        Path outputPath = Paths.get(tempFile.getPath()).getParent();
-        String path = outputPath.toString() + "\\outputJava.wav";
+        Path outputPath = Paths.get(tempFile.getPath()).getParent().resolve("outputJava.wav");
+        String path = outputPath.toString();
 
         //Controlla che non esista già un file
         try {

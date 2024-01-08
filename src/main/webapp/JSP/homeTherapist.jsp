@@ -54,8 +54,6 @@
                         <!-- </form> -->
                         <%
                                 }
-                            } else {
-                                response.sendRedirect("../errorPage/403.html");
                             }
                         %>
                         </tbody>

@@ -18,7 +18,7 @@ public class ExerciseController extends HttpServlet {
         String id = request.getParameter("exerciseID");
         String insertionDate = request.getParameter("insertionDate");
         request.getSession().setAttribute("insertionDate", Date.valueOf(insertionDate));
-        request.getSession().setAttribute("exerciseId", id);
+        request.getSession().setAttribute("exerciseID", Integer.parseInt(id));
 
         ExerciseGlossary ex = em.getExercise(Integer.parseInt(id));
         request.getSession().setAttribute("exercise", ex);
