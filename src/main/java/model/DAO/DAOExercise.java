@@ -200,11 +200,10 @@ public class DAOExercise {
 
     public boolean setExerciseFeedback(int userID, int exerciseID, Date insertDate, int feedback) {
         String query = "UPDATE exercise SET Feedback = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DAOConnection.getConnection();
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, feedback);
             preparedStatement.setInt(2, userID);

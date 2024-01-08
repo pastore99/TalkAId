@@ -420,6 +420,7 @@ public class DAOUser {
 
             return rowsDeleted > 0;
         } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
@@ -434,42 +435,6 @@ public class DAOUser {
         return false;
     }
 
-    public ArrayList<User> getUsersByIdTherapist(int id) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        ArrayList<User> list_user=new ArrayList<>();
-        try {
-
-            connection = DAOConnection.getConnection();
-            String query = null;
-
-            query = "SELECT * FROM user WHERE ID_Therapist = ?";
-
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setObject(1, id);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                list_user.add(getUserFromResultSet(resultSet));
-            }
-            return list_user;
-        } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
-            }
-        }
-        return null; // or you may throw an exception here
-    }
 
     public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int idTherapist) {
         Connection connection = null;

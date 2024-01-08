@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homepagepatient.css" />
 </head>
+<!-- TODO: leggi tutti i TODO @michele-->
 <body>
 <div class="container">
     <div class="margin20">

@@ -1,7 +1,7 @@
 package model.service.license;
 
-import model.entity.License;
 import model.DAO.DAOLicense;
+import model.entity.License;
 
 public class LicenseActivation implements LicenseActivationInterface {
     DAOLicense daoLicense;
