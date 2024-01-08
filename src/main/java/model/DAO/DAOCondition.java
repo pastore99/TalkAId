@@ -1,8 +1,6 @@
 package model.DAO;
 
 import model.entity.Condition;
-import model.entity.PatientCondition;
-import model.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,16 +40,6 @@ public class DAOCondition {
         c.setSeverity(resultSet.getInt("Severity"));
 
         return c;
-    }
-
-    private PatientCondition  getPatientConditionFromResultSet(ResultSet resultSet) throws SQLException {
-        PatientCondition pc = new PatientCondition();
-
-        pc.setIdCondition(resultSet.getInt("ID_condition"));
-        pc.setIdPatient(resultSet.getInt("ID_patient"));
-        pc.setSeverity(resultSet.getInt("Severity"));
-
-        return pc;
     }
 
     public ArrayList<Condition> getConditionsOfPatient(int id_patient) {

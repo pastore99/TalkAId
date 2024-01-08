@@ -1,12 +1,9 @@
 package model.service.schedule;
 
 import model.DAO.DAOSchedule;
-import model.DAO.DAOUser;
 import model.entity.Schedule;
 
-import java.sql.Connection;
 import java.sql.Date;
-
 import java.util.List;
 
 public class ScheduleManager implements ScheduleManagerInterface {
@@ -53,6 +50,6 @@ public class ScheduleManager implements ScheduleManagerInterface {
     }
 
     public boolean checkData(int idTherapist, String date, String timeSlot) {
-        return db.checkData(idTherapist, convStoD(date), timeSlot) == 0;
+        return db.checkData(idTherapist, convStoD(date), timeSlot);
     }
 }

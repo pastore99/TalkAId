@@ -1,13 +1,14 @@
 package model.service.registration;
-import model.service.email.EmailManager;
+
+import model.entity.License;
 import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.service.license.LicenseActivation;
-import model.entity.License;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
 
 public class Registration implements RegistrationInterface {
+
 
     @Override
     public int registerNewUser(String licenseCode, String email, String password, String name, String surname) {

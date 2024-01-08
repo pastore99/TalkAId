@@ -2,7 +2,6 @@ package controller;
 
 import model.entity.PersonalInfo;
 import model.entity.User;
-import model.entity.UserInfo;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
@@ -61,22 +59,13 @@ public class Login extends HttpServlet {
 
             session.setAttribute("type", "patient");
             session.setAttribute("therapist", user.getIdTherapist());
-            return "JSP/homePatient.jsp";
+            return "JSP/homePagePatient.jsp";
         }
         else {
-            setPatientsInfo(session);
             session.setAttribute("type", "therapist");
+            session.setAttribute("surname", personalInfo.getLastname());
             return "JSP/homeTherapist.jsp";
         }
-    }
-    private void setPatientsInfo(HttpSession session){
-
-        UserRegistry registry = new UserRegistry();
-
-        PersonalInfo infoLogged = registry.getPersonalInfo(((Integer) session.getAttribute("id")));
-
-        session.setAttribute("NameSurnameLogged", infoLogged != null ? infoLogged.getFirstname() + " " + infoLogged.getLastname() : null);
-
     }
 }
 

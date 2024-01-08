@@ -1,6 +1,7 @@
 package controller;
 
 import model.service.user.UserRegistry;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +23,7 @@ public class ChangeUserInfo extends  HttpServlet
         } else {
             risultato = "Dati personali non aggiornati, email gia' utilizzata";
         }
-        response.sendRedirect("/TalkAID_war_exploded/JSP/Cambio_dati.jsp?risultato=" + risultato);
+        response.sendRedirect("JSP/userInfoChange.jsp?risultato=" + risultato);
     }
 
     private boolean updatePersonalInfo(HttpServletRequest request, int userId, UserRegistry userRegistry) {

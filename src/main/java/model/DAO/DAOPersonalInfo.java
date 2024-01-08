@@ -1,7 +1,6 @@
 package model.DAO;
 
 import model.entity.PersonalInfo;
-import model.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -5,7 +5,6 @@
 <head>
     <%
         ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
-        session.removeAttribute("exercise");
     %>
 
     <title>Esercizio <%= exercise.getIdExercise()%></title>

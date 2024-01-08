@@ -48,9 +48,10 @@ class LoginTest {
         verify(mockSession).setAttribute("type", "patient");
 
         // Verify redirection
-        verify(response).sendRedirect("JSP/welcome.jsp");
+        verify(response).sendRedirect("JSP/homePagePatient.jsp");
     }
 
+    //ACCESSO LOGOPEDISTA CORRETTO
     @Test
     void testDoPostWithValidCredentials2() throws Exception {
         // Setup test data
@@ -75,7 +76,7 @@ class LoginTest {
         verify(mockSession).setAttribute("type", "therapist");
 
         // Verify redirection
-        verify(response).sendRedirect("JSP/welcome.jsp");
+        verify(response).sendRedirect("JSP/homeTherapist.jsp");
     }
 
     @Test
