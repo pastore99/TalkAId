@@ -10,9 +10,9 @@ const IMAGESINAROW = 2
 const exerciseInfo = $("#exerciseInfo");
 
 const EXERCISETYPE = exerciseInfo.data("type");
-const EXERCISEID = exerciseInfo.data("exerciseId");
-const USERTYPE = exerciseInfo.data("userType");
-const USERID = exerciseInfo.data("userId");
+const EXERCISEID = exerciseInfo.data("exerciseid");
+const USERTYPE = exerciseInfo.data("usertype");
+const USERID = exerciseInfo.data("userid");
 
 const exerciseDiv = $("#exerciseDiv");
 
@@ -122,10 +122,13 @@ function parseJSON(json) {
 //Gestione redirect
 function redirect(where){
   if (where === "home"){
+    console.log("sono a home"); //TODO rimuovi!!
     if (USERTYPE === "patient"){
+      console.log("sono a patient"); //TODO rimuovi!!
       window.location.href = "homePagePatient.jsp";
     }else if (USERTYPE === "therapist"){
-      window.location.href = "homepagelogopedist.jsp";
+      console.log("sono a therapist"); //TODO rimuovi!!
+      window.location.href = "homeTherapist.jsp";
     }
   }
   else{
