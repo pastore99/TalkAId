@@ -2,10 +2,12 @@ package model.service.exercise;
 
 import model.DAO.DAOExercise;
 import model.DAO.DAOExerciseGlossary;
+import model.entity.Exercise;
 import model.entity.ExerciseGlossary;
 
 import java.sql.Blob;
 import java.sql.Date;
+import java.util.List;
 
 public class ExerciseManager implements ExerciseManagerInterface {
     private final DAOExerciseGlossary daoEG = new DAOExerciseGlossary();
@@ -27,5 +29,17 @@ public class ExerciseManager implements ExerciseManagerInterface {
     public boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation) {
 
         return daoE.setExerciseEvaluation(userID, exerciseId, insertDate, evaluation);
+    }
+
+    public List<Exercise> retrieveAllNewPatientExercise(int userID){
+        return daoE.retrieveAllNewPatientExercise(userID);
+    }
+
+    public List<Exercise> retrieveAllPatientExerciseDone(int userID){
+        return daoE.retrieveAllPatientExerciseDone(userID);
+    }
+
+    public List<Exercise> retrieveAllNewPatientExerciseNotDone(int userID){
+        return daoE.retrieveAllNewPatientExerciseNotDone(userID);
     }
 }
