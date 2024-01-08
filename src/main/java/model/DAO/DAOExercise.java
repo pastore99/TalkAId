@@ -145,7 +145,7 @@ public class DAOExercise {
     }
 
     public boolean setExerciseEvaluation(int userID, int exerciseID, Date insertDate, int evaluation) {
-        String query = "UPDATE exercise SET Evaluation = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
+        String query = "UPDATE exercise SET Evaluation = ? , CompletionDate = CURRENT_DATE WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;";
         PreparedStatement preparedStatement = null;
 
         try {
