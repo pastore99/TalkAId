@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: petri
-  Date: 22/12/2023
-  Time: 11:11
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import="model.service.user.UserData" %>
 <%@ page import="model.entity.User" %>
 <%@ page import="model.entity.PersonalInfo" %>
@@ -90,7 +83,7 @@
         <div class="content-info"><h2>3.5/5</h2></div>
     </div>
     <div class="input">
-        <form action="../JSP/Cambio_dati.jsp" method="post">
+        <form action="userInfoChange.jsp" method="post">
             <input type="hidden" value="<%= infoutente.getLastname()%>" name="lastname">
             <input type="hidden" value="<%= infoutente.getFirstname()%>" name="firstname">
             <input type="hidden" value="<%= infoutente.getAddress()%>" name="address">

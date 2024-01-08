@@ -1,13 +1,7 @@
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.entity.User" %>
 <%@ page import="model.service.user.UserData" %>
-<%@ page import="model.service.user.UserRegistry" %><%--
-  Created by IntelliJ IDEA.
-  User: petri
-  Date: 23/12/2023
-  Time: 11:23
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="model.service.user.UserRegistry" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -87,7 +81,7 @@
     <script>
 
         function redirectToHref() {
-        window.location.href = "../JSP/changepassw.jsp";
+        window.location.href = "changePassw.jsp";
     }
         function chiudiPopup() {
             document.getElementById('popup').style.display = 'none';

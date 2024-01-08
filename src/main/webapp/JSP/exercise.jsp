@@ -5,7 +5,6 @@
 <head>
     <%
         ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
-        //session.removeAttribute("exercise"); TODO: @michele fallo nella homepage questa cosa, ovviamente controlla se prima esiste poi nel caso elimini
     %>
 
     <title>Esercizio <%= exercise.getIdExercise()%></title>
