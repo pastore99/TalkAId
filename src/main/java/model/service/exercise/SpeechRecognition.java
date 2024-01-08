@@ -24,6 +24,7 @@ public class SpeechRecognition {
 
 
     public String azureSTT(InputStream audio) throws InterruptedException, ExecutionException, IOException {
+        System.out.println("r: "+speechRegion + " k: "+speechKey);
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
         speechConfig.setSpeechRecognitionLanguage("it-It");
 
@@ -36,11 +37,21 @@ public class SpeechRecognition {
         String result = null;
 
         if (speechRecognitionResult.getReason() == ResultReason.RecognizedSpeech) {
-            result = ("RECOGNIZED: Text= " + speechRecognitionResult.getText());
+            result = speechRecognitionResult.getText();
         }
-        else if (speechRecognitionResult.getReason() == ResultReason.NoMatch) {
-            result = ("NOMATCH: Speech could not be recognized.");
+        else if (speechRecognitionResult.getReason() == ResultReason.NoMatch){
+            System.err.println("NOMATCH: Speech could not be recognized.");
+        }else if (speechRecognitionResult.getReason() == ResultReason.Canceled) {
+            CancellationDetails cancellation = CancellationDetails.fromResult(speechRecognitionResult);
+            System.out.println("CANCELED: Reason=" + cancellation.getReason());
+
+            if (cancellation.getReason() == CancellationReason.Error) {
+                System.out.println("CANCELED: ErrorCode=" + cancellation.getErrorCode());
+                System.out.println("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
+                System.out.println("CANCELED: Did you set the speech resource key and region values?");
+            }
         }
+
         return result;
     }
 
@@ -62,6 +73,8 @@ public class SpeechRecognition {
         try {
             // Use the delete method from Files class to delete the file
             Files.delete(Paths.get(path));
+        } catch (FileNotFoundException e){
+            System.err.println("File not found");
         } catch (IOException e) {
             System.err.println("Error deleting the file: " + e.getMessage());
         }
