@@ -29,10 +29,11 @@ function startUp(exerciseIS){
 
 let mediaRecorder;
 let audioChunks = [];
+let timeoutID;
 function micPreparation(){
 
   if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia({ audio: true  })
         .then(function(stream) {
           mediaRecorder = new MediaRecorder(stream);
 
@@ -43,7 +44,7 @@ function micPreparation(){
           };
 
           mediaRecorder.onstop = function() {
-            let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            let audioBlob = new Blob(audioChunks, { type: 'audio/opus' });
             let audioUrl = URL.createObjectURL(audioBlob);
             $("#audioPlayer").attr("src", audioUrl);
 
@@ -77,9 +78,15 @@ function micPreparation(){
             mediaRecorder.start();
             $("#startRecord").hide();
             $("#stopRecord").show();
+
+            // Set a timeout to stop recording after 33 seconds
+            timeoutID = setTimeout(() => {
+              $("#stopRecord").click();
+            }, 33000);
           });
 
           $("#stopRecord").click(function() {
+            clearTimeout(timeoutID);
             mediaRecorder.stop();
             $("#stopRecord").hide();
             $("#audioDiv").show();

@@ -2,9 +2,10 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import info.debatty.java.stringsimilarity.Levenshtein;
 import model.entity.ExerciseGlossary;
 import model.service.exercise.ExerciseManager;
-import model.service.exercise.ExerciseManagerInterface;
+import model.service.exercise.SpeechRecognition;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,6 +18,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
 
 @WebServlet("/exerciseEvaluator")
 @MultipartConfig
@@ -26,21 +29,24 @@ public class ExerciseEvaluator extends HttpServlet {
         String contentType = request.getContentType();
         ExerciseManager em = new ExerciseManager();
 
-        int exerciseId = Integer.parseInt((String) s.getAttribute("exerciseID"));
-        //int userId = Integer.parseInt((String) s.getAttribute("id"));
-        //Date d = Date.valueOf((String) s.getAttribute("insertDate");
+        int exerciseId = (int) s.getAttribute("exerciseID");
+        int userId = (int) s.getAttribute("id");
+        Date d = (Date) s.getAttribute("insertDate");
 
-        Date d = Date.valueOf("2024-01-07"); //TODO: prendilo dalla session
-        int userId = 8; //TODO: prendilo dalla session
-
+        int score;
 
         if ("application/json".equals(contentType)) {
-            int score = evaluateNoAudio(exerciseId, userId, d);
-            em.saveEvaluation(userId, exerciseId, d, score);
-        } //else {
-           // evaluateAudio(request);
-       // }
+            score = evaluateNoAudio(exerciseId, userId, d);
+        } else {
+            try {
+                score = evaluateAudio(exerciseId, userId, d);
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        em.saveEvaluation(userId, exerciseId, d, score);
     }
+
 
     private int evaluateNoAudio(int exerciseId, int userId, Date date){
         Gson gson = new Gson();
@@ -49,7 +55,7 @@ public class ExerciseEvaluator extends HttpServlet {
         String executionJSON = getJSONfromBlob(exerciseId, userId, date);
         String type = baseExercise.getType();
 
-        int score = 0;
+        int score;
 
         switch (type) {
             case "CROSSWORD" -> {
@@ -144,8 +150,36 @@ public class ExerciseEvaluator extends HttpServlet {
         return (int)((right /total)*100);
     }
 
-    //    private void evaluateAudio(HttpServletRequest r){
-    //        //TODO: chiamata all'adapter, per python che valuta l'audio
-    //    }
+    private int evaluateAudio(int exerciseId, int userId, Date d) throws IOException, ExecutionException, InterruptedException {
+        SpeechRecognition s = new SpeechRecognition();
+        Levenshtein l = new Levenshtein();
+        Gson g = new Gson();
+        ExerciseGlossary baseExercise = new ExerciseManager().getExercise(exerciseId);
+        String solution = g.fromJson(baseExercise.getInitialState(), String.class);
 
+        InputStream audioExecution = getAudiofromBlob(exerciseId, userId, d);
+        String audioText = null;
+        if (audioExecution!=null){
+            audioText = s.azureSTT(audioExecution);
+        }
+        System.out.println(audioText);
+        System.out.println("\n"+solution);
+
+        if(audioText != null){
+            double distance = l.distance(solution, audioText);
+            double result = ((solution.length()-distance)/solution.length())*100;
+            return (int) Math.round(result);
+        }
+
+        return 0;
+    }
+
+    private InputStream getAudiofromBlob(int exerciseId, int userId, Date d){
+        Blob executionBlob = new ExerciseManager().getExecution(exerciseId, userId, d);
+        try (InputStream audioInputStream = executionBlob.getBinaryStream()) {
+            return audioInputStream;
+        } catch (SQLException | IOException e) {
+                throw new RuntimeException(e);
+        }
+    }
 }

@@ -52,13 +52,13 @@ public class ExerciseLogger extends HttpServlet {
     }
 
     private void handleAudioExercise(HttpServletRequest request) throws ServletException, IOException {
-        InputStream audioInputStream;
 
         try {
             Part audioPart = request.getPart("audioFile");
-            audioInputStream = audioPart.getInputStream();
-            Blob audioBlob = new SerialBlob(IOUtils.toByteArray(audioInputStream));
-            saveInDB(request, audioBlob);
+            try (InputStream audioInputStream = audioPart.getInputStream()) {
+                Blob audioBlob = new SerialBlob(IOUtils.toByteArray(audioInputStream));
+                saveInDB(request, audioBlob);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -67,12 +67,10 @@ public class ExerciseLogger extends HttpServlet {
     private boolean saveInDB(HttpServletRequest request, Blob execution){
         ExerciseManager em = new ExerciseManager();
         HttpSession session = request.getSession();
-//        int userId = Integer.parseInt((String) session.getAttribute("userId"));
-        int exerciseId = Integer.parseInt((String) session.getAttribute("exerciseID"));
-//        Date insertDate = Date.valueOf((String) session.getAttribute("insertDate"));
-//TODO: RIMUOVI I COMMENTI
-        int userId = 8;
-        Date insertDate = Date.valueOf("2024-01-07");
+        int userId = (int) session.getAttribute("id");
+        int exerciseId = (int) session.getAttribute("exerciseID");
+        Date insertDate = (Date) session.getAttribute("insertDate");
+
         return em.saveExecution(userId, exerciseId, insertDate, execution);
     }
 }
