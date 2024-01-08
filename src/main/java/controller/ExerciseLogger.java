@@ -69,7 +69,7 @@ public class ExerciseLogger extends HttpServlet {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
         int exerciseId = (int) session.getAttribute("exerciseID");
-        Date insertDate = (Date) session.getAttribute("insertDate");
+        Date insertDate = (Date) session.getAttribute("insertionDate");
 
         return em.saveExecution(userId, exerciseId, insertDate, execution);
     }

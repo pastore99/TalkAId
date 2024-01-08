@@ -31,7 +31,7 @@ public class ExerciseEvaluator extends HttpServlet {
 
         int exerciseId = (int) s.getAttribute("exerciseID");
         int userId = (int) s.getAttribute("id");
-        Date d = (Date) s.getAttribute("insertDate");
+        Date d = (Date) s.getAttribute("insertionDate");
 
         int score;
 
