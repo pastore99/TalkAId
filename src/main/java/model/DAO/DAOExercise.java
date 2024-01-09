@@ -2,6 +2,7 @@ package model.DAO;
 
 import model.entity.Exercise;
 import model.entity.Schedule;
+import model.entity.SlimmerExercise;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -87,69 +88,55 @@ public class DAOExercise {
         return null;
     }
 
-    public List<Exercise> retrieveAllNewPatientExercise(int userID) {
-        String query = "SELECT * FROM exercise WHERE ID_user = ? ORDER BY InsertionDate DESC;";
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Exercise> exercises = new ArrayList<>();
-
+    public List<SlimmerExercise> retrieveNotDoneExercises(int patientId) {
+        List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, userID);
+            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+                    " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
+                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ?";
 
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, patientId);
+            ResultSet rs = stmt.executeQuery();
 
-            while (resultSet.next()) {
-                Exercise exercise = extractExerciseFromResultSet(resultSet);
+            while(rs.next()) {
+                SlimmerExercise exercise = new SlimmerExercise(
+                        rs.getInt("ID_exercise"),
+                        rs.getString("ExerciseName"),
+                        rs.getDate("InsertionDate")
+                );
                 exercises.add(exercise);
             }
-
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-
         return exercises;
     }
 
-    public List<Exercise> retrieveAllNewPatientExerciseNotDone(int userID) {
-        String query = "SELECT * FROM exercise WHERE ID_user = ? AND CompletionDate IS NULL ORDER BY InsertionDate DESC;";
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Exercise> exercises = new ArrayList<>();
-
+    public List<SlimmerExercise> retrieveDoneExercises(int patientId) {
+        List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, userID);
+            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+                    " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
+                    " WHERE e.CompletionDate IS NOT NULL AND e.ID_user = ?";
 
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, patientId);
+            ResultSet rs = stmt.executeQuery();
 
-            while (resultSet.next()) {
-                Exercise exercise = extractExerciseFromResultSet(resultSet);
+            while(rs.next()) {
+                SlimmerExercise exercise = new SlimmerExercise(
+                        rs.getInt("ID_exercise"),
+                        rs.getString("ExerciseName"),
+                        rs.getDate("InsertionDate")
+                );
                 exercises.add(exercise);
             }
-
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-
         return exercises;
     }
 

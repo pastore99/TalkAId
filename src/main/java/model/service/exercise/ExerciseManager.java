@@ -4,6 +4,7 @@ import model.DAO.DAOExercise;
 import model.DAO.DAOExerciseGlossary;
 import model.entity.Exercise;
 import model.entity.ExerciseGlossary;
+import model.entity.SlimmerExercise;
 
 import java.sql.Blob;
 import java.sql.Date;
@@ -31,15 +32,15 @@ public class ExerciseManager implements ExerciseManagerInterface {
         return daoE.setExerciseEvaluation(userID, exerciseId, insertDate, evaluation);
     }
 
-    public List<Exercise> retrieveAllNewPatientExercise(int userID){
-        return daoE.retrieveAllNewPatientExercise(userID);
-    }
-
     public List<Exercise> retrieveAllPatientExerciseDone(int userID){
         return daoE.retrieveAllPatientExerciseDone(userID);
     }
 
-    public List<Exercise> retrieveAllNewPatientExerciseNotDone(int userID){
-        return daoE.retrieveAllNewPatientExerciseNotDone(userID);
+    public List<SlimmerExercise> retrieveDoneExercises(int patientId) {
+        return daoE.retrieveDoneExercises(patientId);
+    }
+
+    public List<SlimmerExercise> retrieveNotDoneExercises(int patientId) {
+        return daoE.retrieveNotDoneExercises(patientId);
     }
 }
