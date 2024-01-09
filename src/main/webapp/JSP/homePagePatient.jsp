@@ -1,20 +1,18 @@
 <%@ page import="model.service.exercise.ExerciseManager" %>
-<%@ page import="model.entity.Exercise" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.entity.ExerciseGlossary" %>
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.service.user.UserRegistry" %>
+<%@ page import="model.entity.SlimmerExercise" %>
 <!DOCTYPE html>
 <html lang="it" style="background-color: #f7fcff; ">
 <%
-    Integer userIdp = (Integer) session.getAttribute("id");
-    if(userIdp == null) {
+    if(session.getAttribute("id") == null) {
         response.sendRedirect("../errorPage/403.html");
     }
     else {
         int userId = (Integer) session.getAttribute("id");
         UserRegistry ur = new UserRegistry();
-        PersonalInfo data= ur.getPersonalInfo(userIdp);
+        PersonalInfo data= ur.getPersonalInfo(userId);
 %>
 <head>
     <%@page contentType="text/html;charset=UTF-8"%>
@@ -50,41 +48,6 @@
                     <button id="openAll" class="buttons">Guarda tutti</button>
                 </div>
             </div>
-            <div class="acards" style="display: none;">
-
-                <%
-                    ExerciseManager exerciseManager = new ExerciseManager();
-                    List<Exercise> list = exerciseManager.retrieveAllNewPatientExercise(userId);
-                    ExerciseGlossary exerciseGlossary = new ExerciseGlossary();
-                    if(!list.isEmpty()){
-                        for(Exercise exercise : list) {
-                            exerciseGlossary = exerciseManager.getExercise(exercise.getIdExercise());
-                %>
-                <div class="margin20">
-                <form action="${pageContext.request.contextPath}/exerciseController" method="post">
-                <div class="card2">
-                    <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
-                        <div class="illustration-wrapper">
-                            <img class="illustration" src="../images/homepagepatient/exerc.png">
-                        </div></div>
-                        <div class="discovering-english"><%=exerciseGlossary.getExerciseName()%></div>
-                    </div></div></div>
-                    <input type="hidden" name="exerciseID" value="<%=exercise.getIdExercise()%>">
-                    <input type="hidden" name="insertionDate" value="<%=exercise.getInsertionDate()%>">
-                    <button class="button-2" type="submit">Comincia l'esercitazione</button>
-                </div>
-                </form>
-                </div>
-                <%
-                        }
-                    }
-                    else {
-                        %>
-                <div class="discovering-english">Esercizi non disponibili</div>
-                        <%
-                        }
-                %>
-            </div>
         </div>
     </div>
 
@@ -102,14 +65,13 @@
             <div class="cards">
 
                 <%
-                    ExerciseManager exerciseManager1 = new ExerciseManager();
-                    List<Exercise> list1 = exerciseManager1.retrieveAllNewPatientExerciseNotDone(userId);
-                    ExerciseGlossary exerciseGlossary1 = new ExerciseGlossary();
+                    ExerciseManager exerciseManager = new ExerciseManager();
+                    List<SlimmerExercise> list1 = exerciseManager.retrieveNotDoneExercises(userId);
+
                     if(!list1.isEmpty()){
                         int maxCardsToShow = 5;
                         int cardCounter = 0;
-                        for(Exercise exercise : list1) {
-                            exerciseGlossary1 = exerciseManager1.getExercise(exercise.getIdExercise());
+                        for(SlimmerExercise exercise : list1) {
                 %>
                 <form action="${pageContext.request.contextPath}/exerciseController" method="post">
                     <div class="card2">
@@ -117,9 +79,9 @@
                             <div class="illustration-wrapper">
                                 <img class="illustration" src="../images/homepagepatient/illustration-challenges-1.svg">
                             </div></div>
-                            <div class="discovering-english"><%=exerciseGlossary1.getExerciseName()%></div>
+                            <div class="discovering-english"><%=exercise.getName()%></div>
                         </div></div></div>
-                        <input type="hidden" name="exerciseID" value="<%=exercise.getIdExercise()%>">
+                        <input type="hidden" name="exerciseID" value="<%=exercise.getId()%>">
                         <input type="hidden" name="insertionDate" value="<%=exercise.getInsertionDate()%>">
                         <button class="button-2" type="submit">Comincia l'esercitazione</button>
                     </div>
@@ -157,14 +119,11 @@
             <div class="cards">
 
                 <%
-                    ExerciseManager exerciseManager2 = new ExerciseManager();
-                    List<Exercise> list2 = exerciseManager2.retrieveAllPatientExerciseDone(userId);
-                    ExerciseGlossary exerciseGlossary2 = new ExerciseGlossary();
+                    List<SlimmerExercise> list2 = exerciseManager.retrieveDoneExercises(userId);
                     if(!list2.isEmpty()){
                         int maxCardsToShow = 5;
                         int cardCounter = 0;
-                        for(Exercise exercise : list2) {
-                            exerciseGlossary2 = exerciseManager2.getExercise(exercise.getIdExercise());
+                        for(SlimmerExercise exercise : list2) {
                 %>
                 <form action="${pageContext.request.contextPath}/exerciseController" method="post">
                     <div class="card2">
@@ -172,11 +131,11 @@
                             <div class="illustration-wrapper">
                                 <img class="illustration" src="../images/homepagepatient/check.png">
                             </div></div>
-                            <div class="discovering-english"><%=exerciseGlossary2.getExerciseName()%></div>
+                            <div class="discovering-english"><%=exercise.getName()%></div>
                         </div></div></div>
-                        <input type="hidden" name="exerciseID" value="<%=exercise.getIdExercise()%>">
+                        <input type="hidden" name="exerciseID" value="<%=exercise.getId()%>">
                         <input type="hidden" name="insertionDate" value="<%=exercise.getInsertionDate()%>">
-                        <button class="button-2" type="submit">Comincia l'esercitazione</button>
+                        <button class="button-2" type="submit">Visualizza Punteggio</button>
                     </div>
                 </form>
                 <%
@@ -220,7 +179,4 @@
 
 </body>
 </html>
-
-<%
-    }
-%>
+<% } %>
