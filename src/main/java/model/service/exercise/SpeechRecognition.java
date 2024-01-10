@@ -11,11 +11,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 
-public class SpeechRecognition {
+public class SpeechRecognition implements SpeechRecognitionInterface{
     private static final String AZURE_PROPERTIES = "/azure.properties";
     private static String speechKey;
     private static String speechRegion;
 
+    /**
+     * Costruttore della classe SpeechRecognition.
+     * Carica le chiavi e la regione di Azure Speech-to-Text dal file di configurazione.
+     */
     public SpeechRecognition(){
         Properties azureProps = loadProps();
         speechRegion = azureProps.getProperty("azure.region");
