@@ -1,0 +1,105 @@
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.card,
+.cardo,
+.button,
+.square,
+.chapter,
+.discovering-english {
+    text-align: center; /* Centra il testo */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 32px;
+}
+
+.chapter {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: Georgia, serif;
+    color: #444444;
+    font-size: 2em;
+    white-space: nowrap;
+}
+
+.discovering-english {
+    position: relative;
+    font-family: Georgia, serif;
+    color: #252526;
+    font-weight: 700;
+    font-size: 2em;
+}
+
+.button {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    position: relative;
+    background-color: #199a8e;
+    border-radius: 9999px;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+    font-size: 2em;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+.box{
+  font-family: Georgia, serif;
+    color: #727272;
+    font-size: 2em;
+    width: 70%;
+    height: 1.5em;
+    background-color: #f9f9fb;
+    border-radius: 24px;
+    border: 1px solid;
+    border-color: #e5e7eb;
+}
+
+.done-px {
+  width: 20%;
+}
+
+
+.cardo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 32px;
+}
+
+.square {
+  font-family: Georgia, serif;
+    color: #727272;
+    font-size: 2em;
+    width: 40px;
+    height: 1.5em;
+    background-color: #f9f9fb;
+    border-radius: 24px;
+    border: 1px solid;
+    border-color: #e5e7eb;
+	text-align: center;
+}
