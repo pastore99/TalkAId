@@ -26,7 +26,7 @@ public class Authenticator implements LoginInterface {
     @Override
     public String sendPin(String email) {
         if(email.equals("test@email.com")) {
-            return "12345678";
+            return "1234";
         }
         else {
             String pin = generatePin();
@@ -50,7 +50,7 @@ public class Authenticator implements LoginInterface {
         String digits = "0123456789";
         String pin = "";
 
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < 4; i++) {
             pin += digits.charAt(random.nextInt(digits.length()));
         }
 
