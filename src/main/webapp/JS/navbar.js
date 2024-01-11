@@ -7,11 +7,14 @@ const calendarIconS = $("#calendarIconSelected")
 const profileIcon = $("#profileIcon")
 const profileIconS = $("#profileIconSelected")
 
+
+
+const USERTYPE = $("#userInfo").data("type");
 const page =  window.location.pathname.split('/').pop()
-const homePages = [] //TODO: Mettere le pagine da considerare "Home"
-const messagePages = [] //TODO: Mettere le pagine da considerare "Message"
-const calendarPages = [] //TODO: Mettere le pagine da considerare "Calendar"
-const profilePages = [] //TODO: Mettere le pagine da considerare "Profile"
+const homePages = ["homePagePatient.jsp"] //TODO: Mettere le pagine da considerare "Home"
+const messagePages = ["messageCenter.jsp"] //TODO: Mettere le pagine da considerare "Message"
+const calendarPages = ["schedule.jsp"] //TODO: Mettere le pagine da considerare "Calendar"
+const profilePages = ["userArea.jsp"] //TODO: Mettere le pagine da considerare "Profile"
 
 $("document").ready(()=>{
     hideSelectedIcons();
@@ -45,12 +48,21 @@ function showRightIcons(){
 }
 
 function manageOnClick(){
-    $("#home").click(() => redirect("home.jsp")); //TODO: METTERE I GIUSTI REDIRECT
-    $("#message").click(() => redirect("message.jsp")); //TODO: METTERE I GIUSTI REDIRECT
-    $("#calendar").click(() => redirect("calendar.jsp")); //TODO: METTERE I GIUSTI REDIRECT
-    $("#profile").click(() => redirect("profile.jsp")); //TODO: METTERE I GIUSTI REDIRECT
+    $("#home").click(() => redirect("home"));
+    $("#message").click(() => redirect("messageCenter.jsp"));
+    $("#calendar").click(() => redirect("schedule.jsp"));
+    $("#profile").click(() => redirect("userArea.jsp"));
 }
 
 function redirect(where){
-    window.location.href = where
+    if (where === "home"){
+        if (USERTYPE === "patient"){
+            window.location.href = "homePagePatient.jsp";
+        }else if (USERTYPE === "therapist"){
+            window.location.href = "homeTherapist.jsp";
+        }
+    }
+    else{
+        window.location.href = where;
+    }
 }

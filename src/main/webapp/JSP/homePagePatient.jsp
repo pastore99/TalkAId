@@ -156,7 +156,12 @@
         </div>
     </div>
 </div>
-
+<div id="userInfo" hidden
+     data-userType = "<%= session.getAttribute("type")%>"
+></div>
+<div>
+    <jsp:include page="navbar.jsp"></jsp:include>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

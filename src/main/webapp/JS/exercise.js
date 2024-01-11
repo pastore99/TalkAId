@@ -7,10 +7,9 @@ const CROSSWORD = "CROSSWORD"
 const RIGHTTEXT = "RIGHTTEXT"
 const IMAGESINAROW = 2
 
-const exerciseInfo = $("#exerciseInfo");
 
-const EXERCISETYPE = exerciseInfo.data("type");
-const USERTYPE = exerciseInfo.data("usertype");
+const EXERCISETYPE =  $("#exerciseInfo").data("type");
+const USERTYPE =  $("#userInfo").data("type");
 
 const exerciseDiv = $("#exerciseDiv");
 

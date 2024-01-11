@@ -1,7 +1,5 @@
+<!DOCTYPE html>
 <html lang="it">
-<head>
-    <title>navbar</title>
-</head>
 <body>
     <div id="navbarDiv" >
         <div id="home" class="divButtons">

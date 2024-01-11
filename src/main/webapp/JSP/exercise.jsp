@@ -35,6 +35,8 @@
     </div>
     <div id="exerciseInfo" hidden
          data-type = "<%= exercise.getType()%>"
+    ></div>
+    <div id="userInfo" hidden
          data-userType = "<%= session.getAttribute("type")%>"
     ></div>
 </body>
