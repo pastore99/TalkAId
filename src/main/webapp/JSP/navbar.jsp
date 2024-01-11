@@ -3,20 +3,20 @@
 <body>
     <div id="navbarDiv" >
         <div id="home" class="divButtons">
-            <img id="homeIcon" src="../images/home.svg" alt="homeIcon">
-            <img id="homeIconSelected" src="../images/homeSelected.svg" alt="homeIconSelected">
+            <img id="homeIcon" class="navbarIcon" src="../images/home.svg" alt="homeIcon">
+            <img id="homeIconSelected" class="navbarIcon" src="../images/homeSelected.svg" alt="homeIconSelected">
         </div>
         <div id="message" class="divButtons">
-            <img id="messageIcon" src="../images/message.svg" alt="messageIcon">
-            <img id="messageIconSelected" src="../images/messageSelected.svg" alt="messageIconSelected">
+            <img id="messageIcon" class="navbarIcon" src="../images/message.svg" alt="messageIcon">
+            <img id="messageIconSelected" class="navbarIcon" src="../images/messageSelected.svg" alt="messageIconSelected">
         </div>
         <div id="calendar" class="divButtons">
-            <img id="calendarIcon" src="../images/calendar.svg" alt="calendarIcon">
-            <img id="calendarIconSelected" src="../images/calendarSelected.svg" alt="calendarIconSelected">
+            <img id="calendarIcon" class="navbarIcon" src="../images/calendar.svg" alt="calendarIcon">
+            <img id="calendarIconSelected" class="navbarIcon" src="../images/calendarSelected.svg" alt="calendarIconSelected">
         </div>
         <div id="profile" class="divButtons">
-            <img id="profileIcon" src="../images/profile.svg" alt="profileIcon">
-            <img id="profileIconSelected" src="../images/profileSelected.svg" alt="profileIconSelected">
+            <img id="profileIcon" class="navbarIcon" src="../images/profile.svg" alt="profileIcon">
+            <img id="profileIconSelected" class="navbarIcon" src="../images/profileSelected.svg" alt="profileIconSelected">
         </div>
     </div>
 </body>
