@@ -174,7 +174,7 @@ public class DAOExercise {
     }
 
     public List<Exercise> retrievePatientExerciseDone(int patientID) {
-        String query = "SELECT InsertionDate, Evaluation\n" +
+        String query = "SELECT *\n" +
                 "FROM exercise\n" +
                 "WHERE ID_user = ? AND Evaluation IS NOT NULL\n" +
                 "ORDER BY InsertionDate;";

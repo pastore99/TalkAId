@@ -80,27 +80,26 @@
     <div class="button-chat"><img class="iconly-light-chat" src="../images/homeTherapist/iconly-light-chat.svg" /></div>
     <!--Progress-->
     <div class="text-wrapper-10">Andamento</div>
-    <div class="overlap-5">
+
         <%
-            try {
-                ExerciseManager exerciseManager=new ExerciseManager();
-                List<Exercise> exercises = exerciseManager.retrievePatientExerciseDone(patientId);
-                if (exercises == null || exercises.isEmpty()) {
-                %>
-                <p class="errorProgress">Nessun esercizio eseguito</p>
-                <%
-                }else{
-                String labels = "";
-                String data = "";
-                for (Exercise exercise : exercises) {
-                    labels += "'" + exercise.getInsertionDate() + "', ";
-                    data += exercise.getEvaluation() + ", ";
-                }
-                labels = labels.substring(0, labels.length() - 2);
-                data = data.substring(0, data.length() - 2);
+            ExerciseManager exerciseManager = new ExerciseManager();
+            List<Exercise> exercises = exerciseManager.retrievePatientExerciseDone(patientId);
+            if (exercises == null || exercises.isEmpty()) {
+        %>
+        <div class="overlap-5"><p class="errorProgress">Nessun esercizio svolto</p></div>
+        <%
+        } else {
+            String labels = "";
+            String data = "";
+            for (Exercise exercise : exercises) {
+                labels += "'" + exercise.getInsertionDate() + "', ";
+                data += exercise.getEvaluation() + ", ";
+            }
+            labels = labels.substring(0, labels.length() - 2);
+            data = data.substring(0, data.length() - 2);
         %>
         <!-- Create Chart -->
-        <canvas id="myChart" width="400" height="200"></canvas>
+        <div class="overlap-5-2"><canvas id="myChart" width="400" height="200"></canvas></div>
         <script>
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
@@ -117,7 +116,14 @@
                 },
                 options: {
                     scales: {
+                        x: [{
+                            display: false, // Hide the x-axis
+                        }],
                         y: {
+                            title: {
+                                display: true,
+                                text: 'Valutazione'
+                            },
                             beginAtZero: true
                         }
                     }
@@ -125,9 +131,6 @@
             });
         </script>
         <%
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         %>
     </div>
