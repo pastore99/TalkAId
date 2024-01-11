@@ -13,7 +13,7 @@ public class ScheduleManager implements ScheduleManagerInterface {
         this.db = new DAOSchedule();}
 
 
-    public Date convStoD(String Date){
+    private Date convStoD(String Date){
         return java.sql.Date.valueOf(Date);
     }
 
