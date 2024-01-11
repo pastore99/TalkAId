@@ -145,5 +145,13 @@
         e.printStackTrace();
     }
 %>
+
+<div id="navbarContainer">
+    <jsp:include page="navbar.jsp"></jsp:include>
+    <div id="userInfo" hidden
+         data-type = "<%= session.getAttribute("type")%>"
+    ></div>
+</div>
+
 </body>
 </html>

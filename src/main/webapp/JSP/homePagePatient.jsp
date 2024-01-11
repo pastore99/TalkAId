@@ -18,6 +18,7 @@
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homepagepatient.css" />
+    <title>Homepage</title>
 </head>
 
 
@@ -156,12 +157,8 @@
         </div>
     </div>
 </div>
-<div id="userInfo" hidden
-     data-userType = "<%= session.getAttribute("type")%>"
-></div>
-<div>
-    <jsp:include page="navbar.jsp"></jsp:include>
-</div>
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -182,6 +179,12 @@
     });
 </script>
 
+<div>
+    <jsp:include page="navbar.jsp"></jsp:include>
+    <div id="userInfo" hidden
+         data-type = "<%= session.getAttribute("type")%>"
+    ></div>
+</div>
 </body>
 </html>
 <% } %>

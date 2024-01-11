@@ -9,14 +9,15 @@ const profileIconS = $("#profileIconSelected")
 
 
 
-const USERTYPE = $("#userInfo").data("type");
+let USERTYPE
 const page =  window.location.pathname.split('/').pop()
-const homePages = ["homePagePatient.jsp"] //TODO: Mettere le pagine da considerare "Home"
+const homePages = ["homePagePatient.jsp", "patientReport.jsp"] //TODO: Mettere le pagine da considerare "Home"
 const messagePages = ["messageCenter.jsp"] //TODO: Mettere le pagine da considerare "Message"
 const calendarPages = ["schedule.jsp"] //TODO: Mettere le pagine da considerare "Calendar"
 const profilePages = ["userArea.jsp"] //TODO: Mettere le pagine da considerare "Profile"
 
 $("document").ready(()=>{
+    USERTYPE = $("#userInfo").data("type");
     hideSelectedIcons();
     showRightIcons();
     manageOnClick();

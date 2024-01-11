@@ -15,6 +15,10 @@ body {
   background: #ccc;
 }
 
+#navbarContainer{
+  display: none;
+}
+
 .background-green {
   position: absolute;
   top: 0;
@@ -424,8 +428,13 @@ img {
 }
 
 @media (max-width: 768px) {
+  #navbarContainer{
+    display: flex;
+  }
+
   .main-container {
     flex-direction: column;
+    height: 80vh;
   }
   .main-container .left-container,
   .main-container .right-container {
@@ -444,9 +453,6 @@ img {
   }
   /* CSS rules for back button */
   #back-button {
-    position: fixed;
-    top: 0;
-    left: 0;
     display: none;  /* initially hidden */
   }
   .main-container.show-right #back-button {
