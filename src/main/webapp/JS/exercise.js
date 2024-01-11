@@ -42,7 +42,7 @@ function micPreparation(){
           };
 
           mediaRecorder.onstop = function() {
-            let audioBlob = new Blob(audioChunks, { type: 'audio/opus' });
+            let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
             let audioUrl = URL.createObjectURL(audioBlob);
             $("#audioPlayer").attr("src", audioUrl);
 
@@ -530,8 +530,9 @@ function saveExecution(execution){
       redirect("500.html")
     }
   });
-
-  redirect("home");
+  setTimeout(()=> {
+    redirect("home");
+  }, 3000);
 }
 
 function saveAudioExecution(execution){
@@ -547,13 +548,14 @@ function saveAudioExecution(execution){
       processData: false,
       contentType: false,
       cache: false,
+      success: function (){
+        redirect("home");
+      },
       error: function(xhr, status, error) {
         console.error("Errore durante l'invio dell'audio alla servlet:", error);
         console.log(xhr.responseText);
         redirect("500.html");
       }
     });
-
-    redirect("home");
   }
 }

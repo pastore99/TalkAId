@@ -3,8 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <%
-        ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
+        if(session.getAttribute("id") == null) {
+            response.sendRedirect("../errorPage/403.html");
+        }
+        else {
+            ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
     %>
 
     <title>Esercizio <%= exercise.getIdExercise()%></title>
@@ -39,4 +44,6 @@
     <script>
         startUp(<%= exercise.getInitialState()%>);
     </script>
+<%}%>
+
 </html>
