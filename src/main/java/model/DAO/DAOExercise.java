@@ -173,6 +173,42 @@ public class DAOExercise {
         return exercises;
     }
 
+    public List<Exercise> retrievePatientExerciseDone(int patientID) {
+        String query = "SELECT InsertionDate, Evaluation\n" +
+                "FROM exercise\n" +
+                "WHERE ID_user = ? AND Evaluation IS NOT NULL\n" +
+                "ORDER BY InsertionDate;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Exercise> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, patientID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Exercise exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
+    }
+
     public Blob getExerciseExecution(int userID, int exerciseID, Date insertDate) {
         String query = "SELECT Execution FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?";
         PreparedStatement preparedStatement = null;
