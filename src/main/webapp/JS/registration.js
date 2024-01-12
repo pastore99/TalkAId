@@ -1,5 +1,23 @@
 
 $(document).ready(function() {
+
+    showPasswordIcon.toggleClass("hiddenClass");
+
+    $("#showPassword").click((event) => {
+        event.preventDefault();
+        togglePassword(event);
+    });
+
+    $("#hidePassword").click((event) => {
+        event.preventDefault();
+        togglePassword(event);
+    });
+
+    $("#email").blur(() => {
+        checkRegexEmail();
+    });
+
+
     $('#signUpButton').click(function(e) {
         //e.preventDefault();
         let pin = $('#pin').val();
@@ -55,3 +73,48 @@ $(document).ready(function() {
         });
     });
 });
+
+
+const showPasswordIcon = $("#showPassword");
+const hidePasswordIcon = $("#hidePassword");
+const validEmailIcon = $("#validEmail");
+const invalidEmailIcon = $("#invalidEmail");
+
+
+function togglePassword(event) {
+    event.preventDefault();
+
+    const passwordField = $("#password");
+    let passwordType = passwordField.attr('type');
+    console.log(passwordType);
+
+    if (passwordType === 'password') {
+        passwordField.attr("type", "text")
+    } else {
+        passwordField.attr("type", "password");
+    }
+
+    showPasswordIcon.toggleClass("hiddenClass")
+    hidePasswordIcon.toggleClass("hiddenClass")
+}
+
+function checkRegexEmail(){
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailField = $("#email");
+
+    if(regex.test(emailField.val())){
+        if(validEmailIcon.hasClass("hiddenClass")){
+            validEmailIcon.toggleClass("hiddenClass");
+        }
+        if(!invalidEmailIcon.hasClass("hiddenClass")) {
+            invalidEmailIcon.toggleClass("hiddenClass");
+        }
+    } else{
+        if(!validEmailIcon.hasClass("hiddenClass")){
+            validEmailIcon.toggleClass("hiddenClass");
+        }
+        if(invalidEmailIcon.hasClass("hiddenClass")){
+            invalidEmailIcon.toggleClass("hiddenClass");
+        }
+    }
+}
