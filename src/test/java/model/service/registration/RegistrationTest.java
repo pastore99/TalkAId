@@ -60,7 +60,8 @@ class RegistrationTest {
         }
         return false;
     }
-    
+
+    //Unit Test Valido
     @Test
     void registerNewTherapist() {
         // Prepare test data
@@ -82,6 +83,7 @@ class RegistrationTest {
         System.out.println("l'ho cancellato l'user?: " + new DAOUser().deleteUserByIdOrEmail(email));
     }
 
+    //Unit Test Valido
     @Test
     void registerNewPatient() {
         // Prepare test data
@@ -102,6 +104,7 @@ class RegistrationTest {
         new DAOUser().deleteUserByIdOrEmail(email);
     }
 
+    //Unit Test Valido
     @Test
     void invalidLicenseTest() {
         // Prepare test data
@@ -120,6 +123,7 @@ class RegistrationTest {
 
     }
 
+    //Unit Test Valido
     @Test
     void invalidEmailTest() {
         // Prepare test data
@@ -133,7 +137,7 @@ class RegistrationTest {
         int result = registration.registerNewUser(licenseCode, email, password, name, surname);
 
         // Assert expected result (Success scenario -> result should be 0)
-        assertEquals(2, result, "Can't login succesfully because of the wrong LicenseCode.");
+        assertEquals(2, result, "Can't login succesfully because of the wrong email.");
 
         new DAOLicense().deleteLicense(licenseCode);
     }

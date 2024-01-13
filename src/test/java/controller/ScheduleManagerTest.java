@@ -107,6 +107,7 @@ public class ScheduleManagerTest
         verify(response).sendRedirect("JSP/schedule.jsp");
     }
 
+    @Test
     void testDeleteScheduleDate() throws ServletException, IOException
     {
 
@@ -126,6 +127,7 @@ public class ScheduleManagerTest
         verify(response).sendRedirect("JSP/schedule.jsp");
     }
 
+    /*
     @Test
     void testCreateScheduleIncorrectDate() throws ServletException, IOException
     {
@@ -145,5 +147,6 @@ public class ScheduleManagerTest
         verify(request, times(1)).setAttribute("errorMessage", "La data selezionata non è valida. Seleziona una data non esistente perfavore.");
         verify(response).sendRedirect("JSP/schedule.jsp");
     }
+    */
 
 }

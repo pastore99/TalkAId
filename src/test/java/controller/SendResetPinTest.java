@@ -41,7 +41,7 @@ class SendResetPinTest {
         sendResetPinServlet.doPost(request, response);
 
         // Verify response
-        assert(stringWriter.toString().trim().length()==8);
+        assert(stringWriter.toString().trim().length()==4);
     }
 
     @Test

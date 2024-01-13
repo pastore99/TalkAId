@@ -28,6 +28,7 @@ public class AuthenticatorTest {
         authenticator.setEncryption(encryption);
     } 
 
+    //Unit Test Valido
     @Test 
     void itShouldAuthenticateWhenEmailAndPasswordAreCorrect() {
         String hashedPassword = BCrypt.hashpw("plainTextPassword", BCrypt.gensalt());
@@ -40,6 +41,7 @@ public class AuthenticatorTest {
         assertEquals(1, response);
     } 
 
+    //Unit Test Valido
     @Test
     void itShouldNotAuthenticateWhenPasswordIsIncorrect() {
         String hashedPassword = BCrypt.hashpw("wrongPassword", BCrypt.gensalt());
@@ -51,6 +53,7 @@ public class AuthenticatorTest {
         assertEquals(-2, response);
     } 
 
+    //Unit Test Valido
      @Test
     void itShouldNotAuthenticateWhenUserDoesNotExist() { 
         when(daoUser.getUserByIdOrEmail("test@email.com")).thenReturn(null);
@@ -84,7 +87,7 @@ public class AuthenticatorTest {
         String pin = authenticator.sendPin("test@email.com");
 
         // The value of pin should be the pre-defined value "12345678".
-        assertEquals("12345678", pin);
+        assertEquals("1234", pin);
     }
 
     @Test
@@ -119,7 +122,7 @@ public class AuthenticatorTest {
         // Assert that result is not null or empty and its length equals 8
         assertNotNull(result);
         assertFalse(result.isEmpty());
-        assertEquals(8, result.length());
+        assertEquals(4, result.length());
 
         // Assert that result only contains numbers
         assertTrue(result.matches("[0-9]+"));

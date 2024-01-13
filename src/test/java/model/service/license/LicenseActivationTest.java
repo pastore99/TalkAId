@@ -36,6 +36,7 @@ class LicenseActivationTest {
         verify(daoLicenseMock).getLicenseByCode("test code");
     }
 
+    //Unit Test Valido
     @Test
     void testIsActivable() {
         // Mock a License instance
@@ -55,6 +56,7 @@ class LicenseActivationTest {
         verify(mockLicense).isActive();
     }
 
+    //Unit Test Valido
     @Test
     void testIsNotActivable() {
         // Mock a License instance
@@ -74,6 +76,7 @@ class LicenseActivationTest {
         verify(mockLicense).isActive();
     }
 
+    //Unit Test Valido
     @Test
     void testIsNotActivableWhenLicenseIsNull() {
         // Initialize LicenseActivation with null as we are not interacting with DAO in this test
