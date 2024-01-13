@@ -51,11 +51,12 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
             if (cancellation.getReason() == CancellationReason.Error) {
                 System.out.println("CANCELED: ErrorCode=" + cancellation.getErrorCode());
                 System.out.println("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
-                System.out.println("CANCELED: Did you set the speech resource key and region values?");
             }
         }
 
+        speechRecognizer.close();
         return result;
+
     }
 
     public String generateFile(InputStream inputAudio) throws IOException {
@@ -75,7 +76,7 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
         //Controlla che non esista già un file
         try {
             // Use the delete method from Files class to delete the file
-            Files.delete(Paths.get(path));
+            Files.delete(outputPath);
         } catch (FileNotFoundException e){
             System.err.println("File not found");
         } catch (IOException e) {
@@ -107,6 +108,15 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        }
+
+        try {
+            // Use the delete method from Files class to delete the file
+            Files.delete(Path.of(tempFile.toURI()));
+        } catch (FileNotFoundException e){
+            System.err.println("File not found");
+        } catch (IOException e) {
+            System.err.println("Error deleting the file: " + e.getMessage());
         }
 
         return path;
