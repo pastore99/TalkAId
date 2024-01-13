@@ -158,6 +158,7 @@ public class ExerciseEvaluator extends HttpServlet {
         if (audioExecution!=null){
             SpeechRecognition s = new SpeechRecognition();
             audioText = s.azureSTT(audioExecution);
+            audioExecution.close();
         }
 
         if(audioText != null) {
@@ -189,7 +190,6 @@ public class ExerciseEvaluator extends HttpServlet {
                         right++;
                     }
                 }
-
                 double result = ((right/total)*100);
 
                 return (int) Math.round(result);
