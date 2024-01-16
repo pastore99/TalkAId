@@ -59,6 +59,69 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
     }
 
     public String generateFile(InputStream inputAudio) throws IOException {
+        File tempFile = createTempFile(inputAudio);
+        String outputPath = getOutputPath(tempFile);
+        deleteExistingFile(outputPath);
+        executeCommand(tempFile, outputPath);
+        return outputPath;
+    }
+
+    File createTempFile(InputStream inputAudio) throws IOException {
+        File tempFile = File.createTempFile("tempAudio", ".opus");
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputAudio.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+        }
+        return tempFile;
+    }
+
+    String getOutputPath(File tempFile) {
+        Path outputPath = Paths.get(tempFile.getPath()).getParent().resolve("outputJava.wav");
+        return outputPath.toString();
+    }
+
+    void deleteExistingFile(String path) throws IOException {
+        try {
+            Files.delete(Paths.get(path));
+        } catch (FileNotFoundException e){
+            System.err.println("File not found");
+        } catch (IOException e) {
+            System.err.println("Error deleting the file: " + e.getMessage());
+        }
+    }
+
+    void executeCommand(File tempFile, String path) throws IOException {
+        List<String> command = Arrays.asList(
+                "ffmpeg",
+                "-i", tempFile.getPath(),
+                "-ar", "16000",
+                "-ac", "1",
+                "-acodec", "pcm_s16le",
+                path
+        );
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            int exitCode = process.waitFor();
+            if(exitCode != 0){
+                System.err.println("\nExited with error code : " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+    public String generateFile(InputStream inputAudio) throws IOException {
         //Crea temporaneamente il file creato dal DB
         File tempFile = File.createTempFile("tempAudio", ".opus");
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
@@ -111,6 +174,7 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
 
         return path;
     }
+     */
 
     private Properties loadProps() {
         Properties props = new Properties();
