@@ -5,6 +5,10 @@
     padding: 20px;
 }
 
+.hidden {
+    display: none;
+}
+
 .card,
 .cardo,
 .button,
@@ -102,4 +106,17 @@
     border: 1px solid;
     border-color: #e5e7eb;
 	text-align: center;
+}
+button {
+    border: none;
+    background-color: #ffffff;
+}
+
+#gotoLoginArrow span {
+    border-left: 1em solid transparent;
+    border-right: 1em solid transparent;
+    border-bottom: 3em solid black;
+    display: block;
+    margin: auto;
+    transform: rotate(270deg);
 }
