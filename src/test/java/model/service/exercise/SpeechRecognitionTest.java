@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 
 public class SpeechRecognitionTest {
 
-    /* //TODO da sistemare!!!
+     //TODO da sistemare!!!
     @Test
     void testGenerateFile() throws IOException {
         // Arrange
@@ -50,7 +50,7 @@ public class SpeechRecognitionTest {
         // Clean up if needed
         Files.deleteIfExists(Path.of(outputPath));
     }
-    */
+
     @Test
     void testGenerateFileWithEmptyInputStream() throws IOException {
         // Arrange

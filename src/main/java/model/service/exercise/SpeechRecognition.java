@@ -61,8 +61,9 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
     public String generateFile(InputStream inputAudio) throws IOException {
         File tempFile = createTempFile(inputAudio);
         String outputPath = getOutputPath(tempFile);
-        deleteExistingFile(outputPath);
         executeCommand(tempFile, outputPath);
+        deleteExistingFile(outputPath);
+
         return outputPath;
     }
 

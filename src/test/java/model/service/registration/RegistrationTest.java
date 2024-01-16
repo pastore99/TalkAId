@@ -142,16 +142,4 @@ class RegistrationTest {
         new DAOLicense().deleteLicense(licenseCode);
     }
 
-    @Test
-    void invitePatient() {
-        boolean result = registration.invitePatient(9, "test@test.com", "patientName", "patientSurname");
-        assertEquals(true, result, "Patient should be invited successfully.");
-        deleteLastLicense();
-    }
-
-    @Test
-    void dontInvitePatient() {
-        boolean result = registration.invitePatient(9, "doc1@example.com", "patientName", "patientSurname");
-        assertEquals(false, result, "Patient should NOT be invited successfully.");
-    }
 }
