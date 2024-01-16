@@ -67,9 +67,17 @@
             <div class="rectangle-2"></div>
             <div class="group-2">
                 <div class="iconly-light-outline"><img class="home" src="../images/homeTherapist/home.png" /></div>
-                <img class="iconly-bold-calendar" src="../images/homeTherapist/iconly-bold-calendar.svg" />
-                <img class="iconly-light-message" src="../images/homeTherapist/iconly-light-message.svg" />
-                <img class="iconly-light-profile" src="../images/homeTherapist/iconly-light-profile.svg" />
+                <a href="../JSP/schedule.jsp">
+                    <img class="iconly-bold-calendar" src="../images/homeTherapist/iconly-bold-calendar.svg" />
+                </a>
+
+                <a href="../JSP/messageCenter.jsp">
+                    <img class="iconly-light-message" src="../images/homeTherapist/iconly-light-message.svg" />
+                </a>
+
+                <a href="../JSP/userArea.jsp">
+                    <img class="iconly-light-profile" src="../images/homeTherapist/iconly-light-profile.svg" />
+                </a>
             </div>
             <img class="img" src="../images/homeTherapist/doctor.png" />
             <img class="logovettoriale" src="../images/homeTherapist/logovettoriale-1.png" />
