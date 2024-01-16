@@ -65,4 +65,20 @@ public interface ExerciseManagerInterface {
      * @return Una lista di oggetti SlimmerExercise che rappresentano gli esercizi non fatti dal paziente.
      */
     public List<SlimmerExercise> retrieveNotDoneExercises(int patientId);
+
+    /**
+     * Recupera una lista delle info degli esercizi che un paziente non ha ancora fatto.
+     *
+     * @param userID L'ID del paziente.
+     * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
+     */
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID);
+
+    /**
+     * Recupera una lista delle info degli esercizi che un paziente ha fatto.
+     *
+     * @param userID L'ID del paziente.
+     * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
+     */
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID);
 }

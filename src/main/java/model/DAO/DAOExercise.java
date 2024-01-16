@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.entity.Exercise;
+import model.entity.ExerciseGlossary;
 import model.entity.Schedule;
 import model.entity.SlimmerExercise;
 
@@ -172,6 +173,8 @@ public class DAOExercise {
 
         return exercises;
     }
+
+
 
     public Blob getExerciseExecution(int userID, int exerciseID, Date insertDate) {
         String query = "SELECT Execution FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?";

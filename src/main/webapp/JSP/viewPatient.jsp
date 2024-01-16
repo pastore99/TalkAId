@@ -71,7 +71,7 @@
     <div class="group-5" onclick="redirectToGestioneMalattie()">
         <div class="overlap-3"><div class="text-wrapper-2">Modifica patologie</div></div>
     </div>
-    <div class="group-6">
+    <div class="group-6" onclick="redirectToGestioneRaccomandazioni()">
         <div class="overlap-4"><div class="text-wrapper-3">Raccomanda Esercizio</div></div>
     </div>
     <div class="button-chat"><img class="iconly-light-chat" src="../images/homeTherapist/iconly-light-chat.svg" /></div>
@@ -100,6 +100,9 @@
 <script>
     function redirectToGestioneMalattie() {
         window.location.href = 'patientConditionManager.jsp?userId='+<%=user_selected.getIdUser() %>;
+    }
+    function redirectToGestioneRaccomandazioni() {
+        window.location.href = 'exerciseRecommendation.jsp?userId='+<%=user_selected.getIdUser() %>;
     }
 </script>
  <%} %>

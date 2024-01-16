@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Condition</title>
+    <title>Patologie</title>
+    <link rel="stylesheet" href="../CSS/RecommendationAndConditionManager.css" />
 </head>
 <body>
 <%
@@ -23,8 +24,6 @@
             response.sendRedirect("../errorPage/403.html");
         }
     }
-
-
     ConditionManager ConditionService= new ConditionManager();
 
     ArrayList<Condition> list_PatientCondition = ConditionService.getConditionsOfPatient(userId);
@@ -32,7 +31,7 @@
 %>
 <a href="homeTherapist.jsp" align="left">Home</a>
 <table border="1" align="center">
-    <caption>Condition of patient</caption>
+    <caption><b>Patologie del paziente</b></caption>
     <thead>
     <tr>
         <th>ID</th>
@@ -62,7 +61,7 @@
 </table>
 <hr>
 <table border="1">
-    <caption>Add new condition to patient</caption>
+    <caption><b>Aggiungi nuova patologia</b></caption>
     <thead>
     <tr>
         <th>ID</th>
