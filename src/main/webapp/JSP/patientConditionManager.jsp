@@ -29,7 +29,7 @@
     ArrayList<Condition> list_PatientCondition = ConditionService.getConditionsOfPatient(userId);
     ArrayList<Condition> list_NOTPatientCondition = ConditionService.getConditionsNOTOfPatient(userId);
 %>
-<a href="homeTherapist.jsp" align="left">Home</a>
+<!--<a href="homeTherapist.jsp" align="left">Home</a>-->
 <table>
     <caption><b>Patologie del paziente</b></caption>
     <thead>

@@ -782,3 +782,8 @@ a {
     top: 11px;
     left: 17px;
 }
+
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
