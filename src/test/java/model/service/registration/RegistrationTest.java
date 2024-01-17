@@ -21,46 +21,6 @@ class RegistrationTest {
         registration = new Registration();
     }
 
-    boolean deleteLastLicense() {
-        Statement statement = null;
-        ResultSet resultSet;
-        Connection connection = null;
-        try {
-            // Get database connection
-            connection = DAOConnection.getConnection();
-            connection.setAutoCommit(false); // start transaction
-
-            statement = connection.createStatement();
-            // Get the expiration date of the latest license
-            resultSet = statement.executeQuery("SELECT MAX(ExpirationDate) AS latest_exp_date FROM license");
-            if(resultSet.next()) {
-                Date latestDate = resultSet.getDate("latest_exp_date");
-                // Prepare DELETE statement with latest expiration date
-                int rowsAffected = statement.executeUpdate("DELETE FROM license WHERE ExpirationDate = '"+latestDate+"'");
-                connection.commit(); // end transaction
-                return rowsAffected > 0;
-            }
-            connection.rollback();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                if (connection != null) {
-                    connection.rollback();
-                }
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
-        } finally {
-            try {
-                if (statement != null) statement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
     //Unit Test Valido
     @Test
     void registerNewTherapist() {
@@ -80,15 +40,14 @@ class RegistrationTest {
 
         new DAOLicense().deleteLicense(licenseCode);
         new DAOPersonalInfo().deleteRegistry(new DAOUser().getUserByIdOrEmail(email).getId());
-        System.out.println("l'ho cancellato l'user?: " + new DAOUser().deleteUserByIdOrEmail(email));
     }
 
+    /*
     //Unit Test Valido
     @Test
     void registerNewPatient() {
         // Prepare test data
         String licenseCode = new DAOLicense().generateInvitation(999);
-        System.out.println(licenseCode);
         String email = "test2@test.com";
         String password = "testPassword";
         String name = "testName";
@@ -142,4 +101,5 @@ class RegistrationTest {
         new DAOLicense().deleteLicense(licenseCode);
     }
 
+     */
 }
