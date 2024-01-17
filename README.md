@@ -2,23 +2,23 @@
 This project allows users to conduct remote speech therapy sessions and analyzes exercises through an Artificial Intelligence (AI) module. The system is based on web technologies. 
 
 The main features are:
- * Login page
-    * If needed, you can request the reset of the password through the email you registered.    
- * Registration page
-    * DISCLAIMER: You need a valid license or a valid PIN invitation.   
- * Patients have an homepage to chech the exercises to complete.
- * Therapists can invite patients to their group.
- * Therapists can assign medical conditions and exercises to do.
-      * the type of exercises are: crosswords, read-text, images-to-text, read-images, choose-right-text, text-to-images
-      * the system recommend exercises to do based on the medical condition of the patient [not done, yet].
- * Therapists can view the points of each done exercise.
- * Therapists can view the history points trend on a plot.
- * Patients can view the points of each done exercise.
- * Patients can submit a feedback after each exercise.
- * Patients and their Therapists can message each other.
- * Patients and Therapists have a "Notification" chat in which they'll get important news or reminder.
- * Therapists can create and delete visiting hours for their medical appointments.
- * Patients can book or unbook appointments with their speech therapist.
+* Login page
+ * If needed, you can request the reset of the password through the email you registered.    
+* Registration page
+ * DISCLAIMER: You need a valid license or a valid PIN invitation.   
+* Patients have an homepage to chech the exercises to complete.
+* Therapists can invite patients to their group.
+* Therapists can assign medical conditions and exercises to do.
+   * the type of exercises are: crosswords, read-text, images-to-text, read-images, choose-right-text, text-to-images
+   * the system recommend exercises to do based on the medical condition of the patient [not done, yet].
+* Therapists can view the points of each done exercise.
+* Therapists can view the history points trend on a plot.
+* Patients can view the points of each done exercise.
+* Patients can submit a feedback after each exercise.
+* Patients and their Therapists can message each other.
+* Patients and Therapists have a "Notification" chat in which they'll get important news or reminder.
+* Therapists can create and delete visiting hours for their medical appointments.
+* Patients can book or unbook appointments with their speech therapist.
 
 # Installation
 Requirements:
