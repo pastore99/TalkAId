@@ -64,12 +64,17 @@
 
 <div class="card">
     <div class="info">
-        <div class="nome_info"> <h2>Patologie:</h2></div>
-        <div class="content-info"> <h2>Disgrafia, Disortografia</h2></div>
-    </div>
-    <div class="info">
         <div class="nome_info"> <h2>Email:</h2></div>
         <div class="content-info"><h2><%= utente.getEmail()%></h2></div>
+    </div>
+
+    <%
+        if (session.getAttribute("type") != "therapist"){
+    %>
+
+    <div class="info">
+        <div class="nome_info"> <h2>Patologie:</h2></div>
+        <div class="content-info"> <h2>Disgrafia, Disortografia</h2></div>
     </div>
     <div class="info">
         <div class="nome_info"><h2>Dott.assegnato:</h2></div>
@@ -79,10 +84,12 @@
         <div class="nome_info"><h2>Email.Dott:</h2></div>
         <div class="content-info"><h2><%= therapist.getEmail()%></h2></div>
     </div>
-    <div class="info">
-        <div class="nome_info"><h2>Valutazione</h2></div>
-        <div class="content-info"><h2>3.5/5</h2></div>
-    </div>
+
+
+    <%
+        }
+    %>
+
     <div class="input">
         <form action="userInfoChange.jsp" method="post">
             <input type="hidden" value="<%= infoutente.getLastname()%>" name="lastname">
