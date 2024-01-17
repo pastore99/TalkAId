@@ -118,7 +118,7 @@ public class DAOLicense {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            connection = connection.isClosed() || connection == null ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setString(1, l.getSequence());
             preparedStatement.setInt(2, 0);
