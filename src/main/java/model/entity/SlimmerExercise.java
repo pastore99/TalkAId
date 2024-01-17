@@ -108,13 +108,9 @@ public class SlimmerExercise {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-}
 
-    public int getEvaluation() {
-        return evaluation;
-    }
+    public int getEvaluation() { return evaluation; }
 
-    public void setEvaluation(int vote) {
-        this.evaluation = evaluation;
-    }
+    public void setEvaluation(int evaluation) { this.evaluation = evaluation; }
+
 }

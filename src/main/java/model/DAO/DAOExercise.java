@@ -368,7 +368,7 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type " +
+            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation " +
                     "FROM exercise e JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise JOIN user u ON e.ID_user = u.ID " +
                     "WHERE e.CompletionDate IS NULL AND u.ID_Therapist = ? AND e.Recommended = 0";
 
@@ -386,7 +386,8 @@ public class DAOExercise {
                         rs.getDate("InsertionDate"),
                         rs.getInt("Difficulty"),
                         rs.getString("Target"),
-                        rs.getString("Type")
+                        rs.getString("Type"),
+                        rs.getInt("Evaluation")
                 );
                 exercises.add(exercise);
             }
