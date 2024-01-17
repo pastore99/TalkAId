@@ -3,9 +3,9 @@ This project allows users to conduct remote speech therapy sessions and analyzes
 
 The main features are:
 * Login page
- * If needed, you can request the reset of the password through the email you registered.    
+   * If needed, you can request the reset of the password through the email you registered.    
 * Registration page
- * DISCLAIMER: You need a valid license or a valid PIN invitation.   
+   * DISCLAIMER: You need a valid license or a valid PIN invitation.   
 * Patients have an homepage to chech the exercises to complete.
 * Therapists can invite patients to their group.
 * Therapists can assign medical conditions and exercises to do.
