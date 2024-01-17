@@ -1,10 +1,13 @@
-.element-profilo {
-    background-color: rgba(255, 255, 255, 1);
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-}
+ .element-profilo {
+        background-color: rgba(255, 255, 255, 1);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center; /* Aggiunta per allineare verticalmente i figli */
+        width: 100%;
+        position: relative;
+        text-align: center;
+    }
 
 .element-profilo .div {
     background-color: rgba(255, 255, 255, 1);
@@ -50,7 +53,7 @@
     position: absolute;
     width: 251px;
     top: 90px;
-    left: 177px;
+    left: 137px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 600;
     color: #636363;
@@ -90,7 +93,7 @@
     position: absolute;
     width: 251px;
     top: 149px;
-    left: 160px;
+    left: 177px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 600;
     color: #636363;
@@ -115,18 +118,19 @@
     border-radius: 32px;
 }
 
-.element-profilo .text-wrapper-6 {
-    position: absolute;
-    width: 115px;
-    top: 16px;
-    left: 109px;
-    font-family: "Inter-SemiBold", Helvetica;
-    font-weight: 600;
-    color: #ffffff;
-    font-size: 14px;
-    letter-spacing: 0;
-    line-height: normal;
-}
+ .element-profilo .text-wrapper-6 {
+     position: absolute;
+     top: 16px;
+     left: 109px;
+     font-family: "Inter-SemiBold", Helvetica;
+     font-weight: 600;
+     color: #ffffff;
+     font-size: 14px;
+     letter-spacing: 0;
+     line-height: normal;
+     white-space: nowrap; /* Impedisci il ritorno a capo */
+ }
+
 
 .element-profilo .text-wrapper-7 {
     position: absolute;
@@ -289,9 +293,7 @@
 }
 
 .element-profilo .text-wrapper-10 {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: inline-block; /* o display: inline; a seconda delle esigenze */
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 600;
     color: #ffffff;
@@ -299,6 +301,7 @@
     letter-spacing: 0;
     line-height: normal;
 }
+
 
 .element-profilo .text-wrapper-11 {
     position: absolute;

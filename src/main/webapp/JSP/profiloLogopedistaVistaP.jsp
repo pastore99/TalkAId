@@ -37,17 +37,23 @@
             <div class="text-wrapper-4"><%=therapist.getNotificationTime()%></div>
             <div class="text-wrapper-5"><%=registry.getAddress()%></div>
             <div class="button-book">
-                <div class="overlap-group"><div class="text-wrapper-6">Prenota appuntamento</div></div>
+                <button class="overlap-group">
+                    <div class="text-wrapper-6">Prenota appuntamento</div>
+                </button>
             </div>
-            <div class="text-wrapper-7">Prenota appuntamento</div>
+
             <div class="overlap-wrapper">
-                <div class="div-wrapper"><div class="text-wrapper-8">Messaggia</div></div>
+                <button class="div-wrapper">
+                    <div class="text-wrapper-8">Messaggia</div>
+                </button>
             </div>
+
 
             <div class="text-wrapper-9">Posizione:</div>
             <div class="rectangle-2"></div>
             <div class="rectangle-3"></div>
         </div>
+
         <div class="overlap-2">
             <div class="profile-2"><div class="text-wrapper-10">Dr. <%=registry.getFirstname()%> <%=registry.getLastname()%></div></div>
             <div class="text-wrapper-11">+<%=registry.getPhone()%></div>
