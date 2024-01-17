@@ -330,9 +330,9 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type" +
-                    "FROM exercise e JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise JOIN user u ON e.ID_user = u.ID_user" +
-                    "WHERE e.CompletionDate IS NULL AND u.ID_Therapist = ?";
+            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type " +
+                    "FROM exercise e JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise JOIN user u ON e.ID_user = u.ID " +
+                    "WHERE e.CompletionDate IS NULL AND u.ID_Therapist = ? AND e.Recommended = 0";
 
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, therapistId);
@@ -357,4 +357,106 @@ public class DAOExercise {
         }
         return exercises;
     }
+
+    public boolean approveExercise(int exerciseId, Date insertDate, int userId){
+        String query = "UPDATE exercise SET Recommended = 1 WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ? AND Recommended = 0;";
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, exerciseId);
+            preparedStatement.setDate(3, insertDate);
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean deleteExercise(int exerciseId, Date insertDate, int userId){
+        String query = "DELETE FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ? AND Recommended = 0;";
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, exerciseId);
+            preparedStatement.setDate(3, insertDate);
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean approveMultipleExercise(int userId){
+        String query = "UPDATE exercise SET Recommended = 1 WHERE ID_user = ? AND Recommended = 0;";
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean deleteMultipleExercise(int userId){
+        String query = "DELETE FROM exercise WHERE ID_user = ? AND Recommended = 0;";
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

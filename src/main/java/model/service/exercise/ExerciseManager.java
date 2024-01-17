@@ -47,4 +47,20 @@ public class ExerciseManager implements ExerciseManagerInterface {
     public List<SlimmerExercise> retrieveAiRaccomandation(int therapistId){
         return daoE.getExerciseToApprove(therapistId);
     }
+
+    public boolean changeRaccomandation(String action, int exerciseId, Date insertDate, int userId){
+        if(action.equalsIgnoreCase("Approve")){
+            return daoE.approveExercise(exerciseId, insertDate, userId);
+        }else{
+            return daoE.deleteExercise(exerciseId, insertDate, userId);
+        }
+    }
+
+    public boolean changeMultipleReccomandation(String action, int userId){
+        if(action.equalsIgnoreCase("Approve")){
+            return daoE.approveMultipleExercise(userId);
+        }else{
+            return daoE.deleteMultipleExercise(userId);
+        }
+    }
 }
