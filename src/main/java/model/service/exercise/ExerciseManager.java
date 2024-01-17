@@ -18,6 +18,8 @@ public class ExerciseManager implements ExerciseManagerInterface {
         return daoEG.getExerciseByCode(exerciseID);
     }
 
+    public List<ExerciseGlossary> getExercise(List<Exercise> esercizi){ return  daoEG.getExerciseByCode(esercizi);}
+
     public Blob getExecution(int exerciseID, int userID, Date insertionDate) {
         return daoE.getExerciseExecution(userID, exerciseID, insertionDate);
     }

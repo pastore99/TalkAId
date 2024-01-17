@@ -1,11 +1,14 @@
 package model.DAO;
 
+import model.entity.Exercise;
 import model.entity.ExerciseGlossary;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -67,6 +70,52 @@ public class DAOExerciseGlossary {
             if (resultSet.next()) {
                 return extractExerciseFromResultSet(resultSet);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+
+
+    public List<ExerciseGlossary> getExerciseByCode(List<Exercise> esercizi) {
+        String query = "SELECT * FROM exercise_glossary WHERE ";
+        PreparedStatement preparedStatement = null;
+        List<ExerciseGlossary> result= new ArrayList<>();
+        ResultSet resultSet = null;
+        try {
+            for (Exercise esercizio : esercizi)
+            {
+                query+="ID_exercise=? OR ";
+            }
+            String query_corretta=query.substring(0, query.length() - 4);
+            query_corretta+=";";
+
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query_corretta);
+            int i=1;
+            for(Exercise esercizio : esercizi)
+            {
+                preparedStatement.setInt(i, esercizio.getIdExercise());
+                i++;
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                result.add(extractExerciseFromResultSet(resultSet));
+            }
+            return result;
 
         } catch (SQLException e) {
             e.printStackTrace();
