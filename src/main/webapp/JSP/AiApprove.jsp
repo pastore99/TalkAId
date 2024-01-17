@@ -10,40 +10,64 @@
 
 <html>
 <head>
-    <title>TESTING</title>
+    <title>Gestione AI</title>
+    <link rel="stylesheet" href="../CSS/acceptanceExercisesAI.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
 </head>
 <body>
-
+    <script>
+        function hide(index){
+            $("#u"+index).hide()
+        }
+    </script>
     <%
         ExerciseManager em = new ExerciseManager();
-        List<SlimmerExercise> exercises = em.retrieveAiRaccomandation(9); //TODO: Prendilo dalla sessione
+        List<SlimmerExercise> exercises = em.retrieveAiRaccomandation((Integer) session.getAttribute("id"));
 
         UserData ud = new UserData();
-        ArrayList<UserInfo> u = ud.getUsersAndPersonalInfoByIdTherapist(9); //TODO: Prendilo dalla sessione
+        ArrayList<UserInfo> u = ud.getUsersAndPersonalInfoByIdTherapist((Integer) session.getAttribute("id"));
 
         Gson g = new GsonBuilder().disableHtmlEscaping().create();
     %>
 
-    <% for (UserInfo user : u) {%>
-    <table border="1">
-        <tbody>
-    <h1>Paziente: <%=user.getFirstname()%>  <%=user.getLastname()%></h1>
-    <button onclick='approveAll(<%= user.getId() %>)'>Accetta Tutto</button>
-    <button onclick='removeAll(<%= user.getId() %>)'>Rimuovi Tutto</button>
+    <% int index=0;
+        for (UserInfo user : u) {
+        index++;
+        boolean sentinel=false;
+    %>
+
+    <div id="u<%=index%>">
+        <table>
+            <tbody>
+            <div id="intestazione">
+                <h3>Paziente:</h3>
+                <h2><%=user.getFirstname()%>  <%=user.getLastname()%></h2>
+                <button class="buttonApprove" onclick='approveAll(<%= user.getId() %>)'>Accetta Tutto</button>
+                <button class="buttonRemove" onclick='removeAll(<%= user.getId() %>)'>Rimuovi Tutto</button>
+            </div>
+            <th></th>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Tipo</th>
+            <th>Difficoltà</th>
+            <th>Target</th>
+            <th></th>
+
 
     <% for (SlimmerExercise ex : exercises){
         if(ex.getUserId() == user.getId()){
+        sentinel=true;
     %>
         <tr>
-            <td><%= ex.getUserId() %></td>
+            <td>●</td>
             <td><%= ex.getName() %></td>
             <td><%= ex.getDescription() %></td>
+            <td><%= ex.getType() %></td>
             <td><%= ex.getDifficulty() %></td>
             <td><%= ex.getTarget() %></td>
-            <td><%= ex.getType() %></td>
             <td>
-                <button onclick='approveEx(<%= g.toJson(ex) %>)'>Approva</button>
-                <button onclick='removeEx(<%= g.toJson(ex) %>)'>Rifiuta</button>
+                <button class="buttonApprove" onclick='approveEx(<%= g.toJson(ex) %>)'>Approva</button>
+                <button class="buttonRemove" onclick='removeEx(<%= g.toJson(ex) %>)'>Rifiuta</button>
             </td>
         </tr>
     <%
@@ -52,7 +76,16 @@
     %>
         </tbody>
     </table>
+    </div>
     <%
+            if (!sentinel) {
+
+    %>
+            <script>
+                hide(<%=index%>);
+            </script>
+    <%
+            }
         }
     %>
 
