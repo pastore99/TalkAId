@@ -2,9 +2,12 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.service.user.UserRegistry" %>
 <%@ page import="model.service.user.UserData" %>
+<%@ page import="model.service.exercise.ExerciseManager" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/view_patient.css" />
@@ -75,27 +78,64 @@
         <div class="overlap-4"><div class="text-wrapper-3">Raccomanda Esercizio</div></div>
     </div>
     <div class="button-chat"><img class="iconly-light-chat" src="../images/homeTherapist/iconly-light-chat.svg" /></div>
-    <div class="overlap-5">
-        <img class="img" src="../images/homeTherapist/group-181.png" />
-        <img class="vector" src="../images/homeTherapist/vector-5.svg" />
-        <div class="text-wrapper-4">Days</div>
-        <div class="text-wrapper-5">Points</div>
-        <img class="line-2" src="../images/homeTherapist/line-6.svg" />
-        <img class="line-3" src="../images/homeTherapist/line-7.svg" />
-        <img class="line-4" src="../images/homeTherapist/line-8.svg" />
-        <img class="line-5" src="../images/homeTherapist/line-6.svg" />
-        <div class="ellipse-2"></div>
-        <div class="ellipse-3"></div>
-        <div class="ellipse-4"></div>
-        <div class="ellipse-5"></div>
-        <div class="text-wrapper-6">10/9</div>
-        <div class="text-wrapper-7">11/9</div>
-        <div class="text-wrapper-8">12/9</div>
-        <div class="text-wrapper-9">13/9</div>
-    </div>
+    <!--Progress-->
     <div class="text-wrapper-10">Andamento</div>
-</div>
 
+        <%
+            ExerciseManager exerciseManager = new ExerciseManager();
+            List<Exercise> exercises = exerciseManager.retrievePatientExerciseDone(patientId);
+            if (exercises == null || exercises.isEmpty()) {
+        %>
+        <div class="overlap-5"><p class="errorProgress">Nessun esercizio svolto</p></div>
+        <%
+        } else {
+            String labels = "";
+            String data = "";
+            for (Exercise exercise : exercises) {
+                labels += "'" + exercise.getInsertionDate() + "', ";
+                data += exercise.getEvaluation() + ", ";
+            }
+            labels = labels.substring(0, labels.length() - 2);
+            data = data.substring(0, data.length() - 2);
+        %>
+        <!-- Create Chart -->
+        <div class="overlap-5-2"><canvas id="myChart" width="400" height="200"></canvas></div>
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [<%= labels %>],
+                    datasets: [{
+                        label: 'Andamento Esercizi',
+                        data: [<%= data %>],
+                        borderWidth: 1,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: [{
+                            display: false, // Hide the x-axis
+                        }],
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valutazione'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+        <%
+            }
+        %>
+    </div>
+
+</div>
 
 <script>
     function redirectToGestioneMalattie() {

@@ -59,6 +59,13 @@ public interface ExerciseManagerInterface {
     public List<SlimmerExercise> retrieveDoneExercises(int patientId);
 
     /**
+     * Recupera una lista di esercizi che un paziente ha già fatto.
+     *
+     * @param patientID L'ID del paziente.
+     * @return Una lista di oggetti Exercise che rappresentano gli esercizi fatti dal paziente.
+     */
+    public List<Exercise> retrievePatientExerciseDone(int patientID);
+    /**
      * Recupera una lista di esercizi che un paziente non ha ancora fatto.
      *
      * @param patientId L'ID del paziente.

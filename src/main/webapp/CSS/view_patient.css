@@ -98,13 +98,35 @@
 }
 
 .singolo-paziente .overlap-5 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    width: 310px;
-    height: 200px;
+    width: 552px;
+    height: 248px;
     top: 51vh;
-    left: 49vw;
+    left: 42vw;
     background-color: #f7f5f5;
     border-radius: 29px;
+}
+
+.singolo-paziente .overlap-5-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 552px;
+    height: 248px;
+    top: 51vh;
+    left: 42vw;
+    border-radius: 29px;
+}
+
+.singolo-paziente .overlap-5 .errorProgress {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .singolo-paziente .img {

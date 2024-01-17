@@ -91,9 +91,6 @@
             <input type="hidden" value="<%= utente.getEmail()%>" name="email">
             <button type="submit">Modifica Profilo</button>
         </form>
-        <button>
-            Avvia Tutorial
-        </button>
     </div>
     <button class = "Logout" onclick="mostraPopup()">
         Logout

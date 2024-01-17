@@ -1,14 +1,20 @@
 package model.DAO;
 
-import org.junit.jupiter.api.*;
+import model.entity.Condition;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.BDDMockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import model.entity.Condition;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
 
 @ExtendWith(MockitoExtension.class)

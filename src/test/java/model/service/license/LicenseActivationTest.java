@@ -46,7 +46,7 @@ class LicenseActivationTest {
         LicenseActivation licenseActivation = new LicenseActivation(null);
 
         // Mock the behavior of isActive() for return false
-        when(mockLicense.isActive()).thenReturn(false);
+        //when(mockLicense.isActive()).thenReturn(false);
 
         // Test isActivable()
         boolean isActivable = licenseActivation.isActivable(mockLicense);
