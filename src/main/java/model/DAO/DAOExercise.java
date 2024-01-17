@@ -92,9 +92,9 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
-                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ?";
+                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate ASC";
 
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
@@ -104,7 +104,8 @@ public class DAOExercise {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
                         rs.getString("ExerciseName"),
-                        rs.getDate("InsertionDate")
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Evaluation")
                 );
                 exercises.add(exercise);
             }
@@ -118,7 +119,7 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
                     " WHERE e.CompletionDate IS NOT NULL AND e.ID_user = ?";
 
@@ -130,7 +131,8 @@ public class DAOExercise {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
                         rs.getString("ExerciseName"),
-                        rs.getDate("InsertionDate")
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Evaluation")
                 );
                 exercises.add(exercise);
             }
@@ -150,6 +152,42 @@ public class DAOExercise {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Exercise exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
+    }
+
+    public List<Exercise> retrievePatientExerciseDone(int patientID) {
+        String query = "SELECT *\n" +
+                "FROM exercise\n" +
+                "WHERE ID_user = ? AND Evaluation IS NOT NULL\n" +
+                "ORDER BY InsertionDate;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Exercise> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, patientID);
 
             resultSet = preparedStatement.executeQuery();
 

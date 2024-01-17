@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
     <title>TalkAId - Login</title>
+    <%@page contentType="text/html;charset=UTF-8"%>
 </head>
 <body>
     <div id="loginPage">
@@ -36,47 +37,65 @@
             </div>
             <br>
             <div id="loginForgot">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">Password Dimenticata?</a>
+                <a href="#" id="handleForgotPassword">Password Dimenticata?</a>
             </div>
             <button type="submit" value="Login" id="loginButton">Login</button>
         </form>
         <div id="loginRegister">
             <p>Non hai un account? <a href="registration.jsp">Registrati</a> </p>
          </div>
+        </div>
 
-        <div id="resetPasswordModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <form>
-                            <!-- Email input -->
-                            <div id="resetStep1">
-                                <input type="email" id="resetEmail" placeholder="Email">
-                                <button id="sendPin">Invia PIN</button>
-                            </div>
-                            <!-- PIN input -->
-                            <div id="resetStep2" style="display: none;">
-                                <input type="text" id="pin" placeholder="PIN">
-                                <button id="confirmPin">Conferma PIN</button>
-                            </div>
-                            <!-- New password input -->
-                            <div id="resetStep3" style="display: none;">
-                                <input type="password" id="newPassword" placeholder="Nuova Password">
-                                <input type="password" id="repeatNewPassword" placeholder="Ripeti Password">
-                                <span class="error" aria-live="polite"></span>
-                                <button id="resetPassword" disabled>Cambia Password</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <div class="container" id="container">
+
+        <button id="gotoLoginArrow"><span></span></button>
+        <!-- Email input -->
+        <div class="card" id="c1" >
+            <div class="discovering-english">Password dimenticata?</div>
+            <p class="chapter">	Inserisci la tua email, ti invieremo un codice di<br>
+                conferma e potrai procedere al reset della password</p>
+            <input class="box" placeholder="email" id="resetEmail" type="email">
+            <button class="button" id="sendPin">Verifica</button>
+        </div>
+
+        <!-- PIN input -->
+        <div class="card" id="c2" style="display: none;">
+            <div class="discovering-english">Inserisci Codice di Verifica</div>
+            <p class="chapter">	Se hai fornito l’email correttamente, Inserisci <br>
+                il codice di verifica che ti abbiamo inviato.</p>
+            <div class="cardo">
+                <div class="square" onclick="focusInput(0)" id="square0"></div>
+                <div class="square" onclick="focusInput(1)" id="square1"></div>
+                <div class="square" onclick="focusInput(2)" id="square2"></div>
+                <div class="square" onclick="focusInput(3)" id="square3"></div>
             </div>
+            <p class="chapter">Non hai ricevuto il codice?Rimanda</p>
+            <button class="button" id="confirmPin">Conferma</button>
+        </div>
+
+        <!-- New password input -->
+        <div class="card" id="c3"style="display: none;">
+            <div class="discovering-english">Crea nuova Password</div>
+            <p class="chapter">Inserisci la nuova password per il login</p>
+            <input class="box" id="newPassword" placeholder="Nuova Password" type="password">
+            <input class="box" id="repeatNewPassword" placeholder="Ripeti Password" type="password">
+            <span class="error" aria-live="polite"></span>
+            <button class="button" id="resetPassword" disabled>Cambia Password</button>
+        </div>
+
+        <!-- Login Redirect -->
+        <div class="card" id="c4" style="display: none;"><img class="done-px" src="../images/done-24px-1.svg" />
+            <div class="discovering-english">Confermato</div>
+            <p class="chapter">Hai resettato correttamente la tua password.</p>
+            <button class="button" id="gotoLogin">Login</button>
         </div>
     </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="../JS/login.js"></script>
     <link rel="stylesheet" href="../CSS/login.css">
+    <link rel="stylesheet" href="../CSS/changePasswLogin.css" />
 </body>
 </html>
