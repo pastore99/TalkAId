@@ -71,7 +71,7 @@
     else {
     %>
     %>
-    <div class="discovering-english">Esercizi non disponibili</div>
+    <div class="discovering-english">Non ti sono stati proposti esercizi</div>
     <%
         }
     %>

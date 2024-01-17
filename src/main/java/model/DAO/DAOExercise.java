@@ -467,20 +467,14 @@ public class DAOExercise {
     }
 
     public Map<String, Integer> retrieveAllStatsPatientExerciseDone(int userID) {
-        String query = "SELECT " +
-                "    eg.Type AS ExerciseType," +
-                "    COUNT(*) AS TotalAssigned," +
-                "    COUNT(e.ID_exercise) AS TotalCompleted," +
-                "    (COUNT(e.ID_exercise) / COUNT(*)) * 100 AS CompletionPercentage " +
-                "FROM " +
-                "    exercise_glossary eg " +
-                "LEFT JOIN " +
-                "    exercise e ON eg.ID_exercise = e.ID_exercise " +
-                "              AND e.Recommended <> 0 " +
-                "WHERE " +
-                "    e.ID_user = ? " +
-                "GROUP BY " +
-                "    eg.Type;";
+        String query = "SELECT eg.Type, " +
+                "COUNT(CASE WHEN e.CompletionDate IS NOT NULL THEN e.ID_exercise END) as CompletedCount, " +
+                "COUNT(e.ID_exercise) as TotalAssignedCount, " +
+                "IFNULL(COUNT(CASE WHEN e.CompletionDate IS NOT NULL THEN e.ID_exercise END) / NULLIF(COUNT(e.ID_exercise), 0) * 100, 0) as CompletionPercentage " +
+                "FROM exercise_glossary eg " +
+                "LEFT JOIN exercise e ON eg.ID_exercise = e.ID_exercise AND e.ID_user = ? " +
+                "GROUP BY eg.Type; ";
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Map<String, Integer> result = new HashMap<>();
@@ -493,10 +487,10 @@ public class DAOExercise {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                String exerciseType = resultSet.getString("ExerciseType");
-                int completionPercentage = Math.round((float)resultSet.getDouble("CompletionPercentage"));
+                String exerciseType = resultSet.getString("Type"); // Fix: Use "Type" instead of "ExerciseType"
+                int completionPercentage = Math.round((float) resultSet.getDouble("CompletionPercentage"));
 
-                result.put(exerciseType,completionPercentage);
+                result.put(exerciseType, completionPercentage);
             }
 
         } catch (SQLException e) {
