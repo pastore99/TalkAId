@@ -3,10 +3,13 @@ This project allows users to conduct remote speech therapy sessions and analyzes
 
 # Installation
 Requirements:
-* Web server (e.g., Apache)
-* MySQL database
-* Languages: HTML, CSS, JavaScript 
-* AI Module for exercise analysis
+* Tomcat Web server v.9.0.83 or above
+* MySQL database v.8.0.35 or above
+
+# Technologies:
+Languages used: HTML, CSS, JavaScript, Java, Python 
+* AI Module for exercise recommendations
+* Azure AI Module for vocal exercise evaluations
 
 # Instructions
 1. Clone the repository:
@@ -15,16 +18,21 @@ bash
 git clone https://github.com/yourname/speech-therapy-remote.git
 ```
 2. Configure the database:
-    * inside resources you must provide a file config.properties with params: db.ur, db.username, db.password used for connecting to your database.
-3. Import the database.sql file into your MySQL database schema.
-4. Check that your database is working and reachable by other apps.
-4. Start the web server
-5. Launch the application
+    * inside /resources/ you must provide a file config.properties with params: db.ur, db.username, db.password used for connecting to your available database.
+3. Configure the email service:
+    * inside /resources/ you must provide a file email.properties with params: email.string and email.pw used for connecting to your email provider.
+4. Configure azure properties:
+    * inside /resources/ you must provide a file azure.properties with params: azure.key and azure.region used for connecting to your Azure account.
+
+6. Import the database.sql file into your MySQL database schema. Make sure to use the same schema configured above.
+7. Check that your database is working and reachable by other apps.
+8. Start the web server
+9. Launch the application
 
 # Usage
-1. Register an account or log in if you already have one.
-2. Navigate to the speech therapy section and start a new session.
-3. Follow the instructions to perform the proposed speech therapy exercises.
+1. You can log in using the email stored inside the database's table 'user'. All the passwords are "pwd".
+2. Navigate inside the website.
+3. Follow the instructions to perform the proposed exercise.
 4. After completing the exercises, the system will use the Artificial Intelligence module to analyze performance.
 5. View the analysis results for feedback and suggestions on your pronunciation and exercise execution.
 # Contributions
