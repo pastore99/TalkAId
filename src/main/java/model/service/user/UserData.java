@@ -5,6 +5,7 @@ import model.entity.User;
 import model.entity.UserInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserData implements UserDataInterface {
     DAOUser db;
@@ -40,4 +41,6 @@ public class UserData implements UserDataInterface {
     }
 
     public ArrayList<UserInfo> getUsersAndPersonalInfoByIdTherapist(int ID_Therapist) {return db.getUsersAndPersonalInfoByIdTherapist(ID_Therapist);}
+
+    public HashMap<Integer, UserInfo> getMappedUserInfoByIdTherapist(int therapistId){ return db.getMapUsersAndPersonalInfoByIdTherapist(therapistId);}
 }
