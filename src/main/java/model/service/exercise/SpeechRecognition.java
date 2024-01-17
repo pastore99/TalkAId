@@ -109,13 +109,6 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Process process = processBuilder.start();
 
-            /*
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-            */
             exitCode = process.waitFor();
             if(exitCode != 0){
                 System.err.println("\nExited with error code : " + exitCode);
@@ -125,61 +118,6 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
         }
         return exitCode;
     }
-    /*
-    public String generateFile(InputStream inputAudio) throws IOException {
-        //Crea temporaneamente il file creato dal DB
-        File tempFile = File.createTempFile("tempAudio", ".opus");
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputAudio.read(buffer)) != -1) {
-                fos.write(buffer, 0, bytesRead);
-            }
-        }
-        //Ottieni il path dell'output basandoti sul file creato
-        Path outputPath = Paths.get(tempFile.getPath()).getParent().resolve("outputJava.wav");
-        String path = outputPath.toString();
-
-        //Controlla che non esista già un file
-        try {
-            // Use the delete method from Files class to delete the file
-            Files.delete(Paths.get(path));
-        } catch (FileNotFoundException e){
-            System.err.println("File not found");
-        } catch (IOException e) {
-            System.err.println("Error deleting the file: " + e.getMessage());
-        }
-
-
-        List<String> command = Arrays.asList(
-                "ffmpeg",
-                "-i", tempFile.getPath(),
-                "-ar", "16000",
-                "-ac", "1",
-                "-acodec", "pcm_s16le",
-                path
-        );
-
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
-            Process process = processBuilder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-            int exitCode = process.waitFor();
-            if(exitCode != 0){
-                System.err.println("\nExited with error code : " + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return path;
-    }
-     */
 
     private Properties loadProps() {
         Properties props = new Properties();
