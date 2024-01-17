@@ -17,7 +17,7 @@
         <div class="icon iconLeft">
             <img src="../images/registration/icon-user-outline.svg" alt="usericon">
         </div>
-        <input class="formInput" type="text" id="pin" name="pin" placeholder="Inserisci il PIN o Licenza" pattern="\b(\d{4}|\d{8}|[A-Z]{4}|[A-Z]{8})\b" title="Devi inserire un numero di 4 o 8 cifre" required>
+        <input class="formInput" type="text" id="pin" name="pin" placeholder="Inserisci il PIN o Licenza" pattern="^[0-9A-Z]{8}$|^[0-9A-F]{4}$" title="Devi inserire un numero di 4 o 8 cifre" required>
         <div class="icon iconRight"></div>
     </div>
 
@@ -53,7 +53,7 @@
         <div class="icon iconLeft">
             <img src="../images/passwordIcon.svg" alt="passwordIcon">
         </div>
-        <input class="formInput" type="password" id="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}" title="La password deve contenere almeno un numero, una lettera maiuscola e una minuscola, e deve avere almeno 12 caratteri." required>
+        <input class="formInput" type="password" id="password" name="password" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$" title="La password deve contenere almeno un numero, una lettera maiuscola e una minuscola, e deve avere almeno 12 caratteri." required>
         <div class="icon iconRight">
             <button class="togglePassword hiddenClass" id="hidePassword"><img src="../images/hidePassword.svg" alt="hidePasswordIcon"></button>
             <button class="togglePassword hiddenClass" id="showPassword"><img src="../images/showPassword.svg" alt="showPasswordIcon"></button>

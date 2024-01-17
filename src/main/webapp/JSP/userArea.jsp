@@ -50,9 +50,9 @@
                         if (session.getAttribute("type") != "therapist"){
                     %>
                     <span class="font-weight-bold">Info Terapia</span>
-                    <span class="text-black-50">Dott.assegnato: <%= infotherapist.getFirstname()%> <%= infotherapist.getLastname()%></span>
-                    <span class="text-black-50">Email.Dott: <%= therapist.getEmail()%></span>
-                    <span class="text-black-50">Inizio trattamento: <%= giorno[0]%>/<%= giorno[1]%>/<%= giorno[2]%></span>
+                    <span class="text-black-50">Medico curante: <span class="font-weight-bold"><%= infotherapist.getFirstname()%> <%= infotherapist.getLastname()%></span></span>
+                    <span class="text-black-50">Email del medico: <span class="font-weight-bold"><%= therapist.getEmail()%></span></span>
+                    <span class="text-black-50"> Data inizio trattamento: <span class="font-weight-bold"><%= giorno[0]%>/<%= giorno[1]%>/<%= giorno[2]%></span></span>
                     <%
                         }
                     %>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-md-12">
                             <label class="labels">Indirizzo</label>
-                            <input required title="Massimo 30 caratteri" pattern="^{1,30}$" type="text" class="form-control" placeholder="<%= infoutente.getAddress()%>" value="<%= infoutente.getAddress()%>" name="address">
+                            <input required title="Massimo 30 caratteri" pattern=".{1,30}" type="text" class="form-control" placeholder="<%= infoutente.getAddress()%>" value="<%= infoutente.getAddress()%>" name="address">
                         </div>
                     </div>
                 </div>
