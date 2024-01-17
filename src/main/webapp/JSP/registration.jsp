@@ -3,6 +3,7 @@
 <head>
     <title>TalkAId - Registrati</title>
     <%@page contentType="text/html;charset=UTF-8"%>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
 </head>
 <body>
 <div id="loginPage">

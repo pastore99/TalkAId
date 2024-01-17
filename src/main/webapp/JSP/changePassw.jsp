@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
+    <title>TalkAId - Cambio Password</title>
     <link href="../CSS/Change_Password.css" type="text/css" rel = "stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 

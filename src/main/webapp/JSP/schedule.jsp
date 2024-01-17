@@ -15,6 +15,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="UTF-8">
     <title>TalkAId - Schedule Prenotazioni</title>

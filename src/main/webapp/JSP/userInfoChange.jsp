@@ -5,7 +5,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>TalkAId - Cambia Dati</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <link href="../CSS/Cambio_dati.css" type="text/css" rel = "stylesheet">
     <link href="../CSS/Popup.css" type="text/css" rel = "stylesheet">
 </head>

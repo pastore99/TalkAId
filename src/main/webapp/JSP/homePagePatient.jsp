@@ -15,10 +15,11 @@
         PersonalInfo data= ur.getPersonalInfo(userId);
 %>
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homepagepatient.css" />
-    <title>Homepage</title>
+    <title>TalkAId - Homepage</title>
 </head>
 
 

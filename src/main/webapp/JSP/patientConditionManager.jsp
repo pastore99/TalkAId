@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Condition</title>
+    <title>TalkAId - Modifica patologie</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
 </head>
 <body>
 <%

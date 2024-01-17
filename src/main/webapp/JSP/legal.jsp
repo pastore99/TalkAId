@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <%@page contentType="text/html;charset=UTF-8"%>
 
     <%
@@ -11,7 +12,7 @@
 
     %>
     <meta charset="utf-8">
-    <title>Politica sulla Privacy</title>
+    <title>TalkAId - Politica sulla Privacy</title>
     <style>
 
         body {

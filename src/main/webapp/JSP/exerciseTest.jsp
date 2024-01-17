@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <title>Title</title>
     <style>
         body {

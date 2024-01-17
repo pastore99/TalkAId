@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>Invita Paziente</title>
+    <title>TalkAId - Invita Paziente</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
 </head>
 <body>
 <%

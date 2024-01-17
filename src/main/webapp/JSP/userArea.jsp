@@ -4,7 +4,8 @@
 <%@ page import="model.service.user.UserRegistry" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>TalkAId - User Area</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <link href="../CSS/User_Area.css" type="text/css" rel = "stylesheet">
 
 </head>

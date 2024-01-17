@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="CSS/homepageGuest.css" />
     <title>Homepage</title>
+    <link rel="icon" href="images/siteIco.png" type="image/png">
 </head>
 <body class="background">
 
