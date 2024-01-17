@@ -1,19 +1,138 @@
 package model.service.registration;
 
-import model.DAO.DAOConnection;
-import model.DAO.DAOLicense;
-import model.DAO.DAOPersonalInfo;
-import model.DAO.DAOUser;
-import org.junit.jupiter.api.AfterEach;
+import model.entity.License;
+import model.service.license.LicenseActivation;
+import model.service.user.UserData;
+import model.service.user.UserRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.sql.*;
-
+import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class RegistrationTest {
 
+    @Mock
+    private Registration registration;
+
+    private LicenseActivation la;
+    private UserData ud;
+    private UserRegistry ur;
+    @BeforeEach
+    void setUp() {
+        //MockitoAnnotations.openMocks(this);
+        la = mock(LicenseActivation.class);
+        ud = mock(UserData.class);
+        ur = mock(UserRegistry.class);
+        registration = new Registration(la, ud, ur);
+    }
+
+    @Test
+    void registerNewTherapist() {
+        License license = new License();
+        license.setSequence("12345678");
+        license.setActive(false);
+        //when(registration.validateLicense(anyString())).thenReturn(license);
+        when(la.getLicense(anyString())).thenReturn(license);
+        when(la.isActivable(license)).thenReturn(true);
+        when(la.isForTherapist(license)).thenReturn(0);
+        when(registration.isEmailExists(anyString())).thenReturn(false);
+        //when(registration.createNewUser(anyString(), anyString(), license)).thenReturn(1);
+        when(ud.createUser("test@email.com", "StrongPwd1!23", 0)).thenReturn(55);
+
+        when(ur.firstAccess(55, "Test", "User")).thenReturn(true);
+        when(registration.createUserPersonalInformation(anyInt(), anyString(), anyString())).thenReturn(true);
+
+        int result = registration.registerNewUser("12345678", "test@email.com", "StrongPwd1!23", "Test", "User");
+        assertEquals(0, result, "New Therapist should be registered successfully.");
+    }
+
+    @Test
+    void registerNewPatient() {
+        License license = new License();
+        license.setSequence("1234");
+        license.setActive(false);
+        //when(registration.validateLicense(anyString())).thenReturn(license);
+        when(la.getLicense(anyString())).thenReturn(license);
+        when(la.isActivable(license)).thenReturn(true);
+        when(la.isForTherapist(license)).thenReturn(99);
+        when(registration.isEmailExists(anyString())).thenReturn(false);
+        //when(registration.createNewUser(anyString(), anyString(), license)).thenReturn(1);
+        when(ud.createUser("test@email.com", "StrongPwd1!23", 0)).thenReturn(55);
+
+        when(ur.firstAccess(55, "Test", "User")).thenReturn(true);
+        when(registration.createUserPersonalInformation(anyInt(), anyString(), anyString())).thenReturn(true);
+
+        int result = registration.registerNewUser("1234", "test@email.com", "StrongPwd1!23", "Test", "User");
+        assertEquals(0, result, "New Patient should be registered successfully.");
+    }
+
+
+    @Test
+    void invalidLicenseCodeTest() {
+        License license = new License();
+        license.setSequence("1234");
+        license.setActive(true);
+        //when(registration.validateLicense(anyString())).thenReturn(license);
+        when(la.getLicense(anyString())).thenReturn(license);
+        when(la.isActivable(license)).thenReturn(false);
+        when(la.isForTherapist(license)).thenReturn(99);
+        when(registration.isEmailExists(anyString())).thenReturn(false);
+        //when(registration.createNewUser(anyString(), anyString(), license)).thenReturn(1);
+        when(ud.createUser("test@email.com", "StrongPwd1!23", 0)).thenReturn(55);
+
+        when(ur.firstAccess(55, "Test", "User")).thenReturn(true);
+        when(registration.createUserPersonalInformation(anyInt(), anyString(), anyString())).thenReturn(true);
+
+        int result = registration.registerNewUser("1234", "test@email.com", "StrongPwd1!23", "Test", "User");
+        assertEquals(1, result, "License already used or not valid.");
+    }
+
+    //Unit Test Invalid
+    @Test
+    void invalidEmailTest() {
+        License license = new License();
+        license.setSequence("1234");
+        license.setActive(true);
+        //when(registration.validateLicense(anyString())).thenReturn(license);
+        when(la.getLicense(anyString())).thenReturn(license);
+        when(la.isActivable(license)).thenReturn(true);
+        when(la.isForTherapist(license)).thenReturn(99);
+        when(registration.isEmailExists(anyString())).thenReturn(true);
+        //when(registration.createNewUser(anyString(), anyString(), license)).thenReturn(1);
+        when(ud.createUser("test@email.com", "StrongPwd1!23", 0)).thenReturn(55);
+
+        when(ur.firstAccess(55, "Test", "User")).thenReturn(true);
+        when(registration.createUserPersonalInformation(anyInt(), anyString(), anyString())).thenReturn(true);
+
+        int result = registration.registerNewUser("1234", "test@email.com", "StrongPwd1!23", "Test", "User");
+        assertEquals(2, result, "Email already taken.");
+    }
+
+    @Test
+    void ErrorGeneratingUser() {
+        License license = new License();
+        license.setSequence("12345678");
+        license.setActive(false);
+        //when(registration.validateLicense(anyString())).thenReturn(license);
+        when(la.getLicense(anyString())).thenReturn(license);
+        when(la.isActivable(license)).thenReturn(true);
+        when(la.isForTherapist(license)).thenReturn(0);
+        when(registration.isEmailExists(anyString())).thenReturn(false);
+        //when(registration.createNewUser(anyString(), anyString(), license)).thenReturn(1);
+        when(ud.createUser("test@email.com", "StrongPwd1!23", 0)).thenReturn(-1);
+
+        //when(ur.firstAccess(55, "Test", "User")).thenReturn(true);
+        //when(registration.createUserPersonalInformation(anyInt(), anyString(), anyString())).thenReturn(false);
+
+        int result = registration.registerNewUser("12345678", "test@email.com", "StrongPwd1!23", "Test", "User");
+        assertEquals(4, result, "New Therapist should be registered successfully.");
+    }
+
+    /*
     private Registration registration;
 
     @BeforeEach
@@ -42,7 +161,6 @@ class RegistrationTest {
         new DAOPersonalInfo().deleteRegistry(new DAOUser().getUserByIdOrEmail(email).getId());
     }
 
-    /*
     //Unit Test Valido
     @Test
     void registerNewPatient() {
@@ -100,6 +218,5 @@ class RegistrationTest {
 
         new DAOLicense().deleteLicense(licenseCode);
     }
-
-     */
+    */
 }
