@@ -52,7 +52,7 @@
             <form action="../AddRemovePatientCondition" method="post">
                 <input type="hidden" name="idCondition" value="<%= condition.getIdCondition() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" class="button" value="Rimuovi" name="operation">
+                <input type="submit" class="buttonLay" value="Rimuovi" name="operation">
             </form>
         </td>
     </tr>
@@ -82,7 +82,7 @@
             <td>
                 <input type="hidden" name="idCondition" value="<%= condition.getIdCondition() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" class="button" value="Aggiungi" name="operation">
+                <input type="submit" class="buttonLay" value="Aggiungi" name="operation">
             </td>
         </form>
     </tr>

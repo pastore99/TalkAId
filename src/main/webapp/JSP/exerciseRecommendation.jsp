@@ -81,7 +81,7 @@
             <td>
                 <input type="hidden" name="idExercise" value="<%= exerciseGlossary.getIdExercise() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" class="button" value="Raccomanda" name="operation">
+                <input type="submit" class="buttonLay" value="Raccomanda" name="operation">
             </td>
         </form>
     </tr>
