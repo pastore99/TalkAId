@@ -25,7 +25,7 @@
         <div class="icon iconLeft">
             <img src="../images/registration/icon-user-outline.svg" alt="usericon">
         </div>
-        <input class="formInput" type="text" id="cognome" placeholder="Il tuo cognome" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" title="Il cognome deve contenere solo lettere, spazi, trattini, apostrofi e accenti." required>
+        <input class="formInput" type="text" id="cognome" placeholder="Il tuo cognome" pattern="^[A-Z][a-zA-Z' ]{1,}$" title="Il cognome deve contenere solo lettere, spazi, trattini e apostrofi." required>
         <div class="icon iconRight"></div>
     </div>
 
@@ -33,7 +33,7 @@
         <div class="icon iconLeft">
             <img src="../images/registration/icon-user-outline.svg" alt="usericon">
         </div>
-        <input class="formInput" type="text" id="nome" placeholder="Il tuo nome" pattern="^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$" title="Il nome deve contenere solo lettere, spazi, trattini, apostrofi e accenti." required>
+        <input class="formInput" type="text" id="nome" placeholder="Il tuo nome" pattern="^[A-Z][a-zA-Z' ]{1,}$" title="Il nome deve contenere solo lettere, spazi, trattini e apostrofi." required>
         <div class="icon iconRight"></div>
     </div>
 

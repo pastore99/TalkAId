@@ -2,13 +2,13 @@
 <%@ page import="model.entity.User" %>
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.service.user.UserRegistry" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="it" style="background-color:#199A8E">
 
 <head>
     <title>TalkAId - User Area</title>
     <link rel="icon" href="../images/siteIco.png" type="image/png">
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
     <link href="../CSS/dettagliUser.css" rel="stylesheet">
@@ -22,12 +22,12 @@
         // Ottieni l'utente dalla sessione
         utente = userDate.getUser(session.getAttribute("id"));
 
-        // Se l'utente non è valido o non esiste, reindirizza alla pagina di login
+        // Se l'utente non ï¿½ valido o non esiste, reindirizza alla pagina di login
         if (utente == null) {
             response.sendRedirect("/TalkAID_war_exploded/JSP/login.jsp");
         }
     } else {
-        // Se la sessione non è attiva, reindirizza alla pagina di login
+        // Se la sessione non ï¿½ attiva, reindirizza alla pagina di login
         response.sendRedirect("/TalkAID_war_exploded/JSP/login.jsp");
     }
     try
@@ -66,21 +66,21 @@
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <label class="labels">Nome</label>
-                            <input required pattern="^[a-zA-Zàáâäãå????èéêë??ìíîï??òóôöõøùúûü??ÿý??ñç???ÀÁÂÄÃÅ?????ÈÉÊËÌÍÎÏ???ÒÓÔÖÕØÙÚÛÜ???Ý??ÑßÇ?Æ????ð ,.'-]+$" title="Il nome deve contenere solo lettere, spazi, trattini, apostrofi e accenti." type="text" class="form-control" placeholder="<%= infoutente.getFirstname()%>" value="<%= infoutente.getFirstname()%>" name="firstname">
+                            <input required pattern="^[A-Z][a-zA-Z' ]{1,}$" title="Il nome deve contenere solo lettere, spazi, trattini e apostrofi." type="text" class="form-control" placeholder="<%= infoutente.getFirstname()%>" value="<%= infoutente.getFirstname()%>" name="firstname">
                         </div>
                         <div class="col-md-6">
                             <label class="labels">Cognome</label>
-                            <input required pattern="^[a-zA-Zàáâäãå????èéêë??ìíîï??òóôöõøùúûü??ÿý??ñç???ÀÁÂÄÃÅ?????ÈÉÊËÌÍÎÏ???ÒÓÔÖÕØÙÚÛÜ???Ý??ÑßÇ?Æ????ð ,.'-]+$" title="Il cognome deve contenere solo lettere, spazi, trattini, apostrofi e accenti." type="text" class="form-control" placeholder="<%= infoutente.getLastname()%>" value="<%= infoutente.getLastname()%>" name = "lastname">
+                            <input required pattern="^[A-Z][a-zA-Z' ]{1,}$" title="Il cognome deve contenere solo lettere, spazi, trattini e apostrofi." type="text" class="form-control" placeholder="<%= infoutente.getLastname()%>" value="<%= infoutente.getLastname()%>" name = "lastname">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="labels">Telefono</label>
-                            <input required title="inserisci un numero di telefono valido" pattern="^((\+|00)39)?\s?3[0-9]{2}[-.\s]?[0-9]{6,7}$" type="text" class="form-control" placeholder="<%= infoutente.getPhone()%>" value="<%= infoutente.getPhone()%>" name="phonenumber">
+                            <input required title="Il numero deve essere obbligatoriamente di 10 cifre" pattern="^\d{10}$" type="text" class="form-control" placeholder="<%= infoutente.getPhone()%>" value="<%= infoutente.getPhone()%>" name="phonenumber">
                         </div>
                         <div class="col-md-12">
                             <label class="labels">Indirizzo</label>
-                            <input required title="inserisci un indirizzo valido" pattern="^[a-zA-Z\d\.\s,-]{5,}$" type="text" class="form-control" placeholder="<%= infoutente.getAddress()%>" value="<%= infoutente.getAddress()%>" name="address">
+                            <input required title="Massimo 30 caratteri" pattern="^{1,30}$" type="text" class="form-control" placeholder="<%= infoutente.getAddress()%>" value="<%= infoutente.getAddress()%>" name="address">
                         </div>
                     </div>
                 </div>
@@ -157,6 +157,13 @@
     function chiudiPopup() {
         document.getElementById('popup').style.display = 'none';
     }
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var form = event.target;
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            alert('Il form contiene errori. Correggi gli errori e prova di nuovo.');
+        }
+    });
 
 </script>
 </body>
