@@ -42,13 +42,6 @@ public interface ExerciseManagerInterface {
      */
     public boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation);
 
-    /**
-     * Recupera una lista di tutti gli esercizi fatti da un paziente specifico.
-     *
-     * @param userID L'ID del paziente.
-     * @return Una lista di oggetti Exercise che rappresentano gli esercizi fatti dal paziente.
-     */
-    public List<Exercise> retrieveAllPatientExerciseDone(int userID);
 
     /**
      * Recupera una lista di esercizi che un paziente ha già fatto.
@@ -73,11 +66,4 @@ public interface ExerciseManagerInterface {
      */
     public List<SlimmerExercise> retrieveNotDoneExercises(int patientId);
 
-    /**
-     * Recupera una lista di esercizi che il paziente ha fatto.
-     *
-     * @param esercizi la lista degli eseercizi per recuperare l'id.
-     * @return restituisce una list di ExerciseGlossary rappresentanti del risultato degli esercizi fatti.
-     */
-    public List<ExerciseGlossary> getExercise(List<Exercise> esercizi);
 }

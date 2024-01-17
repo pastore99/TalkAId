@@ -18,8 +18,6 @@ public class ExerciseManager implements ExerciseManagerInterface {
         return daoEG.getExerciseByCode(exerciseID);
     }
 
-    public List<ExerciseGlossary> getExercise(List<Exercise> esercizi){ return  daoEG.getExerciseByCode(esercizi);}
-
     public Blob getExecution(int exerciseID, int userID, Date insertionDate) {
         return daoE.getExerciseExecution(userID, exerciseID, insertionDate);
     }
@@ -32,10 +30,6 @@ public class ExerciseManager implements ExerciseManagerInterface {
     public boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation) {
 
         return daoE.setExerciseEvaluation(userID, exerciseId, insertDate, evaluation);
-    }
-
-    public List<Exercise> retrieveAllPatientExerciseDone(int userID){
-        return daoE.retrieveAllPatientExerciseDone(userID);
     }
 
     public List<Exercise> retrievePatientExerciseDone(int patientID) {

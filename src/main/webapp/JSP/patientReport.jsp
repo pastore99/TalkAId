@@ -2,6 +2,7 @@
 <%@ page import="model.entity.Exercise" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.entity.ExerciseGlossary" %>
+<%@ page import="model.entity.SlimmerExercise" %>
 <!DOCTYPE html>
 <html lang="it" style="background-color: #f7fcff; ">
 <%
@@ -33,11 +34,10 @@
 
     <%
         ExerciseManager exerciseManager = new ExerciseManager();
-        List<Exercise> list = exerciseManager.retrieveAllPatientExerciseDone(userId);
+        List<SlimmerExercise> list = exerciseManager.retrieveDoneExercises(userId);
         if(!list.isEmpty()){
             int Counter = 0;
-            List<ExerciseGlossary> esercizio_glos = exerciseManager.getExercise(list);
-            for(ExerciseGlossary exerciseGlossary : esercizio_glos) {
+            for(SlimmerExercise exerciseGlossary : list) {
     %>
     <div class="margin20">
         <div class="card">
@@ -54,7 +54,7 @@
                     </svg>
 
                 </div></div>
-                <div class="discovering-english"><%=exerciseGlossary.getExerciseName()%></div>
+                <div class="discovering-english"><%=exerciseGlossary.getName()%></div>
             </div></div></div>
             <button class="button-2">Aggiungi Feedback</button>
         </div>

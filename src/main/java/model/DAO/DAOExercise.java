@@ -154,39 +154,6 @@ public class DAOExercise {
         return exercises;
     }
 
-    public List<Exercise> retrieveAllPatientExerciseDone(int userID) {
-        String query = "SELECT * FROM exercise WHERE ID_user = ? AND CompletionDate IS NOT NULL ORDER BY InsertionDate DESC;";
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Exercise> exercises = new ArrayList<>();
-
-        try {
-            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, userID);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Exercise exercise = extractExerciseFromResultSet(resultSet);
-                exercises.add(exercise);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                DAOConnection.releaseConnection(connection);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return exercises;
-    }
-
     public List<Exercise> retrievePatientExerciseDone(int patientID) {
         String query = "SELECT *\n" +
                 "FROM exercise\n" +
