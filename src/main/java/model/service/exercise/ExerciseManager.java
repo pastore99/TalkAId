@@ -9,6 +9,7 @@ import model.entity.SlimmerExercise;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ExerciseManager implements ExerciseManagerInterface {
     private final DAOExerciseGlossary daoEG = new DAOExerciseGlossary();
@@ -62,5 +63,10 @@ public class ExerciseManager implements ExerciseManagerInterface {
         }else{
             return daoE.deleteMultipleExercise(userId);
         }
+    }
+
+    public Map<String,Integer> retrieveAllStats(int id)
+    {
+        return daoE.retrieveAllStatsPatientExerciseDone(id);
     }
 }
