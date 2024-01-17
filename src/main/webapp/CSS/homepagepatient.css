@@ -304,3 +304,23 @@
         stroke-dashoffset: 80; /* 50% would be 220 (half the initial value specified above) */
     }
 }
+
+.imagediv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: row;
+}
+
+.tdown {
+    width: 5em;
+    padding-right: 3em;
+    margin: 0;
+}
+.tup {
+    width: 5em;
+    padding-left: 3em;
+    margin: 0;
+}
+

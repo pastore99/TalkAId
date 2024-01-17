@@ -7,10 +7,13 @@ public class SlimmerExercise {
     private String name;
     private Date insertionDate;
 
-    public SlimmerExercise(int id, String name, Date insertionDate) {
+    private int evaluation;
+
+    public SlimmerExercise(int id, String name, Date insertionDate, int evaluation) {
         this.id = id;
         this.name = name;
         this.insertionDate = insertionDate;
+        this.evaluation = evaluation;
     }
 
     public int getId() {
@@ -35,5 +38,13 @@ public class SlimmerExercise {
 
     public void setInsertionDate(Date insertionDate) {
         this.insertionDate = insertionDate;
+    }
+
+    public int getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(int vote) {
+        this.evaluation = evaluation;
     }
 }

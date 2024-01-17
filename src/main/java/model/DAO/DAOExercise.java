@@ -92,9 +92,9 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
-                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ?";
+                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate ASC";
 
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
@@ -104,7 +104,8 @@ public class DAOExercise {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
                         rs.getString("ExerciseName"),
-                        rs.getDate("InsertionDate")
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Evaluation")
                 );
                 exercises.add(exercise);
             }
@@ -118,7 +119,7 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
                     " WHERE e.CompletionDate IS NOT NULL AND e.ID_user = ?";
 
@@ -130,7 +131,8 @@ public class DAOExercise {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
                         rs.getString("ExerciseName"),
-                        rs.getDate("InsertionDate")
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Evaluation")
                 );
                 exercises.add(exercise);
             }
