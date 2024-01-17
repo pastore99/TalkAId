@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * DAOUser is a class that provides methods for accessing the User table in the database.
@@ -485,4 +486,57 @@ public class DAOUser {
 
         return null; // or you may throw an exception here
     }
+
+    public HashMap<Integer, UserInfo> getMapUsersAndPersonalInfoByIdTherapist(int idTherapist) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        HashMap<Integer, UserInfo> userMap = new HashMap<Integer, UserInfo>();
+
+        try {
+            connection = DAOConnection.getConnection();
+            String query = null;
+
+            query = "SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;";
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setObject(1, idTherapist);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                UserInfo u=new UserInfo();
+                int userId = resultSet.getInt("ID");
+                u.setId(userId);
+                u.setEmail(resultSet.getString("Email"));
+                u.setActivationDate(resultSet.getTimestamp("ActivationDate"));
+                u.setFirstname(resultSet.getString("Firstname"));
+                u.setLastname(resultSet.getString("Lastname"));
+                u.setDateOfBirth(resultSet.getDate("DateOfBirth"));
+                u.setGender(resultSet.getString("Gender"));
+                u.setAddress(resultSet.getString("Address"));
+                u.setSsn(resultSet.getString("SSN"));
+                u.setPhone(resultSet.getString("Phone"));
+
+                userMap.put(userId, u);
+            }
+            return userMap;
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+
+        return null; // or you may throw an exception here
+    }
+
+
 }
