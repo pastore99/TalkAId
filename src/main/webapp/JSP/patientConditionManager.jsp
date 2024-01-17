@@ -30,29 +30,29 @@
     ArrayList<Condition> list_NOTPatientCondition = ConditionService.getConditionsNOTOfPatient(userId);
 %>
 <a href="homeTherapist.jsp" align="left">Home</a>
-<table border="1" align="center">
+<table>
     <caption><b>Patologie del paziente</b></caption>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Disorder Description</th>
-        <th>Disorder Name</th>
-        <th>Severity</th>
-        <th>Operazione</th>
+        <th></th>
+        <th>Nome</th>
+        <th>Descrizione</th>
+        <th>Gravità</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     <% for (Condition condition : list_PatientCondition) { %>
     <tr>
-        <td><%= condition.getIdCondition() %></td>
-        <td><%= condition.getDisorderDescription() %></td>
-        <td><%= condition.getDisorderName() %></td>
-        <td><%= condition.getSeverity() %></td>
+        <td>●</td>
+        <td><%= condition.getDisorderName()%></td>
+        <td><%= condition.getDisorderDescription()%></td>
+        <td><%= condition.getSeverity()%></td>
         <td>
             <form action="../AddRemovePatientCondition" method="post">
                 <input type="hidden" name="idCondition" value="<%= condition.getIdCondition() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" value="Rimuovi" name="operation">
+                <input type="submit" class="button" value="Rimuovi" name="operation">
             </form>
         </td>
     </tr>
@@ -60,37 +60,34 @@
     </tbody>
 </table>
 <hr>
-<table border="1">
+<table>
     <caption><b>Aggiungi nuova patologia</b></caption>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Disorder Description</th>
-        <th>Disorder Name</th>
-        <th>Severity</th>
-        <th>Operazione</th>
+        <th></th>
+        <th>Nome</th>
+        <th>Descrizione</th>
+        <th>Gravità</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     <% for (Condition condition : list_NOTPatientCondition) { %>
     <tr>
-        <td><%= condition.getIdCondition() %></td>
-        <td><%= condition.getDisorderDescription() %></td>
-        <td><%= condition.getDisorderName() %></td>
+        <td>●</td>
+        <td><%= condition.getDisorderName()%></td>
+        <td><%= condition.getDisorderDescription()%></td>
         <form action="../AddRemovePatientCondition" method="post">
-            <td><input type="number" name="severity" min="1" max="10" value="1"></td>
+            <td><input type="number" class="input-number" name="severity" min="1" max="10" value="1"></td>
             <td>
                 <input type="hidden" name="idCondition" value="<%= condition.getIdCondition() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" value="Aggiungi" name="operation">
+                <input type="submit" class="button" value="Aggiungi" name="operation">
             </td>
         </form>
     </tr>
     <% } %>
     </tbody>
 </table>
-</body>
-</html>
-
 </body>
 </html>
