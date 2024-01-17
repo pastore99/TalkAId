@@ -43,4 +43,8 @@ public class ExerciseManager implements ExerciseManagerInterface {
     public List<SlimmerExercise> retrieveNotDoneExercises(int patientId) {
         return daoE.retrieveNotDoneExercises(patientId);
     }
+
+    public List<SlimmerExercise> retrieveAiRaccomandation(int therapistId){
+        return daoE.getExerciseToApprove(therapistId);
+    }
 }

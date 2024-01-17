@@ -92,7 +92,7 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
                     " WHERE e.CompletionDate IS NULL AND e.ID_user = ?";
 
@@ -103,8 +103,14 @@ public class DAOExercise {
             while(rs.next()) {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
+                        rs.getInt("ID_user"),
                         rs.getString("ExerciseName"),
-                        rs.getDate("InsertionDate")
+                        rs.getString("ExerciseDescription"),
+                        rs.getInt("Feedback"),
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Difficulty"),
+                        rs.getString("Target"),
+                        rs.getString("Type")
                 );
                 exercises.add(exercise);
             }
@@ -118,9 +124,9 @@ public class DAOExercise {
         List<SlimmerExercise> exercises = new ArrayList<>();
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
-            String query = "SELECT e.ID_exercise, eg.ExerciseName, e.InsertionDate FROM exercise e" +
+            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
-                    " WHERE e.CompletionDate IS NOT NULL AND e.ID_user = ?";
+                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ?";
 
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
@@ -129,8 +135,14 @@ public class DAOExercise {
             while(rs.next()) {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
+                        rs.getInt("ID_user"),
                         rs.getString("ExerciseName"),
-                        rs.getDate("InsertionDate")
+                        rs.getString("ExerciseDescription"),
+                        rs.getInt("Feedback"),
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Difficulty"),
+                        rs.getString("Target"),
+                        rs.getString("Type")
                 );
                 exercises.add(exercise);
             }
@@ -312,5 +324,37 @@ public class DAOExercise {
                 e.printStackTrace();
             }
         }
+    }
+
+    public List<SlimmerExercise> getExerciseToApprove(int therapistId){
+        List<SlimmerExercise> exercises = new ArrayList<>();
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type" +
+                    "FROM exercise e JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise JOIN user u ON e.ID_user = u.ID_user" +
+                    "WHERE e.CompletionDate IS NULL AND u.ID_Therapist = ?";
+
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, therapistId);
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                SlimmerExercise exercise = new SlimmerExercise(
+                        rs.getInt("ID_exercise"),
+                        rs.getInt("ID_user"),
+                        rs.getString("ExerciseName"),
+                        rs.getString("ExerciseDescription"),
+                        rs.getInt("Feedback"),
+                        rs.getDate("InsertionDate"),
+                        rs.getInt("Difficulty"),
+                        rs.getString("Target"),
+                        rs.getString("Type")
+                );
+                exercises.add(exercise);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return exercises;
     }
 }
