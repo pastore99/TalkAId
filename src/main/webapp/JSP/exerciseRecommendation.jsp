@@ -72,7 +72,6 @@
     <% for (ExerciseGlossary exerciseGlossary : list_ExerciseNOTdone) { %>
     <tr>
         <td>●</td>
-        <td><%= exerciseGlossary.getIdExercise() %></td>
         <td><%= exerciseGlossary.getExerciseName() %></td>
         <td><%= exerciseGlossary.getExerciseDescription() %></td>
         <td><%= exerciseGlossary.getType() %></td>

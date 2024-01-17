@@ -806,6 +806,8 @@ a {
 }
 
 .table-container {
-    max-height: 500px;
+    max-height: 81vh;
     overflow-y: auto;
+    margin-top: 12px;
+    margin-right: 4px;
 }

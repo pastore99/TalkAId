@@ -15,9 +15,9 @@
 <div class="element-home-logopedista">
     <div class="div">
         <div class="pop-up">
-                <div class="table-container" id="tableContainer">
-                    <%@ include file="patientConditionManager.jsp" %>
-                </div>
+            <div class="table-container" id="tableContainer">
+                <%@ include file="exerciseRecommendation.jsp" %>
+            </div>
         </div>
         <!--NAVBAR-->
         <div class="overlap-3">

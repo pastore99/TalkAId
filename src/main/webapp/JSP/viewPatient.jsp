@@ -140,10 +140,10 @@
 
 <script>
     function redirectToGestioneMalattie() {
-        window.location.href = 'homeModificaPatologie.jsp?userId='+<%=user_selected.getIdUser() %>;
+        window.location.href = 'homeConditionManager.jsp?userId='+<%=user_selected.getIdUser() %>;
     }
     function redirectToGestioneRaccomandazioni() {
-        window.location.href = 'exerciseRecommendation.jsp?userId='+<%=user_selected.getIdUser() %>;
+        window.location.href = 'homeExerciseRecommendation.jsp?userId='+<%=user_selected.getIdUser() %>;
     }
 </script>
  <%} %>
