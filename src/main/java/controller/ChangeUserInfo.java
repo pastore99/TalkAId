@@ -23,7 +23,7 @@ public class ChangeUserInfo extends  HttpServlet
         } else {
             risultato = "Dati personali non aggiornati, email gia' utilizzata";
         }
-        response.sendRedirect("JSP/userInfoChange.jsp?risultato=" + risultato);
+        response.sendRedirect("JSP/userArea.jsp?errorMessage=" + risultato);
     }
 
     private boolean updatePersonalInfo(HttpServletRequest request, int userId, UserRegistry userRegistry) {

@@ -1,0 +1,61 @@
+		@font-face { font-family: Georgia !important; font-display: swap !important; }
+		::-webkit-scrollbar {
+		width: 8px;
+		}
+		/* Track */
+		::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		}
+		
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		background: #888; 
+		}
+		
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		background: #555; 
+		} body {
+		background: rgb(242, 242, 242)
+		}
+		
+		.form-control:focus {
+		    box-shadow: none;
+		    border-color: #f2f2f2
+		}
+		
+		.profile-button {
+		    background: #199A8E;	/*colore del bottone*/
+		    box-shadow: none;
+		    border: none
+		}
+		
+		.profile-button:hover {
+		    background: #20c997
+		}
+		
+		.profile-button:focus {
+		    background: #f2f2f2;
+		    box-shadow: none
+		}
+		
+		.profile-button:active {
+		    background: #f2f2f2;
+		    box-shadow: none
+		}
+		
+		.back:hover {
+		    color: #f2f2f2;
+		    cursor: pointer
+		}
+		
+		.labels {
+		    font-size: 11px
+		}
+		
+		.add-experience:hover {
+		    background: #f2f2f2;
+		    color: #fff;
+		    cursor: pointer;
+		    border: solid 1px #f2f2f2
+		}

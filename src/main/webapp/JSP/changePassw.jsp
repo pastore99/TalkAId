@@ -75,6 +75,7 @@
                     {
                         if(result.toString()==="true")
                         {
+                            window.location.href = '../JSP/userArea.jsp';
                             alert("Password inserita correttamente");
                             document.querySelector(".popup").style.display = "none";
                         }else
