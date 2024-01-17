@@ -61,8 +61,8 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
     public String generateFile(InputStream inputAudio) throws IOException {
         File tempFile = createTempFile(inputAudio);
         String outputPath = getOutputPath(tempFile);
-        executeCommand(tempFile, outputPath);
         deleteExistingFile(outputPath);
+        executeCommand(tempFile, outputPath);
 
         return outputPath;
     }
@@ -94,7 +94,7 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
         }
     }
 
-    void executeCommand(File tempFile, String path) throws IOException {
+    int executeCommand(File tempFile, String path) throws IOException {
         List<String> command = Arrays.asList(
                 "ffmpeg",
                 "-i", tempFile.getPath(),
@@ -104,22 +104,26 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
                 path
         );
 
+        int exitCode = -1;
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Process process = processBuilder.start();
 
+            /*
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
-            int exitCode = process.waitFor();
+            */
+            exitCode = process.waitFor();
             if(exitCode != 0){
                 System.err.println("\nExited with error code : " + exitCode);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        return exitCode;
     }
     /*
     public String generateFile(InputStream inputAudio) throws IOException {
