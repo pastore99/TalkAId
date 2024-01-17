@@ -27,6 +27,7 @@ public class DAOExercise {
             e.printStackTrace();
         }
     }
+
     /**
      * This method extracts Exercise object data from a ResultSet
      *
@@ -51,7 +52,7 @@ public class DAOExercise {
     /**
      * Search for an Exercise by its pk in the database.
      *
-     * @param userID the id of the user that has the exercise.
+     * @param userID     the id of the user that has the exercise.
      * @param exerciseID the id of the exercise.
      * @param insertDate the date in witch the user got the exercise to do.
      * @return the Exercise if it is found, else null.
@@ -101,7 +102,7 @@ public class DAOExercise {
             stmt.setInt(1, patientId);
             ResultSet rs = stmt.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
                         rs.getString("ExerciseName"),
@@ -109,7 +110,7 @@ public class DAOExercise {
                 );
                 exercises.add(exercise);
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return exercises;
@@ -127,7 +128,7 @@ public class DAOExercise {
             stmt.setInt(1, patientId);
             ResultSet rs = stmt.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 SlimmerExercise exercise = new SlimmerExercise(
                         rs.getInt("ID_exercise"),
                         rs.getString("ExerciseName"),
@@ -135,7 +136,7 @@ public class DAOExercise {
                 );
                 exercises.add(exercise);
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return exercises;
@@ -173,7 +174,6 @@ public class DAOExercise {
 
         return exercises;
     }
-
 
 
     public Blob getExerciseExecution(int userID, int exerciseID, Date insertDate) {
@@ -316,4 +316,46 @@ public class DAOExercise {
             }
         }
     }
+
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient) {
+
+        PreparedStatement preparedStatement= null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            connection.setAutoCommit(false);  // Start a transaction
+
+
+            String query = "INSERT INTO exercise (ID_user, ID_exercise, InsertionDate, CompletionDate, Execution, Evaluation, Recommended, Feedback)\n" +
+                    "VALUES (?,?,CURRENT_DATE,NULL,NULL,NULL,2,NULL);";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, idPatient);
+            preparedStatement.setInt(2, idExercise);
+            preparedStatement.executeUpdate();
+
+            connection.commit();  // Commit the transaction
+            return true;  // User created successfully
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();  // Rollback the transaction in case of an exception
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 }

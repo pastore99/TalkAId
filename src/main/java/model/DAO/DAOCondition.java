@@ -127,20 +127,20 @@ public class DAOCondition {
 
     public boolean AddConditionPatient(int ID_condition, int ID_patient, int Severity) {
 
-        PreparedStatement preparedStatementPersonalInfo = null;
+        PreparedStatement preparedStatement = null;
 
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             connection.setAutoCommit(false);  // Start a transaction
 
-            // Insert user data into personal_info table
-            String queryAnagrafica = "INSERT INTO PatientCondition (ID_condition, ID_patient, Severity)\n" +
+
+            String query = "INSERT INTO PatientCondition (ID_condition, ID_patient, Severity)\n" +
                     "VALUES (?, ?, ?)";
-            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);
-            preparedStatementPersonalInfo.setInt(1, ID_condition);
-            preparedStatementPersonalInfo.setInt(2, ID_patient);
-            preparedStatementPersonalInfo.setInt(3, Severity);
-            preparedStatementPersonalInfo.executeUpdate();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, ID_condition);
+            preparedStatement.setInt(2, ID_patient);
+            preparedStatement.setInt(3, Severity);
+            preparedStatement.executeUpdate();
 
             connection.commit();  // Commit the transaction
             return true;  // User created successfully
@@ -157,7 +157,7 @@ public class DAOCondition {
             }
         } finally {
             try {
-                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
@@ -170,19 +170,19 @@ public class DAOCondition {
 
     public boolean RemoveConditionPatient(int ID_condition, int ID_patient) {
 
-        PreparedStatement preparedStatementPersonalInfo = null;
+        PreparedStatement preparedStatement = null;
 
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             connection.setAutoCommit(false);  // Start a transaction
 
-            // Insert user data into personal_info table
-            String queryAnagrafica = "DELETE FROM PatientCondition\n" +
+
+            String query = "DELETE FROM PatientCondition\n" +
                     "WHERE ID_condition = ? AND ID_patient = ?;";
-            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);
-            preparedStatementPersonalInfo.setInt(1, ID_condition);
-            preparedStatementPersonalInfo.setInt(2, ID_patient);
-            preparedStatementPersonalInfo.executeUpdate();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, ID_condition);
+            preparedStatement.setInt(2, ID_patient);
+            preparedStatement.executeUpdate();
 
             connection.commit();  // Commit the transaction
             return true;  // User created successfully
@@ -199,7 +199,7 @@ public class DAOCondition {
             }
         } finally {
             try {
-                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)

@@ -30,7 +30,7 @@
 %>
 <a href="homeTherapist.jsp" align="left">Home</a>
 <table border="1" align="center">
-    <caption><b>Esercizi Fatti</b></caption>
+    <caption><b>Esercizi Fatti / Già Raccomandati</b></caption>
     <thead>
     <tr>
         <th>ID</th>
@@ -77,9 +77,9 @@
         <td><%= exerciseGlossary.getType() %></td>
         <td><%= exerciseGlossary.getDifficulty()%></td>
         <td><%= exerciseGlossary.getTarget()%></td>
-        <form action="../Raccomanda" method="post">
+        <form action="../exerciseRecommendation" method="post">
             <td>
-                <input type="hidden" name="idCondition" value="<%= exerciseGlossary.getIdExercise() %>">
+                <input type="hidden" name="idExercise" value="<%= exerciseGlossary.getIdExercise() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
                 <input type="submit" value="Raccomanda" name="operation">
             </td>

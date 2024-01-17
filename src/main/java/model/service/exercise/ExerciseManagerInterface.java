@@ -81,4 +81,13 @@ public interface ExerciseManagerInterface {
      * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
      */
     public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID);
+
+    /**
+     * Raccomanda un esercizio ad un paziente
+     *
+     * @param idPatient      L'ID dell'utente.
+     * @param idExercise  L'ID dell'esercizio.
+     * @return true se la raccomandazione viene salvata con successo, false altrimenti.
+     */
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient);
 }

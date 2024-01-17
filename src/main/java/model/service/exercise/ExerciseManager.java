@@ -47,4 +47,6 @@ public class ExerciseManager implements ExerciseManagerInterface {
     public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryNotDone(userID);}
 
     public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryDone(userID);}
+
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient) { return daoE.AddExerciseRecommendation(idExercise,idPatient);}
 }
