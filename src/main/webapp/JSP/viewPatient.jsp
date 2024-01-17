@@ -117,14 +117,15 @@
                 options: {
                     scales: {
                         x: [{
-                            display: false, // Hide the x-axis
+                            display: false,
                         }],
                         y: {
                             title: {
                                 display: true,
                                 text: 'Valutazione'
                             },
-                            beginAtZero: true
+                            beginAtZero: true,
+                            max: 100
                         }
                     }
                 }

@@ -25,7 +25,12 @@ $(document).ready(function startUp() {
     showPasswordIcon.toggleClass("hiddenClass");
 
     $("#password").keypress(function(event) {
-        event.preventDefault();
+        if (event.which === 13) {
+            $("#loginButton").click()
+        }
+    })
+
+    $("#email").keypress(function(event) {
         if (event.which === 13) {
             $("#loginButton").click()
         }

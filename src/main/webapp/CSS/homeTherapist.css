@@ -15,7 +15,7 @@
 
 
 .table-container {
-  max-height: 500px;
+  max-height: 80vh;
   overflow-y: auto;
 }
 

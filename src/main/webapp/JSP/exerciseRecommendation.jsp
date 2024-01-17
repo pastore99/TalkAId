@@ -28,23 +28,23 @@
     List<ExerciseGlossary> list_Exercisedone = ExerciseService.retrieveAllPatientExerciseGlossaryDone(userId);
     List<ExerciseGlossary> list_ExerciseNOTdone = ExerciseService.retrieveAllPatientExerciseGlossaryNotDone(userId);
 %>
-<a href="homeTherapist.jsp" align="left">Home</a>
-<table border="1" align="center">
+<!--<a href="homeTherapist.jsp" align="left">Home</a>-->
+<table>
     <caption><b>Esercizi Fatti / Già Raccomandati</b></caption>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-        <th>Difficulty</th>
+        <th></th>
+        <th>Nome</th>
+        <th>Descrizione</th>
+        <th>Tipo</th>
+        <th>Difficoltà</th>
         <th>Target</th>
     </tr>
     </thead>
     <tbody>
     <% for (ExerciseGlossary exerciseGlossary : list_Exercisedone) { %>
     <tr>
-        <td><%= exerciseGlossary.getIdExercise() %></td>
+        <td>●</td>
         <td><%= exerciseGlossary.getExerciseName() %></td>
         <td><%= exerciseGlossary.getExerciseDescription() %></td>
         <td><%= exerciseGlossary.getType() %></td>
@@ -55,15 +55,15 @@
     </tbody>
 </table>
 <hr>
-<table border="1">
+<table>
     <caption><b>Raccomanda Esercizi</b></caption>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-        <th>Difficulty</th>
+        <th></th>
+        <th>Nome</th>
+        <th>Descrizione</th>
+        <th>Tipo</th>
+        <th>Difficoltà</th>
         <th>Target</th>
         <th></th>
     </tr>
@@ -71,6 +71,7 @@
     <tbody>
     <% for (ExerciseGlossary exerciseGlossary : list_ExerciseNOTdone) { %>
     <tr>
+        <td>●</td>
         <td><%= exerciseGlossary.getIdExercise() %></td>
         <td><%= exerciseGlossary.getExerciseName() %></td>
         <td><%= exerciseGlossary.getExerciseDescription() %></td>
@@ -81,7 +82,7 @@
             <td>
                 <input type="hidden" name="idExercise" value="<%= exerciseGlossary.getIdExercise() %>">
                 <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" value="Raccomanda" name="operation">
+                <input type="submit" class="button" value="Raccomanda" name="operation">
             </td>
         </form>
     </tr>
