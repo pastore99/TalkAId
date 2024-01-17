@@ -4,8 +4,12 @@ import java.sql.Date;
 
 public class SlimmerExercise {
     private int id;
+
     private String name;
+
     private Date insertionDate;
+
+    private int evaluation;
 
     private String description;
 
@@ -19,7 +23,8 @@ public class SlimmerExercise {
 
     private int userId;
 
-    public SlimmerExercise(int id, int userId, String name, String description, int feedback, Date insertionDate, int difficulty, String target, String type) {
+
+    public SlimmerExercise(int id, int userId, String name, String description, int feedback, Date insertionDate, int difficulty, String target, String type,  int evaluation) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -29,6 +34,7 @@ public class SlimmerExercise {
         this.difficulty = difficulty;
         this.target = target;
         this.type = type;
+        this.evaluation = evaluation;
     }
 
     public int getId() {
@@ -101,5 +107,14 @@ public class SlimmerExercise {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+}
+
+    public int getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(int vote) {
+        this.evaluation = evaluation;
     }
 }

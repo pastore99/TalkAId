@@ -2,14 +2,13 @@ package controller;
 
 import model.service.login.Authenticator;
 import model.service.user.UserData;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ScheduleManagerTest
@@ -48,7 +46,7 @@ public class ScheduleManagerTest
     }
 
     @Test
-    void testCreateScheduleCorrectDate() throws ServletException, IOException
+    void testCreateScheduleCorrectDate() throws IOException
     {
 
         when(request.getSession()).thenReturn(session);
@@ -67,11 +65,30 @@ public class ScheduleManagerTest
     }
 
     @Test
-    void testPrenoteScheduleDate() throws ServletException, IOException
+    void testDuplicateSchedule() throws IOException
     {
 
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("id")).thenReturn(9);
+        when(request.getParameter("action")).thenReturn("createNewSchedule");
+        when(request.getParameter("date")).thenReturn("2024-02-08");
+        when(request.getParameter("timeslot")).thenReturn("10:00-11:00");
+
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+
+        servlet.doPost(request,response);
+
+        verify(response).sendRedirect("JSP/schedule.jsp?errorMessage=Seleziona una data non esistente perfavore.");
+    }
+
+    @Test
+    void testPrenoteScheduleDate() throws IOException
+    {
+
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("id")).thenReturn(12);
         when(request.getParameter("action")).thenReturn("prenoteSchedule");
         when(request.getParameter("idTherapist")).thenReturn("9");
         when(request.getParameter("date")).thenReturn("2024-02-08");
@@ -87,12 +104,11 @@ public class ScheduleManagerTest
     }
 
     @Test
-    void testUnPrenoteScheduleDate() throws ServletException, IOException
+    void testUnPrenoteScheduleDate() throws IOException
     {
 
         when(request.getSession()).thenReturn(session);
-        when(session.getAttribute("id")).thenReturn(9);
-        when(request.getParameter("password")).thenReturn("pwd");
+        when(session.getAttribute("id")).thenReturn(12);
         when(request.getParameter("action")).thenReturn("unprenoteSchedule");
         when(request.getParameter("idTherapist")).thenReturn("9");
         when(request.getParameter("date")).thenReturn("2024-02-08");
@@ -108,12 +124,11 @@ public class ScheduleManagerTest
     }
 
     @Test
-    void testDeleteScheduleDate() throws ServletException, IOException
+    void testDeleteScheduleDate() throws IOException
     {
 
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("id")).thenReturn(9);
-        when(request.getParameter("password")).thenReturn("pwd");
         when(request.getParameter("action")).thenReturn("deleteSchedule");
         when(request.getParameter("date")).thenReturn("2024-02-08");
         when(request.getParameter("timeslot")).thenReturn("10:00-11:00");
@@ -127,9 +142,8 @@ public class ScheduleManagerTest
         verify(response).sendRedirect("JSP/schedule.jsp");
     }
 
-    /*
     @Test
-    void testCreateScheduleIncorrectDate() throws ServletException, IOException
+    void testCreateScheduleIncorrectDate() throws IOException
     {
 
         when(request.getSession()).thenReturn(session);
@@ -144,9 +158,13 @@ public class ScheduleManagerTest
 
         servlet.doPost(request,response);
 
-        verify(request, times(1)).setAttribute("errorMessage", "La data selezionata non è valida. Seleziona una data non esistente perfavore.");
-        verify(response).sendRedirect("JSP/schedule.jsp");
+        verify(response).sendRedirect("JSP/schedule.jsp?errorMessage=Seleziona una data non esistente perfavore.");
     }
-    */
+
+    @AfterAll
+    static void remove() {
+        model.service.schedule.ScheduleManager sm = new model.service.schedule.ScheduleManager();
+        sm.deleteSchedule(9, "2024-02-08", "10:00-11:00");
+    }
 
 }

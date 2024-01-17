@@ -20,6 +20,15 @@
     <title>TalkAId - Schedule Prenotazioni</title>
     <link rel="stylesheet" type="text/css" href="../CSS/schedule.css">
 </head>
+<script>
+    var nuovaData
+    function formattaData(data) {
+        var partiData = data.split("-");
+        nuovaData = partiData[2] + "/" + partiData[1];
+        return nuovaData;
+    }
+
+</script>
 <body onload="controllaPopup();">
 <div id="calendar">
     <div class="header">
@@ -80,7 +89,7 @@
         %>
         <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myprenotlog" method="post">
             <tr>
-                <th><%=schedule.getDate()%></th>
+                <th><script>document.write(formattaData('<%=schedule.getDate()%>'));</script></th>
                 <th><%=schedule.getTimeSlot()%></th>
                 <%
                     if(schedule.getReserved()==0){
@@ -134,7 +143,7 @@
         %>
         <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myschedlog" method="post">
             <tr>
-                <th><%=schedule.getDate()%></th>
+                <th><script>document.write(formattaData('<%=schedule.getDate()%>'));</script></th>
                 <th><%=schedule.getTimeSlot()%></th>
                 <%
                     if(schedule.getReserved()==0){
@@ -197,7 +206,7 @@
         <form action="<%=request.getContextPath()%>/ScheduleServlet" id="myprenotpaz" method="post">
             <tr>
                 <th><%=data.getFirstname()%> <%=data.getLastname()%></th>
-                <th><%=schedule.getDate()%></th>
+                <th><script>document.write(formattaData('<%=schedule.getDate()%>'));</script></th>
                 <th><%=schedule.getTimeSlot()%></th>
                 <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
                 <input type="hidden" name="date" value="<%=schedule.getDate()%>">
@@ -243,7 +252,7 @@
         <form action="<%=request.getContextPath()%>/ScheduleServlet" id="disprenotpaz" method="post">
             <tr>
                 <th><%=data.getFirstname()%> <%=data.getLastname()%></th>
-                <th><%=schedule.getDate()%></th>
+                <th><script>document.write(formattaData('<%=schedule.getDate()%>'));</script></th>
                 <th><%=schedule.getTimeSlot()%></th>
                 <input type="hidden"  name="idTherapist" value="<%=schedule.getIdTherapist()%>">
                 <input type="hidden" name="date" value="<%=schedule.getDate()%>">
@@ -292,6 +301,7 @@
     function chiudiPopup() {
         document.getElementById('popup').style.display = 'none';
     }
+
 </script>
 <div id="navbarContainer">
     <jsp:include page="navbar.jsp"></jsp:include>

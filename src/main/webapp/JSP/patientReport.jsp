@@ -44,7 +44,7 @@
         <div class="card">
             <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
                 <div class="eillustration-wrapper">
-                    <img class="illustration" src="../images/homepagepatient/check.png">
+                    <img class="illustration" src="../images/homepagepatient/attention.png">
 
                     <svg class="eimg" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
                         <g>
@@ -57,16 +57,20 @@
                 </div></div>
                 <div class="discovering-english"><%=exerciseGlossary.getExerciseName()%></div>
             </div></div></div>
-            <button class="button-2">Guarda errori</button>
+            <button class="button-2">Aggiungi Feedback</button>
         </div>
 
         <div class="errorcard" style="display: none;">
             <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
                 <div class="illustration-wrapper">
-                    <img class="illustration" src="../images/homepagepatient/attention.png">
+                    <img class="illustration" src="../images/homepagepatient/feedback.png">
                 </div></div>
-                <div class="discovering-english">Errori</div>
-                <div class="chapter">Errori</div>
+                <div class="imagediv">
+                    <div class="images-container">
+                        <img class="tdown" src="../images/homepagepatient/tdown.png">
+                        <img class="tup" src="../images/homepagepatient/tup.png">
+                    </div>
+                </div>
             </div></div></div>
         </div>
         <script>
@@ -76,9 +80,9 @@
     </div>
     <%
             Counter++;
-            }
         }
-        else {
+    }
+    else {
     %>
     %>
     <div class="discovering-english">Esercizi non disponibili</div>
