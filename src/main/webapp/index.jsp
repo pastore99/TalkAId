@@ -19,10 +19,22 @@
                     Il sistema, pensato per adulti responsabili, mira a rivoluzionare l'approccio inclusivo e centrato sulla persona per affrontare
                     le disabilità del linguaggio.
             </div>
-            <button class="button-2">Registrazione</button>
-            <button class="button-2">Login</button>
+            <button class="button-2" onclick="register()">Registrazione</button>
+            <button class="button-2" onclick="login()">Login</button>
         </div>
     </div>
 </div>
+
+<script>
+    function register() {
+        window.location.href = 'JSP/registration.jsp';
+    }
+
+    function login() {
+        window.location.href = 'JSP/login.jsp';
+    }
+
+</script>
+
 </body>
 </html>

@@ -9,6 +9,8 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 a {
@@ -32,6 +34,7 @@ a:hover {
 
 #loginPage{
     width: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -158,4 +161,8 @@ a:hover {
 
 #loginRegister{
     font-size: 2em;
+}
+
+.h2, h2 {
+    font-size: calc(1.325rem + .9vw);
 }
