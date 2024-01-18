@@ -28,12 +28,7 @@
 </script>
 <div class="container">
     <div class="up">
-        <div class="div_up">
-            <img src="../Image/pngwing.com.png" id="back">
-            <h2>Report del vostro progresso</h2>
-        </div>
     </div>
-    <img src="../Image/profilo_utente.png" id="paziente">
     <div class="down">
 <div class="container">
     <div class="margin20">

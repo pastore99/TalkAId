@@ -44,6 +44,7 @@
             <div class="margin20">
                 <div class="navigation-title">
                     <div class="current-lesson">Esercizi Non Completati</div>
+                    <button onclick="goProgress()" class="buttons">Guarda Progressi</button>
                 </div>
             </div>
             <div class="cards">
@@ -147,6 +148,11 @@
     function goReport() {
         window.location.href = "patientReport.jsp";
     }
+
+    function goProgress(){
+        window.location.href = "userReport.jsp";
+    }
+
 
     $(document).ready(function() {
         $("#openAll").click(function () {

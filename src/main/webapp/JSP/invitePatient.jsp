@@ -39,7 +39,7 @@
         <br>
         <br>
         <button type="submit" value="Invite" id="InviteButton">Invita</button>
-        <a id="return" href="" onclick="hideInvite()"> < Torna alla home</a>
+        <a id="return" onclick="hideInvite()"> < Torna alla home</a>
     </form>
 </div>
 <script>
