@@ -2,6 +2,7 @@ package controller;
 
         import model.service.condition.ConditionManager;
         import model.service.exercise.ExerciseManager;
+        import model.service.message.MessageManager;
 
         import javax.servlet.annotation.WebServlet;
         import javax.servlet.http.HttpServlet;
@@ -21,6 +22,8 @@ public class exerciseRecommendation extends HttpServlet {
         int idPatient = Integer.parseInt(request.getParameter("idPatient"));
 
         exerciseService.AddExerciseRecommendation(idExercise,idPatient);
+
+        new MessageManager().sendMessage(0,idPatient,"Hai un nuovo esercizio da fare");
 
         response.sendRedirect(referer);
 
