@@ -7,11 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/view_patient.css" />
-    <title>Paziente Selezionato</title>
+    <title>TalkAId - Pagina Paziente</title>
 
 </head>
 <body>

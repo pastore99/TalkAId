@@ -14,11 +14,12 @@
         int userId = (Integer) session.getAttribute("id");
 %>
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homepagepatient.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <title>TalkAId - I tuoi risultati</title>
 </head>
 <body>
 

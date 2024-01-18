@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Testing Invitation and License</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
+    <title>TalkAId - Testing Invitation and License</title>
     <%
         String license = (String) request.getAttribute("license");
         String invitation = (String) request.getAttribute("invitation");

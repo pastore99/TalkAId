@@ -9,7 +9,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homeTherapistGuide.css" />
     <link rel="stylesheet" href="../CSS/homeTherapist.css" />
-    <title>Home</title>
+    <title>TalkAId - Homepage</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
 </head>
 <body>
 <div class="element-home-logopedista">
