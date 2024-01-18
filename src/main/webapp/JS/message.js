@@ -37,7 +37,9 @@ setInterval(function(){
                 count = response;
             if(count > 0 && response > count){
                 count = response;
-                alert('Hai dei nuovi messaggi, ricarica la pagina per visualizzarli.');
+                if($("#inputText").val().trim() === ""){
+                    location.reload();
+                }
             }
         }
     });

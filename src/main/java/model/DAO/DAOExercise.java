@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.entity.Exercise;
+import model.entity.ExerciseGlossary;
 import model.entity.Schedule;
 import model.entity.SlimmerExercise;
 
@@ -153,6 +154,39 @@ public class DAOExercise {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+        return exercises;
+    }
+
+    public List<Exercise> retrieveAllPatientExerciseDone(int userID) {
+        String query = "SELECT * FROM exercise WHERE ID_user = ? AND CompletionDate IS NOT NULL ORDER BY InsertionDate DESC;";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Exercise> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Exercise exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         return exercises;
     }
 
@@ -332,6 +366,48 @@ public class DAOExercise {
             }
         }
     }
+
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient) {
+
+        PreparedStatement preparedStatement= null;
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            connection.setAutoCommit(false);  // Start a transaction
+
+
+            String query = "INSERT INTO exercise (ID_user, ID_exercise, InsertionDate, CompletionDate, Execution, Evaluation, Recommended, Feedback)\n" +
+                    "VALUES (?,?,CURRENT_DATE,NULL,NULL,NULL,2,NULL);";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, idPatient);
+            preparedStatement.setInt(2, idExercise);
+            preparedStatement.executeUpdate();
+
+            connection.commit();  // Commit the transaction
+            return true;  // User created successfully
+
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();  // Rollback the transaction in case of an exception
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 
     public List<SlimmerExercise> getExerciseToApprove(int therapistId){
         List<SlimmerExercise> exercises = new ArrayList<>();
