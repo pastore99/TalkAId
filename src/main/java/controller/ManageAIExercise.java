@@ -15,6 +15,7 @@ import java.io.IOException;
 public class ManageAIExercise extends HttpServlet
 {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String referer = request.getHeader("Referer");
         String action = request.getParameter("action");
         ExerciseManager em = new ExerciseManager();
         Gson g = new Gson();
@@ -31,6 +32,6 @@ public class ManageAIExercise extends HttpServlet
             }
             em.changeMultipleReccomandation(action, Integer.parseInt(request.getParameter("userId")));
         }
-        response.sendRedirect(request.getHeader("Referer"));
+        response.sendRedirect(referer);
     }
 }
