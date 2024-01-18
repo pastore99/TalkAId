@@ -64,7 +64,7 @@ public class Login extends HttpServlet {
         else {
             session.setAttribute("type", "therapist");
             session.setAttribute("surname", personalInfo.getLastname());
-            return "JSP/homeTherapist.jsp";
+            return "JSP/homepageTherapist.jsp";
         }
     }
 }

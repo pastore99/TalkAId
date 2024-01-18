@@ -33,6 +33,10 @@ public class ExerciseManager implements ExerciseManagerInterface {
         return daoE.setExerciseEvaluation(userID, exerciseId, insertDate, evaluation);
     }
 
+    public List<Exercise> retrieveAllPatientExerciseDone(int userID){
+        return daoE.retrieveAllPatientExerciseDone(userID);
+    }
+
     public List<Exercise> retrievePatientExerciseDone(int patientID) {
         return daoE.retrievePatientExerciseDone(patientID);
     }
@@ -69,4 +73,10 @@ public class ExerciseManager implements ExerciseManagerInterface {
     {
         return daoE.retrieveAllStatsPatientExerciseDone(id);
     }
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryNotDone(userID);}
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryDone(userID);}
+
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient) { return daoE.AddExerciseRecommendation(idExercise,idPatient);}
 }

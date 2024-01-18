@@ -85,4 +85,71 @@ public class DAOExerciseGlossary {
 
         return null;
     }
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID) {
+        String query = "SELECT eg.* FROM exercise_glossary eg LEFT JOIN exercise e ON eg.ID_exercise = e.ID_exercise AND e.ID_user = ? WHERE e.ID_user IS NULL;\n";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<ExerciseGlossary> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                ExerciseGlossary exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
+    }
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID) {
+        String query = "SELECT eg.* FROM exercise_glossary eg JOIN exercise e ON eg.ID_exercise = e.ID_exercise\n" +
+                        "WHERE e.ID_user = ?;\n";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<ExerciseGlossary> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                ExerciseGlossary exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return exercises;
+    }
 }

@@ -43,6 +43,13 @@ public interface ExerciseManagerInterface {
      */
     public boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation);
 
+    /**
+     * Recupera una lista di tutti gli esercizi fatti da un paziente specifico.
+     *
+     * @param userID L'ID del paziente.
+     * @return Una lista di oggetti Exercise che rappresentano gli esercizi fatti dal paziente.
+     */
+    public List<Exercise> retrieveAllPatientExerciseDone(int userID);
 
     /**
      * Recupera una lista di esercizi che un paziente ha già fatto.
@@ -74,4 +81,29 @@ public interface ExerciseManagerInterface {
      * @return Una Map con chiave il tipo di esercizio e valore la percentaule di esercizi fatti rispetto a quelli non fatti.
      */
     public Map<String,Integer> retrieveAllStats(int id);
+
+    /**
+     * Recupera una lista delle info degli esercizi che un paziente non ha ancora fatto.
+     *
+     * @param userID L'ID del paziente.
+     * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
+     */
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID);
+
+    /**
+     * Recupera una lista delle info degli esercizi che un paziente ha fatto.
+     *
+     * @param userID L'ID del paziente.
+     * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
+     */
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID);
+
+    /**
+     * Raccomanda un esercizio ad un paziente
+     *
+     * @param idPatient      L'ID dell'utente.
+     * @param idExercise  L'ID dell'esercizio.
+     * @return true se la raccomandazione viene salvata con successo, false altrimenti.
+     */
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient);
 }
