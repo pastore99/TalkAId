@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/AddRemovePatientCondition")
 public class AddRemovePatientCondition extends HttpServlet {
-
+//mammt
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
         ConditionManager conditionService= new ConditionManager();

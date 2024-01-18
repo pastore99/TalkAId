@@ -79,7 +79,7 @@
                 }
                 else {
                 %>
-                %>
+
                 <div class="discovering-english">Esercizi non disponibili</div>
                 <%
                     }
@@ -129,7 +129,7 @@
                 }
                 else {
                 %>
-                %>
+
                 <div class="discovering-english">Esercizi non disponibili</div>
                 <%
                     }

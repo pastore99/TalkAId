@@ -2,6 +2,7 @@
 <%@ page import="model.entity.Exercise" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.entity.ExerciseGlossary" %>
+<%@ page import="model.entity.SlimmerExercise" %>
 <!DOCTYPE html>
 <html lang="it" style="background-color: #f7fcff; ">
 <%
@@ -34,12 +35,10 @@
 
     <%
         ExerciseManager exerciseManager = new ExerciseManager();
-        List<Exercise> list = exerciseManager.retrieveAllPatientExerciseDone(userId);
-        ExerciseGlossary exerciseGlossary = new ExerciseGlossary();
+        List<SlimmerExercise> list = exerciseManager.retrieveDoneExercises(userId);
         if(!list.isEmpty()){
             int Counter = 0;
-            for(Exercise exercise : list) {
-                exerciseGlossary = exerciseManager.getExercise(exercise.getIdExercise());
+            for(SlimmerExercise exerciseGlossary : list) {
     %>
     <div class="margin20">
         <div class="card">
@@ -51,12 +50,12 @@
                         <g>
                             <title>Layer 1</title>
                             <circle id="circle_animation<%=Counter%>" class="circle_animation" r="69.85699" cy="81" cx="81" stroke-width="8" stroke="#6fdb6f" fill="none"></circle>
-                            <text x="81" y="81" font-size="30" text-anchor="middle" dominant-baseline="middle" fill="green"><%=exercise.getEvaluation()%>%</text>
+                            <text x="81" y="81" font-size="30" text-anchor="middle" dominant-baseline="middle" fill="green"><%=list.get(Counter).getEvaluation()%>%</text>
                         </g>
                     </svg>
 
                 </div></div>
-                <div class="discovering-english"><%=exerciseGlossary.getExerciseName()%></div>
+                <div class="discovering-english"><%=exerciseGlossary.getName()%></div>
             </div></div></div>
             <button class="button-2">Aggiungi Feedback</button>
         </div>
@@ -75,7 +74,7 @@
             </div></div></div>
         </div>
         <script>
-            varcalc= (440 / 100 * <%=exercise.getEvaluation()%>)+440;
+            varcalc= (440 / 100 * <%=list.get(Counter).getEvaluation()%>)+440;
             document.querySelector('#circle_animation<%=Counter%>').style.strokeDashoffset = varcalc; // 50%
         </script>
     </div>
