@@ -14,6 +14,8 @@
         int userId = (Integer) session.getAttribute("id");
 %>
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
+    <title>TalkAId - Report Totale</title>
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
     <link href="../CSS/userReport.css" type="text/css" rel = "stylesheet">

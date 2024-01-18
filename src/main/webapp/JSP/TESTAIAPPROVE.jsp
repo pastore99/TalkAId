@@ -10,7 +10,8 @@
 
 <html>
 <head>
-    <title>TESTING</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
+    <title>TalkAId - Ai testing</title>
 </head>
 <body>
 
