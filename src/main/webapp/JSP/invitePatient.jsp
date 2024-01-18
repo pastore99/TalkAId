@@ -39,9 +39,15 @@
         <br>
         <br>
         <button type="submit" value="Invite" id="InviteButton">Invita</button>
-        <a id="return" href="homeTherapist.jsp"> < Torna alla home</a>
+        <a id="return" href="#" onclick="hideInvite()"> < Torna alla home</a>
     </form>
 </div>
+<script>
+    function hideInvite(){
+        $("#invitePopup").hide();
+    }
+</script>
+
 <link rel="stylesheet" href="../CSS/invitePatient.css">
 </body>
 </html>
