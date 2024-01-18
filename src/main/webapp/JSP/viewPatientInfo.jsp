@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../CSS/homepageTherapist.css" />
     <link rel="stylesheet" href="../CSS/viewPatientInfo.css" />
+    <link rel="stylesheet" href="../CSS/RecommendationAndConditionManager.css" />
     <meta charset="utf-8" />
     <title>Paziente Selezionato</title>
 </head>
@@ -23,7 +24,7 @@
         </div>
         <div id="navIcons">
             <div id="home">
-                <img src="../images/homeSelected.svg" alt="homeImg" id="homeIcon">
+                <img src="../images/home.svg" alt="homeImg" id="homeIcon">
             </div>
             <div id="message">
                 <img src="../images/message.svg" alt="messageImg" id="messageIcon">
@@ -31,8 +32,8 @@
             <div id="agenda">
                 <img src="../images/calendar.svg" alt="homeImg" id="agendaIcon">
             </div>
-            <div id="profile">
-                <img src="../images/profile.svg" alt="homeImg" id="profileIcon">
+            <div id="goBack" onclick="showPatient()">
+                <img src="../images/backIcon.svg" alt="backImg" id="goBackIcon">
             </div>
         </div>
         <div id="docInfo">
@@ -45,10 +46,18 @@
         </div>
     </div>
 
-
-
     <div id="rightHalf">
         <div id="bottomHalf" class="roundedWhite">
+            <div id="conditionsDiv" style="display: none;">
+                <div class="scrollableDiv">
+                    <%@ include file="patientConditionManager.jsp" %>
+                </div>
+            </div>
+            <div id="exercisesDiv" style="display: none;">
+                <div class="scrollableDiv">
+                    <%@include file="exerciseRecommendation.jsp" %>
+                </div>
+            </div>
             <div id="content">
                 <div id="patientInfo">
                     <%
@@ -85,10 +94,10 @@
                 <div id="moreInfo">
                     <div id="buttonDivs">
                         <div id="patientCondition">
-                            <button>Modifica patologie</button> <%//TODO: cambia content%>
+                            <button onclick="showCondition()">Modifica patologie</button>
                         </div>
                         <div id="exerciseManager">
-                            <button>Raccomanda Esercizio</button> <%//TODO: cambia content%>
+                            <button onclick="showExercises()">Raccomanda Esercizio</button>
                         </div>
                     </div>
                         <%
@@ -144,22 +153,10 @@
                         %>
                 </div>
             </div>
-            <script>
-                $(document).ready(()=>{
-                    var canvas = document.getElementById('myChart');
-                    var parentContainer = canvas.parentNode;
-
-                    canvas.width = parentContainer.offsetWidth;
-                    canvas.height = parentContainer.offsetHeight;
-                })
-                function redirectToGestioneMalattie() {
-                    window.location.href = 'patientConditionManager.jsp?userId='+<%=user_selected.getIdUser() %>;
-                }
-            </script>
             <%} %>
             </div>
         </div>
     </div>
 </body>
-<script src="../JS/homepageTherapist.js"></script>
+<script src="../JS/viewPatientInfo.js"></script>
 </html>

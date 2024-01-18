@@ -1,38 +1,28 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.entity.Condition" %>
 <%@ page import="model.service.condition.ConditionManager" %>
-<%@ page import="model.entity.Schedule" %>
-<%@ page import="model.entity.UserInfo" %>
-<%@ page import="model.entity.User" %>
 <%@ page import="model.service.user.UserData" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <link rel="icon" href="../images/siteIco.png" type="image/png">
-    <title>Patologie</title>
-    <link rel="stylesheet" href="../CSS/RecommendationAndConditionManager.css" />
-</head>
 <body>
 <%
-    int userId = 0;
-    if(session.getAttribute("type")!=null && !session.getAttribute("type").equals("therapist") || request.getParameter("userId")==null) {
+    int patientIdCM = 0;
+    if(session.getAttribute("type")==null || !session.getAttribute("type").equals("therapist") ||  request.getParameter("patientID") == null) {
         response.sendRedirect("../errorPage/403.html");
     }else {
-        userId = Integer.parseInt((request.getParameter("userId")));
+        patientIdCM = Integer.parseInt(request.getParameter("patientID"));
 
-        int  userTherapist = new UserData().getUser(userId).getIdTherapist();
-        if (userTherapist != (Integer) session.getAttribute("id")) {
+        User user = new UserData().getUser(patientIdCM);
+        if (user.getIdTherapist() != (Integer) session.getAttribute("id")) {
             response.sendRedirect("../errorPage/403.html");
         }
     }
 
-
     ConditionManager ConditionService= new ConditionManager();
 
-    ArrayList<Condition> list_PatientCondition = ConditionService.getConditionsOfPatient(userId);
-    ArrayList<Condition> list_NOTPatientCondition = ConditionService.getConditionsNOTOfPatient(userId);
+    ArrayList<Condition> list_PatientCondition = ConditionService.getConditionsOfPatient(patientIdCM);
+    ArrayList<Condition> list_NOTPatientCondition = ConditionService.getConditionsNOTOfPatient(patientIdCM);
 %>
-<!--<a href="homeTherapist.jsp" align="left">Home</a>-->
 <table>
     <caption><b>Patologie del paziente</b></caption>
     <thead>
@@ -54,8 +44,8 @@
         <td>
             <form action="../AddRemovePatientCondition" method="post">
                 <input type="hidden" name="idCondition" value="<%= condition.getIdCondition() %>">
-                <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" class="buttonLay" value="Rimuovi" name="operation">
+                <input type="hidden" name="idPatient" value="<%= patientIdCM %>">
+                <input type="submit" class="buttonRemove" value="Rimuovi" name="operation">
             </form>
         </td>
     </tr>
@@ -84,8 +74,8 @@
             <td><input type="number" class="input-number" name="severity" min="1" max="10" value="1"></td>
             <td>
                 <input type="hidden" name="idCondition" value="<%= condition.getIdCondition() %>">
-                <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" class="buttonLay" value="Aggiungi" name="operation">
+                <input type="hidden" name="idPatient" value="<%= patientIdCM %>">
+                <input type="submit" class="buttonApprove" value="Aggiungi" name="operation">
             </td>
         </form>
     </tr>

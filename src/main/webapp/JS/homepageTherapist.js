@@ -1,8 +1,12 @@
 $(document).ready(function () {
-    $("#home").click(() => redirect("homepageTherapist.jsp"));
+    $("#iaIconSelected").hide();
+    $("#homeIcon").hide();
+
+    $("#home").click(() => redirect("home"));
     $("#message").click(() => redirect("messageCenter.jsp"));
     $("#agenda").click(() => redirect("schedule.jsp"));
-    $("#profile").click(() => redirect("userArea.jsp"));
+    $("#ia").click(() => redirect("AI"));
+    $("#docInfo").click(() => redirect("userArea.jsp"));
 
 
     let tableContainer = $("#tableContainer");
@@ -28,6 +32,24 @@ $(document).ready(function () {
     });
 });
 
+function showAI(){
+    $("#homeSelectedIcon").hide();
+    $("#homeIcon").show()
+    $("#aiContainer").show();
+    $("#tableContainer").hide();
+    $("#iaIcon").hide();
+    $("#iaIconSelected").show();
+}
+
+function hideAI(){
+    $("#homeSelectedIcon").show();
+    $("#homeIcon").hide()
+    $("#aiContainer").hide();
+    $("#tableContainer").show();
+    $("#iaIcon").show();
+    $("#iaIconSelected").hide();
+}
+
 
 
 function openInvitePopup() {
@@ -40,5 +62,17 @@ function viewPatient(i){
 
 
 function redirect(where){
-    window.location.href = where;
+    if(where==="AI" || where === "home"){
+        let path = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+        console.log(path);
+        if(path!=="homepageTherapist.jsp"){
+            window.location.href = "homepageTherapist.jsp";
+        }else if(where==="AI"){
+            showAI();
+        }else if(where === "home"){
+            hideAI();
+        }
+    }else{
+        window.location.href = where;
+    }
 }

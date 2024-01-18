@@ -1,34 +1,27 @@
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="model.service.condition.ConditionManager" %>
 <%@ page import="model.service.user.UserData" %>
 <%@ page import="model.service.exercise.ExerciseManager" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.entity.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Raccomanda Esercizio</title>
-    <link rel="stylesheet" href="../CSS/RecommendationAndConditionManager.css" />
-</head>
 <body>
 <%
-    int userId = 0;
-    if(session.getAttribute("type")!=null && !session.getAttribute("type").equals("therapist") || request.getParameter("userId")==null) {
+    int patientIdEX = 0;
+    if(session.getAttribute("type")==null || !session.getAttribute("type").equals("therapist") ||  request.getParameter("patientID") == null) {
         response.sendRedirect("../errorPage/403.html");
     }else {
-        userId = Integer.parseInt((request.getParameter("userId")));
+        patientIdEX = Integer.parseInt(request.getParameter("patientID"));
 
-        int  userTherapist = new UserData().getUser(userId).getIdTherapist();
-        if (userTherapist != (Integer) session.getAttribute("id")) {
+        User user = new UserData().getUser(patientIdEX);
+        if (user.getIdTherapist() != (Integer) session.getAttribute("id")) {
             response.sendRedirect("../errorPage/403.html");
         }
     }
     ExerciseManager ExerciseService= new ExerciseManager();
 
-    List<ExerciseGlossary> list_Exercisedone = ExerciseService.retrieveAllPatientExerciseGlossaryDone(userId);
-    List<ExerciseGlossary> list_ExerciseNOTdone = ExerciseService.retrieveAllPatientExerciseGlossaryNotDone(userId);
+    List<ExerciseGlossary> list_Exercisedone = ExerciseService.retrieveAllPatientExerciseGlossaryDone(patientIdEX);
+    List<ExerciseGlossary> list_ExerciseNOTdone = ExerciseService.retrieveAllPatientExerciseGlossaryNotDone(patientIdEX);
 %>
-<!--<a href="homeTherapist.jsp" align="left">Home</a>-->
 <table>
     <caption><b>Esercizi Fatti / Già Raccomandati</b></caption>
     <thead>
@@ -80,8 +73,8 @@
         <form action="../exerciseRecommendation" method="post">
             <td>
                 <input type="hidden" name="idExercise" value="<%= exerciseGlossary.getIdExercise() %>">
-                <input type="hidden" name="idPatient" value="<%= userId %>">
-                <input type="submit" class="buttonLay" value="Raccomanda" name="operation">
+                <input type="hidden" name="idPatient" value="<%= patientIdEX %>">
+                <input type="submit" class="buttonApprove" value="Raccomanda" name="operation">
             </td>
         </form>
     </tr>

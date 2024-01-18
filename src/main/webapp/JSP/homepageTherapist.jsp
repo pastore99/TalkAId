@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <title>Homepage</title>
 </head>
 <body>
@@ -15,7 +16,8 @@
             </div>
             <div id="navIcons">
                 <div id="home">
-                    <img src="../images/homeSelected.svg" alt="homeImg" id="homeIcon">
+                    <img src="../images/homeSelected.svg" alt="homeImg" id="homeSelectedIcon">
+                    <img src="../images/home.svg" alt="homeImg" id="homeIcon">
                 </div>
                 <div id="message">
                     <img src="../images/message.svg" alt="messageImg" id="messageIcon">
@@ -23,8 +25,9 @@
                 <div id="agenda">
                     <img src="../images/calendar.svg" alt="homeImg" id="agendaIcon">
                 </div>
-                <div id="profile">
-                    <img src="../images/profile.svg" alt="homeImg" id="profileIcon">
+                <div id="ia">
+                    <img src="../images/AI.png" alt="iaIcon" id="iaIcon">
+                    <img src="../images/AISelected.png" alt="iaIcon" id="iaIconSelected">
                 </div>
             </div>
             <div id="docInfo">
@@ -53,8 +56,13 @@
             </div>
             <div id="bottomHalf" class="roundedWhite">
                 <div id="content">
+
+                    <div id="aiContainer">
+                        <%@include file="aiApprove.jsp" %>
+                    </div>
+
                     <div id="tableContainer">
-                        <div id="scrollableDiv">
+                        <div class="scrollableDiv">
                             <table>
                                 <thead class="table-header">
                                 <tr>
@@ -99,6 +107,7 @@
 </body>
 
 <link rel="stylesheet" href="../CSS/homepageTherapist.css" />
+<link rel="stylesheet" href="../CSS/acceptanceExercisesAI.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
 <script src="../JS/homepageTherapist.js"></script>
 </html>

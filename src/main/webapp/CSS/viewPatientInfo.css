@@ -47,3 +47,13 @@
     height: 90%;
     width: 90%;
 }
+
+#exercisesDiv, #conditionsDiv{
+    max-height: 90%;
+    overflow: auto;
+}
+
+
+
+
+

@@ -15,7 +15,7 @@
 }
 
 
-table {
+#aiContent table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -25,7 +25,7 @@ table {
 }
 
 
-th, td {
+#aiContent th, td {
     padding: 10px;
     text-align: center;
 }
