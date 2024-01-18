@@ -7,6 +7,7 @@ import model.entity.SlimmerExercise;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ExerciseManagerInterface {
 
@@ -66,4 +67,11 @@ public interface ExerciseManagerInterface {
      */
     public List<SlimmerExercise> retrieveNotDoneExercises(int patientId);
 
+    /**
+     * Recupera i dati riguardanti gli esercizi proposti dal paziente all'utente.
+     *
+     * @param id L'ID del paziente.
+     * @return Una Map con chiave il tipo di esercizio e valore la percentaule di esercizi fatti rispetto a quelli non fatti.
+     */
+    public Map<String,Integer> retrieveAllStats(int id);
 }
