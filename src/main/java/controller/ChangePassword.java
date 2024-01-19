@@ -13,6 +13,7 @@ import java.io.IOException;
 @WebServlet("/ChangePassword")
 public class ChangePassword extends HttpServlet
 {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
             String password = request.getParameter("password");

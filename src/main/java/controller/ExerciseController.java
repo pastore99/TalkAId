@@ -13,6 +13,7 @@ import java.sql.Date;
 
 @WebServlet("/exerciseController")
 public class ExerciseController extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ExerciseManager em = new ExerciseManager();
         String id = request.getParameter("exerciseID");

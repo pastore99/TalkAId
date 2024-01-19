@@ -18,6 +18,7 @@ import java.util.List;
 
 @WebServlet("/GetMessages")
 public class GetSendMessages extends HttpServlet {
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
@@ -52,6 +53,7 @@ public class GetSendMessages extends HttpServlet {
         response.getWriter().write(jsonArray.toString());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         try {

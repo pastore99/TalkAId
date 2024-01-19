@@ -22,6 +22,7 @@ import java.sql.SQLException;
         maxFileSize=1024*1024*50,      // 50 MB
         maxRequestSize=1024*1024*100)  // 100 MB
 public class ExerciseLogger extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String contentType = request.getContentType();
         if ("application/json".equals(contentType)) {

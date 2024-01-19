@@ -8,6 +8,7 @@ import java.io.IOException;
 
 @WebServlet("/ScheduleServlet")
 public class ScheduleManager extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = (Integer) request.getSession().getAttribute("id");
         response.getWriter().append("Served at: ").append(request.getContextPath());

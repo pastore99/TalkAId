@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/exerciseRecommendation")
 public class exerciseRecommendation extends HttpServlet {
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
         ExerciseManager exerciseService= new ExerciseManager();

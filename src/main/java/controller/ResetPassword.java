@@ -11,6 +11,7 @@ import java.io.IOException;
 @WebServlet("/login/resetpassword")
 public class ResetPassword extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

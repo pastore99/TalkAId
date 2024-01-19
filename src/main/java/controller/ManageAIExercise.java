@@ -14,6 +14,7 @@ import java.io.IOException;
 @WebServlet("/ManageExercise")
 public class ManageAIExercise extends HttpServlet
 {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String referer = request.getHeader("Referer");
         String action = request.getParameter("action");

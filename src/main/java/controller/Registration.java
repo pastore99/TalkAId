@@ -15,6 +15,7 @@ import java.io.IOException;
 @WebServlet("/register")
 
 public class Registration extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("text/html");
@@ -47,6 +48,7 @@ public class Registration extends HttpServlet {
         session.setAttribute("surname", "Selenium");
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UserData ud = new UserData();
         HttpSession session = request.getSession();

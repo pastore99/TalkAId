@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
         this.userData = new UserData();
         this.userReg = new UserRegistry();
     }
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 

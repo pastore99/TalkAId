@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/login/reset")
 public class SendResetPin extends HttpServlet {
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         UserData checker = new UserData();

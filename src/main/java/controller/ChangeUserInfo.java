@@ -13,6 +13,7 @@ import java.io.IOException;
 @WebServlet("/changeDate")
 public class ChangeUserInfo extends  HttpServlet
 {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
@@ -25,6 +26,7 @@ public class ChangeUserInfo extends  HttpServlet
         }
         response.sendRedirect("JSP/userArea.jsp?errorMessage=" + risultato);
     }
+
 
     private boolean updatePersonalInfo(HttpServletRequest request, int userId, UserRegistry userRegistry) {
         String firstName = request.getParameter("firstname");

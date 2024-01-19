@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/invitePatient")
 public class InvitePatient extends HttpServlet {
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         model.service.registration.Registration registration=new Registration();

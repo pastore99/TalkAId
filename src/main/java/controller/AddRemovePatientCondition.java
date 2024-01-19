@@ -11,7 +11,8 @@ import java.io.IOException;
 
 @WebServlet("/AddRemovePatientCondition")
 public class AddRemovePatientCondition extends HttpServlet {
-//mammt
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
         ConditionManager conditionService= new ConditionManager();
@@ -33,5 +34,4 @@ public class AddRemovePatientCondition extends HttpServlet {
         response.sendRedirect(referer);
 
     }
-
 }
