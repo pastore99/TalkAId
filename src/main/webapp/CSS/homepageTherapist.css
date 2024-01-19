@@ -166,6 +166,8 @@ tr.hoverable-row:hover {
 }
 
 .tdButton{
+    border: none;
+    background: none;
     cursor: pointer;
     color: deepskyblue;
 }

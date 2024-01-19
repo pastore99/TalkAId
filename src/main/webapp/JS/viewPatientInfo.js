@@ -1,14 +1,14 @@
 $(document).ready(function () {
-    let canvas = document.getElementById('myChart');
-    let parentContainer = canvas.parentNode;
+    let canvasDiv = $("#myChart");
+    let parentContainer = canvasDiv.parent();
 
     $("#home").click(() => redirect("homepageTherapist.jsp"));
     $("#message").click(() => redirect("messageCenter.jsp"));
     $("#agenda").click(() => redirect("schedule.jsp"));
     $("#docInfo").click(() => redirect("userArea.jsp"));
 
-    canvas.width = parentContainer.offsetWidth;
-    canvas.height = parentContainer.offsetHeight;
+    canvasDiv.width(parentContainer.width());
+    canvasDiv.height(parentContainer.height());
 })
 
 function showExercises(){
