@@ -111,6 +111,7 @@ public class EmailManager implements EmailManagerInterface{
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.ssl.checkserveridentity", "true");
         return props;
     }
 }
