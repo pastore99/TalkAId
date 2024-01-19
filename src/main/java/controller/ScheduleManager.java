@@ -11,7 +11,12 @@ public class ScheduleManager extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = (Integer) request.getSession().getAttribute("id");
-        response.getWriter().append("Served at: ").append(request.getContextPath());
+        try{
+            response.getWriter().append("Served at: ").append(request.getContextPath());
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
         String action = request.getParameter("action");
         model.service.schedule.ScheduleManager scheduleManager = new model.service.schedule.ScheduleManager();
 
@@ -50,10 +55,8 @@ public class ScheduleManager extends HttpServlet {
                 // Gestisci il caso in cui "action" non sia presente nella richiesta
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
             }
-    } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    } catch (NumberFormatException | IOException e) {
+            e.printStackTrace();
         }
     }
 }

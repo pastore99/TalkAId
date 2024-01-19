@@ -18,13 +18,17 @@ public class ChangeUserInfo extends  HttpServlet
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
         UserRegistry userRegistry = new UserRegistry();
-        String risultato = "";
+        String risultato;
         if (updatePersonalInfo(request, userId, userRegistry)) {
             risultato = "Dati personali aggiornati con successo;";
         } else {
             risultato = "Dati personali non aggiornati, email gia' utilizzata";
         }
-        response.sendRedirect("JSP/userArea.jsp?errorMessage=" + risultato);
+        try {
+            response.sendRedirect("JSP/userArea.jsp?errorMessage=" + risultato);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
 

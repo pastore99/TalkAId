@@ -11,21 +11,27 @@ import java.io.IOException;
 
 
 @WebServlet("/exerciseRecommendation")
-public class exerciseRecommendation extends HttpServlet {
+public class ExerciseRecommendation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
         ExerciseManager exerciseService= new ExerciseManager();
 
-        int idExercise = Integer.parseInt(request.getParameter("idExercise"));
-        int idPatient = Integer.parseInt(request.getParameter("idPatient"));
-
+        int idExercise = 0;
+        int idPatient = 0;
+        try{
+            idExercise = Integer.parseInt(request.getParameter("idExercise"));
+            idPatient = Integer.parseInt(request.getParameter("idPatient"));
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
         exerciseService.AddExerciseRecommendation(idExercise,idPatient);
-
         new MessageManager().sendMessage(0,idPatient,"Hai un nuovo esercizio da fare");
-
-        response.sendRedirect(referer);
-
+        try{
+            response.sendRedirect(referer);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
 }

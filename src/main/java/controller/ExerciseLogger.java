@@ -25,13 +25,22 @@ public class ExerciseLogger extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String contentType = request.getContentType();
-        if ("application/json".equals(contentType)) {
-            handleNoAudioExercise(request);
-        } else {
-            handleAudioExercise(request);
+        try{
+            if ("application/json".equals(contentType)) {
+                handleNoAudioExercise(request);
+            } else {
+                handleAudioExercise(request);
+            }
+        }catch(ServletException | IOException e){
+            e.printStackTrace();
         }
+
         RequestDispatcher d = request.getRequestDispatcher("/exerciseEvaluator");
-        d.forward(request, response);
+        try{
+            d.forward(request, response);
+        }catch(ServletException | IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void handleNoAudioExercise(HttpServletRequest request) throws IOException {

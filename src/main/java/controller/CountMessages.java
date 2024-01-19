@@ -13,15 +13,17 @@ import java.io.IOException;
 public class CountMessages extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         int recipientId = (int) session.getAttribute("id");
         MessageManager messageManager = new MessageManager();
         int receivedMessageCount = messageManager.countReceivedMessages(recipientId);
 
         response.setContentType("text/plain");  // Output is a plain text integer
-        response.getWriter().println(receivedMessageCount);
+        try{
+            response.getWriter().println(receivedMessageCount);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
-
 }

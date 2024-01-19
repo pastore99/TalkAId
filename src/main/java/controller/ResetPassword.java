@@ -22,7 +22,11 @@ public class ResetPassword extends HttpServlet {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         if(authenticator.resetPassword(email, password)){
-            response.getWriter().write("Password cambiata con successo!");
+            try{
+                response.getWriter().write("Password cambiata con successo!");
+            }catch(IOException e){
+                e.printStackTrace();
+            }
         }
     }
 }

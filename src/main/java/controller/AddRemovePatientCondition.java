@@ -16,9 +16,15 @@ public class AddRemovePatientCondition extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
         ConditionManager conditionService= new ConditionManager();
+        int idPatient = 0;
+        int idCondition = 0;
+        try{
+            idPatient = Integer.parseInt(request.getParameter("idPatient"));
+            idCondition = Integer.parseInt(request.getParameter("idCondition"));
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
 
-        int idPatient = Integer.parseInt(request.getParameter("idPatient"));
-        int idCondition = Integer.parseInt(request.getParameter("idCondition"));
 
         String operation= request.getParameter("operation");
         if (operation.equals("Rimuovi"))  //REMOVE
@@ -27,11 +33,20 @@ public class AddRemovePatientCondition extends HttpServlet {
         }
         if (operation.equals("Aggiungi")) //ADD
         {
-            int severity= Integer.parseInt(request.getParameter("severity"));
+            int severity = 0;
+            try{
+                severity= Integer.parseInt(request.getParameter("severity"));
+            }catch(NumberFormatException e){
+                e.printStackTrace();
+            }
+
             conditionService.AddConditionPatient(idCondition,idPatient,severity);
         }
-
-        response.sendRedirect(referer);
+        try{
+            response.sendRedirect(referer);
+        } catch(IOException e){
+            e.printStackTrace();
+        }
 
     }
 }

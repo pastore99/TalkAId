@@ -42,7 +42,7 @@ public class ExerciseEvaluator extends HttpServlet {
         int userId = (int) s.getAttribute("id");
         Date d = (Date) s.getAttribute("insertionDate");
 
-        int score;
+        int score = 0;
 
         if ("application/json".equals(contentType)) {
             score = evaluateNoAudio(exerciseId, userId, d);
@@ -50,7 +50,7 @@ public class ExerciseEvaluator extends HttpServlet {
             try {
                 score = evaluateAudio(exerciseId, userId, d);
             } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
         em.saveEvaluation(userId, exerciseId, d, score);

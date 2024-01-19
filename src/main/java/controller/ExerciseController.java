@@ -16,13 +16,24 @@ public class ExerciseController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ExerciseManager em = new ExerciseManager();
-        String id = request.getParameter("exerciseID");
-        String insertionDate = request.getParameter("insertionDate");
-        request.getSession().setAttribute("insertionDate", Date.valueOf(insertionDate));
-        request.getSession().setAttribute("exerciseID", Integer.parseInt(id));
+        int id = 0;
+        Date insertionDate = null;
+        try{
+            id = Integer.parseInt(request.getParameter("exerciseID"));
+            insertionDate = Date.valueOf(request.getParameter("insertionDate"));
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
 
-        ExerciseGlossary ex = em.getExercise(Integer.parseInt(id));
+        request.getSession().setAttribute("insertionDate", insertionDate);
+        request.getSession().setAttribute("exerciseID", id);
+
+        ExerciseGlossary ex = em.getExercise(id);
         request.getSession().setAttribute("exercise", ex);
-        response.sendRedirect(request.getContextPath() + "/JSP/exercise.jsp");
+        try{
+            response.sendRedirect(request.getContextPath() + "/JSP/exercise.jsp");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

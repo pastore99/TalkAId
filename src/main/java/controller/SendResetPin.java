@@ -17,12 +17,17 @@ public class SendResetPin extends HttpServlet {
         UserData checker = new UserData();
 
         response.setContentType("text/plain");
-        if(checker.checkIfEmailExists(email)){
-            String pin = new Authenticator().sendPin(email);
-            response.getWriter().println(pin);
+        try{
+            if(checker.checkIfEmailExists(email)){
+                String pin = new Authenticator().sendPin(email);
+                response.getWriter().println(pin);
+            }
+            else {
+                response.getWriter().println("NA");
+            }
+        }catch(IOException e){
+            e.printStackTrace();
         }
-        else {
-            response.getWriter().println("NA");
-        }
+
     }
 }

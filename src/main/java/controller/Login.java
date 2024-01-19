@@ -33,14 +33,18 @@ public class Login extends HttpServlet {
         String password = request.getParameter("password");
 
         int result = authService.authenticate(email, password);
-
-        if (result > 0) {
-            // Login success, defining its Session attributes and the redirect page
-            response.sendRedirect(setSessionAttributes(result, request));
-        } else {
-            // Login failed, redirect back to the login page
-            response.sendRedirect("JSP/login.jsp?error=1");
+        try{
+            if (result > 0) {
+                // Login success, defining its Session attributes and the redirect page
+                response.sendRedirect(setSessionAttributes(result, request));
+            } else {
+                // Login failed, redirect back to the login page
+                response.sendRedirect("JSP/login.jsp?error=1");
+            }
+        }catch(IOException e){
+            e.printStackTrace();
         }
+
     }
 
     private String setSessionAttributes(int id, HttpServletRequest request){

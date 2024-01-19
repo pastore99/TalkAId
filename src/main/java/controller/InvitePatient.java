@@ -17,7 +17,12 @@ public class InvitePatient extends HttpServlet {
         HttpSession session = request.getSession();
         model.service.registration.Registration registration=new Registration();
         registration.invitePatient((Integer) session.getAttribute("id"), request.getParameter("email"), request.getParameter("nome"), request.getParameter("cognome"));
-        response.sendRedirect(request.getContextPath() + "/JSP/homepageTherapist.jsp");
+        try{
+            response.sendRedirect(request.getContextPath() + "/JSP/homepageTherapist.jsp");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 }

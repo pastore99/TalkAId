@@ -23,7 +23,13 @@ public class GetSendMessages extends HttpServlet {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
 
-        int contactId = Integer.parseInt(request.getParameter("contact_id")); // Get the contact's ID from the request
+        int contactId = 0;
+        try{
+            contactId = Integer.parseInt(request.getParameter("contact_id")); // Get the contact's ID from the request
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+
 
         // Retrieve the messages between the user and the contact
         MessageManager messageManager = new MessageManager();
@@ -50,7 +56,12 @@ public class GetSendMessages extends HttpServlet {
         JsonArray jsonArray = jsonArrayBuilder.build();
 
         response.setContentType("application/json");
-        response.getWriter().write(jsonArray.toString());
+        try{
+            response.getWriter().write(jsonArray.toString());
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -68,9 +79,14 @@ public class GetSendMessages extends HttpServlet {
 
             response.getWriter().write("Message successfully sent");
 
-        } catch (NumberFormatException e) {
+        } catch (IOException | NumberFormatException e) {
             // The request parameter could not be parsed as an integer
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            try{
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            }catch(IOException er){
+                er.printStackTrace();
+            }
+
         }
     }
 }

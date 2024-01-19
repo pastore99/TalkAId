@@ -26,18 +26,23 @@ public class Registration extends HttpServlet {
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
 
-        if(licenseCode.equals("TESTCODE") && email.equals("selenium@test.tt")) {
-            sessionAttributesForTesting(request);
-            response.getWriter().write("5");
-        }
-        else {
-            model.service.registration.Registration registration = new model.service.registration.Registration();
-            int result = registration.registerNewUser(licenseCode, email, password, name, surname);
-            response.getWriter().write(String.valueOf(result));
-            if (result == 0) {
-                setSessionAttributes(email, request);
+        try{
+            if(licenseCode.equals("TESTCODE") && email.equals("selenium@test.tt")) {
+                sessionAttributesForTesting(request);
+                response.getWriter().write("5");
             }
+            else {
+                model.service.registration.Registration registration = new model.service.registration.Registration();
+                int result = registration.registerNewUser(licenseCode, email, password, name, surname);
+                response.getWriter().write(String.valueOf(result));
+                if (result == 0) {
+                    setSessionAttributes(email, request);
+                }
+            }
+        }catch(IOException e){
+            e.printStackTrace();
         }
+
     }
 
     private void sessionAttributesForTesting(HttpServletRequest request) {
@@ -49,7 +54,7 @@ public class Registration extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response){
         UserData ud = new UserData();
         HttpSession session = request.getSession();
         String parameter = request.getParameter("type");
@@ -62,12 +67,17 @@ public class Registration extends HttpServlet {
             String end = request.getParameter("endTime");
             String time = start + "|" + end;
             ud.updateEmailTime(String.valueOf(session.getAttribute("id")), time);
-            if(session.getAttribute("type").equals("patient")) {
-                response.sendRedirect("JSP/homePagePatient.jsp");
+            try{
+                if(session.getAttribute("type").equals("patient")) {
+                    response.sendRedirect("JSP/homePagePatient.jsp");
+                }
+                else {
+                    response.sendRedirect("JSP/homepageTherapist.jsp");
+                }
+            }catch(IOException e){
+                e.printStackTrace();
             }
-            else {
-                response.sendRedirect("JSP/homepageTherapist.jsp");
-            }
+
         }
     }
 
