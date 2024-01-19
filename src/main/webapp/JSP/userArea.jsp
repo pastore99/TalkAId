@@ -10,7 +10,7 @@
     <title>TalkAId - User Area</title>
     <link rel="icon" href="../images/siteIco.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     <link href="../CSS/dettagliUser.css" rel="stylesheet">
     <link href="#" rel="stylesheet">
 </head>

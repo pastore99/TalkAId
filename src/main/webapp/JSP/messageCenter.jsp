@@ -1,7 +1,5 @@
 <%@ page import="model.service.message.MessageManager" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.service.user.UserData" %>
-<%@ page import="model.entity.User" %>
 <%@ page import="model.service.user.UserRegistry" %>
 <%@ page import="model.entity.PersonalInfo" %>
 <%@ page import="model.service.message.MessageManager" %>
@@ -13,8 +11,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/391827d54c.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/391827d54c.js" integrity="sha384-5xvj0M3Gh9Pb/mS3SIFJbKoo1xTVykyLGBYlelYdprRFdK8AUUOJeH7RN3ZQHKkW" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <script src="../JS/message.js"></script>
     <link rel="stylesheet" href="../CSS/messageCenter.css">
     <title>TalkAId - Centro Messaggi</title>

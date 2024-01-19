@@ -1,7 +1,5 @@
 <%@ page import="model.service.exercise.ExerciseManager" %>
-<%@ page import="model.entity.Exercise" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.entity.ExerciseGlossary" %>
 <%@ page import="model.entity.SlimmerExercise" %>
 <!DOCTYPE html>
 <html lang="it" style="background-color: #f7fcff; ">
@@ -18,7 +16,7 @@
     <%@page contentType="text/html;charset=UTF-8"%>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../CSS/homepagepatient.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <title>TalkAId - I tuoi risultati</title>
 </head>
 <body>
