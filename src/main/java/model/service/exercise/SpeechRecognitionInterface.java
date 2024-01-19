@@ -1,6 +1,7 @@
 package model.service.exercise;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 

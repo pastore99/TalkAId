@@ -1,6 +1,5 @@
 package model.DAO;
 
-import model.entity.Exercise;
 import model.entity.ExerciseGlossary;
 
 import java.sql.Connection;

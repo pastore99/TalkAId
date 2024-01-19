@@ -1,6 +1,5 @@
 package controller;
 
-import model.service.condition.ConditionManager;
 import model.service.registration.Registration;
 
 import javax.servlet.annotation.WebServlet;

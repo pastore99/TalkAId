@@ -1,7 +1,6 @@
 package model.service.registration;
 
 import model.entity.License;
-import model.entity.User;
 import model.service.email.EmailManager;
 import model.service.encryption.Encryption;
 import model.service.license.LicenseActivation;

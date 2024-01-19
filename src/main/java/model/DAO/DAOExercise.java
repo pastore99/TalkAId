@@ -1,8 +1,6 @@
 package model.DAO;
 
 import model.entity.Exercise;
-import model.entity.ExerciseGlossary;
-import model.entity.Schedule;
 import model.entity.SlimmerExercise;
 
 import java.sql.*;
