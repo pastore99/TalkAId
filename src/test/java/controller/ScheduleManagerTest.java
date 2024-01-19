@@ -80,7 +80,7 @@ public class ScheduleManagerTest
 
         servlet.doPost(request,response);
 
-        verify(response).sendRedirect("JSP/schedule.jsp?errorMessage=Seleziona una data non esistente perfavore.");
+        verify(response).sendRedirect("JSP/schedule.jsp?errorMessage=Seleziona una data non esistente per favore.");
     }
 
     @Test
@@ -158,7 +158,7 @@ public class ScheduleManagerTest
 
         servlet.doPost(request,response);
 
-        verify(response).sendRedirect("JSP/schedule.jsp?errorMessage=Seleziona una data non esistente perfavore.");
+        verify(response).sendRedirect("JSP/schedule.jsp?errorMessage=Seleziona una data non esistente per favore.");
     }
 
     @AfterAll

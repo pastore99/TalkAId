@@ -212,7 +212,11 @@ public class DAOPersonalInfo {
                 return true; // Entrambi gli aggiornamenti hanno avuto successo
             }
         } catch (SQLException e) {
-            logger.error("Error ", e);
+            if (e.getSQLState().equals("23000") && e.getErrorCode() == 1062) {
+            } else {
+                // Gestione di altre eccezioni
+                logger.error("Errore query", e);
+            }
         } finally {
             try {
                 DAOConnection.releaseConnection(connection);
