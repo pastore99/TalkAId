@@ -94,13 +94,14 @@ public class DAOExercise {
 
     public List<SlimmerExercise> retrieveNotDoneExercises(int patientId) {
         List<SlimmerExercise> exercises = new ArrayList<>();
+        PreparedStatement stmt = null;
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
                     " WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate";
 
-            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
             ResultSet rs = stmt.executeQuery();
 
@@ -121,19 +122,27 @@ public class DAOExercise {
             }
         } catch(SQLException e) {
             logger.error("Error query", e);
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                logger.error("Error finally", e);
+            }
         }
         return exercises;
     }
 
     public List<SlimmerExercise> retrieveDoneExercises(int patientId) {
         List<SlimmerExercise> exercises = new ArrayList<>();
+        PreparedStatement stmt = null;
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
                     " WHERE e.CompletionDate IS NOT NULL AND e.ID_user = ?";
 
-            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
             ResultSet rs = stmt.executeQuery();
 
@@ -154,6 +163,13 @@ public class DAOExercise {
             }
         } catch(SQLException e) {
             logger.error("Error query", e);
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                logger.error("Error finally", e);
+            }
         }
         return exercises;
     }
@@ -412,13 +428,14 @@ public class DAOExercise {
 
     public List<SlimmerExercise> getExerciseToApprove(int therapistId){
         List<SlimmerExercise> exercises = new ArrayList<>();
+        PreparedStatement stmt = null;
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation " +
                     "FROM exercise e JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise JOIN user u ON e.ID_user = u.ID " +
                     "WHERE e.CompletionDate IS NULL AND u.ID_Therapist = ? AND e.Recommended = 0";
 
-            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt = connection.prepareStatement(query);
             stmt.setInt(1, therapistId);
             ResultSet rs = stmt.executeQuery();
 
@@ -439,6 +456,14 @@ public class DAOExercise {
             }
         } catch(SQLException e) {
             logger.error("Error query", e);
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
+                logger.error("Error finally", e);
+            }
         }
         return exercises;
     }

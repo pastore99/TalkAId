@@ -160,7 +160,11 @@ public class ExerciseEvaluator extends HttpServlet {
                 }
             }
         }
-        return (int)((right /total)*100);
+        if(total != 0){
+            return (int)((right /total)*100);
+        }
+
+        return 0;
     }
 
     private int evaluateAudio(int exerciseId, int userId, Date d) throws IOException, ExecutionException, InterruptedException {
