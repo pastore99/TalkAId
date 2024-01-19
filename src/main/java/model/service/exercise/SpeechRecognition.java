@@ -119,6 +119,7 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
                 System.err.println("\nExited with error code : " + exitCode);
             }
         } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
             logger.error("Error ffmpeg", e);
         }
         return exitCode;

@@ -152,7 +152,7 @@ public class DAOPersonalInfo {
 
 
     public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone) {
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
 
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
@@ -174,8 +174,10 @@ public class DAOPersonalInfo {
             return false;
         } finally {
             try {
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
                 logger.error("Error finally", e);
             }
         }
@@ -184,7 +186,7 @@ public class DAOPersonalInfo {
     }
 
     public boolean updatePersonalInfoAndUserFromId(int id, String FirstName, String LastName, String Phone, String Email, String Address) {
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
 
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
@@ -219,8 +221,10 @@ public class DAOPersonalInfo {
             }
         } finally {
             try {
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
+                // Handle the exception (e.g., log or throw)
                 logger.error("Error finally", e);
             }
         }

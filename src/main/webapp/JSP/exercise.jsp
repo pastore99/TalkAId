@@ -1,7 +1,7 @@
 <%@ page import="model.entity.ExerciseGlossary" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <link rel="icon" href="../images/siteIco.png" type="image/png">
 

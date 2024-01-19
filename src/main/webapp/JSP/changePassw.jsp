@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<!DOCTYPE>
+<html lang="it">
 <head>
     <link rel="icon" href="../images/siteIco.png" type="image/png">
     <title>TalkAId - Cambio Password</title>

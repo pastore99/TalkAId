@@ -3,7 +3,7 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="model.service.user.UserData" %>
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <link rel="icon" href="../images/siteIco.png" type="image/png">
     <title>Homepage</title>

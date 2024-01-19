@@ -249,6 +249,7 @@ public class DAOUser {
     }
 
     public String updateUser(int idUser, String email, String address) {
+        PreparedStatement preparedStatement = null;
         boolean isEmailToUpdate = email != null && !checkIfEmailExists(email);
         boolean isAddressToUpdate = address != null;
 
@@ -271,7 +272,7 @@ public class DAOUser {
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
 
-            PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
+            preparedStatement = connection.prepareStatement(queryBuilder.toString());
 
             int parameterIndex = 1;
             if (isEmailToUpdate) {
@@ -299,7 +300,15 @@ public class DAOUser {
         } catch (SQLException e) {
             logger.error("Error query", e);
             return "Update not possible due to a server connection issue.";
+        } finally {
+        try {
+            if (preparedStatement != null) preparedStatement.close();
+            DAOConnection.releaseConnection(connection);
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log or throw)
+            logger.error("Error finally", e);
         }
+    }
     }
 
     /**

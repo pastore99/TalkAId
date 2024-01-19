@@ -3,7 +3,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.entity.*" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<!DOCTYPE>
+<html lang="it">
 <body>
 <%
     int patientIdEX = 0;

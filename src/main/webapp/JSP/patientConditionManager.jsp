@@ -3,7 +3,8 @@
 <%@ page import="model.service.condition.ConditionManager" %>
 <%@ page import="model.service.user.UserData" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
-<html>
+<!DOCTYPE>
+<html lang="it">
 <body>
 <%
     int patientIdCM = 0;

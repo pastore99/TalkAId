@@ -219,7 +219,7 @@ public class ExerciseEvaluator extends HttpServlet {
         try (InputStream audioInputStream = executionBlob.getBinaryStream()) {
             return audioInputStream;
         } catch (SQLException | IOException e) {
-                throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }
