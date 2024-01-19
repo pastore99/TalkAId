@@ -1,6 +1,8 @@
 package controller;
 
 import model.service.registration.Registration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/invitePatient")
 public class InvitePatient extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(InvitePatient.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -20,7 +23,7 @@ public class InvitePatient extends HttpServlet {
         try{
             response.sendRedirect(request.getContextPath() + "/JSP/homepageTherapist.jsp");
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
 
     }

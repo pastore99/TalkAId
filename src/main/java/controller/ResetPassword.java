@@ -1,6 +1,8 @@
 package controller;
 
 import model.service.login.Authenticator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @WebServlet("/login/resetpassword")
 public class ResetPassword extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ResetPassword.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -25,7 +28,7 @@ public class ResetPassword extends HttpServlet {
             try{
                 response.getWriter().write("Password cambiata con successo!");
             }catch(IOException e){
-                e.printStackTrace();
+                logger.error("Error writing response", e);
             }
         }
     }

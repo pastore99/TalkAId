@@ -1,12 +1,12 @@
 $(document).ready(function() {
     // Ascolta l'evento di clic sul pulsante
     $("#Controlla").click(function () {
-        var password = $("#password").val();
-        var email = $("#email").val();
-        var firstname = $("#firstname").val();
-        var lastname = $("#lastname").val();
-        var address = $("#address").val();
-        var phonenumber = $("#phonenumber").val();
+        let password = $("#password").val();
+        let email = $("#email").val();
+        let firstname = $("#firstname").val();
+        let lastname = $("#lastname").val();
+        let address = $("#address").val();
+        let phonenumber = $("#phonenumber").val();
         $.ajax({
             url: '${pageContext.request.contextPath}/changeDate',
             type: 'POST',

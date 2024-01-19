@@ -2,7 +2,7 @@
 <%@ page import="model.service.exercise.ExerciseManager" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.entity.*" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <body>
 <%

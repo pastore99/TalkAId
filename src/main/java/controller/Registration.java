@@ -4,6 +4,8 @@ import model.entity.PersonalInfo;
 import model.entity.User;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import java.io.IOException;
 @WebServlet("/register")
 
 public class Registration extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -40,7 +43,7 @@ public class Registration extends HttpServlet {
                 }
             }
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error writing response", e);
         }
 
     }
@@ -75,7 +78,7 @@ public class Registration extends HttpServlet {
                     response.sendRedirect("JSP/homepageTherapist.jsp");
                 }
             }catch(IOException e){
-                e.printStackTrace();
+                logger.error("Error redirecting", e);
             }
 
         }

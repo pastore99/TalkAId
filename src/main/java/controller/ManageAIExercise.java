@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import model.entity.SlimmerExercise;
 import model.service.exercise.ExerciseManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,8 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/ManageExercise")
-public class ManageAIExercise extends HttpServlet
-{
+public class ManageAIExercise extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ManageAIExercise.class);
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String referer = request.getHeader("Referer");
@@ -27,7 +30,7 @@ public class ManageAIExercise extends HttpServlet
             try{
                 exercise = g.fromJson(request.getParameter("exercise"), SlimmerExercise.class);
             }catch(JsonSyntaxException e){
-                e.printStackTrace();
+                logger.error("Error parsing JSON", e);
             }
             if (exercise != null){
                 em.changeRaccomandation(action, exercise.getId(), exercise.getInsertionDate(), exercise.getUserId());
@@ -42,14 +45,14 @@ public class ManageAIExercise extends HttpServlet
             try{
                 userId = Integer.parseInt(request.getParameter("userId"));
             }catch(NumberFormatException e){
-                e.printStackTrace();
+                logger.error("Error parsing userId", e);
             }
             em.changeMultipleReccomandation(action, userId);
         }
         try{
             response.sendRedirect(referer);
         }catch (IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
     }
 }

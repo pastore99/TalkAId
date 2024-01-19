@@ -1,11 +1,15 @@
 package model.DAO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAOAnalytics {
+    private static final Logger logger = LoggerFactory.getLogger(DAOAnalytics.class);
 
     private Connection connection;
     public DAOAnalytics(Connection connection) {this.connection=connection;}
@@ -14,7 +18,7 @@ public class DAOAnalytics {
         try{
             this.connection=DAOConnection.getConnection();
         }catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     public void storeAnalytics(int userId, String type, String description) {
@@ -42,14 +46,14 @@ public class DAOAnalytics {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }

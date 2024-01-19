@@ -5,7 +5,7 @@ package model.service.registration;
 public interface RegistrationInterface {
 
     /**
-     * effettua i vari controlli sfruttando gli altri sottosistemi
+     * Effettua i vari controlli sfruttando gli altri sottosistemi
      * @param licenseCode è il codice della licenza da validare
      * @param email è l'email inserita da ricercarne l'unicità
      * @param password è la password inserita da criptare

@@ -2,6 +2,8 @@ package controller;
 
 import model.service.login.Authenticator;
 import model.service.user.UserData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/ChangePassword")
-public class ChangePassword extends HttpServlet
-{
+public class ChangePassword extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ChangePassword.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -23,7 +25,7 @@ public class ChangePassword extends HttpServlet
             try {
                 response.getWriter().write("true");
             }catch(IOException e){
-                e.printStackTrace();
+                logger.error("Error writing response", e);
             }
     }
 }

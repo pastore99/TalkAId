@@ -2,6 +2,8 @@ package controller;
 
 import model.entity.Message;
 import model.service.message.MessageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -18,8 +20,9 @@ import java.util.List;
 
 @WebServlet("/GetMessages")
 public class GetSendMessages extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(GetSendMessages.class);
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
 
@@ -27,7 +30,7 @@ public class GetSendMessages extends HttpServlet {
         try{
             contactId = Integer.parseInt(request.getParameter("contact_id")); // Get the contact's ID from the request
         }catch(NumberFormatException e){
-            e.printStackTrace();
+            logger.error("Error parsing contectId", e);
         }
 
 
@@ -59,7 +62,7 @@ public class GetSendMessages extends HttpServlet {
         try{
             response.getWriter().write(jsonArray.toString());
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error writing response", e);
         }
 
     }
@@ -84,7 +87,7 @@ public class GetSendMessages extends HttpServlet {
             try{
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             }catch(IOException er){
-                er.printStackTrace();
+                logger.error("Error sendError response", e);
             }
 
         }

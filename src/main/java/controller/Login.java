@@ -5,6 +5,8 @@ import model.entity.User;
 import model.service.login.Authenticator;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(Login.class);
 
     private Authenticator authService;
     private UserData userData;
@@ -42,7 +45,7 @@ public class Login extends HttpServlet {
                 response.sendRedirect("JSP/login.jsp?error=1");
             }
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
 
     }

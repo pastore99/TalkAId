@@ -18,21 +18,21 @@
     <form id="InviteForm" action="../invitePatient" method="post">
         <div class="inputDiv">
             <div class="icon iconLeft">
-                <img class="img" src="../images/registration/icon-email.svg" />
+                <img alt="emailIcon" class="img" src="../images/registration/icon-email.svg" />
             </div>
             <input class="formInput" type="email" name="email" placeholder="La sua email" required>
         </div>
         <br>
         <div class="inputDiv">
             <div class="icon iconLeft">
-                <img class="img" src="../images/registration/icon-user-outline.svg" />
+                <img alt="userIcon" class="img" src="../images/registration/icon-user-outline.svg" />
             </div>
             <input class="formInput" type="text" name="nome" placeholder="Nome" required>
         </div>
         <br>
         <div class="inputDiv">
             <div class="icon iconLeft">
-                <img class="img" src="../images/registration/icon-user-outline.svg" />
+                <img alt="userImg" class="img" src="../images/registration/icon-user-outline.svg" />
             </div>
             <input class="formInput" type="text" name="cognome" placeholder="Cognome" required>
         </div>

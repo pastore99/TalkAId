@@ -1,6 +1,8 @@
 package controller;
 
 import model.service.condition.ConditionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet("/AddRemovePatientCondition")
 public class AddRemovePatientCondition extends HttpServlet {
-
+    private static final Logger logger = LoggerFactory.getLogger(AddRemovePatientCondition.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String referer = request.getHeader("Referer");
@@ -22,7 +24,7 @@ public class AddRemovePatientCondition extends HttpServlet {
             idPatient = Integer.parseInt(request.getParameter("idPatient"));
             idCondition = Integer.parseInt(request.getParameter("idCondition"));
         }catch(NumberFormatException e){
-            e.printStackTrace();
+            logger.error("Error parsing idPatient and idCondition", e);
         }
 
 
@@ -37,7 +39,7 @@ public class AddRemovePatientCondition extends HttpServlet {
             try{
                 severity= Integer.parseInt(request.getParameter("severity"));
             }catch(NumberFormatException e){
-                e.printStackTrace();
+                logger.error("Error parsing severity", e);
             }
 
             conditionService.AddConditionPatient(idCondition,idPatient,severity);
@@ -45,7 +47,7 @@ public class AddRemovePatientCondition extends HttpServlet {
         try{
             response.sendRedirect(referer);
         } catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
 
     }

@@ -1,5 +1,8 @@
 package controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -8,13 +11,14 @@ import java.io.IOException;
 
 @WebServlet("/ScheduleServlet")
 public class ScheduleManager extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleManager.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = (Integer) request.getSession().getAttribute("id");
         try{
             response.getWriter().append("Served at: ").append(request.getContextPath());
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error writing response", e);
         }
 
         String action = request.getParameter("action");
@@ -29,7 +33,7 @@ public class ScheduleManager extends HttpServlet {
                     scheduleManager.createNewSchedule(userId, request.getParameter("date"), request.getParameter("timeslot"));
                     response.sendRedirect("JSP/schedule.jsp");
                 } else {
-                    String errorMessage = "Seleziona una data non esistente perfavore.";
+                    String errorMessage = "Seleziona una data non esistente per favore.";
                     response.sendRedirect("JSP/schedule.jsp?errorMessage=" + errorMessage);
                 }
             }
@@ -56,7 +60,7 @@ public class ScheduleManager extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
             }
     } catch (NumberFormatException | IOException e) {
-            e.printStackTrace();
+            logger.error("Error parsing and Redirecting", e);
         }
     }
 }

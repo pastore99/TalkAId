@@ -2,6 +2,8 @@ package controller;
 
 import model.service.exercise.ExerciseManager;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +24,7 @@ import java.sql.SQLException;
         maxFileSize=1024*1024*50,      // 50 MB
         maxRequestSize=1024*1024*100)  // 100 MB
 public class ExerciseLogger extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ExerciseLogger.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String contentType = request.getContentType();
@@ -32,14 +35,14 @@ public class ExerciseLogger extends HttpServlet {
                 handleAudioExercise(request);
             }
         }catch(ServletException | IOException e){
-            e.printStackTrace();
+            logger.error("Error handling exercise", e);
         }
 
         RequestDispatcher d = request.getRequestDispatcher("/exerciseEvaluator");
         try{
             d.forward(request, response);
         }catch(ServletException | IOException e){
-            e.printStackTrace();
+            logger.error("Error forwarding", e);
         }
     }
 
@@ -58,7 +61,7 @@ public class ExerciseLogger extends HttpServlet {
             saveInDB(request, executionBlob);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error saving in DB", e);
         }
     }
 

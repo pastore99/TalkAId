@@ -2,6 +2,8 @@ package controller;
 
 import model.entity.ExerciseGlossary;
 import model.service.exercise.ExerciseManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,7 @@ import java.sql.Date;
 
 @WebServlet("/exerciseController")
 public class ExerciseController extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ExerciseController.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ExerciseManager em = new ExerciseManager();
@@ -22,7 +25,7 @@ public class ExerciseController extends HttpServlet {
             id = Integer.parseInt(request.getParameter("exerciseID"));
             insertionDate = Date.valueOf(request.getParameter("insertionDate"));
         }catch(NumberFormatException e){
-            e.printStackTrace();
+            logger.error("Error parsing id and insertionDate", e);
         }
 
         request.getSession().setAttribute("insertionDate", insertionDate);
@@ -33,7 +36,7 @@ public class ExerciseController extends HttpServlet {
         try{
             response.sendRedirect(request.getContextPath() + "/JSP/exercise.jsp");
         }catch (IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
     }
 }

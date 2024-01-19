@@ -1,12 +1,15 @@
 package model.DAO;
 
 import model.entity.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DAOMessage {
+    private static final Logger logger = LoggerFactory.getLogger(DAOMessage.class);
 
     private Connection connection;
 
@@ -18,7 +21,7 @@ public class DAOMessage {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     private Message getMessageFromResultSet(ResultSet resultSet) throws SQLException {
@@ -64,7 +67,7 @@ public class DAOMessage {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -72,7 +75,7 @@ public class DAOMessage {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -106,7 +109,7 @@ public class DAOMessage {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -114,7 +117,7 @@ public class DAOMessage {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -137,13 +140,13 @@ public class DAOMessage {
 
         } catch (SQLException e) {
             // Handle exceptions (e.g., print stack trace, log error, etc.)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -165,13 +168,13 @@ public class DAOMessage {
 
         } catch (SQLException e) {
             // Handle exceptions (e.g., print stack trace, log error, etc.)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -196,14 +199,14 @@ public class DAOMessage {
 
         } catch (SQLException e) {
             // Handle exceptions (e.g., print stack trace, log error, etc.)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (pstmt != null) pstmt.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -230,14 +233,14 @@ public class DAOMessage {
 
         } catch (SQLException e) {
             // Handle exceptions (e.g., print stack trace, log error, etc.)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }

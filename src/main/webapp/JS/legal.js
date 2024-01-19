@@ -5,7 +5,7 @@ function mostraPopup() {
 
 // Function called when the user accepts the sharing
 function accettaCondivisione() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", "../register?type=analytics&accept=true", true);
     xhr.send();
 
@@ -20,13 +20,13 @@ function impostaOrario() {
     let start = document.getElementById('startTime').value = '';
     let end = document.getElementById('endTime').value = '';
     let time = start + "|" + end;
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", "../register?type=emailTime&time="+time, true);
     xhr.send();
 }
 
 function nonAccetto() {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open("GET", "../register?type=analytics&accept=false", true);
     xhr.send();
 
@@ -34,8 +34,8 @@ function nonAccetto() {
 }
 
 function validateTimes() {
-    var startTime = new Date();
-    var endTime = new Date();
+    let startTime = new Date();
+    let endTime = new Date();
 
     // Convert time strings into Date objects
     startTime.setHours(document.getElementById('startTime').value.split(':')[0]);

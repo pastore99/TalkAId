@@ -85,7 +85,7 @@
                                     <td><%= sdf.format(u.getActivationDate()) %></td>
                                     <td>
                                         <input type="hidden" name="userId" value="<%= u.getId() %>">
-                                        <buttom onclick="viewPatient(<%=u.getId()%>)" class="tdButton">Visualizza</buttom>
+                                        <button onclick="viewPatient(<%=u.getId()%>)" class="tdButton">Visualizza</button>
                                     </td>
                                 </tr>
                                 <%

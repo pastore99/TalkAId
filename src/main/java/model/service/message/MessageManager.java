@@ -9,17 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageManager implements MessageManagerInterface {
-    private int userId;
     public MessageManager() {
         this.db = new DAOMessage();
         this.db2 = new UserData();
     }
     DAOMessage db;
     UserData db2;
-
-    public int getUserId() {
-        return userId;
-    }
 
     public void markMessagesAsRead(int senderId, int recipientId) {
         db.markMessagesAsRead(senderId, recipientId);

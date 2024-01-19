@@ -1,5 +1,8 @@
 package controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/logout")
 public class Logout extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(Logout.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -19,7 +23,7 @@ public class Logout extends HttpServlet {
         try{
             response.sendRedirect("JSP/login.jsp");
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
 
     }

@@ -39,8 +39,8 @@ $(document).ready(function() {
             url: '../register',
             data: registrationData, // data is passed as form data
             success: function(response) {
-                var resultCode = parseInt(response);
-                var message;
+                let resultCode = parseInt(response);
+                let message;
                 switch (resultCode) {
                     case 0:
                         break;
@@ -58,6 +58,7 @@ $(document).ready(function() {
                         break;
                     case 5:
                         window.location.href = 'homepageTherapist.jsp';
+                        break;
                     default:
                         message = "Errore sconosciuto";
                 }

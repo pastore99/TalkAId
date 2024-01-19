@@ -1,6 +1,8 @@
 package controller;
 
 import model.service.user.UserRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +13,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/changeDate")
-public class ChangeUserInfo extends  HttpServlet
-{
+public class ChangeUserInfo extends  HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ChangeUserInfo.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -27,7 +29,7 @@ public class ChangeUserInfo extends  HttpServlet
         try {
             response.sendRedirect("JSP/userArea.jsp?errorMessage=" + risultato);
         }catch(IOException e){
-            e.printStackTrace();
+            logger.error("Error redirecting", e);
         }
     }
 

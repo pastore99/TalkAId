@@ -1,5 +1,8 @@
 package model.service.email;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -12,6 +15,7 @@ import java.util.Properties;
  * It reads the configuration from a properties file named 'email.properties'.
  */
 public class EmailManager implements EmailManagerInterface{
+    private static final Logger logger = LoggerFactory.getLogger(EmailManager.class);
 
     private static final String EMAIL_PROPERTIES = "/email.properties";
     private static final String ERROR_MESSAGE = "Error loading configuration file: ";
@@ -40,9 +44,9 @@ public class EmailManager implements EmailManagerInterface{
         try {
             generateMessage(message, toAddress, subject, body);
             sendEmail(session, message);
-            System.out.println("Email sent successfully to " + toAddress);
+            logger.info("Email sent successfully to " + toAddress);
         } catch (MessagingException me) {
-            System.out.println("Cannot send email to " + toAddress);
+            logger.error("Error sending mail", me);
         }
     }
 
@@ -73,7 +77,7 @@ public class EmailManager implements EmailManagerInterface{
         try {
             transport.connect(host, email, password);
         } catch(MessagingException e) {
-            System.out.println(e);
+            logger.error("Error sending mail", e);
         }
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();
@@ -103,7 +107,7 @@ public class EmailManager implements EmailManagerInterface{
         try (InputStream input = EmailManager.class.getResourceAsStream(EMAIL_PROPERTIES)) {
             props.load(input);
         } catch (IOException e) {
-            System.out.println(ERROR_MESSAGE + e.getMessage());
+            logger.error("Error loading Properties", e);
         }
 
         props.put("mail.smtp.host", HOST);
