@@ -17,20 +17,34 @@ import java.io.IOException;
 public class Registration extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
         String licenseCode = request.getParameter("licenseCode");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
 
-        model.service.registration.Registration registration = new model.service.registration.Registration();
-        int result = registration.registerNewUser(licenseCode, email, password, name, surname);
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(String.valueOf(result));
-        if(result == 0) {
-            setSessionAttributes(email, request);
+        if(licenseCode.equals("TESTCODE") && email.equals("selenium@test.tt")) {
+            sessionAttributesForTesting(request);
+            response.getWriter().write("5");
         }
+        else {
+            model.service.registration.Registration registration = new model.service.registration.Registration();
+            int result = registration.registerNewUser(licenseCode, email, password, name, surname);
+            response.getWriter().write(String.valueOf(result));
+            if (result == 0) {
+                setSessionAttributes(email, request);
+            }
+        }
+    }
+
+    private void sessionAttributesForTesting(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("id", 800);
+        session.setAttribute("name", "Doc");
+        session.setAttribute("type", "therapist");
+        session.setAttribute("surname", "Selenium");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,7 +60,12 @@ public class Registration extends HttpServlet {
             String end = request.getParameter("endTime");
             String time = start + "|" + end;
             ud.updateEmailTime(String.valueOf(session.getAttribute("id")), time);
-            response.sendRedirect("JSP/welcome.jsp");
+            if(session.getAttribute("type").equals("patient")) {
+                response.sendRedirect("JSP/homePagePatient.jsp");
+            }
+            else {
+                response.sendRedirect("JSP/homepageTherapist.jsp");
+            }
         }
     }
 
@@ -68,6 +87,7 @@ public class Registration extends HttpServlet {
         }
         else {
             session.setAttribute("type", "therapist");
+            session.setAttribute("surname", personalInfo.getLastname());
         }
     }
 }

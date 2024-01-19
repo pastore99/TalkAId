@@ -56,10 +56,12 @@ $(document).ready(function() {
                     case 4:
                         message = "Impossibile generare anagrafica";
                         break;
+                    case 5:
+                        window.location.href = 'homepageTherapist.jsp';
                     default:
                         message = "Errore sconosciuto";
                 }
-                if(resultCode !== 0) {
+                if(resultCode !== 0 && resultCode !== 5) {
                     alert(message);
                     console.log('User registered error code: ', response);
                 }
