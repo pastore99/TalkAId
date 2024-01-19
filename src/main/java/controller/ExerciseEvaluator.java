@@ -137,10 +137,8 @@ public class ExerciseEvaluator extends HttpServlet {
             String executionValue = entry.getValue();
             String solutionValue = solution.get(k);
 
-            if (executionValue != null) {
-                if (executionValue.equals(solutionValue.toUpperCase())) {
-                    right++;
-                }
+            if (executionValue != null && executionValue.equals(solutionValue.toUpperCase())) {
+                right++;
             }
         }
         return (int)((right /total)*100);

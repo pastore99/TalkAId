@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAOCondition {
-    private static final Logger logger = LoggerFactory.getLogger(DAOConnection.class);
+    private static final Logger logger = LoggerFactory.getLogger(DAOCondition.class);
     private Connection connection;
     public DAOCondition(Connection connection) {this.connection=connection;}
 

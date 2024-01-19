@@ -23,6 +23,7 @@ public class Login extends HttpServlet {
     private UserData userData;
     private UserRegistry userReg;
 
+    @Override
     public void init() {
         this.authService = new Authenticator();
         this.userData = new UserData();
