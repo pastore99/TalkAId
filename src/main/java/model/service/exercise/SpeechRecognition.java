@@ -2,6 +2,8 @@ package model.service.exercise;
 
 import com.microsoft.cognitiveservices.speech.*;
 import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,6 +17,7 @@ import java.util.concurrent.Future;
 
 
 public class SpeechRecognition implements SpeechRecognitionInterface{
+    private static final Logger logger = LoggerFactory.getLogger(SpeechRecognition.class);
     private static final String AZURE_PROPERTIES = "/azure.properties";
     private static String speechKey;
     private static String speechRegion;
@@ -46,15 +49,14 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
             result = speechRecognitionResult.getText();
         }
         else if (speechRecognitionResult.getReason() == ResultReason.NoMatch){
-            System.err.println("NOMATCH: Speech could not be recognized.");
+            logger.error("NOMATCH: Speech could not be recognized.");
         }else if (speechRecognitionResult.getReason() == ResultReason.Canceled) {
             CancellationDetails cancellation = CancellationDetails.fromResult(speechRecognitionResult);
-            System.out.println("CANCELED: Reason=" + cancellation.getReason());
+            logger.error("CANCELED: Reason=" + cancellation.getReason());
 
             if (cancellation.getReason() == CancellationReason.Error) {
-                System.out.println("CANCELED: ErrorCode=" + cancellation.getErrorCode());
-                System.out.println("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
-                System.out.println("CANCELED: Did you set the speech resource key and region values?");
+                logger.error("CANCELED: ErrorCode=" + cancellation.getErrorCode());
+                logger.error("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
             }
         }
 
@@ -87,17 +89,17 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
         return outputPath.toString();
     }
 
-    void deleteExistingFile(String path) throws IOException {
+    void deleteExistingFile(String path) {
         try {
             Files.delete(Paths.get(path));
         } catch (FileNotFoundException e){
-            System.err.println("File not found");
+            logger.error("File not found");
         } catch (IOException e) {
-            System.err.println("Error deleting the file: " + e.getMessage());
+            logger.error("Error deleting the file: ", e);
         }
     }
 
-    int executeCommand(File tempFile, String path) throws IOException {
+    int executeCommand(File tempFile, String path) {
         List<String> command = Arrays.asList(
                 "ffmpeg",
                 "-i", tempFile.getPath(),
@@ -117,7 +119,7 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
                 System.err.println("\nExited with error code : " + exitCode);
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Error ffmpeg", e);
         }
         return exitCode;
     }
@@ -127,7 +129,7 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
         try (InputStream input = SpeechRecognition.class.getResourceAsStream(AZURE_PROPERTIES)) {
             props.load(input);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            logger.error("Error loading Props", e);
         }
 
         return props;

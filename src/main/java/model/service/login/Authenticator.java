@@ -41,20 +41,19 @@ public class Authenticator implements LoginInterface {
 
     public boolean resetPassword(String email, String plainTextPassword){
         String hashed = encryption.encryptPassword(plainTextPassword);
-        boolean Result = db.resetPassword(email,hashed);
-        return Result;
+        return db.resetPassword(email,hashed);
     }
 
     String generatePin() {
         SecureRandom random = new SecureRandom();
         String digits = "0123456789";
-        String pin = "";
+        StringBuilder pin = new StringBuilder();
 
         for(int i = 0; i < 4; i++) {
-            pin += digits.charAt(random.nextInt(digits.length()));
+            pin.append(digits.charAt(random.nextInt(digits.length())));
         }
 
-        return pin;
+        return pin.toString();
     }
 
     @Override

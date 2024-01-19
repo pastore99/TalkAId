@@ -22,9 +22,9 @@
     <link rel="stylesheet" type="text/css" href="../CSS/schedule.css">
 </head>
 <script>
-    var nuovaData
+    let nuovaData
     function formattaData(data) {
-        var partiData = data.split("-");
+        let partiData = data.split("-");
         nuovaData = partiData[2] + "/" + partiData[1];
         return nuovaData;
     }
@@ -287,9 +287,9 @@
 
 <script>
     function controllaPopup() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var errorMessage = urlParams.get('errorMessage');
-        var contenuto = document.getElementById("Contenuto");
+        let urlParams = new URLSearchParams(window.location.search);
+        let errorMessage = urlParams.get('errorMessage');
+        let contenuto = document.getElementById("Contenuto");
 
 
         if (errorMessage && errorMessage.trim() !== "") {

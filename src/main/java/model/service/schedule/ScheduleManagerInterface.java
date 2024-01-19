@@ -68,7 +68,7 @@ public interface ScheduleManagerInterface {
     /**
      * Retrieves the number of schedules from a therapist that are prenoted.
      * @param idTherapist   the ID of the therapist;
-     * @return a list of schedule that the therapist has created.
+     * @return the number of schedule that the therapist has created.
      */
     int retrieveAllPrenotedSchedulesCount(int idTherapist);
 

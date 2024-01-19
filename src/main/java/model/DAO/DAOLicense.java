@@ -1,6 +1,8 @@
 package model.DAO;
 
 import model.entity.License;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
  * The DAOLicense class provides methods for retrieving and activating licenses from a database.
  */
 public class DAOLicense {
+    private static final Logger logger = LoggerFactory.getLogger(DAOLicense.class);
 
     private Connection connection;
 
@@ -22,7 +25,7 @@ public class DAOLicense {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
 
@@ -63,14 +66,14 @@ public class DAOLicense {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -95,14 +98,14 @@ public class DAOLicense {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -126,7 +129,7 @@ public class DAOLicense {
             preparedStatement.executeUpdate();
             return l.getSequence();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return null;
         } finally {
             try {
@@ -134,7 +137,7 @@ public class DAOLicense {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -160,7 +163,7 @@ public class DAOLicense {
             preparedStatement.executeUpdate();
             return l.getSequence();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return null;
         } finally {
             try {
@@ -168,7 +171,7 @@ public class DAOLicense {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -192,14 +195,14 @@ public class DAOLicense {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             // Close the statement and release the connection
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 

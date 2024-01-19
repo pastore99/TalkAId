@@ -19,7 +19,7 @@ public interface ExerciseManagerInterface {
      * @param insertionDate La data di inserimento.
      * @return Un Blob che rappresenta l'esecuzione dell'esercizio, o null se non trovato.
      */
-    public Blob getExecution(int exerciseID, int userID, Date insertionDate);
+    Blob getExecution(int exerciseID, int userID, Date insertionDate);
 
     /**
      * Salva i dettagli dell'esecuzione per un utente specifico, un esercizio e una data di inserimento.
@@ -30,7 +30,7 @@ public interface ExerciseManagerInterface {
      * @param execution   Il Blob che rappresenta l'esecuzione dell'esercizio.
      * @return true se l'esecuzione viene salvata con successo, false altrimenti.
      */
-    public boolean saveExecution(int userID, int exerciseId, Date insertDate, Blob execution);
+    boolean saveExecution(int userID, int exerciseId, Date insertDate, Blob execution);
 
     /**
      * Salva i dettagli della valutazione per un utente specifico, un esercizio e una data di inserimento.
@@ -41,7 +41,7 @@ public interface ExerciseManagerInterface {
      * @param evaluation  Il punteggio della valutazione.
      * @return true se la valutazione viene salvata con successo, false altrimenti.
      */
-    public boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation);
+    boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation);
 
     /**
      * Recupera una lista di tutti gli esercizi fatti da un paziente specifico.
@@ -49,7 +49,7 @@ public interface ExerciseManagerInterface {
      * @param userID L'ID del paziente.
      * @return Una lista di oggetti Exercise che rappresentano gli esercizi fatti dal paziente.
      */
-    public List<Exercise> retrieveAllPatientExerciseDone(int userID);
+    List<Exercise> retrieveAllPatientExerciseDone(int userID);
 
     /**
      * Recupera una lista di esercizi che un paziente ha già fatto.
@@ -57,7 +57,7 @@ public interface ExerciseManagerInterface {
      * @param patientId L'ID del paziente.
      * @return Una lista di oggetti SlimmerExercise che rappresentano gli esercizi fatti dal paziente.
      */
-    public List<SlimmerExercise> retrieveDoneExercises(int patientId);
+    List<SlimmerExercise> retrieveDoneExercises(int patientId);
 
     /**
      * Recupera una lista di esercizi che un paziente ha già fatto.
@@ -65,14 +65,14 @@ public interface ExerciseManagerInterface {
      * @param patientID L'ID del paziente.
      * @return Una lista di oggetti Exercise che rappresentano gli esercizi fatti dal paziente.
      */
-    public List<Exercise> retrievePatientExerciseDone(int patientID);
+    List<Exercise> retrievePatientExerciseDone(int patientID);
     /**
      * Recupera una lista di esercizi che un paziente non ha ancora fatto.
      *
      * @param patientId L'ID del paziente.
      * @return Una lista di oggetti SlimmerExercise che rappresentano gli esercizi non fatti dal paziente.
      */
-    public List<SlimmerExercise> retrieveNotDoneExercises(int patientId);
+    List<SlimmerExercise> retrieveNotDoneExercises(int patientId);
 
     /**
      * Recupera i dati riguardanti gli esercizi proposti dal paziente all'utente.
@@ -80,7 +80,7 @@ public interface ExerciseManagerInterface {
      * @param id L'ID del paziente.
      * @return Una Map con chiave il tipo di esercizio e valore la percentaule di esercizi fatti rispetto a quelli non fatti.
      */
-    public Map<String,Integer> retrieveAllStats(int id);
+    Map<String,Integer> retrieveAllStats(int id);
 
     /**
      * Recupera una lista delle info degli esercizi che un paziente non ha ancora fatto.
@@ -88,7 +88,7 @@ public interface ExerciseManagerInterface {
      * @param userID L'ID del paziente.
      * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
      */
-    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID);
+    List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID);
 
     /**
      * Recupera una lista delle info degli esercizi che un paziente ha fatto.
@@ -96,14 +96,14 @@ public interface ExerciseManagerInterface {
      * @param userID L'ID del paziente.
      * @return Una lista di oggetti ExerciseGlossary che rappresentano gli esercizi non fatti dal paziente.
      */
-    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID);
+    List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID);
 
     /**
-     * Raccomanda un esercizio ad un paziente
+     * Raccomanda un esercizio a un paziente
      *
      * @param idPatient      L'ID dell'utente.
      * @param idExercise  L'ID dell'esercizio.
      * @return true se la raccomandazione viene salvata con successo, false altrimenti.
      */
-    public boolean AddExerciseRecommendation(int idExercise, int idPatient);
+    boolean AddExerciseRecommendation(int idExercise, int idPatient);
 }

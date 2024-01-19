@@ -75,7 +75,7 @@
         </div>
 
         <!-- New password input -->
-        <div class="card" id="c3"style="display: none;">
+        <div class="card" id="c3" style="display: none;">
             <div class="discovering-english">Crea nuova Password</div>
             <p class="chapter">Inserisci la nuova password per il login</p>
             <input class="box" id="newPassword" placeholder="Nuova Password" type="password">
@@ -85,7 +85,7 @@
         </div>
 
         <!-- Login Redirect -->
-        <div class="card" id="c4" style="display: none;"><img class="done-px" src="../images/done-24px-1.svg" />
+        <div class="card" id="c4" style="display: none;"><img alt="doneIcon" class="done-px" src="../images/done-24px-1.svg" />
             <div class="discovering-english">Confermato</div>
             <p class="chapter">Hai resettato correttamente la tua password.</p>
             <button class="button" id="gotoLogin">Login</button>

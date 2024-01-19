@@ -42,7 +42,7 @@
         <div class="card">
             <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
                 <div class="eillustration-wrapper">
-                    <img class="illustration" src="../images/homepagepatient/attention.png">
+                    <img alt="icon" class="illustration" src="../images/homepagepatient/attention.png">
 
                     <svg class="eimg" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
                         <g>
@@ -61,12 +61,12 @@
         <div class="errorcard" style="display: none;">
             <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
                 <div class="illustration-wrapper">
-                    <img class="illustration" src="../images/homepagepatient/feedback.png">
+                    <img alt="icon" class="illustration" src="../images/homepagepatient/feedback.png">
                 </div></div>
                 <div class="imagediv">
                     <div class="images-container">
-                        <img class="tdown" src="../images/homepagepatient/tdown.png">
-                        <img class="tup" src="../images/homepagepatient/tup.png">
+                        <img alt="icon" class="tdown" src="../images/homepagepatient/tdown.png">
+                        <img alt="icon" class="tup" src="../images/homepagepatient/tup.png">
                     </div>
                 </div>
             </div></div></div>

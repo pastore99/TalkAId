@@ -1,6 +1,8 @@
 package model.DAO;
 
 import model.entity.ExerciseGlossary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.util.List;
  * The DAOExerciseGlossary class provides methods for retrieving ExerciseGlossary information from a database.
  */
 public class DAOExerciseGlossary {
+    private static final Logger logger = LoggerFactory.getLogger(DAOExerciseGlossary.class);
 
     private Connection connection;
 
@@ -25,7 +28,7 @@ public class DAOExerciseGlossary {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     /**
@@ -71,14 +74,14 @@ public class DAOExerciseGlossary {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -104,14 +107,14 @@ public class DAOExerciseGlossary {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -138,14 +141,14 @@ public class DAOExerciseGlossary {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 

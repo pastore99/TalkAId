@@ -12,5 +12,5 @@ public interface AnalyticsManagerInterface {
      * @param type        la tipologia di informazione salvata.
      * @param description descrizione estesa dell'osservazione.
      */
-    public void storeAnalytics(int userId, String type, String description);
+    void storeAnalytics(int userId, String type, String description);
 }

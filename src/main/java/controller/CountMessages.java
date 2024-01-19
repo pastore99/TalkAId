@@ -1,6 +1,8 @@
 package controller;
 
 import model.service.message.MessageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,17 +13,19 @@ import java.io.IOException;
 
 @WebServlet("/CountMessages")
 public class CountMessages extends HttpServlet {
-
+    private static final Logger logger = LoggerFactory.getLogger(CountMessages.class);
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         int recipientId = (int) session.getAttribute("id");
         MessageManager messageManager = new MessageManager();
         int receivedMessageCount = messageManager.countReceivedMessages(recipientId);
 
         response.setContentType("text/plain");  // Output is a plain text integer
-        response.getWriter().println(receivedMessageCount);
+        try{
+            response.getWriter().println(receivedMessageCount);
+        }catch(IOException e){
+            logger.error("Error writing response", e);
+        }
     }
-
 }

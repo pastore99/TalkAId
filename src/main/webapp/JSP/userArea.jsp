@@ -135,16 +135,16 @@
     }
     catch (Exception e)
     {
-        e.printStackTrace();
+        System.err.println(e.getMessage());
     }
 %>
 
 
 <script>
     function controllaPopup() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var errorMessage = urlParams.get('errorMessage');
-        var contenuto = document.getElementById("Contenuto");
+        let urlParams = new URLSearchParams(window.location.search);
+        let errorMessage = urlParams.get('errorMessage');
+        let contenuto = document.getElementById("Contenuto");
 
 
         if (errorMessage && errorMessage.trim() !== "") {
@@ -158,7 +158,7 @@
         document.getElementById('popup').style.display = 'none';
     }
     document.querySelector('form').addEventListener('submit', function(event) {
-        var form = event.target;
+        let form = event.target;
         if (!form.checkValidity()) {
             event.preventDefault();
             alert('Il form contiene errori. Correggi gli errori e prova di nuovo.');

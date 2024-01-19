@@ -2,6 +2,8 @@ package controller;
 
 import model.entity.Message;
 import model.service.message.MessageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -18,12 +20,19 @@ import java.util.List;
 
 @WebServlet("/GetMessages")
 public class GetSendMessages extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(GetSendMessages.class);
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("id");
 
-        int contactId = Integer.parseInt(request.getParameter("contact_id")); // Get the contact's ID from the request
+        int contactId = 0;
+        try{
+            contactId = Integer.parseInt(request.getParameter("contact_id")); // Get the contact's ID from the request
+        }catch(NumberFormatException e){
+            logger.error("Error parsing contectId", e);
+        }
+
 
         // Retrieve the messages between the user and the contact
         MessageManager messageManager = new MessageManager();
@@ -50,7 +59,12 @@ public class GetSendMessages extends HttpServlet {
         JsonArray jsonArray = jsonArrayBuilder.build();
 
         response.setContentType("application/json");
-        response.getWriter().write(jsonArray.toString());
+        try{
+            response.getWriter().write(jsonArray.toString());
+        }catch(IOException e){
+            logger.error("Error writing response", e);
+        }
+
     }
 
     @Override
@@ -68,9 +82,14 @@ public class GetSendMessages extends HttpServlet {
 
             response.getWriter().write("Message successfully sent");
 
-        } catch (NumberFormatException e) {
+        } catch (IOException | NumberFormatException e) {
             // The request parameter could not be parsed as an integer
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            try{
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            }catch(IOException er){
+                logger.error("Error sendError response", e);
+            }
+
         }
     }
 }

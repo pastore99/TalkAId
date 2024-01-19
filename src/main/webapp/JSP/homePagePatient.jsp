@@ -62,7 +62,7 @@
                     <div class="card2">
                         <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
                             <div class="illustration-wrapper">
-                                <img class="illustration" src="../images/homepagepatient/illustration-challenges-1.svg">
+                                <img alt="illustration" class="illustration" src="../images/homepagepatient/illustration-challenges-1.svg">
                             </div></div>
                             <div class="discovering-english"><%=exercise.getName()%></div>
                         </div></div></div>
@@ -113,7 +113,7 @@
                 <div class="card2">
                     <div class="frame-3"><div class="frame-4"><div class="frame-5"><div class="frame-7">
                         <div class="illustration-wrapper">
-                            <img class="illustration" src="../images/homepagepatient/check.png">
+                            <img alt="illustration" class="illustration" src="../images/homepagepatient/check.png">
                         </div></div>
                         <div class="current-lesson"><%=exercise.getName()%></div>
                         <br>

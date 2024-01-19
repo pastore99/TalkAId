@@ -2,7 +2,7 @@
 <%@ page import="model.entity.Condition" %>
 <%@ page import="model.service.condition.ConditionManager" %>
 <%@ page import="model.service.user.UserData" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <body>
 <%

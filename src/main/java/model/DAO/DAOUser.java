@@ -2,6 +2,8 @@ package model.DAO;
 
 import model.entity.User;
 import model.entity.UserInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.util.HashMap;
  * DAOUser is a class that provides methods for accessing the User table in the database.
  */
 public class DAOUser {
+    private static final Logger logger = LoggerFactory.getLogger(DAOUser.class);
 
     private Connection connection;
 
@@ -25,7 +28,7 @@ public class DAOUser {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     /**
@@ -80,7 +83,7 @@ public class DAOUser {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 // Close resources in the reverse order of their creation
@@ -89,7 +92,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -135,7 +138,7 @@ public class DAOUser {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -143,7 +146,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -182,7 +185,7 @@ public class DAOUser {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -190,7 +193,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -229,7 +232,7 @@ public class DAOUser {
             return rowsModified > 0;
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 // Close everything properly
@@ -237,7 +240,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -294,7 +297,7 @@ public class DAOUser {
             return successUpdateMessage.toString();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return "Update not possible due to a server connection issue.";
         }
     }
@@ -331,7 +334,7 @@ public class DAOUser {
             return rowsModified > 0;
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 // Close everything properly
@@ -339,7 +342,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -379,7 +382,7 @@ public class DAOUser {
             return rowsModified > 0;
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 // Close everything properly
@@ -387,7 +390,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error query", e);
             }
         }
 
@@ -421,14 +424,14 @@ public class DAOUser {
 
             return rowsDeleted > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -445,9 +448,7 @@ public class DAOUser {
 
         try {
             connection = DAOConnection.getConnection();
-            String query = null;
-
-            query = "SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;";
+            String query = "SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;";
 
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setObject(1, idTherapist);
@@ -472,7 +473,7 @@ public class DAOUser {
             return list_user;
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -480,7 +481,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -491,13 +492,11 @@ public class DAOUser {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        HashMap<Integer, UserInfo> userMap = new HashMap<Integer, UserInfo>();
+        HashMap<Integer, UserInfo> userMap = new HashMap<>();
 
         try {
             connection = DAOConnection.getConnection();
-            String query = null;
-
-            query = "SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;";
+            String query = "SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;";
 
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setObject(1, idTherapist);
@@ -523,7 +522,7 @@ public class DAOUser {
             return userMap;
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -531,7 +530,7 @@ public class DAOUser {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 

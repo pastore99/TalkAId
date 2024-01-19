@@ -6,6 +6,8 @@ import info.debatty.java.stringsimilarity.Levenshtein;
 import model.entity.ExerciseGlossary;
 import model.service.exercise.ExerciseManager;
 import model.service.exercise.SpeechRecognition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -32,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 @WebServlet("/exerciseEvaluator")
 @MultipartConfig
 public class ExerciseEvaluator extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ExerciseEvaluator.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession s = request.getSession();
@@ -42,7 +45,7 @@ public class ExerciseEvaluator extends HttpServlet {
         int userId = (int) s.getAttribute("id");
         Date d = (Date) s.getAttribute("insertionDate");
 
-        int score;
+        int score = 0;
 
         if ("application/json".equals(contentType)) {
             score = evaluateNoAudio(exerciseId, userId, d);
@@ -50,7 +53,8 @@ public class ExerciseEvaluator extends HttpServlet {
             try {
                 score = evaluateAudio(exerciseId, userId, d);
             } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
+                logger.error("Error evaluating Audio", e);
+                Thread.currentThread().interrupt();
             }
         }
         em.saveEvaluation(userId, exerciseId, d, score);
@@ -107,7 +111,7 @@ public class ExerciseEvaluator extends HttpServlet {
             }
 
         } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            logger.error("Error parsing Blob to JSON", e);
         }
 
         return stringBuilder.toString();

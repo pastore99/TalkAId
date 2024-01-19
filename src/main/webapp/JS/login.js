@@ -16,9 +16,9 @@ const invalidEmailIcon = $("#invalidEmail");
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
 
-var myDiv = document.getElementById('container');
+let myDiv = document.getElementById('container');
 myDiv.classList.add('hidden');
-var loginPageDiv = document.getElementById('loginPage');
+let loginPageDiv = document.getElementById('loginPage');
 
 $(document).ready(function startUp() {
 
@@ -44,8 +44,6 @@ $(document).ready(function startUp() {
     $("#email").blur(() => {
         checkRegexEmail();
     });
-
-    $("#forgotPassword").click(handleForgotPassword);
 });
 
 function togglePassword(event) {
@@ -95,7 +93,7 @@ repeatNewPassword.on("input", validatePassword);
 $(document).ready(function startUp() {
 
 
-    var currentSquare = 0;
+    let currentSquare = 0;
 
     function focusInput(squareIndex) {
         currentSquare = squareIndex;
@@ -104,11 +102,11 @@ $(document).ready(function startUp() {
 
     document.addEventListener('keydown', function(event) {
 
-        var key = event.key;
+        let key = event.key;
 
         if (key >= '0' && key <= '9') {
-            var squareId = 'square' + currentSquare;
-            var square = document.getElementById(squareId);
+            let squareId = 'square' + currentSquare;
+            let square = document.getElementById(squareId);
             square.textContent = key;
 
             currentSquare++;
@@ -120,9 +118,9 @@ $(document).ready(function startUp() {
     });
 
     function updateSquares() {
-        for (var i = 0; i < 4; i++) {
-            var squareId = 'square' + i;
-            var square = document.getElementById(squareId);
+        for (let i = 0; i < 4; i++) {
+            let squareId = 'square' + i;
+            let square = document.getElementById(squareId);
             square.style.backgroundColor = (i === currentSquare) ? '#c0c0c0' : '';
         }
     }
@@ -139,7 +137,7 @@ $(document).ready(function startUp() {
         event.preventDefault();
         $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
             response = response.trim(); // Trim the response
-            if(response == "NA") {
+            if(response === "NA") {
                 // Here, the servlet will return "NA" if it could not find the email
                 alert("Email non registrata nel nostro sistema. Verificane la correttezza");
             } else {
@@ -152,10 +150,10 @@ $(document).ready(function startUp() {
 
     $("#confirmPin").click((event) => {
         event.preventDefault();
-        var data = '';
-        for (var i = 0; i < 4; i++) {
-            var squareId = 'square' + i;
-            var square = document.getElementById(squareId);
+        let data = '';
+        for (let i = 0; i < 4; i++) {
+            let squareId = 'square' + i;
+            let square = document.getElementById(squareId);
             data += square.textContent || '0';
         }
         if (data === sessionPin) {

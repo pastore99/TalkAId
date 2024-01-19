@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <link rel="icon" href="../images/siteIco.png" type="image/png">
@@ -10,7 +10,7 @@
         $(document).ready(function() {
             // Ascolta l'evento di clic sul pulsante
             $("#Controlla").click(function () {
-                var password_attuale = $("#password").val();
+                let password_attuale = $("#password").val();
                 $.ajax({
                     url: '${pageContext.request.contextPath}/ControllPassword',
                     type: 'POST',
@@ -62,7 +62,7 @@
         $(document).ready(function() {
             // Ascolta l'evento di clic sul pulsante
             $("#Controlla2").click(function () {
-                var password_nuova = $("#password2").val();
+                let password_nuova = $("#password2").val();
                 $.ajax({
                     url: '${pageContext.request.contextPath}/ChangePassword',
                     type: 'POST',

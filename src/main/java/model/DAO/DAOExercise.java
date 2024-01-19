@@ -2,6 +2,8 @@ package model.DAO;
 
 import model.entity.Exercise;
 import model.entity.SlimmerExercise;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Map;
  * The DAOExercise class provides methods for retrieving Exercise information from a database.
  */
 public class DAOExercise {
+    private static final Logger logger = LoggerFactory.getLogger(DAOExercise.class);
 
     private Connection connection;
 
@@ -24,7 +27,7 @@ public class DAOExercise {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     /**
@@ -75,14 +78,14 @@ public class DAOExercise {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -95,7 +98,7 @@ public class DAOExercise {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
-                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate ASC";
+                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate";
 
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
@@ -117,7 +120,7 @@ public class DAOExercise {
                 exercises.add(exercise);
             }
         } catch(SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         }
         return exercises;
     }
@@ -150,7 +153,7 @@ public class DAOExercise {
                 exercises.add(exercise);
             }
         } catch(SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         }
         return exercises;
     }
@@ -174,14 +177,14 @@ public class DAOExercise {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -210,14 +213,14 @@ public class DAOExercise {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -243,14 +246,14 @@ public class DAOExercise {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -272,14 +275,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -299,14 +302,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error query", e);
             }
         }
     }
@@ -326,14 +329,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -353,14 +356,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -386,13 +389,13 @@ public class DAOExercise {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
             try {
                 if (connection != null) {
                     connection.rollback();  // Rollback the transaction in case of an exception
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                logger.error("Error rollback", e);
             }
         } finally {
             try {
@@ -400,7 +403,7 @@ public class DAOExercise {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
         return false;
@@ -435,7 +438,7 @@ public class DAOExercise {
                 exercises.add(exercise);
             }
         } catch(SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         }
         return exercises;
     }
@@ -454,14 +457,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -480,14 +483,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -504,14 +507,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -528,14 +531,14 @@ public class DAOExercise {
             return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
     }
@@ -568,14 +571,14 @@ public class DAOExercise {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 

@@ -1,5 +1,8 @@
 package controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -8,10 +11,16 @@ import java.io.IOException;
 
 @WebServlet("/ScheduleServlet")
 public class ScheduleManager extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleManager.class);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = (Integer) request.getSession().getAttribute("id");
-        response.getWriter().append("Served at: ").append(request.getContextPath());
+        try{
+            response.getWriter().append("Served at: ").append(request.getContextPath());
+        }catch(IOException e){
+            logger.error("Error writing response", e);
+        }
+
         String action = request.getParameter("action");
         model.service.schedule.ScheduleManager scheduleManager = new model.service.schedule.ScheduleManager();
 
@@ -24,7 +33,7 @@ public class ScheduleManager extends HttpServlet {
                     scheduleManager.createNewSchedule(userId, request.getParameter("date"), request.getParameter("timeslot"));
                     response.sendRedirect("JSP/schedule.jsp");
                 } else {
-                    String errorMessage = "Seleziona una data non esistente perfavore.";
+                    String errorMessage = "Seleziona una data non esistente per favore.";
                     response.sendRedirect("JSP/schedule.jsp?errorMessage=" + errorMessage);
                 }
             }
@@ -50,10 +59,8 @@ public class ScheduleManager extends HttpServlet {
                 // Gestisci il caso in cui "action" non sia presente nella richiesta
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
             }
-    } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    } catch (NumberFormatException | IOException e) {
+            logger.error("Error parsing and Redirecting", e);
         }
     }
 }

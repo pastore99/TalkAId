@@ -1,7 +1,9 @@
 package model.entity;
 
 
-public class ExerciseGlossary {
+import java.io.Serializable;
+
+public class ExerciseGlossary implements Serializable {
     private int idExercise;
     private String exerciseName;
     private String exerciseDescription;
