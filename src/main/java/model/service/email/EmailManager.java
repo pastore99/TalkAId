@@ -44,7 +44,6 @@ public class EmailManager implements EmailManagerInterface{
         try {
             generateMessage(message, toAddress, subject, body);
             sendEmail(session, message);
-            logger.info("Email sent successfully to " + toAddress);
         } catch (MessagingException me) {
             logger.error("Error sending mail", me);
         }
