@@ -462,11 +462,6 @@ function loadRightText(initialState){
 //                                            Salvataggio dell'esecuzione
 //----------------------------------------------------------------------------------------------------------------------
 
-//Read Text e Read Images
-function saveReadExercise(execution){
-  saveAudioExecution(execution);
-}
-
 //Images to text
 function saveITT(n) {
   let execution = {};
@@ -518,43 +513,42 @@ function saveCT(n){
 function saveExecution(execution){
   $("#buttonDiv > button").prop("disabled", true).text("Esercizio Inviato!");
 
-
-  $.ajax({
-    type: "POST",
+  $.post({
     url: "../exerciseLogger",
     data: JSON.stringify(execution),
-    contentType: "application/json",
-    error: function (error) {
-      console.error("Errore durante l'invio dell'esecuzione alla servlet:", error);
-      redirect("500.html")
-    }
-  });
-  setTimeout(()=> {
+    contentType: "application/json"
+  })
+  .done(function(response) {
     redirect("home");
-  }, 3000);
+  })
+  .fail(function(error) {
+    console.error("Error during execution submission to the servlet:", error);
+    redirect("500.html");
+  });
+
 }
 
-function saveAudioExecution(execution){
+//Read Text e Read Images
+function saveReadExercise(execution){
   if(execution != null){
 
     let formData = new FormData();
     formData.append("audioFile", execution);
 
-    $.ajax({
-      type: "POST",
+    $.post({
       url: "../exerciseLogger",
       data: formData,
       processData: false,
       contentType: false,
-      cache: false,
-      success: function (){
-        redirect("home");
-      },
-      error: function(xhr, status, error) {
-        console.error("Errore durante l'invio dell'audio alla servlet:", error);
-        console.log(xhr.responseText);
-        redirect("500.html");
-      }
+      cache: false
+    })
+    .done(function() {
+      redirect("home");
+    })
+    .fail(function(xhr, status, error) {
+      console.error("Errore durante l'invio dell'audio alla servlet:", error);
+      console.log(xhr.responseText);
+      redirect("500.html");
     });
   }
 }
