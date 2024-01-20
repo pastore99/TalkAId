@@ -1,9 +1,10 @@
-const resetEmail = $("#resetEmail");
 const c1 = $("#c1");
 const c2 = $("#c2");
 const c3 = $("#c3");
 const c4 = $('#c4');
 const loginPage = $('#loginPage');
+const pin = $("#pin");
+const resetEmail = $("#resetEmail");
 const container = $('#container');
 const newPassword = $("#newPassword");
 const repeatNewPassword = $("#repeatNewPassword");
@@ -150,18 +151,12 @@ $(document).ready(function startUp() {
 
     $("#confirmPin").click((event) => {
         event.preventDefault();
-        let data = '';
-        for (let i = 0; i < 4; i++) {
-            let squareId = 'square' + i;
-            let square = document.getElementById(squareId);
-            data += square.textContent || '0';
-        }
-        if (data === sessionPin) {
+        if (pin.val() === sessionPin) {
             // if the PIN entered matches the saved PIN, proceed to step 3
             c2.hide();
             c3.show();
         } else {
-            alert('The pin is incorrect');
+            alert('Il pin non è corretto');
         }
     });
 
