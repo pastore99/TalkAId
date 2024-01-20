@@ -3,7 +3,7 @@ package model.service.email;
 public interface EmailManagerInterface {
 
     /**
-     * Permette l'invio di un'email specificando l'indirizzo, il titolo ed il corpo.
+     * Permette l'invio di un'email specificando l'indirizzo, il titolo e il corpo.
      *
      * @param toAddress l'indirizzo email
      * @param subject   il titolo

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="it">
 <body>
+<% if(session.getAttribute("type")==null){
+    response.sendRedirect("../errorPage/403.html");
+}%>
     <div id="navbarDiv" >
         <div id="home" class="divButtons">
             <img id="homeIcon" class="navbarIcon" src="../images/home.svg" alt="homeIcon">

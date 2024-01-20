@@ -42,6 +42,11 @@
 
 </head>
 <body>
+
+<% if(session.getAttribute("type")==null){
+    response.sendRedirect("../errorPage/403.html");
+}%>
+
 <!--Qui c'è quello che vedi sin da subito -->
     <div class="up">
     </div>

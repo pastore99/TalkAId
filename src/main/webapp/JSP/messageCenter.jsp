@@ -27,7 +27,7 @@
         <!--chats -->
         <div class="chat-list">
             <%
-                if(session.getAttribute("id") == "null") {
+                if(session.getAttribute("id") == null) {
                     response.sendRedirect("../errorPage/403.html");
                 }
                 else {
