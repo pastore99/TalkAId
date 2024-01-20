@@ -1,6 +1,8 @@
 package model.DAO;
 
 import model.entity.Condition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAOCondition {
+    private static final Logger logger = LoggerFactory.getLogger(DAOCondition.class);
     private Connection connection;
     public DAOCondition(Connection connection) {this.connection=connection;}
 
@@ -16,7 +19,7 @@ public class DAOCondition {
         try{
             this.connection=DAOConnection.getConnection();
         }catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
 
@@ -50,9 +53,7 @@ public class DAOCondition {
         try {
 
             connection = connection.isClosed() ? DAOConnection.getConnection():connection;
-            String query = null;
-
-            query = "SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity\n" +
+            String query = "SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity \n" +
                     "FROM `condition` c\n" +
                     "JOIN PatientCondition pc ON c.ID_condition = pc.ID_condition\n" +
                     "WHERE pc.ID_patient = ?;";
@@ -68,19 +69,17 @@ public class DAOCondition {
 
             return list_PersonalCondition;
         } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
-        return null; // or you may throw an exception here
+        return null;
     }
 
     public ArrayList<Condition> getConditionsNOTOfPatient(int id_patient) {
@@ -91,9 +90,7 @@ public class DAOCondition {
         try {
 
             connection = connection.isClosed() ? DAOConnection.getConnection():connection;
-            String query = null;
-
-            query = "SELECT c.*\n" +
+            String query = "SELECT c.*\n" +
                     "FROM `condition` c\n" +
                     "LEFT JOIN PatientCondition pc ON c.ID_condition = pc.ID_condition AND pc.ID_patient = ?\n" +
                     "WHERE pc.ID_patient IS NULL\n" +
@@ -109,59 +106,55 @@ public class DAOCondition {
             }
             return list_PersonalCondition;
         } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
-        return null; // or you may throw an exception here
+        return null;
     }
 
 
     public boolean AddConditionPatient(int ID_condition, int ID_patient, int Severity) {
 
-        PreparedStatement preparedStatementPersonalInfo = null;
+        PreparedStatement preparedStatement = null;
 
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             connection.setAutoCommit(false);  // Start a transaction
 
-            // Insert user data into personal_info table
-            String queryAnagrafica = "INSERT INTO PatientCondition (ID_condition, ID_patient, Severity)\n" +
+
+            String query = "INSERT INTO PatientCondition (ID_condition, ID_patient, Severity)\n" +
                     "VALUES (?, ?, ?)";
-            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);
-            preparedStatementPersonalInfo.setInt(1, ID_condition);
-            preparedStatementPersonalInfo.setInt(2, ID_patient);
-            preparedStatementPersonalInfo.setInt(3, Severity);
-            preparedStatementPersonalInfo.executeUpdate();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, ID_condition);
+            preparedStatement.setInt(2, ID_patient);
+            preparedStatement.setInt(3, Severity);
+            preparedStatement.executeUpdate();
 
             connection.commit();  // Commit the transaction
             return true;  // User created successfully
 
         } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
             try {
                 if (connection != null) {
                     connection.rollback();  // Rollback the transaction in case of an exception
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                logger.error("Error rollback", e);
             }
         } finally {
             try {
-                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -170,40 +163,38 @@ public class DAOCondition {
 
     public boolean RemoveConditionPatient(int ID_condition, int ID_patient) {
 
-        PreparedStatement preparedStatementPersonalInfo = null;
+        PreparedStatement preparedStatement = null;
 
         try {
             connection = connection.isClosed() ? DAOConnection.getConnection():connection;
             connection.setAutoCommit(false);  // Start a transaction
 
-            // Insert user data into personal_info table
-            String queryAnagrafica = "DELETE FROM PatientCondition\n" +
+
+            String query = "DELETE FROM PatientCondition\n" +
                     "WHERE ID_condition = ? AND ID_patient = ?;";
-            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);
-            preparedStatementPersonalInfo.setInt(1, ID_condition);
-            preparedStatementPersonalInfo.setInt(2, ID_patient);
-            preparedStatementPersonalInfo.executeUpdate();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, ID_condition);
+            preparedStatement.setInt(2, ID_patient);
+            preparedStatement.executeUpdate();
 
             connection.commit();  // Commit the transaction
             return true;  // User created successfully
 
         } catch (SQLException e) {
-            // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
             try {
                 if (connection != null) {
                     connection.rollback();  // Rollback the transaction in case of an exception
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                logger.error("Error rollback", e);
             }
         } finally {
             try {
-                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 

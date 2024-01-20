@@ -11,10 +11,10 @@ const profileIconS = $("#profileIconSelected")
 
 let USERTYPE
 const page =  window.location.pathname.split('/').pop()
-const homePages = ["homePagePatient.jsp", "patientReport.jsp"] //TODO: Mettere le pagine da considerare "Home"
-const messagePages = ["messageCenter.jsp"] //TODO: Mettere le pagine da considerare "Message"
-const calendarPages = ["schedule.jsp"] //TODO: Mettere le pagine da considerare "Calendar"
-const profilePages = ["userArea.jsp"] //TODO: Mettere le pagine da considerare "Profile"
+const homePages = ["homePagePatient.jsp", "patientReport.jsp", "userReport.jsp"]
+const messagePages = ["messageCenter.jsp"]
+const calendarPages = ["schedule.jsp"]
+const profilePages = ["userArea.jsp", "changePassw.jsp"]
 
 $("document").ready(()=>{
     USERTYPE = $("#userInfo").data("type");
@@ -60,7 +60,7 @@ function redirect(where){
         if (USERTYPE === "patient"){
             window.location.href = "homePagePatient.jsp";
         }else if (USERTYPE === "therapist"){
-            window.location.href = "homeTherapist.jsp";
+            window.location.href = "homepageTherapist.jsp";
         }
     }
     else{

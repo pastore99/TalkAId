@@ -1,6 +1,8 @@
 package model.DAO;
 
 import model.entity.PersonalInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAOPersonalInfo {
+    private static final Logger logger = LoggerFactory.getLogger(DAOPersonalInfo.class);
 
     private Connection connection;
 
@@ -19,7 +22,7 @@ public class DAOPersonalInfo {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     private PersonalInfo getPersonalInfoFromResultSet(ResultSet resultSet) throws SQLException {
@@ -56,13 +59,13 @@ public class DAOPersonalInfo {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
             try {
                 if (connection != null) {
                     connection.rollback();  // Rollback the transaction in case of an exception
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                logger.error("Error rollback", e);
             }
         } finally {
             try {
@@ -70,7 +73,7 @@ public class DAOPersonalInfo {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -94,14 +97,14 @@ public class DAOPersonalInfo {
                 return getPersonalInfoFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -126,13 +129,13 @@ public class DAOPersonalInfo {
 
         } catch (SQLException e) {
             // Handle the exception (e.g., log or throw)
-            e.printStackTrace();
+            logger.error("Error query", e);
             try {
                 if (connection != null) {
                     connection.rollback(); // Rollback the transaction in case of an exception
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                logger.error("Error rollback", e);
             }
         } finally {
             try {
@@ -140,7 +143,7 @@ public class DAOPersonalInfo {
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
                 // Handle the exception (e.g., log or throw)
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
@@ -167,13 +170,15 @@ public class DAOPersonalInfo {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
             return false;
         } finally {
             try {
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                // Handle the exception (e.g., log or throw)
+                logger.error("Error finally", e);
             }
         }
 
@@ -209,17 +214,18 @@ public class DAOPersonalInfo {
                 return true; // Entrambi gli aggiornamenti hanno avuto successo
             }
         } catch (SQLException e) {
-            // Gestione dell'eccezione di duplicazione
             if (e.getSQLState().equals("23000") && e.getErrorCode() == 1062) {
             } else {
                 // Gestione di altre eccezioni
-                e.printStackTrace();
+                logger.error("Errore query", e);
             }
         } finally {
             try {
+                if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                // Handle the exception (e.g., log or throw)
+                logger.error("Error finally", e);
             }
         }
 

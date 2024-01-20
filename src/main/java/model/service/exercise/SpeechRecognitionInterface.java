@@ -1,6 +1,7 @@
 package model.service.exercise;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 
@@ -15,7 +16,7 @@ public interface SpeechRecognitionInterface {
      * @throws ExecutionException   se si verifica un errore durante l'esecuzione del task.
      * @throws IOException          se si verifica un errore di input/output.
      */
-    public String azureSTT(InputStream audio) throws InterruptedException, ExecutionException, IOException;
+    String azureSTT(InputStream audio) throws InterruptedException, ExecutionException, IOException;
 
     /**
      * Genera un file temporaneo a partire da un InputStream.
@@ -24,5 +25,5 @@ public interface SpeechRecognitionInterface {
      * @return Il percorso del file temporaneo creato.
      * @throws IOException se si verifica un errore di input/output.
      */
-    public String generateFile(InputStream inputAudio) throws IOException;
+    String generateFile(InputStream inputAudio) throws IOException;
 }

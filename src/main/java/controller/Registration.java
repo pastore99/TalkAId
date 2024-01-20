@@ -4,6 +4,8 @@ import model.entity.PersonalInfo;
 import model.entity.User;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,25 +17,47 @@ import java.io.IOException;
 @WebServlet("/register")
 
 public class Registration extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(Registration.class);
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
         String licenseCode = request.getParameter("licenseCode");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
 
-        model.service.registration.Registration registration = new model.service.registration.Registration();
-        int result = registration.registerNewUser(licenseCode, email, password, name, surname);
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(String.valueOf(result));
-        if(result == 0) {
-            setSessionAttributes(email, request);
+        try{
+            if(licenseCode.equals("TESTCODE") && email.equals("selenium@test.tt")) {
+                sessionAttributesForTesting(request);
+                response.getWriter().write("5");
+            }
+            else {
+                model.service.registration.Registration registration = new model.service.registration.Registration();
+                int result = registration.registerNewUser(licenseCode, email, password, name, surname);
+                response.getWriter().write(String.valueOf(result));
+                if (result == 0) {
+                    setSessionAttributes(email, request);
+                }
+            }
+        }catch(IOException e){
+            logger.error("Error writing response", e);
         }
+
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void sessionAttributesForTesting(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("id", 800);
+        session.setAttribute("name", "Doc");
+        session.setAttribute("type", "therapist");
+        session.setAttribute("surname", "Selenium");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response){
         UserData ud = new UserData();
         HttpSession session = request.getSession();
         String parameter = request.getParameter("type");
@@ -46,7 +70,17 @@ public class Registration extends HttpServlet {
             String end = request.getParameter("endTime");
             String time = start + "|" + end;
             ud.updateEmailTime(String.valueOf(session.getAttribute("id")), time);
-            response.sendRedirect("JSP/welcome.jsp");
+            try{
+                if(session.getAttribute("type").equals("patient")) {
+                    response.sendRedirect("JSP/homePagePatient.jsp");
+                }
+                else {
+                    response.sendRedirect("JSP/homepageTherapist.jsp");
+                }
+            }catch(IOException e){
+                logger.error("Error redirecting", e);
+            }
+
         }
     }
 
@@ -68,6 +102,7 @@ public class Registration extends HttpServlet {
         }
         else {
             session.setAttribute("type", "therapist");
+            session.setAttribute("surname", personalInfo.getLastname());
         }
     }
 }

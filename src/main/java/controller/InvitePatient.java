@@ -1,7 +1,8 @@
 package controller;
 
-import model.service.condition.ConditionManager;
 import model.service.registration.Registration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,12 +14,18 @@ import java.io.IOException;
 
 @WebServlet("/invitePatient")
 public class InvitePatient extends HttpServlet {
-
+    private static final Logger logger = LoggerFactory.getLogger(InvitePatient.class);
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         model.service.registration.Registration registration=new Registration();
         registration.invitePatient((Integer) session.getAttribute("id"), request.getParameter("email"), request.getParameter("nome"), request.getParameter("cognome"));
-        response.sendRedirect(request.getContextPath() + "/JSP/homepageTherapist.jsp");
+        try{
+            response.sendRedirect(request.getContextPath() + "/JSP/homepageTherapist.jsp");
+        }catch(IOException e){
+            logger.error("Error redirecting", e);
+        }
+
     }
 
 }

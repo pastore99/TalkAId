@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
     <%@page contentType="text/html;charset=UTF-8"%>
 
     <%
@@ -11,7 +12,7 @@
 
     %>
     <meta charset="utf-8">
-    <title>Politica sulla Privacy</title>
+    <title>TalkAId - Politica sulla Privacy</title>
     <style>
 
         body {
@@ -231,7 +232,7 @@
 
                 Qualora apportassimo modifiche significative alla Politica sulla Privacy, potremmo fornire notifiche aggiuntive per assicurarci che tu sia pienamente consapevole di tali cambiamenti.<br><br>Queste notifiche potrebbero essere comunicate attraverso il nostro sito web, messaggi email o altri mezzi di comunicazione ritenuti appropriati.<br><br>
 
-                La tua fiducia è di importanza cruciale per noi, e vogliamo assicurarci che tu abbia tutte le informazioni necessarie per comprendere come proteggiamo le tue informazioni personali.<br><br>Continueremo a impegnarci per garantire la massima trasparenza e aderenza agli standard più elevati di privacy e sicurezza.</p>
+                La tua fiducia è di importanza cruciale per noi, e vogliamo assicurarci che tu abbia tutte le informazioni necessarie per comprendere come proteggiamo le tue informazioni personali.<br><br>Continueremo a impegnarci per garantire la massima trasparenza e aderenza a gli standard più elevati di privacy e sicurezza.</p>
 
 
             <h2>Contatti</h2>
@@ -259,7 +260,6 @@
             <div style="display: flex; justify-content: space-between;">
                 <button onclick="accettaCondivisione()">Accetto</button>
                 <button class="button" onclick="nonAccetto()">Non Accetto</button>
-                </d>
             </div>
         </div>
     </div>
@@ -279,7 +279,7 @@
         </div>
         <button class="button" type="submit">Salva</button>
     </form>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <script src="../JS/legal.js"></script>
 </body>
 </html>

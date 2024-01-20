@@ -1,12 +1,13 @@
 package model.DAO;
 
+import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -15,6 +16,8 @@ import java.util.logging.Logger;
  * @throws ClassNotFoundException if the database driver class is not found
  */
 public class DAOConnection {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DAOConnection.class);
+
     private static DataSource dataSource;
 
     static void setDataSource(DataSource ds) {
@@ -57,37 +60,37 @@ public class DAOConnection {
             // Other DataSource interface methods (not used in this example)
 
             @Override
-            public <T> T unwrap(Class<T> iface) throws SQLException {
+            public <T> T unwrap(Class<T> iface) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public boolean isWrapperFor(Class<?> iface) throws SQLException {
+            public boolean isWrapperFor(Class<?> iface) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public java.io.PrintWriter getLogWriter() throws SQLException {
+            public java.io.PrintWriter getLogWriter() {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public void setLogWriter(java.io.PrintWriter out) throws SQLException {
+            public void setLogWriter(java.io.PrintWriter out) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public void setLoginTimeout(int seconds) throws SQLException {
+            public void setLoginTimeout(int seconds) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public int getLoginTimeout() throws SQLException {
+            public int getLoginTimeout() {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+            public Logger getParentLogger() {
                 return null;
             }
         };
@@ -98,7 +101,7 @@ public class DAOConnection {
         try {
             con = dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
         return con;
     }

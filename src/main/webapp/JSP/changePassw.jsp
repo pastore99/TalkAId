@@ -1,15 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE>
+<html lang="it">
 <head>
-    <title>Title</title>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
+    <title>TalkAId - Cambio Password</title>
     <link href="../CSS/Change_Password.css" type="text/css" rel = "stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-UG8ao2jwOWB7/oDdObZc6ItJmwUkR/PfMyt9Qs5AwX7PsnYn1CRKCTWyncPTWvaS" crossorigin="anonymous"></script>
 
     <script>
         $(document).ready(function() {
             // Ascolta l'evento di clic sul pulsante
             $("#Controlla").click(function () {
-                var password_attuale = $("#password").val();
+                let password_attuale = $("#password").val();
                 $.ajax({
                     url: '${pageContext.request.contextPath}/ControllPassword',
                     type: 'POST',
@@ -61,7 +63,7 @@
         $(document).ready(function() {
             // Ascolta l'evento di clic sul pulsante
             $("#Controlla2").click(function () {
-                var password_nuova = $("#password2").val();
+                let password_nuova = $("#password2").val();
                 $.ajax({
                     url: '${pageContext.request.contextPath}/ChangePassword',
                     type: 'POST',
@@ -74,6 +76,7 @@
                     {
                         if(result.toString()==="true")
                         {
+                            window.location.href = '../JSP/userArea.jsp';
                             alert("Password inserita correttamente");
                             document.querySelector(".popup").style.display = "none";
                         }else

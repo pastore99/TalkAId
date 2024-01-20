@@ -9,6 +9,7 @@ import model.entity.SlimmerExercise;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ExerciseManager implements ExerciseManagerInterface {
     private final DAOExerciseGlossary daoEG = new DAOExerciseGlossary();
@@ -36,6 +37,10 @@ public class ExerciseManager implements ExerciseManagerInterface {
         return daoE.retrieveAllPatientExerciseDone(userID);
     }
 
+    public List<Exercise> retrievePatientExerciseDone(int patientID) {
+        return daoE.retrievePatientExerciseDone(patientID);
+    }
+
     public List<SlimmerExercise> retrieveDoneExercises(int patientId) {
         return daoE.retrieveDoneExercises(patientId);
     }
@@ -43,4 +48,35 @@ public class ExerciseManager implements ExerciseManagerInterface {
     public List<SlimmerExercise> retrieveNotDoneExercises(int patientId) {
         return daoE.retrieveNotDoneExercises(patientId);
     }
+
+    public List<SlimmerExercise> retrieveAiRaccomandation(int therapistId){
+        return daoE.getExerciseToApprove(therapistId);
+    }
+
+    public boolean changeRaccomandation(String action, int exerciseId, Date insertDate, int userId){
+        if(action.equalsIgnoreCase("Approve")){
+            return daoE.approveExercise(exerciseId, insertDate, userId);
+        }else{
+            return daoE.deleteExercise(exerciseId, insertDate, userId);
+        }
+    }
+
+    public boolean changeMultipleReccomandation(String action, int userId){
+        if(action.equalsIgnoreCase("Approve")){
+            return daoE.approveMultipleExercise(userId);
+        }else{
+            return daoE.deleteMultipleExercise(userId);
+        }
+    }
+
+    public Map<String,Integer> retrieveAllStats(int id)
+    {
+        return daoE.retrieveAllStatsPatientExerciseDone(id);
+    }
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryNotDone(userID);}
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryDone(userID);}
+
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient) { return daoE.AddExerciseRecommendation(idExercise,idPatient);}
 }

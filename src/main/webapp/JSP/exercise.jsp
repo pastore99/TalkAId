@@ -1,8 +1,9 @@
 <%@ page import="model.entity.ExerciseGlossary" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
+    <link rel="icon" href="../images/siteIco.png" type="image/png">
 
     <%
         if(session.getAttribute("id") == null) {
@@ -12,7 +13,7 @@
             ExerciseGlossary exercise = (ExerciseGlossary) session.getAttribute("exercise");
     %>
 
-    <title>Esercizio <%= exercise.getIdExercise()%></title>
+    <title>TalkAId - Esercizio <%= exercise.getIdExercise()%></title>
 
 </head>
 <body>

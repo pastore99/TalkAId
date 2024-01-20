@@ -4,13 +4,37 @@ import java.sql.Date;
 
 public class SlimmerExercise {
     private int id;
+
     private String name;
+
     private Date insertionDate;
 
-    public SlimmerExercise(int id, String name, Date insertionDate) {
+    private int evaluation;
+
+    private String description;
+
+    private int feedback;
+
+    private int difficulty;
+
+    private String target;
+
+    private String type;
+
+    private int userId;
+
+
+    public SlimmerExercise(int id, int userId, String name, String description, int feedback, Date insertionDate, int difficulty, String target, String type,  int evaluation) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
+        this.description = description;
+        this.feedback = feedback;
         this.insertionDate = insertionDate;
+        this.difficulty = difficulty;
+        this.target = target;
+        this.type = type;
+        this.evaluation = evaluation;
     }
 
     public int getId() {
@@ -36,4 +60,57 @@ public class SlimmerExercise {
     public void setInsertionDate(Date insertionDate) {
         this.insertionDate = insertionDate;
     }
+
+    public int getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(int feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getEvaluation() { return evaluation; }
+
+    public void setEvaluation(int evaluation) { this.evaluation = evaluation; }
+
 }

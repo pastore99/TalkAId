@@ -122,7 +122,7 @@ function redirect(where){
     if (USERTYPE === "patient"){
       window.location.href = "homePagePatient.jsp";
     }else if (USERTYPE === "therapist"){
-      window.location.href = "homeTherapist.jsp";
+      window.location.href = "homepageTherapist.jsp";
     }
   }
   else{

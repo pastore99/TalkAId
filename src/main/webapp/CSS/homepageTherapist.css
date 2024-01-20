@@ -1,0 +1,195 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100vh;
+    width: 100%;
+    background: #7edcd4;
+}
+
+#container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#navbar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background: white;
+    width: 10%;
+    height: 70%;
+    border-radius: 50000px;
+    margin-left: 10%;
+}
+
+#navbar > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+#navIcons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#navIcons > div{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 100%;
+}
+
+#navIcons > div > img{
+    width: 25%;
+    cursor: pointer;
+}
+
+#logoIcon{
+    width: 70%;
+    margin-top: 20%;
+}
+
+#docInfo{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40%;
+    cursor: pointer;
+}
+
+#docIcon{
+    width: 40%;
+    margin-bottom: 2%;
+}
+
+#rightHalf{
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 70%;
+    height: 90%;
+}
+
+#bottomHalf{
+    margin-top: 5%;
+    background: white;
+    width: 100%;
+    height: 75%;
+    border-radius: 24px;
+}
+
+#topHalf{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#topHalf div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.roundedWhite{
+    background: white;
+    border-radius: 99999px;
+    padding: 2% 5% 2% 5%;
+
+}
+
+input{
+    border: none;
+}
+
+#textInput{
+  width: 100%
+}
+
+#searchInput{
+    width: 100%;
+}
+
+#tableContainer{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+#tableContainer table{
+    width: 80%
+}
+
+#tableContainer table td{
+    align-items: center;
+    text-align: center;
+}
+
+#content{
+    height: 100%;
+}
+
+#searchDiv{
+    width: 50%;
+}
+
+
+.table-header th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+
+tr.hoverable-row:hover {
+    background-color: #e6f7ff;
+}
+
+.tdButton{
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: deepskyblue;
+}
+
+.scrollableDiv {
+    display: flex;
+    align-content: center;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+#aiContainer{
+    display: none;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+#NoExercise{
+    text-align: center;
+}

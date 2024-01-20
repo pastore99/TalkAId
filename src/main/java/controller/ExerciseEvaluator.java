@@ -6,12 +6,20 @@ import info.debatty.java.stringsimilarity.Levenshtein;
 import model.entity.ExerciseGlossary;
 import model.service.exercise.ExerciseManager;
 import model.service.exercise.SpeechRecognition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import java.io.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.sql.Blob;
 import java.sql.Date;
@@ -26,6 +34,8 @@ import java.util.concurrent.ExecutionException;
 @WebServlet("/exerciseEvaluator")
 @MultipartConfig
 public class ExerciseEvaluator extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ExerciseEvaluator.class);
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession s = request.getSession();
         String contentType = request.getContentType();
@@ -35,7 +45,7 @@ public class ExerciseEvaluator extends HttpServlet {
         int userId = (int) s.getAttribute("id");
         Date d = (Date) s.getAttribute("insertionDate");
 
-        int score;
+        int score = 0;
 
         if ("application/json".equals(contentType)) {
             score = evaluateNoAudio(exerciseId, userId, d);
@@ -43,7 +53,8 @@ public class ExerciseEvaluator extends HttpServlet {
             try {
                 score = evaluateAudio(exerciseId, userId, d);
             } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
+                logger.error("Error evaluating Audio", e);
+                Thread.currentThread().interrupt();
             }
         }
         em.saveEvaluation(userId, exerciseId, d, score);
@@ -100,7 +111,7 @@ public class ExerciseEvaluator extends HttpServlet {
             }
 
         } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            logger.error("Error parsing Blob to JSON", e);
         }
 
         return stringBuilder.toString();
@@ -126,10 +137,8 @@ public class ExerciseEvaluator extends HttpServlet {
             String executionValue = entry.getValue();
             String solutionValue = solution.get(k);
 
-            if (executionValue != null) {
-                if (executionValue.equals(solutionValue.toUpperCase())) {
-                    right++;
-                }
+            if (executionValue != null && executionValue.equals(solutionValue.toUpperCase())) {
+                right++;
             }
         }
         return (int)((right /total)*100);
@@ -149,7 +158,11 @@ public class ExerciseEvaluator extends HttpServlet {
                 }
             }
         }
-        return (int)((right /total)*100);
+        if(total != 0){
+            return (int)((right /total)*100);
+        }
+
+        return 0;
     }
 
     private int evaluateAudio(int exerciseId, int userId, Date d) throws IOException, ExecutionException, InterruptedException {
@@ -204,7 +217,7 @@ public class ExerciseEvaluator extends HttpServlet {
         try (InputStream audioInputStream = executionBlob.getBinaryStream()) {
             return audioInputStream;
         } catch (SQLException | IOException e) {
-                throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }

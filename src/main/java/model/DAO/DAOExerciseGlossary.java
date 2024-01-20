@@ -1,17 +1,22 @@
 package model.DAO;
 
 import model.entity.ExerciseGlossary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * The DAOExerciseGlossary class provides methods for retrieving ExerciseGlossary information from a database.
  */
 public class DAOExerciseGlossary {
+    private static final Logger logger = LoggerFactory.getLogger(DAOExerciseGlossary.class);
 
     private Connection connection;
 
@@ -23,7 +28,7 @@ public class DAOExerciseGlossary {
         try {
             this.connection = DAOConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error getting connection", e);
         }
     }
     /**
@@ -69,17 +74,84 @@ public class DAOExerciseGlossary {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error query", e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
                 if (preparedStatement != null) preparedStatement.close();
                 DAOConnection.releaseConnection(connection);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Error finally", e);
             }
         }
 
         return null;
+    }
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryNotDone(int userID) {
+        String query = "SELECT eg.* FROM exercise_glossary eg LEFT JOIN exercise e ON eg.ID_exercise = e.ID_exercise AND e.ID_user = ? WHERE e.ID_user IS NULL;\n";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<ExerciseGlossary> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                ExerciseGlossary exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error query", e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                logger.error("Error finally", e);
+            }
+        }
+
+        return exercises;
+    }
+
+    public List<ExerciseGlossary> retrieveAllPatientExerciseGlossaryDone(int userID) {
+        String query = "SELECT eg.* FROM exercise_glossary eg JOIN exercise e ON eg.ID_exercise = e.ID_exercise\n" +
+                        "WHERE e.ID_user = ?;\n";
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<ExerciseGlossary> exercises = new ArrayList<>();
+
+        try {
+            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                ExerciseGlossary exercise = extractExerciseFromResultSet(resultSet);
+                exercises.add(exercise);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error query", e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                DAOConnection.releaseConnection(connection);
+            } catch (SQLException e) {
+                logger.error("Error finally", e);
+            }
+        }
+
+        return exercises;
     }
 }

@@ -1,8 +1,11 @@
+const c1 = $("#c1");
+const c2 = $("#c2");
+const c3 = $("#c3");
+const c4 = $('#c4');
+const loginPage = $('#loginPage');
+const pin = $("#pin");
 const resetEmail = $("#resetEmail");
-const resetStep1 = $("#resetStep1");
-const resetStep2 = $("#resetStep2");
-const resetStep3 = $("#resetStep3");
-const resetPasswordModal = $('#resetPasswordModal');
+const container = $('#container');
 const newPassword = $("#newPassword");
 const repeatNewPassword = $("#repeatNewPassword");
 const resetButton = $("#resetPassword");
@@ -13,14 +16,21 @@ const validEmailIcon = $("#validEmail");
 const invalidEmailIcon = $("#invalidEmail");
 const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 
-let THEPASSWORD;
 
-newPassword.on("input", validatePassword);
-repeatNewPassword.on("input", validatePassword);
+let myDiv = document.getElementById('container');
+myDiv.classList.add('hidden');
+let loginPageDiv = document.getElementById('loginPage');
 
 $(document).ready(function startUp() {
 
     showPasswordIcon.toggleClass("hiddenClass");
+
+    $("#password").keypress(function(event) {
+        if (event.which === 13) {
+            $("#loginButton").click()
+        }
+    })
+
 
     $("#showPassword").click((event) => {
         event.preventDefault();
@@ -35,61 +45,6 @@ $(document).ready(function startUp() {
     $("#email").blur(() => {
         checkRegexEmail();
     });
-
-    $("#forgotPassword").click(handleForgotPassword);
-
-    let sessionPin;
-    /*
-    $("#sendPin").click((event) => {
-        event.preventDefault();
-        $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
-            sessionPin = response.trim(); // Save the response, which should be your pin
-            resetStep1.hide();
-            resetStep2.show();
-        });
-    });
-    */
-    $("#sendPin").click((event) => {
-        event.preventDefault();
-        $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
-            response = response.trim(); // Trim the response
-            if(response == "NA") {
-                // Here, the servlet will return "NA" if it could not find the email
-                alert("Email non registrata nel nostro sistema. Verificane la correttezza");
-            } else {
-                sessionPin = response; // Save the response, which should be your pin
-                resetStep1.hide();
-                resetStep2.show();
-            }
-        });
-    });
-
-    $("#confirmPin").click((event) => {
-        event.preventDefault();
-        if ($("#pin").val() === sessionPin) {
-            // if the PIN entered matches the saved PIN, proceed to step 3
-            resetStep2.hide();
-            resetStep3.show();
-        } else {
-            alert('The pin is incorrect');
-        }
-    });
-
-    $("#resetPassword").click(function(event) {
-        event.preventDefault();
-        $.post(`${contextPath}/login/resetpassword`, {
-            email: $("#resetEmail").val(),
-            newPassword: $("#newPassword").val()
-        })
-            .done(function(data) {
-                alert(data);
-                $("#resetPasswordModal").modal('hide');
-            })
-            .fail(function(err) {
-                console.log(err);
-            });
-    });
-
 });
 
 function togglePassword(event) {
@@ -130,14 +85,112 @@ function checkRegexEmail(){
     }
 }
 
-function handleForgotPassword(event) {
-    event.preventDefault();
-    resetPasswordModal.modal('show');
-    resetStep1.show();
-    resetStep2.hide();
-    resetStep3.hide();
-}
 
+let THEPASSWORD;
+
+newPassword.on("input", validatePassword);
+repeatNewPassword.on("input", validatePassword);
+
+$(document).ready(function startUp() {
+
+
+    let currentSquare = 0;
+
+    function focusInput(squareIndex) {
+        currentSquare = squareIndex;
+        updateSquares();
+    }
+
+    document.addEventListener('keydown', function(event) {
+
+        let key = event.key;
+
+        if (key >= '0' && key <= '9') {
+            let squareId = 'square' + currentSquare;
+            let square = document.getElementById(squareId);
+            square.textContent = key;
+
+            currentSquare++;
+            if (currentSquare > 3) {
+                currentSquare = 0;
+            }
+            updateSquares();
+        }
+    });
+
+    function updateSquares() {
+        for (let i = 0; i < 4; i++) {
+            let squareId = 'square' + i;
+            let square = document.getElementById(squareId);
+            square.style.backgroundColor = (i === currentSquare) ? '#c0c0c0' : '';
+        }
+    }
+
+    $("#handleForgotPassword").click((event) => {
+        event.preventDefault();
+        myDiv.classList.remove('hidden');
+        container.show();
+        loginPageDiv.classList.add('hidden');
+        loginPage.hide();
+    });
+
+    $("#sendPin").click((event) => {
+        event.preventDefault();
+        $.post(`${contextPath}/login/reset`, {email: resetEmail.val()}, function(response) {
+            response = response.trim(); // Trim the response
+            if(response === "NA") {
+                // Here, the servlet will return "NA" if it could not find the email
+                alert("Email non registrata nel nostro sistema. Verificane la correttezza");
+            } else {
+                sessionPin = response; // Save the response, which should be your pin
+                c1.hide();
+                c2.show();
+            }
+        });
+    });
+
+    $("#confirmPin").click((event) => {
+        event.preventDefault();
+        if (pin.val() === sessionPin) {
+            // if the PIN entered matches the saved PIN, proceed to step 3
+            c2.hide();
+            c3.show();
+        } else {
+            alert('Il pin non è corretto');
+        }
+    });
+
+    $("#resetPassword").click(function(event) {
+        event.preventDefault();
+        $.post(`${contextPath}/login/resetpassword`, {
+            email: $("#resetEmail").val(),
+            newPassword: $("#newPassword").val()
+        })
+            .done(function(data) {
+                c3.hide();
+                c4.show();
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
+    });
+
+    $("#gotoLogin").click(function(event) {
+        event.preventDefault();
+        myDiv.classList.add('hidden');
+        container.hide();
+        loginPageDiv.classList.remove('hidden');
+        loginPage.show();
+    });
+
+    $("#gotoLoginArrow").click(function(event) {
+        event.preventDefault();
+        myDiv.classList.add('hidden');
+        container.hide();
+        loginPageDiv.classList.remove('hidden');
+        loginPage.show();
+    });
+});
 
 function validatePassword() {
     THEPASSWORD = newPassword.val();
