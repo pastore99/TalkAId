@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The DAOLicense class provides methods for retrieving and activating licenses from a database.
+ * La classe DAOLicense provvede ai metodi per manipolare le informazioni delle License dal database.
  */
 public class DAOLicense {
     private static final Logger logger = LoggerFactory.getLogger(DAOLicense.class);

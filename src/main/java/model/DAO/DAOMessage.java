@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe DAOMessage provvede ai metodi per manipolare le informazioni dei Message dal database.
+ */
 public class DAOMessage {
     private static final Logger logger = LoggerFactory.getLogger(DAOMessage.class);
 

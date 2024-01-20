@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The DAOExercise class provides methods for retrieving Exercise information from a database.
+ * La classe DAOExercise provvede ai metodi per manipolare le informazioni degli Exercise dal database.
  */
 public class DAOExercise {
     private static final Logger logger = LoggerFactory.getLogger(DAOExercise.class);

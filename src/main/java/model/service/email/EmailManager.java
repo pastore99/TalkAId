@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * This class provides functionality for sending email messages.
- * It reads the configuration from a properties file named 'email.properties'.
+ * Questa classe provvede alle funzionalità per inviare email.
+ * Legge la configurazione dal file properties chiamato 'email.properties'.
  */
 public class EmailManager implements EmailManagerInterface{
     private static final Logger logger = LoggerFactory.getLogger(EmailManager.class);
@@ -24,18 +24,18 @@ public class EmailManager implements EmailManagerInterface{
     private Properties emailProps;
 
     /**
-     * Constructor for the EmailManager class.
-     * It initializes the email properties by loading them from a properties file.
+     * Costruttore per la classe EmailManager.
+     * Inizializza le proprietà delle email caricandole dal file delle proprietà.
      */
     public EmailManager() {
         this.emailProps = loadEmailProperties();
     }
 
     /**
-     * This method sends an email to a given address, with a specified subject and body.
-     * @param toAddress the destination address of the email
-     * @param subject the subject of the email
-     * @param body the body of the email
+     * Questo metodo invia un'email a un address destinatario, con uno specifico oggetto e corpo testo.
+     * @param toAddress il destinatario della mail.
+     * @param subject l'oggetto della mail.
+     * @param body il corpo della mail.
      */
     public void sendEmail(String toAddress, String subject, String body) {
         Session session = getSession();
@@ -50,8 +50,8 @@ public class EmailManager implements EmailManagerInterface{
     }
 
     /**
-     * This method returns a session for email interactions, using the loaded properties and authenticating the user.
-     * @return a Session object
+     * Il metodo restituisce una sessione per le interazioni delle email, usando le proprietà caricate e autenticando l'utente.
+     * @return un oggetto Session.
      */
     private Session getSession() {
         return Session.getDefaultInstance(emailProps, new javax.mail.Authenticator() {
@@ -63,10 +63,10 @@ public class EmailManager implements EmailManagerInterface{
     }
 
     /**
-     * This method sends a preconfigured email message, using a specified session.
-     * @param session the Session object
-     * @param message the MimeMessage object, holding the information about the message to send
-     * @throws MessagingException if the send operation fails
+     * Questo metodo invia un messaggio email preconfigurato, usando una specifica sessione.
+     * @param session l'oggetto Session.
+     * @param message l'oggetto MimeMessage, contiene le informazioni inerenti al messaggio da inviare.
+     * @throws MessagingException se l'operazione d'invio fallisce.
      */
     private void sendEmail(Session session, MimeMessage message) throws MessagingException {
         Transport transport = session.getTransport("smtp");

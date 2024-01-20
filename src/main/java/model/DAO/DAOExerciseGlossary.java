@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * The DAOExerciseGlossary class provides methods for retrieving ExerciseGlossary information from a database.
+ * La classe DAOCondition provvede ai metodi per manipolare le informazioni degli ExerciseGlossary dal database.
  */
 public class DAOExerciseGlossary {
     private static final Logger logger = LoggerFactory.getLogger(DAOExerciseGlossary.class);

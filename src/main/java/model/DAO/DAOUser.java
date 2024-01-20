@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * DAOUser is a class that provides methods for accessing the User table in the database.
+ * La classe DAOCondition provvede ai metodi per manipolare le informazioni degli User dal database.
  */
 public class DAOUser {
     private static final Logger logger = LoggerFactory.getLogger(DAOUser.class);

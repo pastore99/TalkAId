@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * La classe DAOAnalytics provvede ai metodi per manipolare le informazioni delle Analytic dal database.
+ */
 public class DAOAnalytics {
     private static final Logger logger = LoggerFactory.getLogger(DAOAnalytics.class);
 

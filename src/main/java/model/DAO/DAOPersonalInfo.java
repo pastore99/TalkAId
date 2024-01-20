@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * La classe DAOPersonalInfo provvede ai metodi per manipolare le informazioni delle PersonalInfo dal database.
+ */
 public class DAOPersonalInfo {
     private static final Logger logger = LoggerFactory.getLogger(DAOPersonalInfo.class);
 

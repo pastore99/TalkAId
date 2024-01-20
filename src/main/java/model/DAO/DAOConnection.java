@@ -12,8 +12,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * Initialize the data source by loading the database driver class and creating the data source object.
- * @throws ClassNotFoundException if the database driver class is not found
+ * Inizializza il data source caricando i driver class del database e creando il data source object.
+ * @throws ClassNotFoundException se il driver class del database non viene trovato.
  */
 public class DAOConnection {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DAOConnection.class);

@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * La classe DAOCondition provvede ai metodi per manipolare le informazioni delle Condition dal database.
+ */
 public class DAOCondition {
     private static final Logger logger = LoggerFactory.getLogger(DAOCondition.class);
     private Connection connection;

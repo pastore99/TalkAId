@@ -9,7 +9,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DAOSchedule {
+/**
+ * La classe DAOSchedule provvede ai metodi per manipolare le informazioni delle Schedule dal database.
+ */public class DAOSchedule {
     private static final Logger logger = LoggerFactory.getLogger(DAOSchedule.class);
 
     private Connection connection;
