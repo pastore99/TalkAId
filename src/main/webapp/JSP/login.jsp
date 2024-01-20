@@ -64,12 +64,7 @@
             <div class="discovering-english">Inserisci Codice di Verifica</div>
             <p class="chapter">	Se hai fornito l’email correttamente, Inserisci <br>
                 il codice di verifica che ti abbiamo inviato.</p>
-            <div class="cardo">
-                <div class="square" onclick="focusInput(0)" id="square0"></div>
-                <div class="square" onclick="focusInput(1)" id="square1"></div>
-                <div class="square" onclick="focusInput(2)" id="square2"></div>
-                <div class="square" onclick="focusInput(3)" id="square3"></div>
-            </div>
+            <input class="box" placeholder="pin" id="pin" pattern="^\d{4}$" type="email">
             <p class="chapter">Non hai ricevuto il codice?Rimanda</p>
             <button class="button" id="confirmPin">Conferma</button>
         </div>
