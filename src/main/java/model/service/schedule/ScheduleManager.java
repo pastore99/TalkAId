@@ -6,6 +6,9 @@ import model.entity.Schedule;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Questa classe provvede alle funzionalità per la gestione dell'agenda e prenotazioni
+ */
 public class ScheduleManager implements ScheduleManagerInterface {
     DAOSchedule db;
 

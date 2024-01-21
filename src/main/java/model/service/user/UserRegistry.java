@@ -5,6 +5,9 @@ import model.entity.PersonalInfo;
 
 import java.sql.Connection;
 
+/**
+ * Questa classe provvede alle funzionalità per la gestione delle informazioni personali degli utenti.
+ */
 public class UserRegistry implements UserRegistryInterface {
     DAOPersonalInfo db;
     public UserRegistry() {

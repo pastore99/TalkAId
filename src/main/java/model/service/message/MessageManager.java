@@ -8,6 +8,9 @@ import model.service.user.UserData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Questa classe provvede alle funzionalità per inviare messaggi.
+ */
 public class MessageManager implements MessageManagerInterface {
     public MessageManager() {
         this.db = new DAOMessage();

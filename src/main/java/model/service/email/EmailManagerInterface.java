@@ -1,5 +1,9 @@
 package model.service.email;
 
+
+/**
+ * Interfaccia per inviare email.
+ */
 public interface EmailManagerInterface {
 
     /**

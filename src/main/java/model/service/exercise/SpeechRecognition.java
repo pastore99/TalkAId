@@ -15,7 +15,10 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-
+/**
+ * Questa classe provvede alle funzionalità per il riconoscimento vocale.
+ * Legge la configurazione dal file properties chiamato 'azure.properties'.
+ */
 public class SpeechRecognition implements SpeechRecognitionInterface{
     private static final Logger logger = LoggerFactory.getLogger(SpeechRecognition.class);
     private static final String AZURE_PROPERTIES = "/azure.properties";

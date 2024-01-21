@@ -1,5 +1,9 @@
 package model.service.license;
 import model.entity.License;
+
+/**
+ * Interfaccia per la gestione delle licenze.
+ */
 public interface LicenseActivationInterface {
 
     /**

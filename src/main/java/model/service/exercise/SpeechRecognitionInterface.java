@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
-
+/**
+ * Interfaccia per il riconoscimento vocale tramite Azure
+ */
 public interface SpeechRecognitionInterface {
 
     /**

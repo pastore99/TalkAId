@@ -1,5 +1,9 @@
 package model.service.login;
 
+
+/**
+ * Interfaccia per le funzionalità di login
+ */
 public interface LoginInterface {
 
     /**

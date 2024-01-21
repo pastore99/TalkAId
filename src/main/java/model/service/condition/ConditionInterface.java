@@ -1,9 +1,11 @@
 package model.service.condition;
 
 import model.entity.Condition;
-
 import java.util.ArrayList;
 
+/**
+ * Interfaccia per la gestione delle patologie.
+ */
 public interface ConditionInterface {
 
     /**

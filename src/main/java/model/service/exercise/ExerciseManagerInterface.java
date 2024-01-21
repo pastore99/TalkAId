@@ -9,6 +9,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interfaccia per la gestione degli esercizi
+ */
 public interface ExerciseManagerInterface {
 
     /**

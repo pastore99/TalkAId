@@ -3,6 +3,9 @@ package model.service.license;
 import model.DAO.DAOLicense;
 import model.entity.License;
 
+/**
+ * Questa classe provvede alle funzionalità per gestire le licenze.
+ */
 public class LicenseActivation implements LicenseActivationInterface {
     DAOLicense daoLicense;
 

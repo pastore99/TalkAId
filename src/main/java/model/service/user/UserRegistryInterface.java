@@ -2,6 +2,9 @@ package model.service.user;
 
 import model.entity.PersonalInfo;
 
+/**
+ * Interfaccia per la gestione dei dati personali dell'utente
+ */
 public interface UserRegistryInterface {
 
     /**

@@ -7,6 +7,9 @@ import model.service.encryption.Encryption;
 
 import java.security.SecureRandom;
 
+/**
+ * Questa classe provvede alle funzionalità per effettuare il login.
+ */
 public class Authenticator implements LoginInterface {
     DAOUser db;
     Encryption encryption;

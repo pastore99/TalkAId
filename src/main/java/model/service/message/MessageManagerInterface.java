@@ -4,6 +4,9 @@ import model.entity.Message;
 
 import java.util.List;
 
+/**
+ * Interfaccia per la gestione dei messaggi
+ */
 public interface MessageManagerInterface {
 
     /**
