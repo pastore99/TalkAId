@@ -65,12 +65,13 @@ git clone https://github.com/yourname/speech-therapy-remote.git
 8. Start the web server
 9. Launch the application
 
-# Usage
-1. You can log in using the email stored inside the database's table 'user'. All the passwords are "pwd".
+# Usage (for testing purposes or functionalities overview)
+1. You can log in using the email stored inside the schema's table 'user'. All the passwords are "pwd".
 2. Navigate inside the website.
-3. Follow the instructions to perform the proposed exercise.
-4. After completing the exercises, the system will use the Artificial Intelligence module to analyze performance.
+3. Follow the instructions to perform the proposed exercise. (if empty, you can login with the email and password of your therapist and assign them)
+4. After completing the exercises, the system will use the Artificial Intelligence module to analyze performance if vocal exercises. [NOTE: the exercises are for Italian language only]
 5. View the analysis results for feedback and suggestions on your pronunciation and exercise execution.
+If any help needed, consult the user manual provided in the documentation.
 # Contributions
   If you wish to contribute to improving this project, follow these steps:
     1. Fork the repository
