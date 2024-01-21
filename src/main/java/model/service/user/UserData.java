@@ -7,6 +7,9 @@ import model.entity.UserInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Questa classe provvede alle funzionalità per gestire le informazioni degli utenti.
+ */
 public class UserData implements UserDataInterface {
     DAOUser db;
     public UserData() {

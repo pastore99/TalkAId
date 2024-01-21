@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa del cambio dei dati personali
+ */
 @WebServlet("/changeDate")
 public class ChangeUserInfo extends  HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ChangeUserInfo.class);
@@ -33,7 +36,13 @@ public class ChangeUserInfo extends  HttpServlet {
         }
     }
 
-
+    /**
+     * Questo metodo si occupa dell'effettivo cambio
+     * @param request è la richiesta generata dal form
+     * @param userId è l'id dell'utente le cui informazioni vanno modificate
+     * @param userRegistry si occuperà dell'effettivo cambiamento dei dati presenti sul database
+     * @return true se vengono cambiati dei dati, false altrimenti
+     */
     private boolean updatePersonalInfo(HttpServletRequest request, int userId, UserRegistry userRegistry) {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");

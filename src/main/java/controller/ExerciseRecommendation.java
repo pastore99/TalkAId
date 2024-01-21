@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+/**
+ * Servlet che occupa di assegnare gli esercizi raccomandati dai logopedisti ai pazienti
+ */
 @WebServlet("/exerciseRecommendation")
 public class ExerciseRecommendation extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ExerciseRecommendation.class);

@@ -1,7 +1,7 @@
 package model.service.telemetry;
 
 /**
- * Contiene metodi per il salvataggio e manipolazione di informazioni di telemetria degli utenti.
+ * Interfaccia per il salvataggio e manipolazione di informazioni di telemetria degli utenti.
  */
 public interface AnalyticsManagerInterface {
 

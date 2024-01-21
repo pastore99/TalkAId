@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * Servlet che occupa della gestione della messaggistica
+ */
 @WebServlet("/GetMessages")
 public class GetSendMessages extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(GetSendMessages.class);

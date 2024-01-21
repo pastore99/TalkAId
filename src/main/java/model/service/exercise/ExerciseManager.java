@@ -11,6 +11,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Questa classe provvede alle funzionalità per la gestione degli esercizi.
+ */
 public class ExerciseManager implements ExerciseManagerInterface {
     private final DAOExerciseGlossary daoEG = new DAOExerciseGlossary();
     private final DAOExercise daoE = new DAOExercise();

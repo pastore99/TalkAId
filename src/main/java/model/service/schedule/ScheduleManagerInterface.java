@@ -4,6 +4,9 @@ import model.entity.Schedule;
 
 import java.util.List;
 
+/**
+ * Interfaccia per l'agenda e prenotazioni
+ */
 public interface ScheduleManagerInterface {
 
     /**

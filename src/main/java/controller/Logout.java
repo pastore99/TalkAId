@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa di invalidare la sessione per eseguire il logout
+ */
 @WebServlet("/logout")
 public class Logout extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(Logout.class);

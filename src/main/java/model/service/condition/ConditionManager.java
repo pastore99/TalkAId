@@ -5,6 +5,9 @@ import model.entity.Condition;
 
 import java.util.ArrayList;
 
+/**
+ * Questa classe provvede alle funzionalità per gestire le patologie.
+ */
 public class ConditionManager implements ConditionInterface {
     DAOCondition c=new DAOCondition();
     public ArrayList<Condition> getConditionsOfPatient(int id_patient) { return c.getConditionsOfPatient(id_patient);}

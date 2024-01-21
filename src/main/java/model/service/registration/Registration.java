@@ -7,6 +7,9 @@ import model.service.license.LicenseActivation;
 import model.service.user.UserData;
 import model.service.user.UserRegistry;
 
+/**
+ * Questa classe provvede alle funzionalità per la registrazione
+ */
 public class Registration implements RegistrationInterface {
 
     LicenseActivation la;

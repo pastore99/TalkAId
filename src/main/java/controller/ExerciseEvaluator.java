@@ -30,7 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-
+/**
+ * Servlet che si occupa di valutare un esercizio e di salvarne il risultato sul database
+ */
 @WebServlet("/exerciseEvaluator")
 @MultipartConfig
 public class ExerciseEvaluator extends HttpServlet {
@@ -60,7 +62,13 @@ public class ExerciseEvaluator extends HttpServlet {
         em.saveEvaluation(userId, exerciseId, d, score);
     }
 
-
+    /**
+     * Si occupa di valutare gli esercizi di scrittura, che non necessitano di riconoscimento vocale
+     * @param exerciseId è l'id dell'esercizio da valutare
+     * @param userId è l'id dell'utente che ha eseguito l'esercizio
+     * @param date è la data in cui l'esercizio è stato assegnato all'utente
+     * @return la valutazione dell'esercizio
+     */
     private int evaluateNoAudio(int exerciseId, int userId, Date date){
         Gson gson = new Gson();
 
@@ -97,6 +105,13 @@ public class ExerciseEvaluator extends HttpServlet {
         return score;
     }
 
+    /**
+     * Si occupa di trasformare il BLOB presente nel database in una string JSON
+     * @param exerciseId è l'id dell'esercizio da valutare
+     * @param userId è l'id dell'utente che ha eseguito l'esercizio
+     * @param d è la data in cui l'esercizio è stato assegnato all'utente
+     * @return la stringa JSON costruita
+     */
     private String getJSONfromBlob(int exerciseId, int userId, Date d){
         Blob executionBlob = new ExerciseManager().getExecution(exerciseId, userId, d);
         StringBuilder stringBuilder = new StringBuilder();
@@ -117,6 +132,12 @@ public class ExerciseEvaluator extends HttpServlet {
         return stringBuilder.toString();
     }
 
+    /**
+     * Si occupa della valutazione degli esercizi di tipo "RIGHT TEXT"
+     * @param execution l'esecuzione dell'esercizio da parte dell'utente
+     * @param solution la soluzione dell'esercizio con cui poter valutare l'esecuzione
+     * @return la valutazione dell'esercizio
+     */
     private int evaluateRightText(Set<String> execution, Set<String> solution) {
         double right = 0;
         int total = solution.size();
@@ -128,6 +149,12 @@ public class ExerciseEvaluator extends HttpServlet {
         return (int)((right /total)*100);
     }
 
+    /**
+     * Si occupa della valutazione degli esercizi di tipo "IMAGES TO TEXT" e "TEXT TO IMAGES"
+     * @param execution l'esecuzione dell'esercizio da parte dell'utente
+     * @param solution la soluzione dell'esercizio con cui poter valutare l'esecuzione
+     * @return la valutazione dell'esercizio
+     */
     private int evaluateITTnTTI(Map<String, String> execution, Map<String, String> solution) {
         double right = 0;
         int total = solution.size();
@@ -144,6 +171,12 @@ public class ExerciseEvaluator extends HttpServlet {
         return (int)((right /total)*100);
     }
 
+    /**
+     * Si occupa della valutazione degli esercizi di tipo "CROSSWORD"
+     * @param execution l'esecuzione dell'esercizio da parte dell'utente
+     * @param solution la soluzione dell'esercizio con cui poter valutare l'esecuzione
+     * @return la valutazione dell'esercizio
+     */
     private int evaluateCrossword(String[][] execution, String[][] solution) {
         double right = 0;
         int total = 0;
@@ -165,6 +198,16 @@ public class ExerciseEvaluator extends HttpServlet {
         return 0;
     }
 
+    /**
+     * Si occupa di valutare gli esercizi di lettura, che necessitano di riconoscimento vocale
+     * @param exerciseId l'id dell'esercizio eseguito
+     * @param userId l'id dell'utente che ha eseguito l'esercizio
+     * @param d la data in cui è stata assegnata l'esecuzione dell'esercizio all'utente
+     * @return la valutazione dell'esercizio
+     * @throws IOException in caso di errore dell'Input Stream
+     * @throws ExecutionException in caso di errore nella conversione dell'audio in testo tramite Azure
+     * @throws InterruptedException in caso di interruzione durante la conversione dell'audio in testo tramite Azure
+     */
     private int evaluateAudio(int exerciseId, int userId, Date d) throws IOException, ExecutionException, InterruptedException {
         InputStream audioExecution = getAudiofromBlob(exerciseId, userId, d);
         String audioText = null;
@@ -212,6 +255,13 @@ public class ExerciseEvaluator extends HttpServlet {
         return 0;
     }
 
+    /**
+     * Si occupa di creare l'InputStream audio dal BLOB presente nel database
+     * @param exerciseId l'id dell'esercizio
+     * @param userId l'id dell'utente
+     * @param d la data in cui è stato assegnato l'esercizio all'utente
+     * @return l'audio in formato InputStream
+     */
     private InputStream getAudiofromBlob(int exerciseId, int userId, Date d){
         Blob executionBlob = new ExerciseManager().getExecution(exerciseId, userId, d);
         try (InputStream audioInputStream = executionBlob.getBinaryStream()) {

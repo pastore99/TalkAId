@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa di gestire le raccomandazioni approvate o rifiutate dal logopedista generate dall'IA
+ */
 @WebServlet("/ManageExercise")
 public class ManageAIExercise extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ManageAIExercise.class);

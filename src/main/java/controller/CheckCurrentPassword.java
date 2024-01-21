@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet che occupa di controllare se la password inserita prima del cambio password sia corretta
+ */
 @WebServlet("/ControllPassword")
 public class CheckCurrentPassword extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(CheckCurrentPassword.class);

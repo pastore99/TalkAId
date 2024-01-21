@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="it" style="background-color: #f7fcff; ">
 <%
-    if(session.getAttribute("id") == null) {
+    if(session.getAttribute("id") == null || session.getAttribute("type").equals("therapist")) {
         response.sendRedirect("../errorPage/403.html");
     }
     else {

@@ -83,12 +83,12 @@ public class EmailManager implements EmailManagerInterface{
     }
 
     /**
-     * This method generates a MimeMessage, filling it with the necessary information.
-     * @param message the MimeMessage object to fill with information
-     * @param toAddress the destination address of the email
-     * @param subject the subject of the email
-     * @param body the body of the email
-     * @throws MessagingException if the setting operation fails
+     * Questo metodo genera un MimeMessage, riempendolo con le informazioni necessarie.
+     * @param message l'oggetto MimeMessage da riempire con le informazioni.
+     * @param toAddress l'indirizzo del destinatario dell'email
+     * @param subject l'oggetto della mail
+     * @param body il corpo della mail
+     * @throws MessagingException se il settaggio delle informazioni fallisce
      */
     private void generateMessage(MimeMessage message, String toAddress, String subject, String body) throws MessagingException {
         message.setFrom(new InternetAddress(emailProps.getProperty("email.string")));
@@ -98,8 +98,8 @@ public class EmailManager implements EmailManagerInterface{
     }
 
     /**
-     * This method loads the email properties from a resource file named 'email.properties'.
-     * @return a Properties object, holding the email properties
+     * Questo metodo carica le proprietà delle email dal file chiamato 'email.properties'.
+     * @return un oggetto Properties, che mantiene le proprietà delle email.
      */
     private Properties loadEmailProperties() {
         Properties props = new Properties();

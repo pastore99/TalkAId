@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa dell'invio del pin per la richiesta di reset della password
+ */
 @WebServlet("/login/reset")
 public class SendResetPin extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(SendResetPin.class);

@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa di registrare i dati degli utenti che si registrano sul database
+ */
 @WebServlet("/register")
-
 public class Registration extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(Registration.class);
     @Override

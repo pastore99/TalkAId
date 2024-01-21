@@ -1,4 +1,5 @@
 package model.service.registration;
+
 /**
  * Interfaccia per la classe Registrazione
  */

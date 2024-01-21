@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
-
+/**
+ * Servlet che si occupa del prelievo dei dati necessari per la visualizzazione ed esecuzione dell'esercizio
+ */
 @WebServlet("/exerciseController")
 public class ExerciseController extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ExerciseController.class);

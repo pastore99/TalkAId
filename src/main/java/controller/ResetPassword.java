@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+/**
+ * Servlet che si occupa del reset della password tramite pin inviato all'email
+ */
 @WebServlet("/login/resetpassword")
 public class ResetPassword extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ResetPassword.class);

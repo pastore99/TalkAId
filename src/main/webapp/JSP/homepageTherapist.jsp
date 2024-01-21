@@ -9,6 +9,10 @@
     <title>Homepage</title>
 </head>
 <body>
+<% if(session.getAttribute("type")==null || session.getAttribute("type").equals("patient")){
+    response.sendRedirect("../errorPage/403.html");
+}%>
+
     <div id="container">
         <div id="navbar">
             <div id="logoImg">

@@ -1,6 +1,10 @@
 package model.service.encryption;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+/**
+ * Questa classe provvede alle funzionalità per criptare le password.
+ */
 public class Encryption implements EncryptionInterface {
     public String encryptPassword(String plainTextPassword) {
         // Generate a salt for BCrypt
