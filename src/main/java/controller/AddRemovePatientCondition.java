@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+/**
+ *  Servlet che si occupa di gestire le patologie degli utenti
+ */
 @WebServlet("/AddRemovePatientCondition")
 public class AddRemovePatientCondition extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(AddRemovePatientCondition.class);

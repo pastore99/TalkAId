@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa di assegnare alla sessione tutti i dati necessari dopo il login
+ */
 @WebServlet("/login")
 public class Login extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(Login.class);

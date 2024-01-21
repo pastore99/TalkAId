@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
+/**
+ * Servlet che occupa dell'invito di nuovi pazienti inviando una email contenente il codice d'invito
+ */
 @WebServlet("/invitePatient")
 public class InvitePatient extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(InvitePatient.class);

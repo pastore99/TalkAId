@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa della gestione dell'agenda e delle prenotazioni
+ */
 @WebServlet("/ScheduleServlet")
 public class ScheduleManager extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ScheduleManager.class);

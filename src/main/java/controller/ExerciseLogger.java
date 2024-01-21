@@ -19,6 +19,9 @@ import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
 
+/**
+ * Servlet che occupa di salvare l'esecuzione degli esercizi nel database
+ */
 @WebServlet("/exerciseLogger")
 @MultipartConfig(fileSizeThreshold=1024*1024*10, // 10 MB
         maxFileSize=1024*1024*50,      // 50 MB
@@ -46,6 +49,11 @@ public class ExerciseLogger extends HttpServlet {
         }
     }
 
+    /**
+     * Si occupa degli esercizi di scrittura
+     * @param request contiene l'esecuzione dell'esercizio
+     * @throws IOException nel caso in cui ci sono errori nella request
+     */
     private void handleNoAudioExercise(HttpServletRequest request) throws IOException {
         BufferedReader reader = request.getReader();
         StringBuilder stringBuilder = new StringBuilder();
@@ -65,6 +73,12 @@ public class ExerciseLogger extends HttpServlet {
         }
     }
 
+    /**
+     * Si occupa degli esercizi di lettura
+     * @param request contiene l'esecuzione dell'esercizio
+     * @throws ServletException in caso di errore nella request
+     * @throws IOException in caso di errore nell'InputStream
+     */
     private void handleAudioExercise(HttpServletRequest request) throws ServletException, IOException {
 
         try {
@@ -78,6 +92,12 @@ public class ExerciseLogger extends HttpServlet {
         }
     }
 
+    /**
+     * Si occupa di salvare l'esecuzione nel database
+     * @param request contiene la sessione, che a sua volta contiene i dati necessari per salvare l'esecuzione
+     * @param execution l'esecuzione dell'esercizio da salvare
+     * @return true se ha successo il salvataggio, false altrimenti
+     */
     private boolean saveInDB(HttpServletRequest request, Blob execution){
         ExerciseManager em = new ExerciseManager();
         HttpSession session = request.getSession();

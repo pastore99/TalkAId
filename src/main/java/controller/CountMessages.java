@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet che si occupa di controllare se ci sono nuovi messaggi da leggere
+ */
 @WebServlet("/CountMessages")
 public class CountMessages extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(CountMessages.class);

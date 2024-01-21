@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servet che si occupa del cambio di password
+ */
 @WebServlet("/ChangePassword")
 public class ChangePassword extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ChangePassword.class);
