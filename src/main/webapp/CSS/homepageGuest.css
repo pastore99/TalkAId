@@ -1,0 +1,61 @@
+.container {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.margin20 {
+    margin-bottom: 4em;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 32px;
+    margin-right: 20px; /* Spazio tra i div */
+}
+
+.logo {
+    width: 50%;
+    align-self: center;
+}
+
+.discovering-english {
+    position: relative;
+    align-self: stretch;
+    max-width: 800px;
+    font-family: Georgia, serif;
+    color: #252526;
+    text-align: center;
+    font-weight: 700;
+    font-size: 2em;
+}
+
+.button-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 25px;
+    position: relative;
+    background-color: #199a8e;
+    border-radius: 9999px;
+    align-self: center;
+
+    font-family: Georgia, serif;
+    color: #ffffff;
+    font-size: 3em;
+    font-weight: 700;
+    white-space: nowrap;
+    width: 50%;
+
+    box-sizing: border-box;
+}

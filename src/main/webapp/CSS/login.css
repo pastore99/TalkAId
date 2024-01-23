@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, sans-serif;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+a {
+    color: #199a8e;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #199a8e;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #199a8e;
+    text-decoration: none;
+}
+
+.hiddenClass{
+    display: none;
+}
+
+#loginPage{
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#loginTitle{
+    margin-top: 10%;
+    font-size: 3em;
+}
+
+#loginLogo{
+    width: 90%;
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginLogo > img{
+    width: 100%;
+    height: 100%;
+}
+
+#loginForm{
+    margin-top: 5%;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.inputDiv{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #f9fafb;
+    border: 2px solid #e8eaed;
+    border-radius: 500px;
+    margin-bottom: 4%;
+}
+
+.icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 10%;
+}
+
+.iconLeft{
+    margin-left: 3%;
+}
+
+.iconRight{
+    margin-right: 3%;
+}
+
+.icon > img{
+    width: 50%;
+}
+
+.formInput{
+    padding: 5% 5%;
+    height: 90%;
+    width: 80%;
+    border: none;
+    background-color: #f9fafb;
+    font-size: 2em;
+}
+
+.formInput:focus{
+    border: none;
+    outline: none;
+}
+
+#loginForgot{
+    font-size: 2em;
+    width: 100%;
+    margin-right: 3%;
+    text-align: right;
+    margin-bottom: 5%;
+}
+
+.togglePassword{
+    border: none;
+    background-color: #f9fafb;
+    border-radius: 50%;
+    padding: 3%;
+    width: 70%;
+}
+
+.togglePassword > img{
+    width: 100%;
+}
+
+#loginButton{
+    color: white;
+    width: 100%;
+    background-color: #199a8e;
+    border: none;
+    padding: 5% 10%;
+    border-radius: 500px;
+    margin-bottom: 20px;
+    display: inline-block;
+    font-size: 2em;
+}
+
+#signUpButton{
+    color: white;
+    width: 100%;
+    background-color: #199a8e;
+    border: none;
+    padding: 5% 10%;
+    border-radius: 500px;
+    margin-bottom: 20px;
+    display: inline-block;
+    font-size: 2em;
+}
+
+#loginRegister{
+    font-size: 2em;
+}
+
+.h2, h2 {
+    font-size: calc(1.325rem + .9vw);
+}
