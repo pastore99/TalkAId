@@ -1,7 +1,7 @@
 package model.service.encryption;
 
 /**
- * Interfaccia per la crittografia e verifica delle password utilizzando BCrypt.
+ * Interfaccia per la crittografia e verifica delle password utilizzando l'algoritmo BCrypt.
  */
 public interface EncryptionInterface {
     /**
