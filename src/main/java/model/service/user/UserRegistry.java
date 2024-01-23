@@ -19,7 +19,7 @@ public class UserRegistry implements UserRegistryInterface {
         this.db = db;
     }
 
-    public boolean firstAccess(int id, String name, String surname) {//TODO e da inserire nel metodo di registrazione!
+    public boolean firstAccess(int id, String name, String surname) {
         return db.createRegistry(id, name, surname);
     }
 
