@@ -63,7 +63,7 @@ git clone https://github.com/pastore99/TalkAId.git
       azure.region=westeurope
       ```
 
-6. Import the database.sql file into your MySQL database schema. Make sure to use the same schema configured above.
+6. Import the [database.sql file](https://github.com/pastore99/TalkAId/blob/main/projectDocs/TalkAId.sql) into your MySQL database. Make sure to use the same schema configured above.
 7. Check that your database is working and reachable by other apps.
 8. Start the web server
 9. Launch the application
