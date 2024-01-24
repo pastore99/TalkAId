@@ -1,3 +1,5 @@
+![LogoVettoriale](https://github.com/pastore99/TalkAId/assets/38082151/47c3370d-c2b0-4ca8-984d-1c2ecabccdac)
+
 # TalkAId
 This project allows users to conduct remote speech therapy sessions and analyzes exercises through an Artificial Intelligence (AI) module. The system is based on web technologies. 
 
@@ -20,18 +22,19 @@ The main features are:
 * Therapists can create and delete visiting hours for their medical appointments.
 * Patients can book or unbook appointments with their speech therapist.
 
-# Installation
-Requirements:
-* Tomcat Web server v.9.0.83 or above
-* MySQL database v.8.0.35 or above
-* Java 17 or above
-
 # Technologies:
 Languages used: HTML, CSS, JavaScript, Java, Python 
 * AI Module for exercise recommendations
 * Azure AI Module for vocal exercise evaluations
+# Documentation
+For a detailed exploration of our project, please visit our [complete Italian documentation](https://github.com/pastore99/TalkAId/tree/main/projectDocs).
 
-# Instructions
+# Instructions for Installing the System
+Requirements:
+* Tomcat Web server v.9.0.83 or above
+* MySQL database v.8.0.35 or above
+* Java 17 or above
+  
 1. Clone the repository:
 bash
 ```
