@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Exercise.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.entity</a> &gt; <span class="el_source">Exercise.java</span></div><h1>Exercise.java</h1><pre class="source lang-java linenums">package model.entity;
+
+import java.sql.Blob;
+import java.sql.Date;
+
+<span class="fc" id="L6">public class Exercise {</span>
+    private int idUser;
+    private int idExercise;
+    private Date insertionDate;
+    private Date completionDate;
+    private Blob execution;
+    private int evaluation;
+    private int recommended;
+    private int feedback;
+
+    // Getter and Setter methods
+
+    public int getIdUser() {
+<span class="fc" id="L19">        return idUser;</span>
+    }
+
+    public void setIdUser(int idUser) {
+<span class="fc" id="L23">        this.idUser = idUser;</span>
+<span class="fc" id="L24">    }</span>
+
+    public int getIdExercise() {
+<span class="fc" id="L27">        return idExercise;</span>
+    }
+
+    public void setIdExercise(int idExercise) {
+<span class="fc" id="L31">        this.idExercise = idExercise;</span>
+<span class="fc" id="L32">    }</span>
+
+    public Date getInsertionDate() {
+<span class="fc" id="L35">        return insertionDate;</span>
+    }
+
+    public void setInsertionDate(Date insertionDate) {
+<span class="fc" id="L39">        this.insertionDate = insertionDate;</span>
+<span class="fc" id="L40">    }</span>
+
+    public Date getCompletionDate() {
+<span class="fc" id="L43">        return completionDate;</span>
+    }
+
+    public void setCompletionDate(Date completionDate) {
+<span class="fc" id="L47">        this.completionDate = completionDate;</span>
+<span class="fc" id="L48">    }</span>
+
+    public Blob getExecution() {
+<span class="fc" id="L51">        return execution;</span>
+    }
+
+    public void setExecution(Blob execution) {
+<span class="fc" id="L55">        this.execution = execution;</span>
+<span class="fc" id="L56">    }</span>
+
+    public int getEvaluation() {
+<span class="fc" id="L59">        return evaluation;</span>
+    }
+
+    public void setEvaluation(int evaluation) {
+<span class="fc" id="L63">        this.evaluation = evaluation;</span>
+<span class="fc" id="L64">    }</span>
+
+    public int getRecommended() {
+<span class="fc" id="L67">        return recommended;</span>
+    }
+
+    public void setRecommended(int recommended) {
+<span class="fc" id="L71">        this.recommended = recommended;</span>
+<span class="fc" id="L72">    }</span>
+
+    public int getFeedback() {
+<span class="fc" id="L75">        return feedback;</span>
+    }
+
+    public void setFeedback(int feedback) {
+<span class="fc" id="L79">        this.feedback = feedback;</span>
+<span class="fc" id="L80">    }</span>
+    @Override
+    public String toString() {
+<span class="nc" id="L83">        return &quot;Exercise{&quot; +</span>
+                &quot;idUser=&quot; + idUser +
+                &quot;, idExercise=&quot; + idExercise +
+                &quot;, insertionDate=&quot; + insertionDate +
+                &quot;, completionDate=&quot; + completionDate +
+                &quot;, evaluation=&quot; + evaluation +
+                &quot;, recommended=&quot; + recommended +
+                &quot;, feedback=&quot; + feedback +
+                '}';
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

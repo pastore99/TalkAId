@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.service.message</a> &gt; <span class="el_source">MessageManager.java</span></div><h1>MessageManager.java</h1><pre class="source lang-java linenums">package model.service.message;
+
+import model.DAO.DAOMessage;
+import model.entity.Message;
+import model.entity.User;
+import model.service.user.UserData;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Questa classe provvede alle funzionalità per inviare messaggi.
+ */
+public class MessageManager implements MessageManagerInterface {
+<span class="nc" id="L15">    public MessageManager() {</span>
+<span class="nc" id="L16">        this.db = new DAOMessage();</span>
+<span class="nc" id="L17">        this.db2 = new UserData();</span>
+<span class="nc" id="L18">    }</span>
+    DAOMessage db;
+    UserData db2;
+
+    public void markMessagesAsRead(int senderId, int recipientId) {
+<span class="nc" id="L23">        db.markMessagesAsRead(senderId, recipientId);</span>
+<span class="nc" id="L24">    }</span>
+
+    public int countReceivedMessages(int recipientId) {
+<span class="nc" id="L27">        return db.countReceivedMessages(recipientId);</span>
+    }
+
+    public void sendMessage(int sender, int recipientId, String text) {
+<span class="nc" id="L31">        db.sendMessage(sender, recipientId, text);</span>
+<span class="nc" id="L32">    }</span>
+    public List&lt;Message&gt; retrieveMessages(int userId, int contact) {
+<span class="nc" id="L34">        return db.retrieveMessages(userId, contact);</span>
+    }
+    public int getUnreadMessagesForConversation(int userId, int contact){
+<span class="nc" id="L37">        int unreadCounter = 0;</span>
+<span class="nc" id="L38">        List&lt;Message&gt; messages = db.retrieveMessages(userId, contact);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (Message message : messages) {</span>
+<span class="nc bnc" id="L40" title="All 4 branches missed.">            if (message.getRecipient() == userId &amp;&amp; !message.isRead()) {</span>
+<span class="nc" id="L41">                unreadCounter++;</span>
+            }
+<span class="nc" id="L43">        }</span>
+<span class="nc" id="L44">        return unreadCounter;</span>
+    }
+
+    public List&lt;Integer&gt; retrieveAllTheContacts(int userId){
+<span class="nc" id="L48">        List&lt;Integer&gt; contacts = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L49">        User user = db2.getUser(userId);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if(db2.isTherapist(user)) {</span>
+<span class="nc" id="L51">            contacts.addAll(db.retrieveUserIdsByTherapist(userId));</span>
+        }
+        else { //se è un paziente
+<span class="nc" id="L54">            contacts.add(user.getIdTherapist());</span>
+        }
+<span class="nc" id="L56">        contacts.add(0); //Notifications</span>
+<span class="nc" id="L57">        return contacts;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

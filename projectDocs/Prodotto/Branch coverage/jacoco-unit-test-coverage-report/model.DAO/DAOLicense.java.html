@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOLicense.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOLicense.java</span></div><h1>DAOLicense.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.License;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ * La classe DAOLicense provvede ai metodi per manipolare le informazioni delle License dal database.
+ */
+public class DAOLicense {
+<span class="fc" id="L16">    private static final Logger logger = LoggerFactory.getLogger(DAOLicense.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L20">    public DAOLicense(Connection connection) {</span>
+<span class="fc" id="L21">        this.connection = connection;</span>
+<span class="fc" id="L22">    }</span>
+
+<span class="fc" id="L24">    public DAOLicense() {</span>
+        try {
+<span class="fc" id="L26">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L27">        } catch (SQLException e) {</span>
+<span class="nc" id="L28">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="fc" id="L29">        }</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     * This method extracts License object data from a ResultSet
+     *
+     * @param resultSet ResultSet object from license table
+     * @return License object containing data from resultSet
+     * @throws SQLException if there is any SQL related error
+     */
+    private static License extractLicenseFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L40">        License license = new License();</span>
+<span class="fc" id="L41">        license.setSequence(resultSet.getString(&quot;Sequence&quot;));</span>
+<span class="fc" id="L42">        license.setIdUser(resultSet.getInt(&quot;ID_User&quot;));</span>
+<span class="fc" id="L43">        license.setExpirationDate(resultSet.getDate(&quot;ExpirationDate&quot;));</span>
+<span class="fc" id="L44">        license.setActive(resultSet.getBoolean(&quot;Active&quot;));</span>
+<span class="fc" id="L45">        return license;</span>
+    }
+
+    /**
+     * Search for a license by its code in the database.
+     *
+     * @param code the license code to search for.
+     * @return the License if it is found, else null.
+     */
+    public License getLicenseByCode(String code) {
+<span class="fc" id="L55">        String query = &quot;SELECT * FROM license WHERE Sequence = ?&quot;;</span>
+<span class="fc" id="L56">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L57">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L61">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L62">            preparedStatement.setString(1, code);</span>
+<span class="fc" id="L63">            resultSet = preparedStatement.executeQuery();</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="fc" id="L65">                return extractLicenseFromResultSet(resultSet);</span>
+            }
+
+<span class="nc" id="L68">        } catch (SQLException e) {</span>
+<span class="nc" id="L69">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L74">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L75">            } catch (SQLException e) {</span>
+<span class="nc" id="L76">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L77">            }</span>
+        }
+
+<span class="nc" id="L80">        return null;</span>
+    }
+
+    /**
+     * Activate a license and link it to a user.
+     *
+     * @param license the License object to activate.
+     * @param userId the ID of the user to link to the license.
+     */
+    public void activate(License license, int userId) {
+<span class="fc" id="L90">        String updateQuery = &quot;UPDATE license SET active = TRUE, ID_User = ? WHERE Sequence = ?&quot;;</span>
+<span class="fc" id="L91">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L95">            preparedStatement = connection.prepareStatement(updateQuery);</span>
+<span class="fc" id="L96">            preparedStatement.setInt(1, userId);</span>
+<span class="fc" id="L97">            preparedStatement.setString(2, license.getSequence());</span>
+<span class="fc" id="L98">            preparedStatement.executeUpdate();</span>
+
+<span class="nc" id="L100">        } catch (SQLException e) {</span>
+<span class="nc" id="L101">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L105">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L106">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L108">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L109">            }</span>
+        }
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Generate a new License to sell
+     * @return the sequence of the License if operation succeed, none otherwise
+     */
+    public String generateLicense(){
+<span class="fc" id="L118">        final int length = 8;</span>
+<span class="fc" id="L119">        License l = new License(length);</span>
+<span class="fc" id="L120">        String insertQuery =  &quot;INSERT INTO license (Sequence, ID_User, ExpirationDate) VALUES (?, ?, ?);&quot;;</span>
+<span class="fc" id="L121">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">            connection = connection == null || connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L125">            preparedStatement = connection.prepareStatement(insertQuery);</span>
+<span class="fc" id="L126">            preparedStatement.setString(1, l.getSequence());</span>
+<span class="fc" id="L127">            preparedStatement.setInt(2, 0);</span>
+<span class="fc" id="L128">            preparedStatement.setDate(3, null);</span>
+<span class="fc" id="L129">            preparedStatement.executeUpdate();</span>
+<span class="fc" id="L130">            return l.getSequence();</span>
+<span class="nc" id="L131">        } catch (SQLException e) {</span>
+<span class="nc" id="L132">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L133">            return null;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L137">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L138">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L140">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L141">            }</span>
+        }
+    }
+
+
+    /**
+     * Generate an invitation code for a new patient
+     * @param userId the ID of a speech therapist
+     * @return the sequence of the invitation if operation succeed, none otherwise
+     */
+    public String generateInvitation(int userId){
+<span class="fc" id="L152">        final int length = 4;</span>
+<span class="fc" id="L153">        License l = new License(length);</span>
+<span class="fc" id="L154">        String insertQuery =  &quot;INSERT INTO license (Sequence, ID_User, ExpirationDate) VALUES (?,?,?);&quot;;</span>
+<span class="fc" id="L155">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L159">            preparedStatement = connection.prepareStatement(insertQuery);</span>
+<span class="fc" id="L160">            preparedStatement.setString(1, l.getSequence());</span>
+<span class="fc" id="L161">            preparedStatement.setInt(2, userId);</span>
+<span class="fc" id="L162">            preparedStatement.setDate(3, l.getExpirationDate());</span>
+<span class="fc" id="L163">            preparedStatement.executeUpdate();</span>
+<span class="fc" id="L164">            return l.getSequence();</span>
+<span class="nc" id="L165">        } catch (SQLException e) {</span>
+<span class="nc" id="L166">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L167">            return null;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L171">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L172">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L174">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L175">            }</span>
+        }
+    }
+
+    public boolean deleteLicense(String code) {
+<span class="fc" id="L180">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+            // Get database connection
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Prepare the SQL query
+<span class="fc" id="L187">            String query = &quot;DELETE FROM license WHERE Sequence = ?&quot;;</span>
+<span class="fc" id="L188">            preparedStatement = connection.prepareStatement(query);</span>
+
+            // Set parameter for the prepared statement
+<span class="fc" id="L191">            preparedStatement.setString(1, code);</span>
+
+            // Execute update and return boolean based on the affected rows
+<span class="fc" id="L194">            int rowsAffected = preparedStatement.executeUpdate();</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">            return rowsAffected &gt; 0;</span>
+
+<span class="nc" id="L197">        } catch (SQLException e) {</span>
+<span class="nc" id="L198">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            // Close the statement and release the connection
+            try {
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L203">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L204">            } catch (SQLException e) {</span>
+<span class="nc" id="L205">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L206">            }</span>
+        }
+
+        // If exception occurs, return false
+<span class="nc" id="L210">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

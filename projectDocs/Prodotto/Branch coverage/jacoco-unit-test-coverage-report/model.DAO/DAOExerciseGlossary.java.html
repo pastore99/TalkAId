@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOExerciseGlossary.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOExerciseGlossary.java</span></div><h1>DAOExerciseGlossary.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.ExerciseGlossary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * La classe DAOCondition provvede ai metodi per manipolare le informazioni degli ExerciseGlossary dal database.
+ */
+public class DAOExerciseGlossary {
+<span class="fc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(DAOExerciseGlossary.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L23">    public DAOExerciseGlossary(Connection connection) {</span>
+<span class="fc" id="L24">        this.connection = connection;</span>
+<span class="fc" id="L25">    }</span>
+
+<span class="nc" id="L27">    public DAOExerciseGlossary() {</span>
+        try {
+<span class="nc" id="L29">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L30">        } catch (SQLException e) {</span>
+<span class="nc" id="L31">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="nc" id="L32">        }</span>
+<span class="nc" id="L33">    }</span>
+    /**
+     * This method extracts Exercise object data from a ResultSet
+     *
+     * @param resultSet ResultSet object from ExerciseGlossary table
+     * @return exercise object containing data from resultSet
+     * @throws SQLException if there is any SQL related error
+     */
+    private static ExerciseGlossary extractExerciseFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L42">        ExerciseGlossary exercise = new ExerciseGlossary();</span>
+<span class="fc" id="L43">        exercise.setIdExercise(resultSet.getInt(&quot;ID_exercise&quot;));</span>
+<span class="fc" id="L44">        exercise.setExerciseName(resultSet.getString(&quot;ExerciseName&quot;));</span>
+<span class="fc" id="L45">        exercise.setExerciseDescription(resultSet.getString(&quot;ExerciseDescription&quot;));</span>
+<span class="fc" id="L46">        exercise.setType(resultSet.getString(&quot;Type&quot;));</span>
+<span class="fc" id="L47">        exercise.setDifficulty(resultSet.getInt(&quot;Difficulty&quot;));</span>
+<span class="fc" id="L48">        exercise.setTarget(resultSet.getString(&quot;Target&quot;));</span>
+<span class="fc" id="L49">        exercise.setInitialState(resultSet.getString(&quot;InitialState&quot;));</span>
+<span class="fc" id="L50">        exercise.setSolution(resultSet.getString(&quot;Solution&quot;));</span>
+
+<span class="fc" id="L52">        return exercise;</span>
+    }
+
+    /**
+     * Search for an Exercise by its code in the database.
+     *
+     * @param code the ExerciseID code to search for.
+     * @return the Exercise if it is found, else null.
+     */
+    public ExerciseGlossary getExerciseByCode(int code) {
+<span class="fc" id="L62">        String query = &quot;SELECT * FROM exercise_glossary WHERE ID_exercise = ?&quot;;</span>
+<span class="fc" id="L63">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L64">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L68">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L69">            preparedStatement.setInt(1, code);</span>
+<span class="fc" id="L70">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="fc" id="L73">                return extractExerciseFromResultSet(resultSet);</span>
+            }
+
+<span class="nc" id="L76">        } catch (SQLException e) {</span>
+<span class="nc" id="L77">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L82">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L83">            } catch (SQLException e) {</span>
+<span class="nc" id="L84">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L85">            }</span>
+        }
+
+<span class="nc" id="L88">        return null;</span>
+    }
+
+    public List&lt;ExerciseGlossary&gt; retrieveAllPatientExerciseGlossaryNotDone(int userID) {
+<span class="nc" id="L92">        String query = &quot;SELECT eg.* FROM exercise_glossary eg LEFT JOIN exercise e ON eg.ID_exercise = e.ID_exercise AND e.ID_user = ? WHERE e.ID_user IS NULL;\n&quot;;</span>
+<span class="nc" id="L93">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L94">        ResultSet resultSet = null;</span>
+<span class="nc" id="L95">        List&lt;ExerciseGlossary&gt; exercises = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L99">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L100">            preparedStatement.setInt(1, userID);</span>
+
+<span class="nc" id="L102">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L105">                ExerciseGlossary exercise = extractExerciseFromResultSet(resultSet);</span>
+<span class="nc" id="L106">                exercises.add(exercise);</span>
+<span class="nc" id="L107">            }</span>
+
+<span class="nc" id="L109">        } catch (SQLException e) {</span>
+<span class="nc" id="L110">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L115">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L116">            } catch (SQLException e) {</span>
+<span class="nc" id="L117">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L118">            }</span>
+        }
+
+<span class="nc" id="L121">        return exercises;</span>
+    }
+
+    public List&lt;ExerciseGlossary&gt; retrieveAllPatientExerciseGlossaryDone(int userID) {
+<span class="nc" id="L125">        String query = &quot;SELECT eg.* FROM exercise_glossary eg JOIN exercise e ON eg.ID_exercise = e.ID_exercise\n&quot; +</span>
+                        &quot;WHERE e.ID_user = ?;\n&quot;;
+<span class="nc" id="L127">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L128">        ResultSet resultSet = null;</span>
+<span class="nc" id="L129">        List&lt;ExerciseGlossary&gt; exercises = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L133">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L134">            preparedStatement.setInt(1, userID);</span>
+
+<span class="nc" id="L136">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L139">                ExerciseGlossary exercise = extractExerciseFromResultSet(resultSet);</span>
+<span class="nc" id="L140">                exercises.add(exercise);</span>
+<span class="nc" id="L141">            }</span>
+
+<span class="nc" id="L143">        } catch (SQLException e) {</span>
+<span class="nc" id="L144">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L149">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L150">            } catch (SQLException e) {</span>
+<span class="nc" id="L151">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L152">            }</span>
+        }
+
+<span class="nc" id="L155">        return exercises;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

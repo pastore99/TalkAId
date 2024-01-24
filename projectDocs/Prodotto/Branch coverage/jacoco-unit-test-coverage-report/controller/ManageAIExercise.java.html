@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ManageAIExercise.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">ManageAIExercise.java</span></div><h1>ManageAIExercise.java</h1><pre class="source lang-java linenums">package controller;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import model.entity.SlimmerExercise;
+import model.service.exercise.ExerciseManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * Servlet che si occupa di gestire le raccomandazioni approvate o rifiutate dal logopedista generate dall'IA
+ */
+@WebServlet(&quot;/ManageExercise&quot;)
+<span class="nc" id="L21">public class ManageAIExercise extends HttpServlet {</span>
+<span class="nc" id="L22">    private static final Logger logger = LoggerFactory.getLogger(ManageAIExercise.class);</span>
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+<span class="nc" id="L26">        String referer = request.getHeader(&quot;Referer&quot;);</span>
+<span class="nc" id="L27">        String action = request.getParameter(&quot;action&quot;);</span>
+<span class="nc" id="L28">        ExerciseManager em = new ExerciseManager();</span>
+<span class="nc" id="L29">        Gson g = new Gson();</span>
+
+<span class="nc bnc" id="L31" title="All 4 branches missed.">        if(action.equalsIgnoreCase(&quot;Approve&quot;) || action.equalsIgnoreCase(&quot;Remove&quot;)){</span>
+<span class="nc" id="L32">            SlimmerExercise exercise = null;</span>
+            try{
+<span class="nc" id="L34">                exercise = g.fromJson(request.getParameter(&quot;exercise&quot;), SlimmerExercise.class);</span>
+<span class="nc" id="L35">            }catch(JsonSyntaxException e){</span>
+<span class="nc" id="L36">                logger.error(&quot;Error parsing JSON&quot;, e);</span>
+<span class="nc" id="L37">            }</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (exercise != null){</span>
+<span class="nc" id="L39">                em.changeRaccomandation(action, exercise.getId(), exercise.getInsertionDate(), exercise.getUserId());</span>
+            }
+<span class="nc bnc" id="L41" title="All 4 branches missed.">        }else if (action.equalsIgnoreCase(&quot;ApproveAll&quot;) || action.equalsIgnoreCase(&quot;RemoveAll&quot;)) {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            if(action.equalsIgnoreCase(&quot;ApproveAll&quot;)){</span>
+<span class="nc" id="L43">                action = &quot;Approve&quot;;</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            }else if (action.equalsIgnoreCase(&quot;RemoveAll&quot;)){</span>
+<span class="nc" id="L45">                action = &quot;Remove&quot;;</span>
+            }
+<span class="nc" id="L47">            int userId = 0;</span>
+            try{
+<span class="nc" id="L49">                userId = Integer.parseInt(request.getParameter(&quot;userId&quot;));</span>
+<span class="nc" id="L50">            }catch(NumberFormatException e){</span>
+<span class="nc" id="L51">                logger.error(&quot;Error parsing userId&quot;, e);</span>
+<span class="nc" id="L52">            }</span>
+<span class="nc" id="L53">            em.changeMultipleReccomandation(action, userId);</span>
+        }
+        try{
+<span class="nc" id="L56">            response.sendRedirect(referer);</span>
+<span class="nc" id="L57">        }catch (IOException e){</span>
+<span class="nc" id="L58">            logger.error(&quot;Error redirecting&quot;, e);</span>
+<span class="nc" id="L59">        }</span>
+<span class="nc" id="L60">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

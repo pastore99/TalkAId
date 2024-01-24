@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOCondition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOCondition.java</span></div><h1>DAOCondition.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.Condition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+/**
+ * La classe DAOCondition provvede ai metodi per manipolare le informazioni delle Condition dal database.
+ */
+public class DAOCondition {
+<span class="fc" id="L17">    private static final Logger logger = LoggerFactory.getLogger(DAOCondition.class);</span>
+    private Connection connection;
+<span class="fc" id="L19">    public DAOCondition(Connection connection) {this.connection=connection;}</span>
+
+<span class="nc" id="L21">    public DAOCondition() {</span>
+        try{
+<span class="nc" id="L23">            this.connection=DAOConnection.getConnection();</span>
+<span class="nc" id="L24">        }catch (SQLException e) {</span>
+<span class="nc" id="L25">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="nc" id="L26">        }</span>
+<span class="nc" id="L27">    }</span>
+
+    private Condition getConditionFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L30">        Condition c = new Condition();</span>
+
+<span class="fc" id="L32">        c.setIdCondition(resultSet.getInt(&quot;ID_condition&quot;));</span>
+<span class="fc" id="L33">        c.setDisorderDescription(resultSet.getString(&quot;DisorderDescription&quot;));</span>
+<span class="fc" id="L34">        c.setDisorderName(resultSet.getString(&quot;DisorderName&quot;));</span>
+<span class="fc" id="L35">        c.setSeverity(-1);</span>
+
+<span class="fc" id="L37">        return c;</span>
+    }
+
+    private Condition getPeronalConditionFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L41">        Condition c = new Condition();</span>
+
+<span class="fc" id="L43">        c.setIdCondition(resultSet.getInt(&quot;ID_condition&quot;));</span>
+<span class="fc" id="L44">        c.setDisorderDescription(resultSet.getString(&quot;DisorderDescription&quot;));</span>
+<span class="fc" id="L45">        c.setDisorderName(resultSet.getString(&quot;DisorderName&quot;));</span>
+<span class="fc" id="L46">        c.setSeverity(resultSet.getInt(&quot;Severity&quot;));</span>
+
+<span class="fc" id="L48">        return c;</span>
+    }
+
+    public ArrayList&lt;Condition&gt; getConditionsOfPatient(int id_patient) {
+
+<span class="fc" id="L53">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L54">        ResultSet resultSet = null;</span>
+<span class="fc" id="L55">        ArrayList&lt;Condition&gt; list_PersonalCondition=new ArrayList&lt;&gt;();</span>
+        try {
+
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection():connection;</span>
+<span class="fc" id="L59">            String query = &quot;SELECT c.ID_Condition,c.DisorderName, c.DisorderDescription, pc.Severity \n&quot; +</span>
+                    &quot;FROM `condition` c\n&quot; +
+                    &quot;JOIN PatientCondition pc ON c.ID_condition = pc.ID_condition\n&quot; +
+                    &quot;WHERE pc.ID_patient = ?;&quot;;
+
+<span class="fc" id="L64">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L65">            preparedStatement.setObject(1, id_patient);</span>
+
+<span class="fc" id="L67">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L70">                list_PersonalCondition.add(getPeronalConditionFromResultSet(resultSet));</span>
+            }
+
+<span class="fc" id="L73">            return list_PersonalCondition;</span>
+<span class="nc" id="L74">        } catch (SQLException e) {</span>
+<span class="nc" id="L75">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L80">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L81">            } catch (SQLException e) {</span>
+<span class="nc" id="L82">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L83">            }</span>
+        }
+<span class="nc" id="L85">        return null;</span>
+    }
+
+    public ArrayList&lt;Condition&gt; getConditionsNOTOfPatient(int id_patient) {
+
+<span class="fc" id="L90">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L91">        ResultSet resultSet = null;</span>
+<span class="fc" id="L92">        ArrayList&lt;Condition&gt; list_PersonalCondition=new ArrayList&lt;&gt;();</span>
+        try {
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection():connection;</span>
+<span class="fc" id="L96">            String query = &quot;SELECT c.*\n&quot; +</span>
+                    &quot;FROM `condition` c\n&quot; +
+                    &quot;LEFT JOIN PatientCondition pc ON c.ID_condition = pc.ID_condition AND pc.ID_patient = ?\n&quot; +
+                    &quot;WHERE pc.ID_patient IS NULL\n&quot; +
+                    &quot;ORDER BY c.DisorderName;&quot;;
+
+<span class="fc" id="L102">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L103">            preparedStatement.setObject(1, id_patient);</span>
+
+<span class="fc" id="L105">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L108">                list_PersonalCondition.add(getConditionFromResultSet(resultSet));</span>
+            }
+<span class="fc" id="L110">            return list_PersonalCondition;</span>
+<span class="nc" id="L111">        } catch (SQLException e) {</span>
+<span class="nc" id="L112">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L117">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L118">            } catch (SQLException e) {</span>
+<span class="nc" id="L119">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L120">            }</span>
+        }
+<span class="nc" id="L122">        return null;</span>
+    }
+
+
+    public boolean AddConditionPatient(int ID_condition, int ID_patient, int Severity) {
+
+<span class="fc" id="L128">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection():connection;</span>
+<span class="fc" id="L132">            connection.setAutoCommit(false);  // Start a transaction</span>
+
+
+<span class="fc" id="L135">            String query = &quot;INSERT INTO PatientCondition (ID_condition, ID_patient, Severity)\n&quot; +</span>
+                    &quot;VALUES (?, ?, ?)&quot;;
+<span class="fc" id="L137">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L138">            preparedStatement.setInt(1, ID_condition);</span>
+<span class="fc" id="L139">            preparedStatement.setInt(2, ID_patient);</span>
+<span class="fc" id="L140">            preparedStatement.setInt(3, Severity);</span>
+<span class="fc" id="L141">            preparedStatement.executeUpdate();</span>
+
+<span class="fc" id="L143">            connection.commit();  // Commit the transaction</span>
+<span class="fc" id="L144">            return true;  // User created successfully</span>
+
+<span class="nc" id="L146">        } catch (SQLException e) {</span>
+<span class="nc" id="L147">            logger.error(&quot;Error query&quot;, e);</span>
+            try {
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                if (connection != null) {</span>
+<span class="nc" id="L150">                    connection.rollback();  // Rollback the transaction in case of an exception</span>
+                }
+<span class="nc" id="L152">            } catch (SQLException ex) {</span>
+<span class="nc" id="L153">                logger.error(&quot;Error rollback&quot;, e);</span>
+<span class="nc" id="L154">            }</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L158">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L159">            } catch (SQLException e) {</span>
+<span class="nc" id="L160">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L161">            }</span>
+        }
+
+<span class="nc" id="L164">        return false;  // Default to false if an exception occurs</span>
+    }
+
+    public boolean RemoveConditionPatient(int ID_condition, int ID_patient) {
+
+<span class="fc" id="L169">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection():connection;</span>
+<span class="fc" id="L173">            connection.setAutoCommit(false);  // Start a transaction</span>
+
+
+<span class="fc" id="L176">            String query = &quot;DELETE FROM PatientCondition\n&quot; +</span>
+                    &quot;WHERE ID_condition = ? AND ID_patient = ?;&quot;;
+<span class="fc" id="L178">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L179">            preparedStatement.setInt(1, ID_condition);</span>
+<span class="fc" id="L180">            preparedStatement.setInt(2, ID_patient);</span>
+<span class="fc" id="L181">            preparedStatement.executeUpdate();</span>
+
+<span class="fc" id="L183">            connection.commit();  // Commit the transaction</span>
+<span class="fc" id="L184">            return true;  // User created successfully</span>
+
+<span class="nc" id="L186">        } catch (SQLException e) {</span>
+<span class="nc" id="L187">            logger.error(&quot;Error query&quot;, e);</span>
+            try {
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                if (connection != null) {</span>
+<span class="nc" id="L190">                    connection.rollback();  // Rollback the transaction in case of an exception</span>
+                }
+<span class="nc" id="L192">            } catch (SQLException ex) {</span>
+<span class="nc" id="L193">                logger.error(&quot;Error rollback&quot;, e);</span>
+<span class="nc" id="L194">            }</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L198">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L199">            } catch (SQLException e) {</span>
+<span class="nc" id="L200">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L201">            }</span>
+        }
+
+<span class="nc" id="L204">        return false;  // Default to false if an exception occurs</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

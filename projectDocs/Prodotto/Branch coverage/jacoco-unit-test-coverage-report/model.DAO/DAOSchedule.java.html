@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOSchedule.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOSchedule.java</span></div><h1>DAOSchedule.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.Schedule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * La classe DAOSchedule provvede ai metodi per manipolare le informazioni delle Schedule dal database.
+ */public class DAOSchedule {
+<span class="fc" id="L15">    private static final Logger logger = LoggerFactory.getLogger(DAOSchedule.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L19">    public DAOSchedule(Connection connection) {</span>
+<span class="fc" id="L20">        this.connection = connection;</span>
+<span class="fc" id="L21">    }</span>
+
+<span class="fc" id="L23">    public DAOSchedule() {</span>
+        try {
+<span class="fc" id="L25">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L26">        } catch (SQLException e) {</span>
+<span class="nc" id="L27">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="fc" id="L28">        }</span>
+<span class="fc" id="L29">    }</span>
+    private Schedule getScheduleFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L31">        Schedule schedule = new Schedule();</span>
+
+<span class="fc" id="L33">        schedule.setIdTherapist(resultSet.getInt(&quot;ID_therapist&quot;));</span>
+<span class="fc" id="L34">        schedule.setDate(resultSet.getDate(&quot;Date&quot;));</span>
+<span class="fc" id="L35">        schedule.setTimeSlot(resultSet.getString(&quot;TimeSlot&quot;));</span>
+<span class="fc" id="L36">        schedule.setReserved(resultSet.getInt(&quot;Reserved&quot;));</span>
+
+<span class="fc" id="L38">        return schedule;</span>
+    }
+    public void createNewSchedule(int idTherapist, Date date, String timeSlot) {
+<span class="fc" id="L41">        PreparedStatement pstmt = null;</span>
+
+        try {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L46">            String sql = &quot;INSERT INTO schedule (ID_therapist, Date, TimeSlot) VALUES (?, ?, ?);&quot;;</span>
+
+<span class="fc" id="L48">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L49">            pstmt.setInt(1, idTherapist);</span>
+<span class="fc" id="L50">            pstmt.setDate(2, date);</span>
+<span class="fc" id="L51">            pstmt.setString(3, timeSlot);</span>
+
+<span class="fc" id="L53">            pstmt.executeUpdate();</span>
+
+<span class="nc" id="L55">        } catch (SQLException e) {</span>
+<span class="nc" id="L56">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L60">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L61">            } catch (SQLException e) {</span>
+<span class="nc" id="L62">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L63">            }</span>
+        }
+<span class="fc" id="L65">    }</span>
+    public void modifySchedule(int idTherapist, Date date, String timeSlot, int reserved, Date ndate, String ntimeSlot) {
+<span class="fc" id="L67">        PreparedStatement pstmt = null;</span>
+
+        try {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L72">            String sql = &quot;UPDATE schedule SET Date = ?, TimeSlot = ?, Reserved = ? WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;&quot;;</span>
+
+<span class="fc" id="L74">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L75">            pstmt.setDate(1, ndate);</span>
+<span class="fc" id="L76">            pstmt.setString(2, ntimeSlot);</span>
+<span class="fc" id="L77">            pstmt.setInt(3, reserved);</span>
+<span class="fc" id="L78">            pstmt.setInt(4, idTherapist);</span>
+<span class="fc" id="L79">            pstmt.setDate(5, date);</span>
+<span class="fc" id="L80">            pstmt.setString(6, timeSlot);</span>
+
+<span class="fc" id="L82">            pstmt.executeUpdate();</span>
+
+<span class="nc" id="L84">        } catch (SQLException e) {</span>
+<span class="nc" id="L85">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L89">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L90">            } catch (SQLException e) {</span>
+<span class="nc" id="L91">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L92">            }</span>
+        }
+<span class="fc" id="L94">    }</span>
+    public void deleteSchedule(int idTherapist, Date date, String timeSlot) {
+<span class="fc" id="L96">        PreparedStatement pstmt = null;</span>
+
+        try {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L101">            String sql = &quot;DELETE FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;&quot;;</span>
+
+<span class="fc" id="L103">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L104">            pstmt.setInt(1, idTherapist);</span>
+<span class="fc" id="L105">            pstmt.setDate(2, date);</span>
+<span class="fc" id="L106">            pstmt.setString(3, timeSlot);</span>
+
+<span class="fc" id="L108">            pstmt.executeUpdate();</span>
+
+<span class="nc" id="L110">        } catch (SQLException e) {</span>
+<span class="nc" id="L111">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L115">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L116">            } catch (SQLException e) {</span>
+<span class="nc" id="L117">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L118">            }</span>
+        }
+<span class="fc" id="L120">    }</span>
+    public List&lt;Schedule&gt; retrieveAllPatientSchedules(int reserved) {
+<span class="fc" id="L122">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L123">        ResultSet resultSet = null;</span>
+
+<span class="fc" id="L125">        List&lt;Schedule&gt; schedules = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L130">            String query = &quot;SELECT * FROM schedule WHERE Reserved = ?;&quot;;</span>
+
+<span class="fc" id="L132">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L133">            preparedStatement.setInt(1, reserved);</span>
+
+<span class="fc" id="L135">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L138">                Schedule schedule = getScheduleFromResultSet(resultSet);</span>
+<span class="fc" id="L139">                schedules.add(schedule);</span>
+<span class="fc" id="L140">            }</span>
+
+<span class="nc" id="L142">        } catch (SQLException e) {</span>
+<span class="nc" id="L143">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L148">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L149">            } catch (SQLException e) {</span>
+<span class="nc" id="L150">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L151">            }</span>
+        }
+
+<span class="fc" id="L154">        return schedules;</span>
+    }
+    public List&lt;Schedule&gt; retrieveAllTherapistSchedules(int idTherapist) {
+<span class="fc" id="L157">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L158">        ResultSet resultSet = null;</span>
+
+<span class="fc" id="L160">        List&lt;Schedule&gt; schedules = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L165">            String query = &quot;SELECT * FROM schedule WHERE ID_therapist = ?;&quot;;</span>
+
+<span class="fc" id="L167">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L168">            preparedStatement.setInt(1, idTherapist);</span>
+
+<span class="fc" id="L170">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L173">                Schedule schedule = getScheduleFromResultSet(resultSet);</span>
+<span class="fc" id="L174">                schedules.add(schedule);</span>
+<span class="fc" id="L175">            }</span>
+
+<span class="nc" id="L177">        } catch (SQLException e) {</span>
+<span class="nc" id="L178">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L183">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L184">            } catch (SQLException e) {</span>
+<span class="nc" id="L185">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L186">            }</span>
+        }
+
+<span class="fc" id="L189">        return schedules;</span>
+    }
+    public List&lt;Schedule&gt; retrieveAllPrenotedSchedules(int idTherapist) {
+<span class="fc" id="L192">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L193">        ResultSet resultSet = null;</span>
+
+<span class="fc" id="L195">        List&lt;Schedule&gt; schedules = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L200">            String query = &quot;SELECT * FROM schedule WHERE Reserved != 0 AND ID_therapist =?;&quot;;</span>
+
+<span class="fc" id="L202">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L203">            preparedStatement.setInt(1, idTherapist);</span>
+
+<span class="fc" id="L205">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L207" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L208">                Schedule schedule = getScheduleFromResultSet(resultSet);</span>
+<span class="fc" id="L209">                schedules.add(schedule);</span>
+<span class="fc" id="L210">            }</span>
+
+<span class="nc" id="L212">        } catch (SQLException e) {</span>
+<span class="nc" id="L213">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L218">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L219">            } catch (SQLException e) {</span>
+<span class="nc" id="L220">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L221">            }</span>
+        }
+
+<span class="fc" id="L224">        return schedules;</span>
+    }
+    public List&lt;Schedule&gt; retrieveAllNotPrenotedSchedules(int idTherapist) {
+<span class="fc" id="L227">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L228">        ResultSet resultSet = null;</span>
+
+<span class="fc" id="L230">        List&lt;Schedule&gt; schedules = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L235">            String query = &quot;SELECT * FROM schedule WHERE Reserved = 0 AND ID_therapist =?;&quot;;</span>
+
+<span class="fc" id="L237">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L238">            preparedStatement.setInt(1, idTherapist);</span>
+
+<span class="fc" id="L240">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L242" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L243">                Schedule schedule = getScheduleFromResultSet(resultSet);</span>
+<span class="fc" id="L244">                schedules.add(schedule);</span>
+<span class="fc" id="L245">            }</span>
+
+<span class="nc" id="L247">        } catch (SQLException e) {</span>
+<span class="nc" id="L248">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L253">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L254">            } catch (SQLException e) {</span>
+<span class="nc" id="L255">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L256">            }</span>
+        }
+
+<span class="fc" id="L259">        return schedules;</span>
+    }
+    public int retrieveAllPrenotedSchedulesCount(int idTherapist) {
+<span class="fc" id="L262">        PreparedStatement pstmt = null;</span>
+<span class="fc" id="L263">        ResultSet rs = null;</span>
+<span class="fc" id="L264">        int count = 0;</span>
+
+        try {
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L269">            String sql = &quot;SELECT COUNT(*) FROM schedule WHERE Reserved != 0 AND ID_therapist =?;&quot;;</span>
+
+<span class="fc" id="L271">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L272">            pstmt.setInt(1, idTherapist);</span>
+
+<span class="fc" id="L274">            rs = pstmt.executeQuery();</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L276">                count = rs.getInt(1);</span>
+            }
+<span class="nc" id="L278">        } catch (SQLException e) {</span>
+<span class="nc" id="L279">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">                if (rs != null) rs.close();</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L284">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L285">            } catch (SQLException e) {</span>
+<span class="nc" id="L286">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L287">            }</span>
+        }
+<span class="fc" id="L289">        return count;</span>
+    }
+
+    //Restituisce TRUE se la data è disponibile. Restituisce FALSE se la data NON è disponibile O non è valida.
+    public boolean checkData(int idTherapist, Date date, String timeSlot) {
+<span class="fc" id="L294">        PreparedStatement pstmt = null;</span>
+<span class="fc" id="L295">        ResultSet rs = null;</span>
+<span class="fc" id="L296">        int count = 0;</span>
+
+        try {
+            // Comparing the provided date with the current date
+<span class="fc" id="L300">            LocalDate localDate = LocalDate.now();</span>
+<span class="fc" id="L301">            Date currentDate = java.sql.Date.valueOf(localDate);</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">            if(currentDate.after(date)){</span>
+<span class="fc" id="L303">                return false;</span>
+            }
+
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L308">            String sql = &quot;SELECT COUNT(*) FROM schedule WHERE ID_therapist = ? AND Date = ? AND TimeSlot = ?;&quot;;</span>
+
+<span class="fc" id="L310">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L311">            pstmt.setInt(1, idTherapist);</span>
+<span class="fc" id="L312">            pstmt.setDate(2, date);</span>
+<span class="fc" id="L313">            pstmt.setString(3, timeSlot);</span>
+
+<span class="fc" id="L315">            rs = pstmt.executeQuery();</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L317">                count = rs.getInt(1);</span>
+            }
+<span class="nc" id="L319">        } catch (SQLException e) {</span>
+<span class="nc" id="L320">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="fc bfc" id="L323" title="All 2 branches covered.">                if (rs != null) rs.close();</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L325">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L326">            } catch (SQLException e) {</span>
+<span class="nc" id="L327">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L328">            }</span>
+        }
+        // Here we change the condition. It will return true if count &gt; 0, meaning the data is available.
+        // It returns false otherwise.
+<span class="fc bfc" id="L332" title="All 2 branches covered.">        return count == 0;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

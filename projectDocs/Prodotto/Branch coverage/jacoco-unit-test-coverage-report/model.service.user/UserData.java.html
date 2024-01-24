@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.service.user</a> &gt; <span class="el_source">UserData.java</span></div><h1>UserData.java</h1><pre class="source lang-java linenums">package model.service.user;
+
+import model.DAO.DAOUser;
+import model.entity.User;
+import model.entity.UserInfo;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * Questa classe provvede alle funzionalità per gestire le informazioni degli utenti.
+ */
+public class UserData implements UserDataInterface {
+    DAOUser db;
+<span class="nc" id="L15">    public UserData() {</span>
+<span class="nc" id="L16">        this.db = new DAOUser();}</span>
+
+<span class="fc" id="L18">    public UserData(DAOUser db) {</span>
+<span class="fc" id="L19">        this.db = db;</span>
+<span class="fc" id="L20">    }</span>
+
+    public boolean checkIfEmailExists(String email) {
+<span class="nc" id="L23">        return db.checkIfEmailExists(email);</span>
+    }
+
+    public int createUser(String email, String password, int therapistId) {
+<span class="fc" id="L27">        return db.createUser(email, password, therapistId);</span>
+    }
+
+    public User getUser(Object idOrEmail) {
+<span class="nc" id="L31">        return db.getUserByIdOrEmail(idOrEmail);</span>
+    }
+
+    public boolean isTherapist(User user){
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        return user.getIdTherapist() == 0;</span>
+    }
+
+    public boolean updateAnalyticsPreference(String id, Boolean value) {
+<span class="nc" id="L39">        return db.updateAnalyticsPreference(id, value);</span>
+    }
+
+    public boolean updateEmailTime(String id, String value) {
+<span class="nc" id="L43">        return db.updateEmailTime(id, value);</span>
+    }
+
+<span class="nc" id="L46">    public ArrayList&lt;UserInfo&gt; getUsersAndPersonalInfoByIdTherapist(int ID_Therapist) {return db.getUsersAndPersonalInfoByIdTherapist(ID_Therapist);}</span>
+
+<span class="nc" id="L48">    public HashMap&lt;Integer, UserInfo&gt; getMappedUserInfoByIdTherapist(int therapistId){ return db.getMapUsersAndPersonalInfoByIdTherapist(therapistId);}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

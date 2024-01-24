@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOUser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOUser.java</span></div><h1>DAOUser.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.User;
+import model.entity.UserInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * La classe DAOCondition provvede ai metodi per manipolare le informazioni degli User dal database.
+ */
+public class DAOUser {
+<span class="fc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(DAOUser.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L23">    public DAOUser(Connection connection) {</span>
+<span class="fc" id="L24">        this.connection = connection;</span>
+<span class="fc" id="L25">    }</span>
+
+<span class="fc" id="L27">    public DAOUser() {</span>
+        try {
+<span class="fc" id="L29">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L30">        } catch (SQLException e) {</span>
+<span class="nc" id="L31">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">    }</span>
+    /**
+     * Private helper method that takes a ResultSet object and constructs a User object from it.
+     *
+     * @param resultSet A ResultSet object containing a row from the User table.
+     * @return A User object constructed from the ResultSet.
+     * @throws SQLException If any database error occurs.
+     */
+    private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L42">        User user = new User();</span>
+
+<span class="fc" id="L44">        user.setId(resultSet.getInt(&quot;ID&quot;));</span>
+<span class="fc" id="L45">        user.setEmail(resultSet.getString(&quot;Email&quot;));</span>
+<span class="fc" id="L46">        user.setPassword(resultSet.getString(&quot;Password&quot;));</span>
+<span class="fc" id="L47">        user.setIdTherapist(resultSet.getInt(&quot;ID_Therapist&quot;));</span>
+<span class="fc" id="L48">        user.setActivationDate(resultSet.getTimestamp(&quot;ActivationDate&quot;));</span>
+<span class="fc" id="L49">        user.setActive(resultSet.getBoolean(&quot;Active&quot;));</span>
+<span class="fc" id="L50">        user.setAnalytics(resultSet.getBoolean(&quot;Analytics&quot;));</span>
+<span class="fc" id="L51">        user.setEmailNotifications(resultSet.getBoolean(&quot;EmailNotifications&quot;));</span>
+<span class="fc" id="L52">        user.setNotificationTime(resultSet.getString(&quot;NotificationTime&quot;));</span>
+
+<span class="fc" id="L54">        return user;</span>
+    }
+
+    /**
+     * Checks if a given email is present in the User table.
+     *
+     * @param email The email to check.
+     * @return true if the email exists in the User table; false otherwise.
+     */
+    public boolean checkIfEmailExists(String email) {
+<span class="fc" id="L64">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L65">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to check if the email exists
+<span class="fc" id="L71">            String query = &quot;SELECT COUNT(*) AS count FROM user WHERE Email = ?&quot;;</span>
+
+<span class="fc" id="L73">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L74">            preparedStatement.setString(1, email);</span>
+
+<span class="fc" id="L76">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            if (resultSet.next()) {</span>
+<span class="fc" id="L79">                int count = resultSet.getInt(&quot;count&quot;);</span>
+                // If count is greater than 0, the email exists
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">                return count &gt; 0;</span>
+            }
+
+<span class="fc" id="L84">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="fc" id="L86">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+                // Close resources in the reverse order of their creation
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L92">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L93">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L95">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L96">            }</span>
+        }
+
+        // Default to false if an exception occurs
+<span class="fc" id="L100">        return false;</span>
+    }
+
+    /**
+     * Creates a new user in the User table.
+     *
+     * @param email The email of the user.
+     * @param password The password of the user.
+     * @param therapistId The ID of the therapist associated with the user.
+     * @return The ID of the newly created user, or -1 if an error occurs.
+     */
+    public int createUser(String email, String password, int therapistId) {
+<span class="fc" id="L112">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L113">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to insert a new user and retrieve the generated ID
+<span class="fc" id="L119">            String query = &quot;INSERT INTO user (Email, Password, ID_Therapist) VALUES (?, ?, ?)&quot;;</span>
+
+            // Specify that we want to retrieve the generated keys
+<span class="fc" id="L122">            preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);</span>
+
+<span class="fc" id="L124">            preparedStatement.setString(1, email);</span>
+<span class="fc" id="L125">            preparedStatement.setString(2, password);</span>
+<span class="fc" id="L126">            preparedStatement.setInt(3, therapistId);</span>
+
+            // Execute the insert query
+<span class="fc" id="L129">            preparedStatement.executeUpdate();</span>
+
+            // Retrieve the generated ID
+<span class="fc" id="L132">            resultSet = preparedStatement.getGeneratedKeys();</span>
+
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            if (resultSet.next()) {</span>
+
+<span class="fc" id="L136">                return resultSet.getInt(1);</span>
+            }
+
+<span class="fc" id="L139">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="fc" id="L141">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L146">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L147">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L149">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L150">            }</span>
+        }
+
+        // Default to -1 if an exception occurs
+<span class="fc" id="L154">        return -1;</span>
+    }
+
+    /**
+     * Retrieves a User from the User table based on an ID or an email.
+     *
+     * @param idOrEmail Either an Integer representing the User's ID or a String representing the User's email.
+     * @return The User object if found, or null if not found.
+     */
+    public User getUserByIdOrEmail(Object idOrEmail) {
+<span class="fc" id="L164">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L165">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L169">            String query = null;</span>
+
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">            if (idOrEmail instanceof Integer) {</span>
+<span class="nc" id="L172">                query = &quot;SELECT * FROM user WHERE ID = ?&quot;;</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">            } else if (idOrEmail instanceof String) {</span>
+<span class="fc" id="L174">                query = &quot;SELECT * FROM user WHERE Email = ?&quot;;</span>
+            }
+
+<span class="fc" id="L177">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L178">            preparedStatement.setObject(1, idOrEmail);</span>
+
+<span class="fc" id="L180">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="fc" id="L183">                return getUserFromResultSet(resultSet);</span>
+            }
+
+<span class="fc" id="L186">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="fc" id="L188">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="fc bfc" id="L191" title="All 2 branches covered.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L193">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L194">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L196">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L197">            }</span>
+        }
+
+<span class="fc" id="L200">        return null; // or you may throw an exception here</span>
+    }
+
+    /**
+     * Resets a user's password.
+     *
+     * @param email The email of the user.
+     * @param newPassword The new password to set for the user.
+     * @return true if the password was successfully updated; false otherwise.
+     */
+    public boolean resetPassword(String email, String newPassword) {
+<span class="fc" id="L211">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+            // Get connection
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to update password for the given email
+<span class="fc" id="L218">            String query = &quot;UPDATE user SET Password = ? WHERE Email = ?&quot;;</span>
+
+            // Prepare the statement
+<span class="fc" id="L221">            preparedStatement = connection.prepareStatement(query);</span>
+
+            // Set the parameters
+<span class="fc" id="L224">            preparedStatement.setString(1, newPassword);</span>
+<span class="fc" id="L225">            preparedStatement.setString(2, email);</span>
+
+            // Execute the update query
+<span class="fc" id="L228">            int rowsModified = preparedStatement.executeUpdate();</span>
+
+            // If rowsModified is greater than 0, then a row has been updated.
+            // So, return true. If not, return false.
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            return rowsModified &gt; 0;</span>
+<span class="fc" id="L233">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="fc" id="L235">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+                // Close everything properly
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L240">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L241">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L243">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L244">            }</span>
+        }
+
+        // Default to false if an exception occurs
+<span class="fc" id="L248">        return false;</span>
+    }
+
+    public String updateUser(int idUser, String email, String address) {
+<span class="fc" id="L252">        PreparedStatement preparedStatement = null;</span>
+<span class="pc bpc" id="L253" title="1 of 4 branches missed.">        boolean isEmailToUpdate = email != null &amp;&amp; !checkIfEmailExists(email);</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        boolean isAddressToUpdate = address != null;</span>
+
+<span class="fc bfc" id="L256" title="All 4 branches covered.">        if (!isEmailToUpdate &amp;&amp; !isAddressToUpdate) {</span>
+<span class="fc" id="L257">            return &quot;Invalid. No update performed.&quot;;</span>
+        }
+
+<span class="fc" id="L260">        StringBuilder queryBuilder = new StringBuilder(&quot;UPDATE user SET &quot;);</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (isEmailToUpdate) {</span>
+<span class="fc" id="L262">            queryBuilder.append(&quot;Email = ?&quot;);</span>
+        }
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (isAddressToUpdate) {</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">            if (isEmailToUpdate) {</span>
+<span class="fc" id="L266">                queryBuilder.append(&quot;, &quot;);</span>
+            }
+<span class="fc" id="L268">            queryBuilder.append(&quot;Address = ?&quot;);</span>
+        }
+<span class="fc" id="L270">        queryBuilder.append(&quot; WHERE ID = ?&quot;);</span>
+
+        try {
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L275">            preparedStatement = connection.prepareStatement(queryBuilder.toString());</span>
+
+<span class="fc" id="L277">            int parameterIndex = 1;</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            if (isEmailToUpdate) {</span>
+<span class="fc" id="L279">                preparedStatement.setString(parameterIndex++, email);</span>
+            }
+<span class="fc bfc" id="L281" title="All 2 branches covered.">            if (isAddressToUpdate) {</span>
+<span class="fc" id="L282">                preparedStatement.setString(parameterIndex++, address);</span>
+            }
+<span class="fc" id="L284">            preparedStatement.setInt(parameterIndex, idUser);</span>
+
+<span class="fc" id="L286">            preparedStatement.executeUpdate();</span>
+
+<span class="fc" id="L288">            StringBuilder successUpdateMessage = new StringBuilder();</span>
+<span class="fc bfc" id="L289" title="All 4 branches covered.">            if (isEmailToUpdate &amp;&amp; isAddressToUpdate) {</span>
+<span class="fc" id="L290">                successUpdateMessage.append(&quot;Both email and address&quot;);</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">            } else if (isEmailToUpdate) {</span>
+<span class="fc" id="L292">                successUpdateMessage.append(&quot;Email&quot;);</span>
+            } else {
+<span class="fc" id="L294">                successUpdateMessage.append(&quot;Address&quot;);</span>
+            }
+<span class="fc" id="L296">            successUpdateMessage.append(&quot; have been updated successfully.&quot;);</span>
+
+<span class="fc" id="L298">            return successUpdateMessage.toString();</span>
+
+<span class="fc" id="L300">        } catch (SQLException e) {</span>
+<span class="fc" id="L301">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="fc" id="L302">            return &quot;Update not possible due to a server connection issue.&quot;;</span>
+        } finally {
+        try {
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">            if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L306">            DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L307">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L309">            logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L310">        }</span>
+    }
+    }
+
+    /**
+     * Updates the user's analytics choice in the User table.
+     *
+     * @param userId The id of the user.
+     * @param value  The analytics choice value to set for the user.
+     * @return true if the choice was successfully updated; false otherwise.
+     */
+    public boolean updateAnalyticsPreference(String userId, boolean value) {
+<span class="fc" id="L322">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+            // Get connection
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to update analytics choice for the given userId
+<span class="fc" id="L329">            String query = &quot;UPDATE user SET Analytics = ? WHERE ID = ?&quot;;</span>
+
+            // Prepare the statement
+<span class="fc" id="L332">            preparedStatement = connection.prepareStatement(query);</span>
+
+            // Set the parameters
+<span class="fc" id="L335">            preparedStatement.setBoolean(1, value);</span>
+<span class="fc" id="L336">            preparedStatement.setString(2, userId);</span>
+
+            // Execute the update query
+<span class="fc" id="L339">            int rowsModified = preparedStatement.executeUpdate();</span>
+
+            // If rowsModified is greater than 0, then a row has been updated.
+            // So, return true. If not, return false.
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">            return rowsModified &gt; 0;</span>
+<span class="fc" id="L344">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="fc" id="L346">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+                // Close everything properly
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L351">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L352">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L354">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L355">            }</span>
+        }
+
+        // Default to false if an exception occurs
+<span class="fc" id="L359">        return false;</span>
+    }
+
+    /**
+     * Updates the user's Email Time in the User table.
+     *
+     * @param id The id of the user.
+     * @param value The email time value to set for the user.
+     * @return true if the email time was successfully updated; false otherwise.
+     */
+    public boolean updateEmailTime(String id, String value) {
+<span class="fc" id="L370">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+            // Get connection
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to update Email Time for the given id
+<span class="fc" id="L377">            String query = &quot;UPDATE user SET NotificationTime = ? WHERE ID = ?&quot;;</span>
+
+            // Prepare the statement
+<span class="fc" id="L380">            preparedStatement = connection.prepareStatement(query);</span>
+
+            // Set the parameters
+<span class="fc" id="L383">            preparedStatement.setString(1, value);</span>
+<span class="fc" id="L384">            preparedStatement.setString(2, id);</span>
+
+            // Execute the update query
+<span class="fc" id="L387">            int rowsModified = preparedStatement.executeUpdate();</span>
+
+            // If rowsModified is greater than 0, then a row has been updated.
+            // So, return true. If not, return false.
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">            return rowsModified &gt; 0;</span>
+<span class="fc" id="L392">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="fc" id="L394">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+                // Close everything properly
+<span class="pc bpc" id="L398" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L399">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L400">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L402">                logger.error(&quot;Error query&quot;, e);</span>
+<span class="fc" id="L403">            }</span>
+        }
+
+        // Default to false if an exception occurs
+<span class="fc" id="L407">        return false;</span>
+    }
+
+    /**
+     * Deletes a user from the User table based on an ID or an email.
+     *
+     * @param idOrEmail Either an Integer representing the User's ID or a String representing the User's email.
+     * @return true if the user was successfully deleted; false otherwise.
+     */
+    public boolean deleteUserByIdOrEmail(Object idOrEmail) {
+<span class="fc" id="L417">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L421">            String query = null;</span>
+
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">            if (idOrEmail instanceof Integer) {</span>
+<span class="nc" id="L424">                query = &quot;DELETE FROM user WHERE ID = ?&quot;;</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">            } else if (idOrEmail instanceof String) {</span>
+<span class="fc" id="L426">                query = &quot;DELETE FROM user WHERE Email = ?&quot;;</span>
+            }
+
+<span class="fc" id="L429">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L430">            preparedStatement.setObject(1, idOrEmail);</span>
+
+<span class="fc" id="L432">            int rowsDeleted = preparedStatement.executeUpdate();</span>
+
+<span class="pc bpc" id="L434" title="1 of 2 branches missed.">            return rowsDeleted &gt; 0;</span>
+<span class="fc" id="L435">        } catch (SQLException e) {</span>
+<span class="fc" id="L436">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L440">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L441">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L443">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L444">            }</span>
+        }
+
+        // Default to false if an exception occurs
+<span class="fc" id="L448">        return false;</span>
+    }
+
+
+    public ArrayList&lt;UserInfo&gt; getUsersAndPersonalInfoByIdTherapist(int idTherapist) {
+<span class="nc" id="L453">        Connection connection = null;</span>
+<span class="nc" id="L454">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L455">        ResultSet resultSet = null;</span>
+<span class="nc" id="L456">        ArrayList&lt;UserInfo&gt; list_user=new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="nc" id="L459">            connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L460">            String query = &quot;SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;&quot;;</span>
+
+<span class="nc" id="L462">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L463">            preparedStatement.setObject(1, idTherapist);</span>
+
+<span class="nc" id="L465">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L467" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L468">                UserInfo u=new UserInfo();</span>
+<span class="nc" id="L469">                u.setId(resultSet.getInt(&quot;ID&quot;));</span>
+<span class="nc" id="L470">                u.setEmail(resultSet.getString(&quot;Email&quot;));</span>
+<span class="nc" id="L471">                u.setActivationDate(resultSet.getTimestamp(&quot;ActivationDate&quot;));</span>
+<span class="nc" id="L472">                u.setFirstname(resultSet.getString(&quot;Firstname&quot;));</span>
+<span class="nc" id="L473">                u.setLastname(resultSet.getString(&quot;Lastname&quot;));</span>
+<span class="nc" id="L474">                u.setDateOfBirth(resultSet.getDate(&quot;DateOfBirth&quot;));</span>
+<span class="nc" id="L475">                u.setGender(resultSet.getString(&quot;Gender&quot;));</span>
+<span class="nc" id="L476">                u.setAddress(resultSet.getString(&quot;Address&quot;));</span>
+<span class="nc" id="L477">                u.setSsn(resultSet.getString(&quot;SSN&quot;));</span>
+<span class="nc" id="L478">                u.setPhone(resultSet.getString(&quot;Phone&quot;));</span>
+
+<span class="nc" id="L480">                list_user.add(u);</span>
+<span class="nc" id="L481">            }</span>
+<span class="nc" id="L482">            return list_user;</span>
+<span class="nc" id="L483">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L485">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L488" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L489" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L490">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L491">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L493">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L494">            }</span>
+        }
+
+<span class="nc" id="L497">        return null; // or you may throw an exception here</span>
+    }
+
+    public HashMap&lt;Integer, UserInfo&gt; getMapUsersAndPersonalInfoByIdTherapist(int idTherapist) {
+<span class="nc" id="L501">        Connection connection = null;</span>
+<span class="nc" id="L502">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L503">        ResultSet resultSet = null;</span>
+<span class="nc" id="L504">        HashMap&lt;Integer, UserInfo&gt; userMap = new HashMap&lt;&gt;();</span>
+
+        try {
+<span class="nc" id="L507">            connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L508">            String query = &quot;SELECT ID,Email,ActivationDate,Firstname,Lastname,DateOfBirth,Gender,Address,SSN,Phone FROM user,personal_info WHERE ID_Therapist  = ? AND user.ID= personal_info.ID_USER;&quot;;</span>
+
+<span class="nc" id="L510">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L511">            preparedStatement.setObject(1, idTherapist);</span>
+
+<span class="nc" id="L513">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L515" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L516">                UserInfo u=new UserInfo();</span>
+<span class="nc" id="L517">                int userId = resultSet.getInt(&quot;ID&quot;);</span>
+<span class="nc" id="L518">                u.setId(userId);</span>
+<span class="nc" id="L519">                u.setEmail(resultSet.getString(&quot;Email&quot;));</span>
+<span class="nc" id="L520">                u.setActivationDate(resultSet.getTimestamp(&quot;ActivationDate&quot;));</span>
+<span class="nc" id="L521">                u.setFirstname(resultSet.getString(&quot;Firstname&quot;));</span>
+<span class="nc" id="L522">                u.setLastname(resultSet.getString(&quot;Lastname&quot;));</span>
+<span class="nc" id="L523">                u.setDateOfBirth(resultSet.getDate(&quot;DateOfBirth&quot;));</span>
+<span class="nc" id="L524">                u.setGender(resultSet.getString(&quot;Gender&quot;));</span>
+<span class="nc" id="L525">                u.setAddress(resultSet.getString(&quot;Address&quot;));</span>
+<span class="nc" id="L526">                u.setSsn(resultSet.getString(&quot;SSN&quot;));</span>
+<span class="nc" id="L527">                u.setPhone(resultSet.getString(&quot;Phone&quot;));</span>
+
+<span class="nc" id="L529">                userMap.put(userId, u);</span>
+<span class="nc" id="L530">            }</span>
+<span class="nc" id="L531">            return userMap;</span>
+<span class="nc" id="L532">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L534">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L537" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L539">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L540">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L542">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L543">            }</span>
+        }
+
+<span class="nc" id="L546">        return null; // or you may throw an exception here</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOPersonalInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOPersonalInfo.java</span></div><h1>DAOPersonalInfo.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.PersonalInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ * La classe DAOPersonalInfo provvede ai metodi per manipolare le informazioni delle PersonalInfo dal database.
+ */
+public class DAOPersonalInfo {
+<span class="fc" id="L16">    private static final Logger logger = LoggerFactory.getLogger(DAOPersonalInfo.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L20">    public DAOPersonalInfo(Connection connection) {</span>
+<span class="fc" id="L21">        this.connection = connection;</span>
+<span class="fc" id="L22">    }</span>
+
+<span class="nc" id="L24">    public DAOPersonalInfo() {</span>
+        try {
+<span class="nc" id="L26">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L27">        } catch (SQLException e) {</span>
+<span class="nc" id="L28">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="nc" id="L29">        }</span>
+<span class="nc" id="L30">    }</span>
+    private PersonalInfo getPersonalInfoFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L32">        PersonalInfo personalInfo = new PersonalInfo();</span>
+
+<span class="fc" id="L34">        personalInfo.setIdUser(resultSet.getInt(&quot;ID_user&quot;));</span>
+<span class="fc" id="L35">        personalInfo.setFirstname(resultSet.getString(&quot;Firstname&quot;));</span>
+<span class="fc" id="L36">        personalInfo.setLastname(resultSet.getString(&quot;Lastname&quot;));</span>
+<span class="fc" id="L37">        personalInfo.setDateOfBirth(resultSet.getDate(&quot;DateOfBirth&quot;));</span>
+<span class="fc" id="L38">        personalInfo.setGender(resultSet.getString(&quot;Gender&quot;));</span>
+<span class="fc" id="L39">        personalInfo.setAddress(resultSet.getString(&quot;Address&quot;));</span>
+<span class="fc" id="L40">        personalInfo.setSsn(resultSet.getString(&quot;SSN&quot;));</span>
+<span class="fc" id="L41">        personalInfo.setPhone(resultSet.getString(&quot;Phone&quot;));</span>
+
+<span class="fc" id="L43">        return personalInfo;</span>
+    }
+    public boolean createRegistry(int id, String name, String surname) {
+<span class="fc" id="L46">        PreparedStatement preparedStatementPersonalInfo = null;</span>
+
+        try {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L50">            connection.setAutoCommit(false);  // Start a transaction</span>
+
+            // Insert user data into personal_info table
+<span class="fc" id="L53">            String queryAnagrafica = &quot;INSERT INTO personal_info (ID_user, Firstname, Lastname) VALUES (?, ?, ?)&quot;;</span>
+<span class="fc" id="L54">            preparedStatementPersonalInfo = connection.prepareStatement(queryAnagrafica);</span>
+<span class="fc" id="L55">            preparedStatementPersonalInfo.setInt(1, id);</span>
+<span class="fc" id="L56">            preparedStatementPersonalInfo.setString(2, name);</span>
+<span class="fc" id="L57">            preparedStatementPersonalInfo.setString(3, surname);</span>
+<span class="fc" id="L58">            preparedStatementPersonalInfo.executeUpdate();</span>
+
+<span class="fc" id="L60">            connection.commit();  // Commit the transaction</span>
+<span class="fc" id="L61">            return true;  // User created successfully</span>
+
+<span class="nc" id="L63">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L65">            logger.error(&quot;Error query&quot;, e);</span>
+            try {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (connection != null) {</span>
+<span class="nc" id="L68">                    connection.rollback();  // Rollback the transaction in case of an exception</span>
+                }
+<span class="nc" id="L70">            } catch (SQLException ex) {</span>
+<span class="nc" id="L71">                logger.error(&quot;Error rollback&quot;, e);</span>
+<span class="nc" id="L72">            }</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">                if (preparedStatementPersonalInfo != null) preparedStatementPersonalInfo.close();</span>
+<span class="fc" id="L76">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L77">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L79">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L80">            }</span>
+        }
+
+<span class="nc" id="L83">        return false;  // Default to false if an exception occurs</span>
+    }
+
+    public PersonalInfo getPersonalInfo(int id) {
+<span class="fc" id="L87">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L88">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L93">            String sql = &quot;SELECT * FROM personal_info WHERE ID_user = ?&quot;;</span>
+<span class="fc" id="L94">            preparedStatement = connection.prepareStatement(sql);</span>
+<span class="fc" id="L95">            preparedStatement.setInt(1, id);</span>
+
+<span class="fc" id="L97">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="fc" id="L100">                return getPersonalInfoFromResultSet(resultSet);</span>
+            }
+<span class="nc" id="L102">        } catch (SQLException e) {</span>
+<span class="nc" id="L103">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L108">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L109">            } catch (SQLException e) {</span>
+<span class="nc" id="L110">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L111">            }</span>
+        }
+
+<span class="nc" id="L114">        return null; // Return null if personal_info does not exist</span>
+    }
+
+    public boolean deleteRegistry(int createdUserId) {
+<span class="fc" id="L118">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L122">            connection.setAutoCommit(false); // Start a transaction</span>
+
+<span class="fc" id="L124">            String sql = &quot;DELETE FROM personal_info WHERE ID_user = ?&quot;;</span>
+<span class="fc" id="L125">            preparedStatement = connection.prepareStatement(sql);</span>
+<span class="fc" id="L126">            preparedStatement.setInt(1, createdUserId);</span>
+<span class="fc" id="L127">            int rowAffected = preparedStatement.executeUpdate();</span>
+
+<span class="fc" id="L129">            connection.commit(); // Commit the transaction</span>
+
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            return rowAffected &gt; 0; // Return true if the deletion was successful</span>
+
+<span class="nc" id="L133">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L135">            logger.error(&quot;Error query&quot;, e);</span>
+            try {
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                if (connection != null) {</span>
+<span class="nc" id="L138">                    connection.rollback(); // Rollback the transaction in case of an exception</span>
+                }
+<span class="nc" id="L140">            } catch (SQLException ex) {</span>
+<span class="nc" id="L141">                logger.error(&quot;Error rollback&quot;, e);</span>
+<span class="nc" id="L142">            }</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L146">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L147">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L149">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L150">            }</span>
+        }
+
+<span class="nc" id="L153">        return false; // Default to false if an exception occurs</span>
+    }
+
+
+    public boolean updatePersonalInfofromId(int id, String FirstName, String LastName, String Phone) {
+<span class="fc" id="L158">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L163">            String sql = &quot;UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ? WHERE ID_user = ?&quot;;</span>
+<span class="fc" id="L164">            preparedStatement = connection.prepareStatement(sql);</span>
+<span class="fc" id="L165">            preparedStatement.setString(1, FirstName);</span>
+<span class="fc" id="L166">            preparedStatement.setString(2, LastName);</span>
+<span class="fc" id="L167">            preparedStatement.setString(3, Phone);</span>
+<span class="fc" id="L168">            preparedStatement.setInt(4, id);</span>
+
+<span class="fc" id="L170">            int result = preparedStatement.executeUpdate();</span>
+
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">            if (result&gt;0) {</span>
+<span class="fc" id="L173">                return true;</span>
+            }
+<span class="nc" id="L175">        } catch (SQLException e) {</span>
+<span class="nc" id="L176">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L177">            return false;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L181">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L182">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L184">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L185">            }</span>
+        }
+
+<span class="nc" id="L188">        return false;</span>
+    }
+
+    public boolean updatePersonalInfoAndUserFromId(int id, String FirstName, String LastName, String Phone, String Email, String Address) {
+<span class="fc" id="L192">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Primo aggiornamento su personal_info
+<span class="fc" id="L198">            String personalInfoUpdateSql = &quot;UPDATE personal_info SET Firstname = ?, Lastname = ?, Phone = ?, Address = ? WHERE ID_user = ?&quot;;</span>
+<span class="fc" id="L199">            preparedStatement = connection.prepareStatement(personalInfoUpdateSql);</span>
+<span class="fc" id="L200">            preparedStatement.setString(1, FirstName);</span>
+<span class="fc" id="L201">            preparedStatement.setString(2, LastName);</span>
+<span class="fc" id="L202">            preparedStatement.setString(3, Phone);</span>
+<span class="fc" id="L203">            preparedStatement.setString(4, Address);</span>
+<span class="fc" id="L204">            preparedStatement.setInt(5, id);</span>
+
+<span class="fc" id="L206">            int personalInfoUpdateResult = preparedStatement.executeUpdate();</span>
+
+            // Secondo aggiornamento su user
+<span class="fc" id="L209">            String userUpdateSql = &quot;UPDATE user SET Email = ? WHERE ID = ?&quot;;</span>
+<span class="fc" id="L210">            preparedStatement = connection.prepareStatement(userUpdateSql);</span>
+<span class="fc" id="L211">            preparedStatement.setString(1, Email);</span>
+<span class="fc" id="L212">            preparedStatement.setInt(2, id);</span>
+
+<span class="fc" id="L214">            int userUpdateResult = preparedStatement.executeUpdate();</span>
+
+<span class="pc bpc" id="L216" title="2 of 4 branches missed.">            if (personalInfoUpdateResult &gt; 0 &amp;&amp; userUpdateResult &gt; 0) {</span>
+<span class="fc" id="L217">                return true; // Entrambi gli aggiornamenti hanno avuto successo</span>
+            }
+<span class="nc" id="L219">        } catch (SQLException e) {</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">            if (e.getSQLState().equals(&quot;23000&quot;) &amp;&amp; e.getErrorCode() == 1062) {</span>
+            } else {
+                // Gestione di altre eccezioni
+<span class="nc" id="L223">                logger.error(&quot;Errore query&quot;, e);</span>
+            }
+        } finally {
+            try {
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L228">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L229">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L231">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L232">            }</span>
+        }
+
+<span class="nc" id="L235">        return false;</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

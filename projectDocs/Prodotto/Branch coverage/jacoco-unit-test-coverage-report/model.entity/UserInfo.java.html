@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.entity</a> &gt; <span class="el_source">UserInfo.java</span></div><h1>UserInfo.java</h1><pre class="source lang-java linenums">package model.entity;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+
+public class UserInfo {
+    private int id;
+    private String email;
+    private Timestamp activationDate;
+    private String firstname;
+    private String lastname;
+    private Date dateOfBirth;
+    private String gender;
+    private String address;
+    private String ssn;
+    private String phone;
+
+<span class="nc" id="L18">    public UserInfo() {</span>
+<span class="nc" id="L19">    }</span>
+
+<span class="fc" id="L21">    public UserInfo(int id, String email, Timestamp activationDate, String firstname, String lastname, Date dateOfBirth, String gender, String address, String ssn, String phone) {</span>
+<span class="fc" id="L22">        this.id = id;</span>
+<span class="fc" id="L23">        this.email = email;</span>
+<span class="fc" id="L24">        this.activationDate = activationDate;</span>
+<span class="fc" id="L25">        this.firstname = firstname;</span>
+<span class="fc" id="L26">        this.lastname = lastname;</span>
+<span class="fc" id="L27">        this.dateOfBirth = dateOfBirth;</span>
+<span class="fc" id="L28">        this.gender = gender;</span>
+<span class="fc" id="L29">        this.address = address;</span>
+<span class="fc" id="L30">        this.ssn = ssn;</span>
+<span class="fc" id="L31">        this.phone = phone;</span>
+<span class="fc" id="L32">    }</span>
+
+    public int getId() {
+<span class="fc" id="L35">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="nc" id="L39">        this.id = id;</span>
+<span class="nc" id="L40">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L43">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="nc" id="L47">        this.email = email;</span>
+<span class="nc" id="L48">    }</span>
+
+    public Timestamp getActivationDate() {
+<span class="fc" id="L51">        return activationDate;</span>
+    }
+
+    public void setActivationDate(Timestamp activationDate) {
+<span class="nc" id="L55">        this.activationDate = activationDate;</span>
+<span class="nc" id="L56">    }</span>
+
+    public String getFirstname() {
+<span class="fc" id="L59">        return firstname;</span>
+    }
+
+    public void setFirstname(String firstname) {
+<span class="nc" id="L63">        this.firstname = firstname;</span>
+<span class="nc" id="L64">    }</span>
+
+    public String getLastname() {
+<span class="fc" id="L67">        return lastname;</span>
+    }
+
+    public void setLastname(String lastname) {
+<span class="nc" id="L71">        this.lastname = lastname;</span>
+<span class="nc" id="L72">    }</span>
+
+    public Date getDateOfBirth() {
+<span class="fc" id="L75">        return dateOfBirth;</span>
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+<span class="nc" id="L79">        this.dateOfBirth = dateOfBirth;</span>
+<span class="nc" id="L80">    }</span>
+
+    public String getGender() {
+<span class="fc" id="L83">        return gender;</span>
+    }
+
+    public void setGender(String gender) {
+<span class="nc" id="L87">        this.gender = gender;</span>
+<span class="nc" id="L88">    }</span>
+
+    public String getAddress() {
+<span class="fc" id="L91">        return address;</span>
+    }
+
+    public void setAddress(String address) {
+<span class="nc" id="L95">        this.address = address;</span>
+<span class="nc" id="L96">    }</span>
+
+    public String getSsn() {
+<span class="fc" id="L99">        return ssn;</span>
+    }
+
+    public void setSsn(String ssn) {
+<span class="nc" id="L103">        this.ssn = ssn;</span>
+<span class="nc" id="L104">    }</span>
+
+    public String getPhone() {
+<span class="fc" id="L107">        return phone;</span>
+    }
+
+    public void setPhone(String phone) {
+<span class="nc" id="L111">        this.phone = phone;</span>
+<span class="nc" id="L112">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

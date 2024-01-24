@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Message.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.entity</a> &gt; <span class="el_source">Message.java</span></div><h1>Message.java</h1><pre class="source lang-java linenums">package model.entity;
+
+import java.sql.Timestamp;
+
+<span class="fc" id="L5">public class Message {</span>
+    private int idMessage;
+    private int sender;
+    private int recipient;
+    private boolean read;
+    private String body;
+    private Timestamp sent;
+
+    // Getter and Setter methods
+
+    public int getIdMessage() {
+<span class="fc" id="L16">        return idMessage;</span>
+    }
+
+    public void setIdMessage(int idMessage) {
+<span class="fc" id="L20">        this.idMessage = idMessage;</span>
+<span class="fc" id="L21">    }</span>
+
+    public int getSender() {
+<span class="fc" id="L24">        return sender;</span>
+    }
+
+    public void setSender(int sender) {
+<span class="fc" id="L28">        this.sender = sender;</span>
+<span class="fc" id="L29">    }</span>
+
+    public int getRecipient() {
+<span class="fc" id="L32">        return recipient;</span>
+    }
+
+    public void setRecipient(int recipient) {
+<span class="fc" id="L36">        this.recipient = recipient;</span>
+<span class="fc" id="L37">    }</span>
+
+    public boolean isRead() {
+<span class="fc" id="L40">        return read;</span>
+    }
+
+    public void setRead(boolean read) {
+<span class="fc" id="L44">        this.read = read;</span>
+<span class="fc" id="L45">    }</span>
+
+    public String getBody() {
+<span class="fc" id="L48">        return body;</span>
+    }
+
+    public void setBody(String body) {
+<span class="fc" id="L52">        this.body = body;</span>
+<span class="fc" id="L53">    }</span>
+
+    public Timestamp getSent() {
+<span class="fc" id="L56">        return sent;</span>
+    }
+
+    public void setSent(Timestamp sent) {
+<span class="fc" id="L60">        this.sent = sent;</span>
+<span class="fc" id="L61">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L65">        return &quot;Message{&quot; +</span>
+                //&quot;idMessage=&quot; + idMessage +
+                &quot;, sender=&quot; + sender +
+                &quot;, recipient=&quot; + recipient +
+                &quot;, read=&quot; + read +
+                //&quot;, body='&quot; + body + '\'' +
+                //&quot;, sent=&quot; + sent +
+                '}';
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

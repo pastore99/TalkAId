@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExerciseEvaluator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">ExerciseEvaluator.java</span></div><h1>ExerciseEvaluator.java</h1><pre class="source lang-java linenums">package controller;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import info.debatty.java.stringsimilarity.Levenshtein;
+import model.entity.ExerciseGlossary;
+import model.service.exercise.ExerciseManager;
+import model.service.exercise.SpeechRecognition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.sql.Blob;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+/**
+ * Servlet che si occupa di valutare un esercizio e di salvarne il risultato sul database
+ */
+@WebServlet(&quot;/exerciseEvaluator&quot;)
+@MultipartConfig
+<span class="nc" id="L38">public class ExerciseEvaluator extends HttpServlet {</span>
+<span class="nc" id="L39">    private static final Logger logger = LoggerFactory.getLogger(ExerciseEvaluator.class);</span>
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+<span class="nc" id="L42">        HttpSession s = request.getSession();</span>
+<span class="nc" id="L43">        String contentType = request.getContentType();</span>
+<span class="nc" id="L44">        ExerciseManager em = new ExerciseManager();</span>
+
+<span class="nc" id="L46">        int exerciseId = (int) s.getAttribute(&quot;exerciseID&quot;);</span>
+<span class="nc" id="L47">        int userId = (int) s.getAttribute(&quot;id&quot;);</span>
+<span class="nc" id="L48">        Date d = (Date) s.getAttribute(&quot;insertionDate&quot;);</span>
+
+<span class="nc" id="L50">        int score = 0;</span>
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (&quot;application/json&quot;.equals(contentType)) {</span>
+<span class="nc" id="L53">            score = evaluateNoAudio(exerciseId, userId, d);</span>
+        } else {
+            try {
+<span class="nc" id="L56">                score = evaluateAudio(exerciseId, userId, d);</span>
+<span class="nc" id="L57">            } catch (ExecutionException | InterruptedException e) {</span>
+<span class="nc" id="L58">                logger.error(&quot;Error evaluating Audio&quot;, e);</span>
+<span class="nc" id="L59">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L60">            }</span>
+        }
+<span class="nc" id="L62">        em.saveEvaluation(userId, exerciseId, d, score);</span>
+<span class="nc" id="L63">    }</span>
+
+    /**
+     * Si occupa di valutare gli esercizi di scrittura, che non necessitano di riconoscimento vocale
+     * @param exerciseId è l'id dell'esercizio da valutare
+     * @param userId è l'id dell'utente che ha eseguito l'esercizio
+     * @param date è la data in cui l'esercizio è stato assegnato all'utente
+     * @return la valutazione dell'esercizio
+     */
+    private int evaluateNoAudio(int exerciseId, int userId, Date date){
+<span class="nc" id="L73">        Gson gson = new Gson();</span>
+
+<span class="nc" id="L75">        ExerciseGlossary baseExercise = new ExerciseManager().getExercise(exerciseId);</span>
+<span class="nc" id="L76">        String executionJSON = getJSONfromBlob(exerciseId, userId, date);</span>
+<span class="nc" id="L77">        String type = baseExercise.getType();</span>
+
+        int score;
+
+<span class="nc bnc" id="L81" title="All 4 branches missed.">        switch (type) {</span>
+            case &quot;CROSSWORD&quot; -&gt; {
+<span class="nc" id="L83">                String[][] solution = gson.fromJson(baseExercise.getSolution(), String[][].class);</span>
+<span class="nc" id="L84">                String[][] execution = gson.fromJson(executionJSON, String[][].class);</span>
+
+<span class="nc" id="L86">                score = evaluateCrossword(execution, solution);</span>
+<span class="nc" id="L87">            }</span>
+            case &quot;IMAGESTOTEXT&quot;, &quot;TEXTTOIMAGES&quot; -&gt; {
+<span class="nc" id="L89">                Type solutionType = new TypeToken&lt;Map&lt;String, String&gt;&gt;() {}.getType();</span>
+<span class="nc" id="L90">                Map&lt;String, String&gt; solution = gson.fromJson(baseExercise.getSolution(), solutionType);</span>
+<span class="nc" id="L91">                Map&lt;String, String&gt; execution = gson.fromJson(executionJSON, solutionType);</span>
+
+<span class="nc" id="L93">                score = evaluateITTnTTI(execution, solution);</span>
+<span class="nc" id="L94">            }</span>
+            case &quot;RIGHTTEXT&quot; -&gt; {
+<span class="nc" id="L96">                Type solutionType = new TypeToken&lt;Set&lt;String&gt;&gt;(){}.getType();</span>
+<span class="nc" id="L97">                Set&lt;String&gt; solution = gson.fromJson(baseExercise.getSolution(), solutionType);</span>
+<span class="nc" id="L98">                Set&lt;String&gt; execution = gson.fromJson(executionJSON, solutionType);</span>
+
+<span class="nc" id="L100">                score = evaluateRightText(execution, solution);</span>
+<span class="nc" id="L101">            }</span>
+<span class="nc" id="L102">            default -&gt; throw new IllegalStateException(&quot;Unexpected value: &quot; + type);</span>
+        }
+
+<span class="nc" id="L105">        return score;</span>
+    }
+
+    /**
+     * Si occupa di trasformare il BLOB presente nel database in una string JSON
+     * @param exerciseId è l'id dell'esercizio da valutare
+     * @param userId è l'id dell'utente che ha eseguito l'esercizio
+     * @param d è la data in cui l'esercizio è stato assegnato all'utente
+     * @return la stringa JSON costruita
+     */
+    private String getJSONfromBlob(int exerciseId, int userId, Date d){
+<span class="nc" id="L116">        Blob executionBlob = new ExerciseManager().getExecution(exerciseId, userId, d);</span>
+<span class="nc" id="L117">        StringBuilder stringBuilder = new StringBuilder();</span>
+
+<span class="nc" id="L119">        try (InputStream binaryStream = executionBlob.getBinaryStream();</span>
+<span class="nc" id="L120">             InputStreamReader inputStreamReader = new InputStreamReader(binaryStream);</span>
+<span class="nc" id="L121">             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {</span>
+
+            String line;
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            while ((line = bufferedReader.readLine()) != null) {</span>
+<span class="nc" id="L125">                stringBuilder.append(line);</span>
+            }
+
+<span class="nc" id="L128">        } catch (SQLException | IOException e) {</span>
+<span class="nc" id="L129">            logger.error(&quot;Error parsing Blob to JSON&quot;, e);</span>
+<span class="nc" id="L130">        }</span>
+
+<span class="nc" id="L132">        return stringBuilder.toString();</span>
+    }
+
+    /**
+     * Si occupa della valutazione degli esercizi di tipo &quot;RIGHT TEXT&quot;
+     * @param execution l'esecuzione dell'esercizio da parte dell'utente
+     * @param solution la soluzione dell'esercizio con cui poter valutare l'esecuzione
+     * @return la valutazione dell'esercizio
+     */
+    private int evaluateRightText(Set&lt;String&gt; execution, Set&lt;String&gt; solution) {
+<span class="nc" id="L142">        double right = 0;</span>
+<span class="nc" id="L143">        int total = solution.size();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        for (String s : solution) {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (execution.contains(s.toUpperCase())){</span>
+<span class="nc" id="L146">                right++;</span>
+            }
+<span class="nc" id="L148">        }</span>
+<span class="nc" id="L149">        return (int)((right /total)*100);</span>
+    }
+
+    /**
+     * Si occupa della valutazione degli esercizi di tipo &quot;IMAGES TO TEXT&quot; e &quot;TEXT TO IMAGES&quot;
+     * @param execution l'esecuzione dell'esercizio da parte dell'utente
+     * @param solution la soluzione dell'esercizio con cui poter valutare l'esecuzione
+     * @return la valutazione dell'esercizio
+     */
+    private int evaluateITTnTTI(Map&lt;String, String&gt; execution, Map&lt;String, String&gt; solution) {
+<span class="nc" id="L159">        double right = 0;</span>
+<span class="nc" id="L160">        int total = solution.size();</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry : execution.entrySet()) {</span>
+<span class="nc" id="L163">            String k = entry.getKey();</span>
+<span class="nc" id="L164">            String executionValue = entry.getValue();</span>
+<span class="nc" id="L165">            String solutionValue = solution.get(k);</span>
+
+<span class="nc bnc" id="L167" title="All 4 branches missed.">            if (executionValue != null &amp;&amp; executionValue.equals(solutionValue.toUpperCase())) {</span>
+<span class="nc" id="L168">                right++;</span>
+            }
+<span class="nc" id="L170">        }</span>
+<span class="nc" id="L171">        return (int)((right /total)*100);</span>
+    }
+
+    /**
+     * Si occupa della valutazione degli esercizi di tipo &quot;CROSSWORD&quot;
+     * @param execution l'esecuzione dell'esercizio da parte dell'utente
+     * @param solution la soluzione dell'esercizio con cui poter valutare l'esecuzione
+     * @return la valutazione dell'esercizio
+     */
+    private int evaluateCrossword(String[][] execution, String[][] solution) {
+<span class="nc" id="L181">        double right = 0;</span>
+<span class="nc" id="L182">        int total = 0;</span>
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        for (int i = 0; i &lt; execution.length; i++) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            for (int j = 0; j &lt; execution[0].length; j++) {</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                if (!execution[i][j].equals(&quot;#&quot;)){</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">                    if (execution[i][j].equals(solution[i][j].toUpperCase())) {</span>
+<span class="nc" id="L188">                        right++;</span>
+                    }
+<span class="nc" id="L190">                    total++;</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if(total != 0){</span>
+<span class="nc" id="L195">            return (int)((right /total)*100);</span>
+        }
+
+<span class="nc" id="L198">        return 0;</span>
+    }
+
+    /**
+     * Si occupa di valutare gli esercizi di lettura, che necessitano di riconoscimento vocale
+     * @param exerciseId l'id dell'esercizio eseguito
+     * @param userId l'id dell'utente che ha eseguito l'esercizio
+     * @param d la data in cui è stata assegnata l'esecuzione dell'esercizio all'utente
+     * @return la valutazione dell'esercizio
+     * @throws IOException in caso di errore dell'Input Stream
+     * @throws ExecutionException in caso di errore nella conversione dell'audio in testo tramite Azure
+     * @throws InterruptedException in caso di interruzione durante la conversione dell'audio in testo tramite Azure
+     */
+    private int evaluateAudio(int exerciseId, int userId, Date d) throws IOException, ExecutionException, InterruptedException {
+<span class="nc" id="L212">        InputStream audioExecution = getAudiofromBlob(exerciseId, userId, d);</span>
+<span class="nc" id="L213">        String audioText = null;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (audioExecution!=null){</span>
+<span class="nc" id="L215">            SpeechRecognition s = new SpeechRecognition();</span>
+<span class="nc" id="L216">            audioText = s.azureSTT(audioExecution);</span>
+<span class="nc" id="L217">            audioExecution.close();</span>
+        }
+
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if(audioText != null) {</span>
+<span class="nc" id="L221">            ExerciseGlossary baseExercise = new ExerciseManager().getExercise(exerciseId);</span>
+<span class="nc" id="L222">            String exerciseType = baseExercise.getType();</span>
+<span class="nc" id="L223">            Gson g = new Gson();</span>
+
+<span class="nc bnc" id="L225" title="All 2 branches missed.">            if (baseExercise.getType().equals(&quot;READTEXT&quot;)){</span>
+<span class="nc" id="L226">                Levenshtein l = new Levenshtein();</span>
+<span class="nc" id="L227">                String solution = g.fromJson(baseExercise.getInitialState(), String.class);</span>
+<span class="nc" id="L228">                double distance = l.distance(solution, audioText);</span>
+<span class="nc" id="L229">                double result = ((solution.length()-distance)/solution.length())*100;</span>
+
+<span class="nc" id="L231">                return (int) Math.round(result);</span>
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            }else if(exerciseType.equals(&quot;READIMAGES&quot;)){</span>
+<span class="nc" id="L234">                Type solutionType = new TypeToken&lt;Set&lt;String&gt;&gt;(){}.getType();</span>
+<span class="nc" id="L235">                Set&lt;String&gt; solution = g.fromJson(baseExercise.getSolution(), solutionType);</span>
+<span class="nc" id="L236">                String execution = audioText.toLowerCase().replaceAll(&quot;[^a-zA-Z0-9\\s]&quot;, &quot;&quot;);</span>
+
+<span class="nc" id="L238">                double right = 0;</span>
+<span class="nc" id="L239">                double total = solution.size();</span>
+
+<span class="nc" id="L241">                String[] wordsArray = execution.split(&quot;\\s+&quot;);</span>
+<span class="nc" id="L242">                Set&lt;String&gt; wordSet = new HashSet&lt;&gt;(Arrays.asList(wordsArray));</span>
+
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                for(String w: wordSet){</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                    if(solution.contains(w)){</span>
+<span class="nc" id="L246">                        right++;</span>
+                    }
+<span class="nc" id="L248">                }</span>
+<span class="nc" id="L249">                double result = ((right/total)*100);</span>
+
+<span class="nc" id="L251">                return (int) Math.round(result);</span>
+            }
+        }
+
+<span class="nc" id="L255">        return 0;</span>
+    }
+
+    /**
+     * Si occupa di creare l'InputStream audio dal BLOB presente nel database
+     * @param exerciseId l'id dell'esercizio
+     * @param userId l'id dell'utente
+     * @param d la data in cui è stato assegnato l'esercizio all'utente
+     * @return l'audio in formato InputStream
+     */
+    private InputStream getAudiofromBlob(int exerciseId, int userId, Date d){
+<span class="nc" id="L266">        Blob executionBlob = new ExerciseManager().getExecution(exerciseId, userId, d);</span>
+<span class="nc" id="L267">        try (InputStream audioInputStream = executionBlob.getBinaryStream()) {</span>
+<span class="nc" id="L268">            return audioInputStream;</span>
+<span class="nc" id="L269">        } catch (SQLException | IOException e) {</span>
+<span class="nc" id="L270">            throw new RuntimeException(e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

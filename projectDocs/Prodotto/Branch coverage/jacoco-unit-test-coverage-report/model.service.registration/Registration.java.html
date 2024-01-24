@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Registration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.service.registration</a> &gt; <span class="el_source">Registration.java</span></div><h1>Registration.java</h1><pre class="source lang-java linenums">package model.service.registration;
+
+import model.entity.License;
+import model.service.email.EmailManager;
+import model.service.encryption.Encryption;
+import model.service.license.LicenseActivation;
+import model.service.user.UserData;
+import model.service.user.UserRegistry;
+
+/**
+ * Questa classe provvede alle funzionalità per la registrazione
+ */
+public class Registration implements RegistrationInterface {
+
+    LicenseActivation la;
+    UserData ud;
+    UserRegistry ur;
+<span class="nc" id="L18">    public Registration () {</span>
+<span class="nc" id="L19">        la = new LicenseActivation();</span>
+<span class="nc" id="L20">        ud = new UserData();</span>
+<span class="nc" id="L21">        ur = new UserRegistry();</span>
+<span class="nc" id="L22">    }</span>
+
+<span class="fc" id="L24">    Registration (LicenseActivation la, UserData ud, UserRegistry ur) {</span>
+<span class="fc" id="L25">        this.la = la;</span>
+<span class="fc" id="L26">        this.ud = ud;</span>
+<span class="fc" id="L27">        this.ur = ur;</span>
+<span class="fc" id="L28">    }</span>
+    @Override
+    public int registerNewUser(String licenseCode, String email, String password, String name, String surname) {
+<span class="fc" id="L31">        License license = validateLicense(licenseCode);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (license != null) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            if (isEmailExists(email)) {</span>
+<span class="fc" id="L34">                return 2; //email non valida</span>
+            }
+<span class="fc" id="L36">            String hashed = encryptPassword(password);</span>
+<span class="fc" id="L37">            int theNewId = createNewUser(email, hashed, license);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">            if (theNewId &gt;= 0) {</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                if (createUserPersonalInformation(theNewId, name, surname)) {</span>
+<span class="fc" id="L40">                    la.activate(license, theNewId);</span>
+<span class="fc" id="L41">                    return 0; // no error</span>
+                }
+<span class="fc" id="L43">                return 4; //non è stato possibile generare l'anagrafica</span>
+            }
+<span class="nc" id="L45">            return 3; //non è stato possibile generare l'utenza</span>
+
+        }
+<span class="fc" id="L48">        return 1; //licenza non valida</span>
+    }
+
+    /**
+     * Validates license
+     */
+    License validateLicense(String licenseCode){
+<span class="fc" id="L55">        License license = la.getLicense(licenseCode);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        return la.isActivable(license) ? license : null;</span>
+    }
+
+    /**
+     * Checks if an email already exists or not.
+     */
+    boolean isEmailExists(String email){
+<span class="fc" id="L63">        return ud.checkIfEmailExists(email);</span>
+    }
+
+    /**
+     * Encrypts user password
+     */
+    String encryptPassword(String password){
+<span class="fc" id="L70">        Encryption encryption = new Encryption();</span>
+<span class="fc" id="L71">        return encryption.encryptPassword(password);</span>
+    }
+
+    /**
+     * Creates a new user.
+     */
+    int createNewUser(String email, String hashed, License license){
+<span class="fc" id="L78">        LicenseActivation la = new LicenseActivation();</span>
+<span class="fc" id="L79">        return ud.createUser(email, hashed, la.isForTherapist(license));</span>
+    }
+
+    /**
+     * Creates a user personal info.
+     */
+    boolean createUserPersonalInformation(int theNewId, String name, String surname){
+<span class="fc" id="L86">        return ur.firstAccess(theNewId, name, surname);</span>
+    }
+
+    public boolean invitePatient(int therapistId, String patientEmail, String patientName, String patientSurname){
+<span class="nc" id="L90">        UserData ud = new UserData();</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if(!ud.checkIfEmailExists(patientEmail)) {</span>
+<span class="nc" id="L93">            EmailManager tool = new EmailManager();</span>
+<span class="nc" id="L94">            LicenseActivation la = new LicenseActivation();</span>
+
+<span class="nc" id="L96">            String pin = la.generatePin(therapistId);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if(pin!=null){</span>
+<span class="nc" id="L98">                String body = &quot;Salve &quot;+ patientSurname+ &quot; &quot; + patientName + &quot;\n. il tuo logopedista ti ha invitato a TalkAID! Ecco il tuo codice per registrarti al sito: &quot;+ pin;</span>
+
+<span class="nc" id="L100">                tool.sendEmail(patientEmail, &quot;Sei stato invitato a TalkAID!&quot;, body);</span>
+<span class="nc" id="L101">                return true;</span>
+            }
+        }
+<span class="nc" id="L104">        return false;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOExercise.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOExercise.java</span></div><h1>DAOExercise.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.Exercise;
+import model.entity.SlimmerExercise;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * La classe DAOExercise provvede ai metodi per manipolare le informazioni degli Exercise dal database.
+ */
+public class DAOExercise {
+<span class="fc" id="L18">    private static final Logger logger = LoggerFactory.getLogger(DAOExercise.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L22">    public DAOExercise(Connection connection) {</span>
+<span class="fc" id="L23">        this.connection = connection;</span>
+<span class="fc" id="L24">    }</span>
+
+<span class="nc" id="L26">    public DAOExercise() {</span>
+        try {
+<span class="nc" id="L28">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L29">        } catch (SQLException e) {</span>
+<span class="nc" id="L30">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="nc" id="L31">        }</span>
+<span class="nc" id="L32">    }</span>
+    /**
+     * This method extracts Exercise object data from a ResultSet
+     *
+     * @param resultSet ResultSet object from ExerciseGlossary table
+     * @return exercise object containing data from resultSet
+     * @throws SQLException if there is any SQL related error
+     */
+    private static Exercise extractExerciseFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L41">        Exercise exercise = new Exercise();</span>
+<span class="fc" id="L42">        exercise.setIdUser(resultSet.getInt(&quot;ID_user&quot;));</span>
+<span class="fc" id="L43">        exercise.setIdExercise(resultSet.getInt(&quot;ID_exercise&quot;));</span>
+<span class="fc" id="L44">        exercise.setInsertionDate(resultSet.getDate(&quot;InsertionDate&quot;));</span>
+<span class="fc" id="L45">        exercise.setCompletionDate(resultSet.getDate(&quot;CompletionDate&quot;));</span>
+<span class="fc" id="L46">        exercise.setExecution(resultSet.getBlob(&quot;Execution&quot;));</span>
+<span class="fc" id="L47">        exercise.setEvaluation(resultSet.getInt(&quot;Evaluation&quot;));</span>
+<span class="fc" id="L48">        exercise.setRecommended(resultSet.getInt(&quot;Recommended&quot;));</span>
+<span class="fc" id="L49">        exercise.setFeedback(resultSet.getInt(&quot;Feedback&quot;));</span>
+
+<span class="fc" id="L51">        return exercise;</span>
+    }
+
+    /**
+     * Search for an Exercise by its pk in the database.
+     *
+     * @param userID the id of the user that has the exercise.
+     * @param exerciseID the id of the exercise.
+     * @param insertDate the date in witch the user got the exercise to do.
+     * @return the Exercise if it is found, else null.
+     */
+    public Exercise getExerciseByPk(int userID, int exerciseID, Date insertDate) {
+<span class="fc" id="L63">        String query = &quot;SELECT * FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;&quot;;</span>
+<span class="fc" id="L64">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L65">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L69">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L70">            preparedStatement.setInt(1, userID);</span>
+<span class="fc" id="L71">            preparedStatement.setInt(2, exerciseID);</span>
+<span class="fc" id="L72">            preparedStatement.setDate(3, insertDate);</span>
+
+<span class="fc" id="L74">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="fc" id="L77">                return extractExerciseFromResultSet(resultSet);</span>
+            }
+
+<span class="nc" id="L80">        } catch (SQLException e) {</span>
+<span class="nc" id="L81">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L86">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L87">            } catch (SQLException e) {</span>
+<span class="nc" id="L88">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L89">            }</span>
+        }
+
+<span class="nc" id="L92">        return null;</span>
+    }
+
+    public List&lt;SlimmerExercise&gt; retrieveNotDoneExercises(int patientId) {
+<span class="nc" id="L96">        List&lt;SlimmerExercise&gt; exercises = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L97">        PreparedStatement stmt = null;</span>
+        try {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L100">            String query = &quot;SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation FROM exercise e&quot; +</span>
+                    &quot; JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise&quot; +
+                    &quot; WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate&quot;;
+
+<span class="nc" id="L104">            stmt = connection.prepareStatement(query);</span>
+<span class="nc" id="L105">            stmt.setInt(1, patientId);</span>
+<span class="nc" id="L106">            ResultSet rs = stmt.executeQuery();</span>
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            while(rs.next()) {</span>
+<span class="nc" id="L109">                SlimmerExercise exercise = new SlimmerExercise(</span>
+<span class="nc" id="L110">                        rs.getInt(&quot;ID_exercise&quot;),</span>
+<span class="nc" id="L111">                        rs.getInt(&quot;ID_user&quot;),</span>
+<span class="nc" id="L112">                        rs.getString(&quot;ExerciseName&quot;),</span>
+<span class="nc" id="L113">                        rs.getString(&quot;ExerciseDescription&quot;),</span>
+<span class="nc" id="L114">                        rs.getInt(&quot;Feedback&quot;),</span>
+<span class="nc" id="L115">                        rs.getDate(&quot;InsertionDate&quot;),</span>
+<span class="nc" id="L116">                        rs.getInt(&quot;Difficulty&quot;),</span>
+<span class="nc" id="L117">                        rs.getString(&quot;Target&quot;),</span>
+<span class="nc" id="L118">                        rs.getString(&quot;Type&quot;),</span>
+<span class="nc" id="L119">                        rs.getInt(&quot;Evaluation&quot;)</span>
+                );
+<span class="nc" id="L121">                exercises.add(exercise);</span>
+<span class="nc" id="L122">            }</span>
+<span class="nc" id="L123">        } catch(SQLException e) {</span>
+<span class="nc" id="L124">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                if (stmt != null) stmt.close();</span>
+<span class="nc" id="L128">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L129">            } catch (SQLException e) {</span>
+<span class="nc" id="L130">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L131">            }</span>
+        }
+<span class="nc" id="L133">        return exercises;</span>
+    }
+
+    public List&lt;SlimmerExercise&gt; retrieveDoneExercises(int patientId) {
+<span class="nc" id="L137">        List&lt;SlimmerExercise&gt; exercises = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L138">        PreparedStatement stmt = null;</span>
+        try {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L141">            String query = &quot;SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation FROM exercise e&quot; +</span>
+                    &quot; JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise&quot; +
+                    &quot; WHERE e.CompletionDate IS NOT NULL AND e.ID_user = ?&quot;;
+
+<span class="nc" id="L145">            stmt = connection.prepareStatement(query);</span>
+<span class="nc" id="L146">            stmt.setInt(1, patientId);</span>
+<span class="nc" id="L147">            ResultSet rs = stmt.executeQuery();</span>
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            while(rs.next()) {</span>
+<span class="nc" id="L150">                SlimmerExercise exercise = new SlimmerExercise(</span>
+<span class="nc" id="L151">                        rs.getInt(&quot;ID_exercise&quot;),</span>
+<span class="nc" id="L152">                        rs.getInt(&quot;ID_user&quot;),</span>
+<span class="nc" id="L153">                        rs.getString(&quot;ExerciseName&quot;),</span>
+<span class="nc" id="L154">                        rs.getString(&quot;ExerciseDescription&quot;),</span>
+<span class="nc" id="L155">                        rs.getInt(&quot;Feedback&quot;),</span>
+<span class="nc" id="L156">                        rs.getDate(&quot;InsertionDate&quot;),</span>
+<span class="nc" id="L157">                        rs.getInt(&quot;Difficulty&quot;),</span>
+<span class="nc" id="L158">                        rs.getString(&quot;Target&quot;),</span>
+<span class="nc" id="L159">                        rs.getString(&quot;Type&quot;),</span>
+<span class="nc" id="L160">                        rs.getInt(&quot;Evaluation&quot;)</span>
+                );
+<span class="nc" id="L162">                exercises.add(exercise);</span>
+<span class="nc" id="L163">            }</span>
+<span class="nc" id="L164">        } catch(SQLException e) {</span>
+<span class="nc" id="L165">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                if (stmt != null) stmt.close();</span>
+<span class="nc" id="L169">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L170">            } catch (SQLException e) {</span>
+<span class="nc" id="L171">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L172">            }</span>
+        }
+<span class="nc" id="L174">        return exercises;</span>
+    }
+
+    public List&lt;Exercise&gt; retrieveAllPatientExerciseDone(int userID) {
+<span class="nc" id="L178">        String query = &quot;SELECT * FROM exercise WHERE ID_user = ? AND CompletionDate IS NOT NULL ORDER BY InsertionDate DESC;&quot;;</span>
+<span class="nc" id="L179">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L180">        ResultSet resultSet = null;</span>
+<span class="nc" id="L181">        List&lt;Exercise&gt; exercises = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L185">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L186">            preparedStatement.setInt(1, userID);</span>
+
+<span class="nc" id="L188">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L191">                Exercise exercise = extractExerciseFromResultSet(resultSet);</span>
+<span class="nc" id="L192">                exercises.add(exercise);</span>
+<span class="nc" id="L193">            }</span>
+
+<span class="nc" id="L195">        } catch (SQLException e) {</span>
+<span class="nc" id="L196">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L201">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L202">            } catch (SQLException e) {</span>
+<span class="nc" id="L203">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L204">            }</span>
+        }
+
+<span class="nc" id="L207">        return exercises;</span>
+    }
+
+    public List&lt;Exercise&gt; retrievePatientExerciseDone(int patientID) {
+<span class="nc" id="L211">        String query = &quot;SELECT *\n&quot; +</span>
+                &quot;FROM exercise\n&quot; +
+                &quot;WHERE ID_user = ? AND Evaluation IS NOT NULL\n&quot; +
+                &quot;ORDER BY InsertionDate;&quot;;
+<span class="nc" id="L215">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L216">        ResultSet resultSet = null;</span>
+<span class="nc" id="L217">        List&lt;Exercise&gt; exercises = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L221">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L222">            preparedStatement.setInt(1, patientID);</span>
+
+<span class="nc" id="L224">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L227">                Exercise exercise = extractExerciseFromResultSet(resultSet);</span>
+<span class="nc" id="L228">                exercises.add(exercise);</span>
+<span class="nc" id="L229">            }</span>
+
+<span class="nc" id="L231">        } catch (SQLException e) {</span>
+<span class="nc" id="L232">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L237">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L238">            } catch (SQLException e) {</span>
+<span class="nc" id="L239">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L240">            }</span>
+        }
+
+<span class="nc" id="L243">        return exercises;</span>
+    }
+
+    public Blob getExerciseExecution(int userID, int exerciseID, Date insertDate) {
+<span class="nc" id="L247">        String query = &quot;SELECT Execution FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?&quot;;</span>
+<span class="nc" id="L248">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L249">        ResultSet resultSet = null;</span>
+
+        try {
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L253">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L254">            preparedStatement.setInt(1, userID);</span>
+<span class="nc" id="L255">            preparedStatement.setInt(2, exerciseID);</span>
+<span class="nc" id="L256">            preparedStatement.setDate(3, insertDate);</span>
+
+<span class="nc" id="L258">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            if (resultSet.next()) {</span>
+<span class="nc" id="L261">                return resultSet.getBlob(&quot;Execution&quot;);</span>
+            }
+
+<span class="nc" id="L264">        } catch (SQLException e) {</span>
+<span class="nc" id="L265">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L268" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L270">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L271">            } catch (SQLException e) {</span>
+<span class="nc" id="L272">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L273">            }</span>
+        }
+
+<span class="nc" id="L276">        return null;</span>
+    }
+
+    public boolean setExerciseExecution(int userID, int exerciseID, Date insertDate, Blob execution) {
+<span class="fc" id="L280">        String query = &quot;UPDATE exercise SET Execution = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;&quot;;</span>
+<span class="fc" id="L281">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L285">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L286">            preparedStatement.setBlob(1, execution);</span>
+<span class="fc" id="L287">            preparedStatement.setInt(2, userID);</span>
+<span class="fc" id="L288">            preparedStatement.setInt(3, exerciseID);</span>
+<span class="fc" id="L289">            preparedStatement.setDate(4, insertDate);</span>
+
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L293">        } catch (SQLException e) {</span>
+<span class="nc" id="L294">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L295">            return false;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L299">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L300">            } catch (SQLException e) {</span>
+<span class="nc" id="L301">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L302">            }</span>
+        }
+    }
+
+    public boolean setExerciseEvaluation(int userID, int exerciseID, Date insertDate, int evaluation) {
+<span class="fc" id="L307">        String query = &quot;UPDATE exercise SET Evaluation = ? , CompletionDate = CURRENT_DATE WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;&quot;;</span>
+<span class="fc" id="L308">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L312">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L313">            preparedStatement.setInt(1, evaluation);</span>
+<span class="fc" id="L314">            preparedStatement.setInt(2, userID);</span>
+<span class="fc" id="L315">            preparedStatement.setInt(3, exerciseID);</span>
+<span class="fc" id="L316">            preparedStatement.setDate(4, insertDate);</span>
+
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L320">        } catch (SQLException e) {</span>
+<span class="nc" id="L321">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L322">            return false;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L326">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L327">            } catch (SQLException e) {</span>
+<span class="nc" id="L328">                logger.error(&quot;Error query&quot;, e);</span>
+<span class="fc" id="L329">            }</span>
+        }
+    }
+
+    public boolean setExerciseCompletionDate(int userID, int exerciseID, Date insertDate, Date completion) {
+<span class="fc" id="L334">        String query = &quot;UPDATE exercise SET CompletionDate = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;&quot;;</span>
+<span class="fc" id="L335">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L339">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L340">            preparedStatement.setDate(1, completion);</span>
+<span class="fc" id="L341">            preparedStatement.setInt(2, userID);</span>
+<span class="fc" id="L342">            preparedStatement.setInt(3, exerciseID);</span>
+<span class="fc" id="L343">            preparedStatement.setDate(4, insertDate);</span>
+
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L347">        } catch (SQLException e) {</span>
+<span class="nc" id="L348">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L349">            return false;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L353">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L354">            } catch (SQLException e) {</span>
+<span class="nc" id="L355">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L356">            }</span>
+        }
+    }
+
+    public boolean setExerciseFeedback(int userID, int exerciseID, Date insertDate, int feedback) {
+<span class="fc" id="L361">        String query = &quot;UPDATE exercise SET Feedback = ? WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ?;&quot;;</span>
+<span class="fc" id="L362">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L366">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L367">            preparedStatement.setInt(1, feedback);</span>
+<span class="fc" id="L368">            preparedStatement.setInt(2, userID);</span>
+<span class="fc" id="L369">            preparedStatement.setInt(3, exerciseID);</span>
+<span class="fc" id="L370">            preparedStatement.setDate(4, insertDate);</span>
+
+<span class="pc bpc" id="L372" title="1 of 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L374">        } catch (SQLException e) {</span>
+<span class="nc" id="L375">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L376">            return false;</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L380">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L381">            } catch (SQLException e) {</span>
+<span class="nc" id="L382">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L383">            }</span>
+        }
+    }
+
+    public boolean AddExerciseRecommendation(int idExercise, int idPatient) {
+
+<span class="nc" id="L389">        PreparedStatement preparedStatement= null;</span>
+
+        try {
+<span class="nc bnc" id="L392" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L393">            connection.setAutoCommit(false);  // Start a transaction</span>
+
+
+<span class="nc" id="L396">            String query = &quot;INSERT INTO exercise (ID_user, ID_exercise, InsertionDate, CompletionDate, Execution, Evaluation, Recommended, Feedback)\n&quot; +</span>
+                    &quot;VALUES (?,?,CURRENT_DATE,NULL,NULL,NULL,2,NULL);&quot;;
+<span class="nc" id="L398">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L399">            preparedStatement.setInt(1, idPatient);</span>
+<span class="nc" id="L400">            preparedStatement.setInt(2, idExercise);</span>
+<span class="nc" id="L401">            preparedStatement.executeUpdate();</span>
+
+<span class="nc" id="L403">            connection.commit();  // Commit the transaction</span>
+<span class="nc" id="L404">            return true;  // User created successfully</span>
+
+<span class="nc" id="L406">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L408">            logger.error(&quot;Error query&quot;, e);</span>
+            try {
+<span class="nc bnc" id="L410" title="All 2 branches missed.">                if (connection != null) {</span>
+<span class="nc" id="L411">                    connection.rollback();  // Rollback the transaction in case of an exception</span>
+                }
+<span class="nc" id="L413">            } catch (SQLException ex) {</span>
+<span class="nc" id="L414">                logger.error(&quot;Error rollback&quot;, e);</span>
+<span class="nc" id="L415">            }</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L418" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L419">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L420">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L422">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L423">            }</span>
+        }
+<span class="nc" id="L425">        return false;</span>
+    }
+
+
+    public List&lt;SlimmerExercise&gt; getExerciseToApprove(int therapistId){
+<span class="nc" id="L430">        List&lt;SlimmerExercise&gt; exercises = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L431">        PreparedStatement stmt = null;</span>
+        try {
+<span class="nc bnc" id="L433" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L434">            String query = &quot;SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation &quot; +</span>
+                    &quot;FROM exercise e JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise JOIN user u ON e.ID_user = u.ID &quot; +
+                    &quot;WHERE e.CompletionDate IS NULL AND u.ID_Therapist = ? AND e.Recommended = 0&quot;;
+
+<span class="nc" id="L438">            stmt = connection.prepareStatement(query);</span>
+<span class="nc" id="L439">            stmt.setInt(1, therapistId);</span>
+<span class="nc" id="L440">            ResultSet rs = stmt.executeQuery();</span>
+
+<span class="nc bnc" id="L442" title="All 2 branches missed.">            while(rs.next()) {</span>
+<span class="nc" id="L443">                SlimmerExercise exercise = new SlimmerExercise(</span>
+<span class="nc" id="L444">                        rs.getInt(&quot;ID_exercise&quot;),</span>
+<span class="nc" id="L445">                        rs.getInt(&quot;ID_user&quot;),</span>
+<span class="nc" id="L446">                        rs.getString(&quot;ExerciseName&quot;),</span>
+<span class="nc" id="L447">                        rs.getString(&quot;ExerciseDescription&quot;),</span>
+<span class="nc" id="L448">                        rs.getInt(&quot;Feedback&quot;),</span>
+<span class="nc" id="L449">                        rs.getDate(&quot;InsertionDate&quot;),</span>
+<span class="nc" id="L450">                        rs.getInt(&quot;Difficulty&quot;),</span>
+<span class="nc" id="L451">                        rs.getString(&quot;Target&quot;),</span>
+<span class="nc" id="L452">                        rs.getString(&quot;Type&quot;),</span>
+<span class="nc" id="L453">                        rs.getInt(&quot;Evaluation&quot;)</span>
+                );
+<span class="nc" id="L455">                exercises.add(exercise);</span>
+<span class="nc" id="L456">            }</span>
+<span class="nc" id="L457">        } catch(SQLException e) {</span>
+<span class="nc" id="L458">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">                if (stmt != null) stmt.close();</span>
+<span class="nc" id="L462">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L463">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L465">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L466">            }</span>
+        }
+<span class="nc" id="L468">        return exercises;</span>
+    }
+
+    public boolean approveExercise(int exerciseId, Date insertDate, int userId){
+<span class="nc" id="L472">        String query = &quot;UPDATE exercise SET Recommended = 1 WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ? AND Recommended = 0;&quot;;</span>
+<span class="nc" id="L473">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="nc bnc" id="L476" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L477">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L478">            preparedStatement.setInt(1, userId);</span>
+<span class="nc" id="L479">            preparedStatement.setInt(2, exerciseId);</span>
+<span class="nc" id="L480">            preparedStatement.setDate(3, insertDate);</span>
+
+<span class="nc bnc" id="L482" title="All 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L484">        } catch (SQLException e) {</span>
+<span class="nc" id="L485">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L486">            return false;</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L489" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L490">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L491">            } catch (SQLException e) {</span>
+<span class="nc" id="L492">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L493">            }</span>
+        }
+    }
+
+    public boolean deleteExercise(int exerciseId, Date insertDate, int userId){
+<span class="nc" id="L498">        String query = &quot;DELETE FROM exercise WHERE ID_user = ? AND ID_exercise = ? AND InsertionDate = ? AND Recommended = 0;&quot;;</span>
+<span class="nc" id="L499">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="nc bnc" id="L502" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L503">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L504">            preparedStatement.setInt(1, userId);</span>
+<span class="nc" id="L505">            preparedStatement.setInt(2, exerciseId);</span>
+<span class="nc" id="L506">            preparedStatement.setDate(3, insertDate);</span>
+
+<span class="nc bnc" id="L508" title="All 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L510">        } catch (SQLException e) {</span>
+<span class="nc" id="L511">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L512">            return false;</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L515" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L516">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L517">            } catch (SQLException e) {</span>
+<span class="nc" id="L518">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L519">            }</span>
+        }
+    }
+
+    public boolean approveMultipleExercise(int userId){
+<span class="nc" id="L524">        String query = &quot;UPDATE exercise SET Recommended = 1 WHERE ID_user = ? AND Recommended = 0;&quot;;</span>
+<span class="nc" id="L525">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="nc bnc" id="L528" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L529">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L530">            preparedStatement.setInt(1, userId);</span>
+
+<span class="nc bnc" id="L532" title="All 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L534">        } catch (SQLException e) {</span>
+<span class="nc" id="L535">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L536">            return false;</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L539" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L540">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L541">            } catch (SQLException e) {</span>
+<span class="nc" id="L542">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L543">            }</span>
+        }
+    }
+
+    public boolean deleteMultipleExercise(int userId){
+<span class="nc" id="L548">        String query = &quot;DELETE FROM exercise WHERE ID_user = ? AND Recommended = 0;&quot;;</span>
+<span class="nc" id="L549">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+<span class="nc bnc" id="L552" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L553">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L554">            preparedStatement.setInt(1, userId);</span>
+
+<span class="nc bnc" id="L556" title="All 2 branches missed.">            return preparedStatement.executeUpdate() &gt; 0;</span>
+
+<span class="nc" id="L558">        } catch (SQLException e) {</span>
+<span class="nc" id="L559">            logger.error(&quot;Error query&quot;, e);</span>
+<span class="nc" id="L560">            return false;</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L563" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L564">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L565">            } catch (SQLException e) {</span>
+<span class="nc" id="L566">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L567">            }</span>
+        }
+    }
+
+    public Map&lt;String, Integer&gt; retrieveAllStatsPatientExerciseDone(int userID) {
+<span class="nc" id="L572">        String query = &quot;SELECT eg.Type, &quot; +</span>
+                &quot;COUNT(CASE WHEN e.CompletionDate IS NOT NULL THEN e.ID_exercise END) as CompletedCount, &quot; +
+                &quot;COUNT(e.ID_exercise) as TotalAssignedCount, &quot; +
+                &quot;IFNULL(COUNT(CASE WHEN e.CompletionDate IS NOT NULL THEN e.ID_exercise END) / NULLIF(COUNT(e.ID_exercise), 0) * 100, 0) as CompletionPercentage &quot; +
+                &quot;FROM exercise_glossary eg &quot; +
+                &quot;LEFT JOIN exercise e ON eg.ID_exercise = e.ID_exercise AND e.ID_user = ? &quot; +
+                &quot;GROUP BY eg.Type; &quot;;
+
+<span class="nc" id="L580">        PreparedStatement preparedStatement = null;</span>
+<span class="nc" id="L581">        ResultSet resultSet = null;</span>
+<span class="nc" id="L582">        Map&lt;String, Integer&gt; result = new HashMap&lt;&gt;();</span>
+
+        try {
+<span class="nc bnc" id="L585" title="All 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="nc" id="L586">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="nc" id="L587">            preparedStatement.setInt(1, userID);</span>
+
+<span class="nc" id="L589">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="nc bnc" id="L591" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L592">                String exerciseType = resultSet.getString(&quot;Type&quot;); // Fix: Use &quot;Type&quot; instead of &quot;ExerciseType&quot;</span>
+<span class="nc" id="L593">                int completionPercentage = Math.round((float) resultSet.getDouble(&quot;CompletionPercentage&quot;));</span>
+
+<span class="nc" id="L595">                result.put(exerciseType, completionPercentage);</span>
+<span class="nc" id="L596">            }</span>
+
+<span class="nc" id="L598">        } catch (SQLException e) {</span>
+<span class="nc" id="L599">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="nc bnc" id="L602" title="All 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="nc" id="L604">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L605">            } catch (SQLException e) {</span>
+<span class="nc" id="L606">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="nc" id="L607">            }</span>
+        }
+
+<span class="nc" id="L610">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

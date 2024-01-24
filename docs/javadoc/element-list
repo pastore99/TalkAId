@@ -1,0 +1,14 @@
+controller
+model.DAO
+model.entity
+model.service.condition
+model.service.email
+model.service.encryption
+model.service.exercise
+model.service.license
+model.service.login
+model.service.message
+model.service.registration
+model.service.schedule
+model.service.telemetry
+model.service.user

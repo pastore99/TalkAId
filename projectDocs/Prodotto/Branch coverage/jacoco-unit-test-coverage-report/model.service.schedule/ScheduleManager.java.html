@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScheduleManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.service.schedule</a> &gt; <span class="el_source">ScheduleManager.java</span></div><h1>ScheduleManager.java</h1><pre class="source lang-java linenums">package model.service.schedule;
+
+import model.DAO.DAOSchedule;
+import model.entity.Schedule;
+
+import java.sql.Date;
+import java.util.List;
+
+/**
+ * Questa classe provvede alle funzionalità per la gestione dell'agenda e prenotazioni
+ */
+public class ScheduleManager implements ScheduleManagerInterface {
+    DAOSchedule db;
+
+<span class="fc" id="L15">    public ScheduleManager() {</span>
+<span class="fc" id="L16">        this.db = new DAOSchedule();}</span>
+
+
+    private Date convStoD(String Date){
+<span class="fc" id="L20">        return java.sql.Date.valueOf(Date);</span>
+    }
+
+    public void createNewSchedule(int idTherapist, String date, String timeSlot){
+<span class="fc" id="L24">        db.createNewSchedule(idTherapist, convStoD(date), timeSlot);</span>
+<span class="fc" id="L25">    }</span>
+
+    public void modifySchedule(int idTherapist, String date, String timeSlot, String ndate,String ntimeSlot, int reserved){
+<span class="fc" id="L28">        db.modifySchedule(idTherapist, convStoD(date), timeSlot, reserved, convStoD(ndate), ntimeSlot);</span>
+<span class="fc" id="L29">    }</span>
+
+    public void deleteSchedule(int idTherapist, String date, String timeSlot){
+<span class="fc" id="L32">        db.deleteSchedule(idTherapist, convStoD(date), timeSlot);</span>
+<span class="fc" id="L33">    }</span>
+    
+    public List&lt;Schedule&gt; retrieveAllPatientSchedules(int reserved){
+<span class="nc" id="L36">        return db.retrieveAllPatientSchedules(reserved);</span>
+    }
+
+    public List&lt;Schedule&gt; retrieveAllTherapistSchedules(int idTherapist){
+<span class="nc" id="L40">        return db.retrieveAllTherapistSchedules(idTherapist);</span>
+    }
+
+    public List&lt;Schedule&gt; retrieveAllPrenotedSchedules(int idTherapist){
+<span class="nc" id="L44">        return db.retrieveAllPrenotedSchedules(idTherapist);</span>
+    }
+
+    public List&lt;Schedule&gt; retrieveAllNotPrenotedSchedules(int idTherapist){
+<span class="nc" id="L48">        return db.retrieveAllNotPrenotedSchedules(idTherapist);</span>
+    }
+
+    public int retrieveAllPrenotedSchedulesCount(int idTherapist){
+<span class="nc" id="L52">        return db.retrieveAllPrenotedSchedulesCount(idTherapist);</span>
+    }
+
+    public boolean checkData(int idTherapist, String date, String timeSlot) {
+<span class="fc" id="L56">        return db.checkData(idTherapist, convStoD(date), timeSlot);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

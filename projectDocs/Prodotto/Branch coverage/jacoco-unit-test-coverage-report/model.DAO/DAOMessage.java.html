@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.DAO</a> &gt; <span class="el_source">DAOMessage.java</span></div><h1>DAOMessage.java</h1><pre class="source lang-java linenums">package model.DAO;
+
+import model.entity.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * La classe DAOMessage provvede ai metodi per manipolare le informazioni dei Message dal database.
+ */
+public class DAOMessage {
+<span class="fc" id="L15">    private static final Logger logger = LoggerFactory.getLogger(DAOMessage.class);</span>
+
+    private Connection connection;
+
+<span class="fc" id="L19">    public DAOMessage(Connection connection) {</span>
+<span class="fc" id="L20">        this.connection = connection;</span>
+<span class="fc" id="L21">    }</span>
+
+<span class="nc" id="L23">    public DAOMessage() {</span>
+        try {
+<span class="nc" id="L25">            this.connection = DAOConnection.getConnection();</span>
+<span class="nc" id="L26">        } catch (SQLException e) {</span>
+<span class="nc" id="L27">            logger.error(&quot;Error getting connection&quot;, e);</span>
+<span class="nc" id="L28">        }</span>
+<span class="nc" id="L29">    }</span>
+    private Message getMessageFromResultSet(ResultSet resultSet) throws SQLException {
+<span class="fc" id="L31">        Message message = new Message();</span>
+
+<span class="fc" id="L33">        message.setIdMessage(resultSet.getInt(&quot;ID_message&quot;));</span>
+<span class="fc" id="L34">        message.setSender(resultSet.getInt(&quot;Sender&quot;));</span>
+<span class="fc" id="L35">        message.setRecipient(resultSet.getInt(&quot;Recipient&quot;));</span>
+<span class="fc" id="L36">        message.setRead(resultSet.getBoolean(&quot;Read&quot;));</span>
+<span class="fc" id="L37">        message.setBody(resultSet.getString(&quot;Body&quot;));</span>
+<span class="fc" id="L38">        message.setSent(resultSet.getTimestamp(&quot;sent&quot;));</span>
+
+<span class="fc" id="L40">        return message;</span>
+    }
+
+    /**
+     * Retrieves a list of user IDs based on the therapist ID.
+     *
+     * @param therapistId The ID of the therapist.
+     * @return A list of user IDs associated with the specified therapist.
+     */
+    public List&lt;Integer&gt; retrieveUserIdsByTherapist(int therapistId) {
+<span class="fc" id="L50">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L51">        ResultSet resultSet = null;</span>
+
+<span class="fc" id="L53">        List&lt;Integer&gt; userIds = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to retrieve user IDs associated with the specified therapist
+<span class="fc" id="L59">            String query = &quot;SELECT ID FROM user WHERE ID_Therapist = ?&quot;;</span>
+
+<span class="fc" id="L61">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L62">            preparedStatement.setInt(1, therapistId);</span>
+
+<span class="fc" id="L64">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L67">                int userId = resultSet.getInt(&quot;ID&quot;);</span>
+<span class="fc" id="L68">                userIds.add(userId);</span>
+<span class="fc" id="L69">            }</span>
+
+<span class="nc" id="L71">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L73">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L78">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L79">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L81">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L82">            }</span>
+        }
+
+<span class="fc" id="L85">        return userIds;</span>
+    }
+
+    public List&lt;Message&gt; retrieveMessages(int userId, int contact) {
+<span class="fc" id="L89">        PreparedStatement preparedStatement = null;</span>
+<span class="fc" id="L90">        ResultSet resultSet = null;</span>
+
+<span class="fc" id="L92">        List&lt;Message&gt; messages = new ArrayList&lt;&gt;();</span>
+
+        try {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+            // Query to retrieve messages between the two users
+<span class="fc" id="L98">            String query = &quot;SELECT * FROM message WHERE (Sender = ? AND Recipient = ?) OR (Sender = ? AND Recipient = ?) ORDER BY sent&quot;;</span>
+
+<span class="fc" id="L100">            preparedStatement = connection.prepareStatement(query);</span>
+<span class="fc" id="L101">            preparedStatement.setInt(1, userId);</span>
+<span class="fc" id="L102">            preparedStatement.setInt(2, contact);</span>
+<span class="fc" id="L103">            preparedStatement.setInt(3, contact);</span>
+<span class="fc" id="L104">            preparedStatement.setInt(4, userId);</span>
+
+<span class="fc" id="L106">            resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L109">                Message message = getMessageFromResultSet(resultSet);</span>
+<span class="fc" id="L110">                messages.add(message);</span>
+<span class="fc" id="L111">            }</span>
+
+<span class="nc" id="L113">        } catch (SQLException e) {</span>
+            // Handle the exception (e.g., log or throw)
+<span class="nc" id="L115">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">                if (resultSet != null) resultSet.close();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                if (preparedStatement != null) preparedStatement.close();</span>
+<span class="fc" id="L120">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L121">            } catch (SQLException e) {</span>
+                // Handle the exception (e.g., log or throw)
+<span class="nc" id="L123">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L124">            }</span>
+        }
+
+<span class="fc" id="L127">        return messages;</span>
+    }
+
+    public void markMessagesAsRead(int senderId, int recipientId) {
+<span class="fc" id="L131">        PreparedStatement pstmt = null;</span>
+
+        try {
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L136">            String sql = &quot;UPDATE message SET `Read` = TRUE WHERE Sender = ? AND Recipient = ?;&quot;;</span>
+
+<span class="fc" id="L138">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L139">            pstmt.setInt(1, senderId);</span>
+<span class="fc" id="L140">            pstmt.setInt(2, recipientId);</span>
+
+<span class="fc" id="L142">            pstmt.executeUpdate();</span>
+
+<span class="nc" id="L144">        } catch (SQLException e) {</span>
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+<span class="nc" id="L146">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L150">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L151">            } catch (SQLException e) {</span>
+<span class="nc" id="L152">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L153">            }</span>
+        }
+<span class="fc" id="L155">    }</span>
+
+    public void sendMessage(int sender, int recipient, String text) {
+<span class="fc" id="L158">        PreparedStatement pstmt = null;</span>
+
+        try {
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L163">            String sql = &quot;INSERT INTO message (Sender, Recipient, Body) VALUES (?, ?, ?);&quot;;</span>
+
+<span class="fc" id="L165">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L166">            pstmt.setInt(1, sender);</span>
+<span class="fc" id="L167">            pstmt.setInt(2, recipient);</span>
+<span class="fc" id="L168">            pstmt.setString(3, text);</span>
+
+<span class="fc" id="L170">            pstmt.executeUpdate();</span>
+
+<span class="nc" id="L172">        } catch (SQLException e) {</span>
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+<span class="nc" id="L174">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L178">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L179">            } catch (SQLException e) {</span>
+<span class="nc" id="L180">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L181">            }</span>
+        }
+<span class="fc" id="L183">    }</span>
+
+    public int countReceivedMessages(int recipientId) {
+<span class="fc" id="L186">        PreparedStatement pstmt = null;</span>
+<span class="fc" id="L187">        ResultSet rs = null;</span>
+<span class="fc" id="L188">        int count = 0;</span>
+
+        try {
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+
+<span class="fc" id="L193">            String sql = &quot;SELECT COUNT(*) FROM message WHERE Recipient = ?;&quot;;</span>
+
+<span class="fc" id="L195">            pstmt = connection.prepareStatement(sql);</span>
+<span class="fc" id="L196">            pstmt.setInt(1, recipientId);</span>
+
+<span class="fc" id="L198">            rs = pstmt.executeQuery();</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L200">                count = rs.getInt(1);</span>
+            }
+
+<span class="nc" id="L203">        } catch (SQLException e) {</span>
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+<span class="nc" id="L205">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">                if (rs != null) rs.close();</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">                if (pstmt != null) pstmt.close();</span>
+<span class="fc" id="L210">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L211">            } catch (SQLException e) {</span>
+<span class="nc" id="L212">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L213">            }</span>
+        }
+
+<span class="fc" id="L216">        return count;</span>
+    }
+
+    public void deleteLastInsertedMessage() {
+<span class="fc" id="L220">        Statement stmt = null;</span>
+<span class="fc" id="L221">        ResultSet rs = null;</span>
+
+        try {
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">            connection = connection.isClosed() ? DAOConnection.getConnection() : connection;</span>
+<span class="fc" id="L225">            stmt = connection.createStatement();</span>
+
+<span class="fc" id="L227">            String sql = &quot;SELECT MAX(ID_message) FROM message&quot;;</span>
+
+<span class="fc" id="L229">            rs = stmt.executeQuery(sql);</span>
+
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L232">                int lastId = rs.getInt(1);</span>
+<span class="fc" id="L233">                sql = &quot;DELETE FROM message WHERE ID_message = &quot; + lastId;</span>
+<span class="fc" id="L234">                stmt.executeUpdate(sql);</span>
+            }
+
+<span class="nc" id="L237">        } catch (SQLException e) {</span>
+            // Handle exceptions (e.g., print stack trace, log error, etc.)
+<span class="nc" id="L239">            logger.error(&quot;Error query&quot;, e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">                if (rs != null) rs.close();</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">                if (stmt != null) stmt.close();</span>
+<span class="fc" id="L244">                DAOConnection.releaseConnection(connection);</span>
+<span class="nc" id="L245">            } catch (SQLException e) {</span>
+<span class="nc" id="L246">                logger.error(&quot;Error finally&quot;, e);</span>
+<span class="fc" id="L247">            }</span>
+        }
+<span class="fc" id="L249">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

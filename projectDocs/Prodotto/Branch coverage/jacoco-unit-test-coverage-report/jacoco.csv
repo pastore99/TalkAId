@@ -1,0 +1,60 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+TalkAID,controller,CheckCurrentPassword,49,0,2,0,11,0,4,0,3,0
+TalkAID,controller,ExerciseRecommendation,57,0,0,0,18,0,3,0,3,0
+TalkAID,controller,CountMessages,38,0,0,0,12,0,3,0,3,0
+TalkAID,controller,AddRemovePatientCondition,81,0,4,0,26,0,5,0,3,0
+TalkAID,controller,ExerciseController,63,0,0,0,19,0,3,0,3,0
+TalkAID,controller,ResetPassword,41,0,2,0,13,0,4,0,3,0
+TalkAID,controller,GetSendMessages,166,0,2,0,46,0,5,0,4,0
+TalkAID,controller,SendResetPin,48,0,4,0,14,0,5,0,3,0
+TalkAID,controller,ExerciseLogger,140,0,4,0,41,0,8,0,6,0
+TalkAID,controller,ChangeUserInfo,82,0,8,0,21,0,8,0,4,0
+TalkAID,controller,InvitePatient,43,0,0,0,10,0,3,0,3,0
+TalkAID,controller,Registration,229,0,14,0,58,0,13,0,6,0
+TalkAID,controller,ExerciseEvaluator.new TypeToken() {...},6,0,0,0,1,0,1,0,1,0
+TalkAID,controller,ExerciseEvaluator.new TypeToken() {...},6,0,0,0,1,0,1,0,1,0
+TalkAID,controller,ExerciseEvaluator.new TypeToken() {...},6,0,0,0,1,0,1,0,1,0
+TalkAID,controller,ChangePassword,47,0,0,0,11,0,3,0,3,0
+TalkAID,controller,Login,118,0,4,0,30,0,7,0,5,0
+TalkAID,controller,ExerciseEvaluator,522,0,40,0,114,0,31,0,10,0
+TalkAID,controller,Logout,25,0,2,0,10,0,4,0,3,0
+TalkAID,controller,ScheduleManager,14,142,1,9,5,28,1,7,0,3
+TalkAID,controller,ManageAIExercise,109,0,14,0,30,0,10,0,3,0
+TalkAID,model.service.encryption,Encryption,0,13,0,0,0,4,0,3,0,3
+TalkAID,model.service.condition,ConditionManager,31,0,0,0,6,0,5,0,5,0
+TalkAID,model.service.license,LicenseActivation,0,57,1,7,0,17,1,11,0,8
+TalkAID,model.service.user,UserRegistry,45,0,0,0,11,0,6,0,6,0
+TalkAID,model.service.user,UserData,48,13,2,0,9,4,9,2,8,2
+TalkAID,model.service.telemetry,AnalyticsManager,11,0,0,0,3,0,2,0,2,0
+TalkAID,model.service.email,EmailManager.new Authenticator() {...},14,6,0,0,1,1,1,1,1,1
+TalkAID,model.service.email,EmailManager,65,86,0,0,20,22,1,6,1,6
+TalkAID,model.service.exercise,SpeechRecognition,181,77,10,2,42,22,9,6,4,5
+TalkAID,model.service.exercise,ExerciseManager,119,0,4,0,22,0,18,0,16,0
+TalkAID,model.service.registration,Registration,56,100,5,9,16,25,5,11,2,7
+TalkAID,model.entity,PatientCondition,0,24,0,0,0,10,0,7,0,7
+TalkAID,model.entity,PersonalInfo,0,59,0,0,0,25,0,17,0,17
+TalkAID,model.entity,ExerciseGlossary,0,59,0,0,0,23,0,17,0,17
+TalkAID,model.entity,Message,0,53,0,0,0,20,0,14,0,14
+TalkAID,model.entity,UserInfo,43,63,0,0,22,22,11,11,11,11
+TalkAID,model.entity,License,0,87,0,6,0,28,0,14,0,11
+TalkAID,model.entity,Condition,3,28,0,0,1,12,1,8,1,8
+TalkAID,model.entity,SlimmerExercise,103,0,0,0,41,0,21,0,21,0
+TalkAID,model.entity,Schedule,0,31,0,0,0,13,0,9,0,9
+TalkAID,model.entity,User,0,66,0,0,0,28,0,19,0,19
+TalkAID,model.entity,Exercise,18,59,0,0,1,25,1,17,1,17
+TalkAID,model.entity,Analytics,0,31,0,0,0,13,0,9,0,9
+TalkAID,model.entity,Help,0,24,0,0,0,10,0,7,0,7
+TalkAID,model.DAO,DAOAnalytics,104,0,10,0,33,0,9,0,4,0
+TalkAID,model.DAO,DAOMessage,84,347,18,22,30,102,19,11,1,9
+TalkAID,model.DAO,DAOCondition,92,272,14,14,36,71,13,10,1,8
+TalkAID,model.DAO,DAOExercise,954,306,96,16,285,77,69,8,13,8
+TalkAID,model.DAO,DAOPersonalInfo,121,324,24,16,43,87,21,8,1,8
+TalkAID,model.DAO,DAOExerciseGlossary,160,102,20,4,53,27,15,4,3,4
+TalkAID,model.DAO,DAOConnection,20,44,1,1,7,19,2,5,1,5
+TalkAID,model.DAO,DAOUser,306,597,40,60,87,168,36,28,2,12
+TalkAID,model.DAO,DAOSchedule,111,527,23,41,38,157,23,22,0,13
+TalkAID,model.DAO,DAOConnection.new DataSource() {...},34,20,0,0,8,5,8,2,8,2
+TalkAID,model.DAO,DAOLicense,78,276,14,14,26,76,14,9,0,9
+TalkAID,model.service.schedule,ScheduleManager,25,52,0,0,5,10,5,6,5,6
+TalkAID,model.service.message,MessageManager,102,0,8,0,24,0,11,0,7,0
+TalkAID,model.service.login,Authenticator,0,107,0,8,0,30,0,11,0,7

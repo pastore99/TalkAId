@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpeechRecognition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.service.exercise</a> &gt; <span class="el_source">SpeechRecognition.java</span></div><h1>SpeechRecognition.java</h1><pre class="source lang-java linenums">package model.service.exercise;
+
+import com.microsoft.cognitiveservices.speech.*;
+import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+/**
+ * Questa classe provvede alle funzionalità per il riconoscimento vocale.
+ * Legge la configurazione dal file properties chiamato 'azure.properties'.
+ */
+public class SpeechRecognition implements SpeechRecognitionInterface{
+<span class="fc" id="L23">    private static final Logger logger = LoggerFactory.getLogger(SpeechRecognition.class);</span>
+    private static final String AZURE_PROPERTIES = &quot;/azure.properties&quot;;
+    private static String speechKey;
+    private static String speechRegion;
+
+    /**
+     * Costruttore della classe SpeechRecognition.
+     * Carica le chiavi e la regione di Azure Speech-to-Text dal file di configurazione.
+     */
+<span class="fc" id="L32">    public SpeechRecognition(){</span>
+<span class="fc" id="L33">        Properties azureProps = loadProps();</span>
+<span class="fc" id="L34">        speechRegion = azureProps.getProperty(&quot;azure.region&quot;);</span>
+<span class="fc" id="L35">        speechKey = azureProps.getProperty(&quot;azure.key&quot;);</span>
+<span class="fc" id="L36">    }</span>
+
+
+    public String azureSTT(InputStream audio) throws InterruptedException, ExecutionException, IOException {
+<span class="nc" id="L40">        SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);</span>
+<span class="nc" id="L41">        speechConfig.setSpeechRecognitionLanguage(&quot;it-It&quot;);</span>
+
+<span class="nc" id="L43">        AudioConfig audioConfig = AudioConfig.fromWavFileInput(generateFile(audio));</span>
+<span class="nc" id="L44">        SpeechRecognizer speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);</span>
+
+<span class="nc" id="L46">        Future&lt;SpeechRecognitionResult&gt; task = speechRecognizer.recognizeOnceAsync();</span>
+<span class="nc" id="L47">        SpeechRecognitionResult speechRecognitionResult = task.get();</span>
+
+<span class="nc" id="L49">        String result = null;</span>
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (speechRecognitionResult.getReason() == ResultReason.RecognizedSpeech) {</span>
+<span class="nc" id="L52">            result = speechRecognitionResult.getText();</span>
+        }
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        else if (speechRecognitionResult.getReason() == ResultReason.NoMatch){</span>
+<span class="nc" id="L55">            logger.error(&quot;NOMATCH: Speech could not be recognized.&quot;);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        }else if (speechRecognitionResult.getReason() == ResultReason.Canceled) {</span>
+<span class="nc" id="L57">            CancellationDetails cancellation = CancellationDetails.fromResult(speechRecognitionResult);</span>
+<span class="nc" id="L58">            logger.error(&quot;CANCELED: Reason=&quot; + cancellation.getReason());</span>
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (cancellation.getReason() == CancellationReason.Error) {</span>
+<span class="nc" id="L61">                logger.error(&quot;CANCELED: ErrorCode=&quot; + cancellation.getErrorCode());</span>
+<span class="nc" id="L62">                logger.error(&quot;CANCELED: ErrorDetails=&quot; + cancellation.getErrorDetails());</span>
+            }
+        }
+
+<span class="nc" id="L66">        return result;</span>
+    }
+
+    public String generateFile(InputStream inputAudio) throws IOException {
+<span class="fc" id="L70">        File tempFile = createTempFile(inputAudio);</span>
+<span class="fc" id="L71">        String outputPath = getOutputPath(tempFile);</span>
+<span class="fc" id="L72">        deleteExistingFile(outputPath);</span>
+<span class="fc" id="L73">        executeCommand(tempFile, outputPath);</span>
+
+<span class="fc" id="L75">        return outputPath;</span>
+    }
+
+    File createTempFile(InputStream inputAudio) throws IOException {
+<span class="fc" id="L79">        File tempFile = File.createTempFile(&quot;tempAudio&quot;, &quot;.opus&quot;);</span>
+<span class="fc" id="L80">        try (FileOutputStream fos = new FileOutputStream(tempFile)) {</span>
+<span class="fc" id="L81">            byte[] buffer = new byte[1024];</span>
+            int bytesRead;
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            while ((bytesRead = inputAudio.read(buffer)) != -1) {</span>
+<span class="fc" id="L84">                fos.write(buffer, 0, bytesRead);</span>
+            }
+        }
+<span class="fc" id="L87">        return tempFile;</span>
+    }
+
+    String getOutputPath(File tempFile) {
+<span class="nc" id="L91">        Path outputPath = Paths.get(tempFile.getPath()).getParent().resolve(&quot;outputJava.wav&quot;);</span>
+<span class="nc" id="L92">        return outputPath.toString();</span>
+    }
+
+    void deleteExistingFile(String path) {
+        try {
+<span class="nc" id="L97">            Files.delete(Paths.get(path));</span>
+<span class="nc" id="L98">        } catch (FileNotFoundException e){</span>
+<span class="nc" id="L99">            logger.error(&quot;File not found&quot;);</span>
+<span class="nc" id="L100">        } catch (IOException e) {</span>
+<span class="nc" id="L101">            logger.error(&quot;Error deleting the file: &quot;, e);</span>
+<span class="nc" id="L102">        }</span>
+<span class="nc" id="L103">    }</span>
+
+    int executeCommand(File tempFile, String path) {
+<span class="nc" id="L106">        List&lt;String&gt; command = Arrays.asList(</span>
+                &quot;ffmpeg&quot;,
+<span class="nc" id="L108">                &quot;-i&quot;, tempFile.getPath(),</span>
+                &quot;-ar&quot;, &quot;16000&quot;,
+                &quot;-ac&quot;, &quot;1&quot;,
+                &quot;-acodec&quot;, &quot;pcm_s16le&quot;,
+                path
+        );
+
+<span class="nc" id="L115">        int exitCode = -1;</span>
+        try {
+<span class="nc" id="L117">            ProcessBuilder processBuilder = new ProcessBuilder(command);</span>
+<span class="nc" id="L118">            Process process = processBuilder.start();</span>
+
+<span class="nc" id="L120">            exitCode = process.waitFor();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if(exitCode != 0){</span>
+<span class="nc" id="L122">                System.err.println(&quot;\nExited with error code : &quot; + exitCode);</span>
+            }
+<span class="nc" id="L124">        } catch (IOException | InterruptedException e) {</span>
+<span class="nc" id="L125">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L126">            logger.error(&quot;Error ffmpeg&quot;, e);</span>
+<span class="nc" id="L127">        }</span>
+<span class="nc" id="L128">        return exitCode;</span>
+    }
+
+    private Properties loadProps() {
+<span class="fc" id="L132">        Properties props = new Properties();</span>
+<span class="fc" id="L133">        try (InputStream input = SpeechRecognition.class.getResourceAsStream(AZURE_PROPERTIES)) {</span>
+<span class="fc" id="L134">            props.load(input);</span>
+<span class="nc" id="L135">        } catch (IOException e) {</span>
+<span class="nc" id="L136">            logger.error(&quot;Error loading Props&quot;, e);</span>
+<span class="fc" id="L137">        }</span>
+
+<span class="fc" id="L139">        return props;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

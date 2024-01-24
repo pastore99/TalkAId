@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExerciseGlossary.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.entity</a> &gt; <span class="el_source">ExerciseGlossary.java</span></div><h1>ExerciseGlossary.java</h1><pre class="source lang-java linenums">package model.entity;
+
+
+import java.io.Serializable;
+
+<span class="fc" id="L6">public class ExerciseGlossary implements Serializable {</span>
+    private int idExercise;
+    private String exerciseName;
+    private String exerciseDescription;
+    private String type;
+    private int difficulty;
+    private String initialState;
+    private String solution;
+    private String target;
+
+    // Getter and Setter methods
+
+    public int getIdExercise() {
+<span class="fc" id="L19">        return idExercise;</span>
+    }
+
+    public void setIdExercise(int idExercise) {
+<span class="fc" id="L23">        this.idExercise = idExercise;</span>
+<span class="fc" id="L24">    }</span>
+
+    public String getExerciseName() {
+<span class="fc" id="L27">        return exerciseName;</span>
+    }
+
+    public void setExerciseName(String exerciseName) {
+<span class="fc" id="L31">        this.exerciseName = exerciseName;</span>
+<span class="fc" id="L32">    }</span>
+
+    public String getExerciseDescription() {
+<span class="fc" id="L35">        return exerciseDescription;</span>
+    }
+
+    public void setExerciseDescription(String exerciseDescription) {
+<span class="fc" id="L39">        this.exerciseDescription = exerciseDescription;</span>
+<span class="fc" id="L40">    }</span>
+
+    public String getType() {
+<span class="fc" id="L43">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="fc" id="L47">        this.type = type;</span>
+<span class="fc" id="L48">    }</span>
+
+    public int getDifficulty() {
+<span class="fc" id="L51">        return difficulty;</span>
+    }
+
+    public void setDifficulty(int difficulty) {
+<span class="fc" id="L55">        this.difficulty = difficulty;</span>
+<span class="fc" id="L56">    }</span>
+
+<span class="fc" id="L58">    public String getInitialState() { return initialState; }</span>
+
+<span class="fc" id="L60">    public void setInitialState(String initialState) { this.initialState = initialState; }</span>
+
+<span class="fc" id="L62">    public String getSolution() { return solution; }</span>
+
+<span class="fc" id="L64">    public void setSolution(String solution) { this.solution = solution; }</span>
+
+    public String getTarget() {
+<span class="fc" id="L67">        return target;</span>
+    }
+
+    public void setTarget(String target) {
+<span class="fc" id="L71">        this.target = target;</span>
+<span class="fc" id="L72">    }</span>
+
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

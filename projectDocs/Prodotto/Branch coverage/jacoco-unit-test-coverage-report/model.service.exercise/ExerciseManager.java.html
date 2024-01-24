@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExerciseManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">model.service.exercise</a> &gt; <span class="el_source">ExerciseManager.java</span></div><h1>ExerciseManager.java</h1><pre class="source lang-java linenums">package model.service.exercise;
+
+import model.DAO.DAOExercise;
+import model.DAO.DAOExerciseGlossary;
+import model.entity.Exercise;
+import model.entity.ExerciseGlossary;
+import model.entity.SlimmerExercise;
+
+import java.sql.Blob;
+import java.sql.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Questa classe provvede alle funzionalità per la gestione degli esercizi.
+ */
+<span class="nc" id="L17">public class ExerciseManager implements ExerciseManagerInterface {</span>
+<span class="nc" id="L18">    private final DAOExerciseGlossary daoEG = new DAOExerciseGlossary();</span>
+<span class="nc" id="L19">    private final DAOExercise daoE = new DAOExercise();</span>
+
+    public ExerciseGlossary getExercise(int exerciseID) {
+<span class="nc" id="L22">        return daoEG.getExerciseByCode(exerciseID);</span>
+    }
+
+    public Blob getExecution(int exerciseID, int userID, Date insertionDate) {
+<span class="nc" id="L26">        return daoE.getExerciseExecution(userID, exerciseID, insertionDate);</span>
+    }
+
+    public boolean saveExecution(int userID, int exerciseId, Date insertDate, Blob execution) {
+
+<span class="nc" id="L31">        return daoE.setExerciseExecution(userID, exerciseId, insertDate, execution);</span>
+    }
+
+    public boolean saveEvaluation(int userID, int exerciseId, Date insertDate, int evaluation) {
+
+<span class="nc" id="L36">        return daoE.setExerciseEvaluation(userID, exerciseId, insertDate, evaluation);</span>
+    }
+
+    public List&lt;Exercise&gt; retrieveAllPatientExerciseDone(int userID){
+<span class="nc" id="L40">        return daoE.retrieveAllPatientExerciseDone(userID);</span>
+    }
+
+    public List&lt;Exercise&gt; retrievePatientExerciseDone(int patientID) {
+<span class="nc" id="L44">        return daoE.retrievePatientExerciseDone(patientID);</span>
+    }
+
+    public List&lt;SlimmerExercise&gt; retrieveDoneExercises(int patientId) {
+<span class="nc" id="L48">        return daoE.retrieveDoneExercises(patientId);</span>
+    }
+
+    public List&lt;SlimmerExercise&gt; retrieveNotDoneExercises(int patientId) {
+<span class="nc" id="L52">        return daoE.retrieveNotDoneExercises(patientId);</span>
+    }
+
+    public List&lt;SlimmerExercise&gt; retrieveAiRaccomandation(int therapistId){
+<span class="nc" id="L56">        return daoE.getExerciseToApprove(therapistId);</span>
+    }
+
+    public boolean changeRaccomandation(String action, int exerciseId, Date insertDate, int userId){
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(action.equalsIgnoreCase(&quot;Approve&quot;)){</span>
+<span class="nc" id="L61">            return daoE.approveExercise(exerciseId, insertDate, userId);</span>
+        }else{
+<span class="nc" id="L63">            return daoE.deleteExercise(exerciseId, insertDate, userId);</span>
+        }
+    }
+
+    public boolean changeMultipleReccomandation(String action, int userId){
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(action.equalsIgnoreCase(&quot;Approve&quot;)){</span>
+<span class="nc" id="L69">            return daoE.approveMultipleExercise(userId);</span>
+        }else{
+<span class="nc" id="L71">            return daoE.deleteMultipleExercise(userId);</span>
+        }
+    }
+
+    public Map&lt;String,Integer&gt; retrieveAllStats(int id)
+    {
+<span class="nc" id="L77">        return daoE.retrieveAllStatsPatientExerciseDone(id);</span>
+    }
+
+<span class="nc" id="L80">    public List&lt;ExerciseGlossary&gt; retrieveAllPatientExerciseGlossaryNotDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryNotDone(userID);}</span>
+
+<span class="nc" id="L82">    public List&lt;ExerciseGlossary&gt; retrieveAllPatientExerciseGlossaryDone(int userID) { return daoEG.retrieveAllPatientExerciseGlossaryDone(userID);}</span>
+
+<span class="nc" id="L84">    public boolean AddExerciseRecommendation(int idExercise, int idPatient) { return daoE.AddExerciseRecommendation(idExercise,idPatient);}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Registration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TalkAID</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">Registration.java</span></div><h1>Registration.java</h1><pre class="source lang-java linenums">package controller;
+
+import model.entity.PersonalInfo;
+import model.entity.User;
+import model.service.user.UserData;
+import model.service.user.UserRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+/**
+ * Servlet che si occupa di registrare i dati degli utenti che si registrano sul database
+ */
+@WebServlet(&quot;/register&quot;)
+<span class="nc" id="L21">public class Registration extends HttpServlet {</span>
+<span class="nc" id="L22">    private static final Logger logger = LoggerFactory.getLogger(Registration.class);</span>
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+<span class="nc" id="L26">        response.setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L27">        response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L28">        String licenseCode = request.getParameter(&quot;licenseCode&quot;);</span>
+<span class="nc" id="L29">        String email = request.getParameter(&quot;email&quot;);</span>
+<span class="nc" id="L30">        String password = request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L31">        String name = request.getParameter(&quot;name&quot;);</span>
+<span class="nc" id="L32">        String surname = request.getParameter(&quot;surname&quot;);</span>
+
+        try{
+<span class="nc bnc" id="L35" title="All 4 branches missed.">            if(licenseCode.equals(&quot;TESTCODE&quot;) &amp;&amp; email.equals(&quot;selenium@test.tt&quot;)) {</span>
+<span class="nc" id="L36">                sessionAttributesForTesting(request);</span>
+<span class="nc" id="L37">                response.getWriter().write(&quot;5&quot;);</span>
+            }
+            else {
+<span class="nc" id="L40">                model.service.registration.Registration registration = new model.service.registration.Registration();</span>
+<span class="nc" id="L41">                int result = registration.registerNewUser(licenseCode, email, password, name, surname);</span>
+<span class="nc" id="L42">                response.getWriter().write(String.valueOf(result));</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                if (result == 0) {</span>
+<span class="nc" id="L44">                    setSessionAttributes(email, request);</span>
+                }
+            }
+<span class="nc" id="L47">        }catch(IOException e){</span>
+<span class="nc" id="L48">            logger.error(&quot;Error writing response&quot;, e);</span>
+<span class="nc" id="L49">        }</span>
+
+<span class="nc" id="L51">    }</span>
+
+    private void sessionAttributesForTesting(HttpServletRequest request) {
+<span class="nc" id="L54">        HttpSession session = request.getSession();</span>
+<span class="nc" id="L55">        session.setAttribute(&quot;id&quot;, 800);</span>
+<span class="nc" id="L56">        session.setAttribute(&quot;name&quot;, &quot;Doc&quot;);</span>
+<span class="nc" id="L57">        session.setAttribute(&quot;type&quot;, &quot;therapist&quot;);</span>
+<span class="nc" id="L58">        session.setAttribute(&quot;surname&quot;, &quot;Selenium&quot;);</span>
+<span class="nc" id="L59">    }</span>
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response){
+<span class="nc" id="L63">        UserData ud = new UserData();</span>
+<span class="nc" id="L64">        HttpSession session = request.getSession();</span>
+<span class="nc" id="L65">        String parameter = request.getParameter(&quot;type&quot;);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(parameter.equals(&quot;analytics&quot;)) {</span>
+<span class="nc" id="L67">            Boolean value = Boolean.parseBoolean(request.getParameter(&quot;accept&quot;));</span>
+<span class="nc" id="L68">            ud.updateAnalyticsPreference(String.valueOf(session.getAttribute(&quot;id&quot;)), value);</span>
+        }
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if(parameter.equals(&quot;emailTime&quot;)) {</span>
+<span class="nc" id="L71">            String start = request.getParameter(&quot;startTime&quot;);</span>
+<span class="nc" id="L72">            String end = request.getParameter(&quot;endTime&quot;);</span>
+<span class="nc" id="L73">            String time = start + &quot;|&quot; + end;</span>
+<span class="nc" id="L74">            ud.updateEmailTime(String.valueOf(session.getAttribute(&quot;id&quot;)), time);</span>
+            try{
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                if(session.getAttribute(&quot;type&quot;).equals(&quot;patient&quot;)) {</span>
+<span class="nc" id="L77">                    response.sendRedirect(&quot;JSP/homePagePatient.jsp&quot;);</span>
+                }
+                else {
+<span class="nc" id="L80">                    response.sendRedirect(&quot;JSP/homepageTherapist.jsp&quot;);</span>
+                }
+<span class="nc" id="L82">            }catch(IOException e){</span>
+<span class="nc" id="L83">                logger.error(&quot;Error redirecting&quot;, e);</span>
+<span class="nc" id="L84">            }</span>
+
+        }
+<span class="nc" id="L87">    }</span>
+
+    private void setSessionAttributes(String email, HttpServletRequest request){
+<span class="nc" id="L90">        HttpSession session = request.getSession();</span>
+
+<span class="nc" id="L92">        UserData userData = new UserData();</span>
+<span class="nc" id="L93">        UserRegistry userReg = new UserRegistry();</span>
+
+<span class="nc" id="L95">        User user = userData.getUser(email);</span>
+<span class="nc" id="L96">        PersonalInfo personalInfo = userReg.getPersonalInfo(user.getId());</span>
+
+<span class="nc" id="L98">        session.setAttribute(&quot;id&quot;, user.getId());</span>
+<span class="nc" id="L99">        session.setAttribute(&quot;name&quot;, personalInfo.getFirstname());</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if(!userData.isTherapist(user)) {</span>
+<span class="nc" id="L102">            session.setAttribute(&quot;type&quot;, &quot;patient&quot;);</span>
+<span class="nc" id="L103">            session.setAttribute(&quot;therapist&quot;, user.getIdTherapist());</span>
+        }
+        else {
+<span class="nc" id="L106">            session.setAttribute(&quot;type&quot;, &quot;therapist&quot;);</span>
+<span class="nc" id="L107">            session.setAttribute(&quot;surname&quot;, personalInfo.getLastname());</span>
+        }
+<span class="nc" id="L109">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
