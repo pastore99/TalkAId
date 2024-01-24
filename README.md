@@ -36,29 +36,29 @@ Requirements:
 * Java 17 or above
   
 1. Clone the repository:
-bash
-```
-git clone https://github.com/yourname/speech-therapy-remote.git
+
+```bash
+git clone https://github.com/pastore99/TalkAId.git
 ```
 2. Configure the database:
-    * inside /resources/ you must provide a file config.properties with params: db.ur, db.username, db.password used for connecting to your available database.
-      bash
-      ```
+    * inside /resources/ you must provide a file **config.properties** with params: db.ur, db.username, db.password used for connecting to your available database.
+      
+      ```bash
       db.url=jdbc:mysql:yourURL/yourSchema
       db.username=yourUsername
       db.password=yourPassword
       ```
 3. Configure the email service:
-    * inside /resources/ you must provide a file email.properties with params: email.string and email.pw used for connecting to your email provider.
-      bash
-      ```
+    * inside /resources/ you must provide a file **email.properties** with params: email.string and email.pw used for connecting to your email provider.
+     
+      ```bash
       email.string=youremail@gmail.com
       email.pw=YOUR_ONE_TIME_CODE_APPLICATION
       ```
 4. Configure azure properties:
-    * inside /resources/ you must provide a file azure.properties with params: azure.key and azure.region used for connecting to your Azure account.
-      bash
-      ```
+    * inside /resources/ you must provide a file **azure.properties** with params: azure.key and azure.region used for connecting to your Azure account.
+      
+      ```bash
       azure.key=YOUR_KEY
       azure.region=westeurope
       ```
