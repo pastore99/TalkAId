@@ -1,5 +1,5 @@
 Hierarchy List of files in this directory:
-projectDocs
+projectDoc
 ├── 2023_C16_DCR_ver1.0.pdf
 ├── Management
 │   ├── Agende e Minute
