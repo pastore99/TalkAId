@@ -12,7 +12,7 @@ The main features are:
 * Therapists can invite patients to their group.
 * Therapists can assign medical conditions and exercises to do.
    * the type of exercises are: crosswords, read-text, images-to-text, read-images, choose-right-text, text-to-images
-   * the system recommend exercises to do based on the medical condition of the patient [not done, yet].
+   * the system recommend exercises to do based on the medical condition of the patient [not integrated, yet](https://github.com/r-monti/fia).
 * Therapists can view the points of each done exercise.
 * Therapists can view the history points trend on a plot.
 * Patients can view the points of each done exercise.
