@@ -49,10 +49,10 @@ function showRightIcons(){
 }
 
 function manageOnClick(){
-    $("#home").click(() => redirect("home"));
-    $("#message").click(() => redirect("messageCenter.jsp"));
-    $("#calendar").click(() => redirect("schedule.jsp"));
-    $("#profile").click(() => redirect("userArea.jsp"));
+    $("#homeNavbar").click(() => redirect("home"));
+    $("#messageNavbar").click(() => redirect("messageCenter.jsp"));
+    $("#calendarNavbar").click(() => redirect("schedule.jsp"));
+    $("#profileNavbar").click(() => redirect("userArea.jsp"));
 }
 
 function redirect(where){

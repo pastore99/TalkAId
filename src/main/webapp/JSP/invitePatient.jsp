@@ -37,7 +37,6 @@
             <input class="formInput" type="text" name="cognome" placeholder="Cognome" required>
         </div>
         <br>
-        <br>
         <button type="submit" value="Invite" id="InviteButton">Invita</button>
         <a id="return" onclick="hideInvite()"> < Torna alla home</a>
     </form>

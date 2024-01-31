@@ -5,19 +5,19 @@
     response.sendRedirect("../errorPage/403.html");
 }%>
     <div id="navbarDiv" >
-        <div id="home" class="divButtons">
+        <div id="homeNavbar" class="divButtons">
             <img id="homeIcon" class="navbarIcon" src="../images/home.svg" alt="homeIcon">
             <img id="homeIconSelected" class="navbarIcon" src="../images/homeSelected.svg" alt="homeIconSelected">
         </div>
-        <div id="message" class="divButtons">
+        <div id="messageNavbar" class="divButtons">
             <img id="messageIcon" class="navbarIcon" src="../images/message.svg" alt="messageIcon">
             <img id="messageIconSelected" class="navbarIcon" src="../images/messageSelected.svg" alt="messageIconSelected">
         </div>
-        <div id="calendar" class="divButtons">
+        <div id="calendarNavbar" class="divButtons">
             <img id="calendarIcon" class="navbarIcon" src="../images/calendar.svg" alt="calendarIcon">
             <img id="calendarIconSelected" class="navbarIcon" src="../images/calendarSelected.svg" alt="calendarIconSelected">
         </div>
-        <div id="profile" class="divButtons">
+        <div id="profileNavbar" class="divButtons">
             <img id="profileIcon" class="navbarIcon" src="../images/profile.svg" alt="profileIcon">
             <img id="profileIconSelected" class="navbarIcon" src="../images/profileSelected.svg" alt="profileIconSelected">
         </div>
