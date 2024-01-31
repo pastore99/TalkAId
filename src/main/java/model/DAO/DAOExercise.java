@@ -99,7 +99,7 @@ public class DAOExercise {
             connection = connection.isClosed() ? DAOConnection.getConnection() : connection;
             String query = "SELECT e.ID_exercise, e.ID_user, eg.ExerciseName, e.InsertionDate, eg.ExerciseDescription, e.Feedback, eg.Difficulty, eg.Target, eg.Type, e.Evaluation FROM exercise e" +
                     " JOIN exercise_glossary eg ON e.ID_exercise = eg.ID_exercise" +
-                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ? ORDER BY InsertionDate";
+                    " WHERE e.CompletionDate IS NULL AND e.ID_user = ? AND e.Recommended != 0 ORDER BY InsertionDate";
 
             stmt = connection.prepareStatement(query);
             stmt.setInt(1, patientId);
