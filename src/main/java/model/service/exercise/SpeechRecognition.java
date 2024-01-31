@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -37,33 +38,42 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
 
 
     public String azureSTT(InputStream audio) throws InterruptedException, ExecutionException, IOException {
-        SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
-        speechConfig.setSpeechRecognitionLanguage("it-It");
+        String audioFile = null;
+        try {
 
-        AudioConfig audioConfig = AudioConfig.fromWavFileInput(generateFile(audio));
-        SpeechRecognizer speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
+            SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
+            speechConfig.setSpeechRecognitionLanguage("it-It");
 
-        Future<SpeechRecognitionResult> task = speechRecognizer.recognizeOnceAsync();
-        SpeechRecognitionResult speechRecognitionResult = task.get();
+            audioFile = generateFile(audio);
 
-        String result = null;
+            AudioConfig audioConfig = AudioConfig.fromWavFileInput(audioFile);
+            SpeechRecognizer speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
 
-        if (speechRecognitionResult.getReason() == ResultReason.RecognizedSpeech) {
-            result = speechRecognitionResult.getText();
-        }
-        else if (speechRecognitionResult.getReason() == ResultReason.NoMatch){
-            logger.error("NOMATCH: Speech could not be recognized.");
-        }else if (speechRecognitionResult.getReason() == ResultReason.Canceled) {
-            CancellationDetails cancellation = CancellationDetails.fromResult(speechRecognitionResult);
-            logger.error("CANCELED: Reason=" + cancellation.getReason());
+            Future<SpeechRecognitionResult> task = speechRecognizer.recognizeOnceAsync();
+            SpeechRecognitionResult speechRecognitionResult = task.get();
 
-            if (cancellation.getReason() == CancellationReason.Error) {
-                logger.error("CANCELED: ErrorCode=" + cancellation.getErrorCode());
-                logger.error("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
+            String result = null;
+
+            if (speechRecognitionResult.getReason() == ResultReason.RecognizedSpeech) {
+                result = speechRecognitionResult.getText();
+            } else if (speechRecognitionResult.getReason() == ResultReason.NoMatch) {
+                logger.error("NOMATCH: Speech could not be recognized.");
+            } else if (speechRecognitionResult.getReason() == ResultReason.Canceled) {
+                CancellationDetails cancellation = CancellationDetails.fromResult(speechRecognitionResult);
+                logger.error("CANCELED: Reason=" + cancellation.getReason());
+
+                if (cancellation.getReason() == CancellationReason.Error) {
+                    logger.error("CANCELED: ErrorCode=" + cancellation.getErrorCode());
+                    logger.error("CANCELED: ErrorDetails=" + cancellation.getErrorDetails());
+                }
+            }
+
+            return result;
+        }finally{
+            if(audioFile != null){
+                deleteExistingFile(audioFile);
             }
         }
-
-        return result;
     }
 
     public String generateFile(InputStream inputAudio) throws IOException {
@@ -88,13 +98,17 @@ public class SpeechRecognition implements SpeechRecognitionInterface{
     }
 
     String getOutputPath(File tempFile) {
-        Path outputPath = Paths.get(tempFile.getPath()).getParent().resolve("outputJava.wav");
+        Path outputPath;
+        do{
+            String uniqueID = UUID.randomUUID().toString();
+            outputPath = Paths.get(tempFile.getPath()).getParent().resolve("outputJava"+uniqueID+".wav");
+        }while(Files.exists(outputPath));
         return outputPath.toString();
     }
 
     void deleteExistingFile(String path) {
         try {
-            Files.delete(Paths.get(path));
+            Files.deleteIfExists(Paths.get(path));
         } catch (FileNotFoundException e){
             logger.error("File not found");
         } catch (IOException e) {
